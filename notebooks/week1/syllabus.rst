@@ -9,6 +9,7 @@ ATSC 301: syllabus
 :Email:        paustin@eos.ubc.ca
 :Office:       EOS South 157, 604-822-2175
 :Office hours: TBD
+:TA: Elliot Roocroft: eroocroft@eoas.ubc.ca
 
 Course objectives
 =================
