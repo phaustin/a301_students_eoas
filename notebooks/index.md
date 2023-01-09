@@ -1,10 +1,9 @@
 
-# ATSC 301: Fall 2020 
+# ATSC 301: Term 2 2022
 
 ## Useful links
 
-* [Stull: Practical Meteorology](https://www.eoas.ubc.ca/books/Practical_Meteorology)
+* [Syllabus](https://eoasubc.xyz/a301_2022/notebooks/week1/syllabus.html)
 
-* [Kazarinoff: Problem Solving with Python](https://atsc_web.eoas.ubc.ca)
+* [Jupyter notebook server: https://a301hub.eoasubc.xyz](https://a301hub.eoasubc.xyz)
 
-* [Jupyter notebook server: https://a301_hub.eoas.ubc.ca](https://a301_hub.eoas.ubc.ca)
