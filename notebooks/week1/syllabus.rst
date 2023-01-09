@@ -54,9 +54,9 @@ Evaluation
 ==========
 
 ===============================  =====
-Weekly Assignments               | 45%
+Weekly Assignments/Quizzes       | 50%
 
-Mid-term                         | 20%
+Mid-term                         | 15%
 
 Final (including takehome part)  | 35%
 ===============================  =====
@@ -64,60 +64,61 @@ Final (including takehome part)  | 35%
 
 * a reminder about the `UBC code of conduct <http://science.ubc.ca/students/new/conduct>`_
 
-
-Required texts (all available for free)
-=======================================
+Rerferences/Texts (all available for free)
+==========================================
 
 * Stull, `Practical Meteorology`_ chapters 2, 3, 6 and 8 plus handouts
 
-* VanderPlas, `A Whirlwind Tour of Python`_  (`html version <./whirlwind/Index.html>`_)
+* Kazarinoff: `Problem Solving with Python`_
+
+* VanderPlas, `A Whirlwind Tour of Python`_
 
 * Vanderplas, `Python Data Science Handbook`_ 
-  
+
 
 Week by week topics (subject to change)
 =======================================
 
 ======= =============  ===============================================
-Week 1  9/9 - 9/11     | Introduction, course outline, Python intro
+Week 1  1/9 - 9/13     | Introduction, course outline, Python intro
                        | Assignment: Jupyter intro                          
 
-Week 2  9/14 - 9/18    | Python continued
+Week 2  1/16 - 9/20    | Python continued
                        | Assignment: Use python for plotting and integration
 
 
-Week 3  9/21 - 9/25    | Blackbody radiation, equilibrium temperature, 
+Week 3  1/23 - 1/27    | Blackbody radiation, equilibrium temperature, 
                        | Kirchoff's law
                        | Assignment1: Brightness temperatures
 
-Week 4  9/28 - 10/2    | Beers law, absorption/emission, 
+Week 4  1/30 - 2/3     | Beers law, absorption/emission, 
                        | Assignment2: Stull problems
                        
-Week 5  10/5 - 10/9    | Schwartzchild eqn with absorption and emission
+Week 5  2.6  0  2/10   | Schwartzchild eqn with absorption and emission
                        | Assignment3: Split window
 
-Week 6  10/12 - 10/16  | Absorption and emission continued
+Week 6  2/13 - 2/17    | Absorption and emission continued
                        | Monday: Thanksgiving                                     
                        | Assignment: Two-stream model with emission
 
-Week 7  10/19 - 10/23  | Satellites continued: Ft. McMurray Fire
+Week 7  2/27 -  3/3    | Satellites continued: Ft. McMurray Fire
                        | Assignment: mid-term review, mid-term
 
-Week 8  10/26 - 10/30  | Rain radar
+Week 8  3/6 - 3/10     | Rain radar
                        | Assignment: Cloudsat precipitation data
 
-Week 9  11/2 - 11/6    | Doppler radar
+Week 9  3/13 - 3/17    | Doppler radar
                        | Assignment: Interpreting doppler data
                        
-Week 10 11/9 - 11/13   | Mapping with gis I
+Week 10 3/20 - 3/24    | Mapping with gis I
                        | Assignment: Vector layers
 
-Week 11 11/16 - 11/20  | Mapping with gis II
+Week 11 3/27 - 3/31    | Mapping with gis II
                        | Map projections and shape files
 
-Week 12 11/23 - 11/27  | Mapping with gis III
+Week 12 4/3 - 4/7      | Mapping with gis III
                        | Raster/vector overlays and true color
 
-Week 13 11/30 - 12/2   | Catch-up, review
+Week 13 4/10 - 4/14    | Catch-up, review
 
 ======= =============  ===============================================

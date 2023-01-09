@@ -1,0 +1,8 @@
+.. _Practical Meteorology: https://www.eoas.ubc.ca/books/Practical_Meteorology/
+
+.. _Problem Solving with Python: https://phaustin.github.io/Problem-Solving-with-Python/
+
+.. _A Whirlwind Tour of Python: https://jakevdp.github.io/WhirlwindTourOfPython
+
+.. _Python Data Science Handbook: https://jakevdp.github.io/PythonDataScienceHandbook/
+
