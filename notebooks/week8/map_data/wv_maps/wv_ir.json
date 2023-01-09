@@ -1,0 +1,78 @@
+{
+    "modismeta": {
+        "orbit": 59949,
+        "daynight": "Day",
+        "filename": "MYD05_L2.A2013222.2105.061.2018048043105.hdf",
+        "stopdate": "2013-08-10",
+        "startdate": "2013-08-10",
+        "starttime": "21:05:00.000000",
+        "stoptime": "21:10:00.000000",
+        "equatortime": "21:45:48.364762",
+        "equatordate": "2013-08-10",
+        "nasaProductionDate": "2018-02-17T04:31:05.000Z",
+        "type": {
+            "SHORTNAME": {
+                "VALUE": "MYD05_L2"
+            },
+            "VERSIONID": {
+                "VALUE": 61
+            }
+        },
+        "sensor": {
+            "ASSOCIATEDSENSORSHORTNAME": {
+                "VALUE": "MODIS"
+            },
+            "ASSOCIATEDPLATFORMSHORTNAME": {
+                "VALUE": "Aqua"
+            },
+            "ASSOCIATEDINSTRUMENTSHORTNAME": {
+                "VALUE": "MODIS"
+            }
+        },
+        "lon_list": [
+            -105.098915487577,
+            -137.83103775217,
+            -137.83103775217,
+            -105.098915487577
+        ],
+        "lat_list": [
+            28.7030552870995,
+            28.7030552870995,
+            50.2130790554216,
+            50.2130790554216
+        ],
+        "min_lat": 28.7030552870995,
+        "max_lat": 50.2130790554216,
+        "min_lon": -137.83103775217,
+        "max_lon": -105.098915487577,
+        "lon_0": -121.46497661987351,
+        "lat_0": 39.45806717126055
+    },
+    "area_def": {
+        "area_id": "laea_otf",
+        "proj_id": "laea_otf",
+        "name": "On-the-fly laea area",
+        "proj_dict": {
+            "proj": "laea",
+            "lat_0": 39.4580671712606,
+            "lon_0": -121.464976619873,
+            "x_0": 0,
+            "y_0": 0,
+            "datum": "WGS84",
+            "units": "m",
+            "no_defs": null,
+            "type": "crs"
+        },
+        "x_size": 499,
+        "y_size": 448,
+        "area_extent": [
+            -1238434.252747718,
+            -1155685.636833424,
+            1529176.4655438077,
+            1278445.1434170557
+        ]
+    },
+    "image_name": "wv_ir",
+    "description": "modis ir water vapor (cm) sampled at 5 km resolution",
+    "history": "written by level2_cartopy_resample.ipynb"
+}
