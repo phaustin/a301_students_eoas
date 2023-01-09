@@ -5,6 +5,7 @@ parts:
     chapters:
       - file: notebooks/week1/week1_topics.md
       - file: notebooks/week1/syllabus.rst
+      - file: notebooks/week1/e582_syllabus.rst
       - file: notebooks/week1/integrity.md
       - file: notebooks/week1/texts.rst
   - caption: Week 2
