@@ -153,7 +153,6 @@ On page 39, Stull asserts the inverse square law:
 .. math:: E_2 = E_1^* \left ( \frac{R_1^2}{R_2^2} \right ) 
 
 1) Prove this using conservation of energy (i.e. conservation of Joules)
-   Post your (English words) explanation on canvas chat
 
 2) Suppose a 10 cm x 10 cm piece of white paper with a visible
    reflectivity of 80% is pinned to a wall and illuminated by visible

@@ -6,7 +6,7 @@
 
 * [Course piazza page](https://piazza.com/class/lcoeg8tsp9zxq)
 
-
+* Installation instructions and the environment.yml file on [Dropbox](https://www.dropbox.com/sh/uosacqkiw7f5rmk/AABKGhCMXXkI3Q21U49uFIEya?dl=0)
 
 ## For Wednesday's class
 
@@ -14,7 +14,7 @@
 
 * Go to https://github.com and get a github account if  you don't have one.
 
-* Send me a message on canvas with your github uxer id
+* Send me a message on canvas with your github user id
 
 * Read Stull Chapter 2 through page 38.  (https://www.eoas.ubc.ca/books/Practical_Meteorology/)
 
@@ -22,5 +22,14 @@
 
 * Get an account on https://open.jupyter.ubc.ca and go over Section 3   in https://phaustin.github.io/Problem-Solving-with-Python/ if you aren't familiar with how Jupyter notebooks work.
 
+## For Friday's class
 
+* For Friday: Read my {ref}`beers_law` notes
 
+* Work through Kazarinoff Chapters 6 (Numpy) and 7 (Plotting)
+
+* For class discussion 
+
+  - why does python have both tuples and lists?
+
+  - How do we measure flux?
