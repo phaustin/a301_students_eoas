@@ -378,7 +378,6 @@ def readband(the_file,the_band):
     return thechan_calibrated
 
 ch_radiance = readband(the_file,the_band)
-the_file.end()
 from matplotlib import pyplot as plt
 plt.hist(ch_radiance.flat)
 plt.show()

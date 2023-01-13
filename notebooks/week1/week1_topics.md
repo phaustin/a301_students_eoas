@@ -67,4 +67,10 @@
 
 ## For Monday's class
 
-1) Choose a modis granule that 
+1) Following the directions in {ref}`satellite`  pick a satellite scene and store it in ~/sat_data
+
+2) Modify {ref}`modis_level1b` to plot Channel 30 for your scene
+
+3) If you have trouble finding a scene, Friday's image is in the Dropbox folder at https://www.dropbox.com/sh/uosacqkiw7f5rmk/AABKGhCMXXkI3Q21U49uFIEya?dl=0
+
+

@@ -28,6 +28,10 @@ Finding your granule
 
   - Pick a location over land at least 1000 km from downtown Vancouver
 
+  - keep cloud cover to less than about 20% of the scene
+
+  - make sure there are geographical features (rivers, lakes, coastlines) you can find on a map -- this helps make sure image orientation is correct
+
 
 .. _satdata:
 
