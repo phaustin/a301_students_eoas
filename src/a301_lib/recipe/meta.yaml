@@ -1,0 +1,38 @@
+{% set version = "0.4" %}
+
+package:
+  name: a301_lib
+  version: {{ version }}
+
+source:
+  path: ../
+
+build:
+  noarch: python
+  number: 1
+
+  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+
+requirements:
+  build:
+    - python >=3.7
+
+  run:
+    - python >=3.7
+
+test:
+  imports:
+    - a301_lib
+
+about:
+  home: https://github.com/phaustin/a301_2020
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE.txt
+  summary: 'tools for a301'
+  description: |
+    remote sensing libraries
+    
+extra:
+  recipe-maintainers:
+    - phaustin

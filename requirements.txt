@@ -1,0 +1,2 @@
+git+https://github.com/phaustin/a301_students_eoas.git#subdirectory=src/a301_lib
+
