@@ -7,4 +7,4 @@ sat_data = home_dir / 'sat_data'
 
 sys.path.insert(0, str(home_dir))
 sep='*'*30
-print(f'{sep}\ncontext imported. Front of path:\n{sys.path[0]}\n')
+print(f'{sep}\nnew context imported. Front of path:\n{sys.path[0]}\n')
