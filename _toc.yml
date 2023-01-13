@@ -1,4 +1,4 @@
-format: jb-book
+sformat: jb-book
 root: notebooks/index.md
 parts:
   - caption: Week 1

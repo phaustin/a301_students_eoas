@@ -1,5 +1,12 @@
 # Week 1
 
+## Week 1 learning objectives
+
+* Install a working a301 environment on your laptop
+
+* 
+
+
 ## Important links
 
 * [Course canvas page](https://canvas.ubc.ca/courses/105407)
