@@ -1,13 +1,15 @@
-sformat: jb-book
+format: jb-book
 root: notebooks/index.md
 parts:
   - caption: Week 1
     chapters:
-      - file: notebooks/week1/week1_topics.md
-      - file: notebooks/week1/syllabus.rst
-      - file: notebooks/week1/e582_syllabus.rst
-      - file: notebooks/week1/integrity.md
-      - file: notebooks/week1/texts.rst
+    - file: notebooks/week1/week1_topics.md
+    - file: notebooks/week1/syllabus.rst
+    - file: notebooks/week1/e582_syllabus.rst
+    - file: notebooks/week1/integrity.md
+    - file: notebooks/week1/texts.rst
+    - file: notebooks/week1/satellite.rst
+    - file: notebooks/week1/modis_level1b_read.md
   - caption: Week 2
     chapters:
     - file: notebooks/week2/week2_topics.md
@@ -21,8 +23,6 @@ parts:
     chapters:
     - file: notebooks/week3/week3_topics.md
     - file: notebooks/week3/assignment1.md
-    - file: notebooks/week3/satellite.rst
-    - file: notebooks/week3/modis_level1b_read.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md

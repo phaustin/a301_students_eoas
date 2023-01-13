@@ -8,7 +8,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Website for EOAS ATSC 301
 
 execute:
-  execute_notebooks: 'force'
+  execute_notebooks: 'off'
 
 exclude_patterns: ["*ipynb"]
 

@@ -2,9 +2,15 @@
 
 ## Week 1 learning objectives
 
+* Define and using monochromatic blackbody flux (Stull equation 2.13)
+
 * Install a working a301 environment on your laptop
 
-* 
+* Clone the course notebooks to `~/repos/a301_eoas_students`
+
+* Install the `a301_lib` python module using pip
+
+* Download a Modis satellite image and plot the channel 30 image 
 
 
 ## Important links
@@ -40,3 +46,25 @@
   - why does python have both tuples and lists?
 
   - How do we measure flux?
+
+###  More installation
+
+* Installing libraries and notebooks: clone our course notebooks by doing the following in a shell:
+
+        cd ~/repos
+        conda activate a301
+        git clone https://github.com/phaustin/a301_students_eoas.git
+        
+* and then install our first library:  `a301_lib`
+
+        pip install -r requirements.txt
+        
+### Downloading data
+        
+* Go over {ref}`satellite` 
+        
+* Introduce {ref}`modis_level1b`
+
+## For Monday's class
+
+1) Choose a modis granule that 
