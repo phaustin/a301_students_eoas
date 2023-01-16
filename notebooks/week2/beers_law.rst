@@ -1,4 +1,4 @@
-.. _beers_law:
+.. _beerslaw:
 
 Beers and inverse squared laws
 ++++++++++++++++++++++++++++++

@@ -10,21 +10,21 @@ Some definitions
 
 The *irradiance* or *radiant flux* **E** is defined as the energy
 (Joules) crossing a unit surface (1 :math:`m^2`) in unit time (1 second)
-so it has units of :math:`W\,m^2`.
+so it has units of :math:`W\,m^{-2}`.
 
 To measure it, you could use a photo diode to count the number of
 photons per second hitting a sensor, recording the wavelength of each
-photon. To get the photon energy use:
+photon. To get the photon energy use Stull eq. 2.12
 
-.. math:: f = c/\lambda
+.. math:: \nu = c/\lambda
 
-where f is the frequency and c is the speed of light, and then use
+where `\nu` is the frequency and c is the speed of light, and then use
 Planck's constant (h) to convert frequency in Hz (:math:`s^{-1}`) to
 energy in Joules
 
-.. math:: energy = h f
+.. math:: energy = h \nu
 
-where :math:`h=6.62607 \times 10^{-34}` :math:`J\,s^{-1}`. Summing all
+where :math:`h=6.62607 \times 10^{-34}` :math:`J\,s`. Summing all
 the photon energies and dividing by the sensor area would give you the
 flux E.
 

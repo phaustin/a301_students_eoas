@@ -37,7 +37,7 @@
 
 ## For Friday's class
 
-* For Friday: Read my {ref}`beers_law` notes
+* For Friday: Read my {ref}`beerslaw` notes
 
 * Work through Kazarinoff Chapters 6 (Numpy) and 7 (Plotting)
 
@@ -51,9 +51,10 @@
 
 * Installing libraries and notebooks: clone our course notebooks by doing the following in a shell:
 
-        cd ~/repos
+        cd ~/repos/a301
         conda activate a301
         git clone https://github.com/phaustin/a301_students_eoas.git
+
         
 * and then install our first library:  `a301_lib`
 
