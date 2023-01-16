@@ -20,6 +20,37 @@
 
    * Review: Sections 4 and 5 of Kazarinoff:  Python REPL and datatypes
 
+* Syncing your notebooks to the current github commit
+
+  - As I make changes to the notebooks, I'll push them to the github repository
+    at https://github.com/phaustin/a301_students_eoas
+
+  - You can see my commit history: https://github.com/phaustin/a301_students_eoas/commits/main
+
+  - To bring those commits into your local repository, do the following:
+
+          cd ~/repos/a301_students_eoas
+          git status
+
+    You should see the following line:
+
+          nothing to commit, working tree clean
+
+    If not, then you need to move the files you've changed out of this repository into your work folder
+    because all changes will be overwritten in the next step.  First fetch the changes
+
+          git fetch
+
+    Then reset to include the changes (note there are two dashes in front of hard)
+
+          git reset --hard origin/main
+
+    You should see the commit message from my last commit -- to print the last three commits
+
+          git log -3
+
+  
+
 * Introduce: Stull Chapter 2 pages 36-42 on the Planck function (eq. 2.13), 
   Stefen-Boltzman (eq: 2.15), inverse square law 
 
