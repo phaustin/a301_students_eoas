@@ -328,12 +328,13 @@ sds.endaccess()
 sd.end()
 ```
 
-Did this work?  See if the file exists:
+Did this work?  See if the file exists.  I'll write it into the work folder in the home folder
 
 ```{code-cell} ipython3
 :trusted: true
 
-hdf_files = list(Path().glob("*hdf"))
+work_dir = a301_lib.home_dir / "work"
+hdf_files = list(work_dir.glob("*hdf"))
 print(hdf_files)
 ```
 
@@ -368,7 +369,7 @@ def readband(the_file,the_band):
     longwave_bands = the_file.select("Band_1KM_Emissive")
     band_nums = longwave_bands.get()
     thechan_index = int(np.searchsorted(band_nums, the_band))
-    print(thechan_index)
+    print(f"channel index for band {the_band} is {thechan_index}")
     thechan_data = longwave_data[thechan_index, :, :]
     scales = longwave_data.attributes()["radiance_scales"]
     offsets = longwave_data.attributes()["radiance_offsets"]
@@ -379,8 +380,11 @@ def readband(the_file,the_band):
 
 ch_radiance = readband(the_file,the_band)
 from matplotlib import pyplot as plt
-plt.hist(ch_radiance.flat)
-plt.show()
+fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+ax.hist(ch_radiance.flat[0:5000])
+ax.set_ylabel('pixel count (unitless)')
+ax.set_title(f'Radiance for band {the_band}')
+ax.set_xlabel("radiance ($W\,m^{-2}\mu m^{-1}\,sr^{-1}$)");
 ```
 
 ## close the file

@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: '0.8'
-    jupytext_version: 1.5.0
+    format_version: 0.13
+    jupytext_version: 1.14.0
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -30,11 +30,11 @@ seen
 
 Below I'll use %%file output a cell to a file for later use as a module
 
-```{code-cell}
-%magic --brief
-```
++++
 
-```{code-cell}
+%magic --brief
+
+```{code-cell} ipython3
 import numpy as np
 from matplotlib import pyplot as plt
 ```
@@ -43,7 +43,7 @@ from matplotlib import pyplot as plt
 
 Save this to a file called "radiation.py" in this folder
 
-```{code-cell}
+```{code-cell} ipython3
 %%file radiation.py
 import numpy as np
 #
@@ -85,7 +85,7 @@ def Elambda(wavel, Temp):
 
 ## import the function from that file and use it
 
-```{code-cell}
+```{code-cell} ipython3
 import radiation
 from radiation import Elambda
 
@@ -95,7 +95,7 @@ npoints = 10000
 Temp = 255  # K
 wavelengths = np.linspace(0.1, 500.0, npoints) * 1.0e-6  # meters
 Estar = Elambda(wavelengths, Temp)
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 ax.plot(wavelengths * 1.0e6, Estar * 1.0e-6)
 ax.set(xlim=[0, 50])
 ax.grid(True)
@@ -106,7 +106,11 @@ ax.set(
 );
 ```
 
-```{code-cell}
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
 Lstar = Estar / np.pi
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 ax.plot(wavelengths * 1.0e6, Lstar * 1.0e-6)
@@ -118,5 +122,3 @@ ax.set(
     title=f"Monochromatic blackbody radiance at Temp={Temp} K",
 )
 ```
-
-

@@ -10,7 +10,7 @@ c, h, k = 299_792_458.0, 6.626_070_04e-34, 1.380_648_52e-23
 c1 = 2.0 * h * c ** 2.0
 c2 = h * c / k
 sigma = 2.0 * np.pi ** 5.0 * k ** 4.0 / (15 * h ** 3.0 * c ** 2.0)
-print(sigma)
+print(f"in radiation.py, here is sigma {sigma}")
 
 
 def Elambda(wavel, Temp):

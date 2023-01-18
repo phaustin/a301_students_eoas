@@ -17,7 +17,7 @@ Main text
 ---------
 
 
-* `Problem Solving with Python <http://node07.eos.ubc.ca:8080>`_
+* `Problem Solving with Python <https://phaustin.github.io/Problem-Solving-with-Python/>`_
 
 Additional Resources
 --------------------
