@@ -14,25 +14,6 @@ kernelspec:
 (sec:planck)=
 # Integrating the Planck function with python
 
-## Using ipython magic commands
-
-When you start a jupyter notebook with python (instead of R, Julia, Rust etc.) you
-get access to the ipython interactive environment, which can also be run outside
-Jupyter (and was developed before Jupyter existed).  One feature of ipython is
-"magic" commands:
-
-[IPython magics](https://ipython.readthedocs.io/en/stable/interactive/magics.html)
-
-You can use these to start the debugger, output cells to files, etc.  We've already
-seen
-
-    %debug
-
-Below I'll use %%file output a cell to a file for later use as a module
-
-+++
-
-%magic --brief
 
 ```{code-cell} ipython3
 import numpy as np
@@ -41,10 +22,10 @@ from matplotlib import pyplot as plt
 
 ## Write a module to compute Stull 2.13
 
-Save this to a file called "radiation.py" in this folder
+this uses the "writefile" magic to save radiation.py into the same folder as this notebook.
 
 ```{code-cell} ipython3
-%%file radiation.py
+%%writefile radiation.py
 import numpy as np
 #
 # get Stull's c_1 and c_2 from fundamental constants
@@ -57,7 +38,7 @@ c, h, k = 299_792_458.0, 6.626_070_04e-34, 1.380_648_52e-23
 c1 = 2.0 * h * c ** 2.0
 c2 = h * c / k
 sigma = 2.0 * np.pi ** 5.0 * k ** 4.0 / (15 * h ** 3.0 * c ** 2.0)
-print(sigma)
+print(f"in radiation.py, here is sigma {sigma}")
 
 
 def Elambda(wavel, Temp):
@@ -95,7 +76,7 @@ npoints = 10000
 Temp = 255  # K
 wavelengths = np.linspace(0.1, 500.0, npoints) * 1.0e-6  # meters
 Estar = Elambda(wavelengths, Temp)
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 ax.plot(wavelengths * 1.0e6, Estar * 1.0e-6)
 ax.set(xlim=[0, 50])
 ax.grid(True)
@@ -106,9 +87,9 @@ ax.set(
 );
 ```
 
-```{code-cell} ipython3
+## Convert flux to radiance
 
-```
+This uses the reading {ref}`flux_from_radiance`
 
 ```{code-cell} ipython3
 Lstar = Estar / np.pi
