@@ -68,3 +68,13 @@ turn photon counts into radiance with units of $W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$
 - Do for Friday {ref}`sec:planck`
 
 - Go over [Kazarinoff Chapter    8](https://phaustin.github.io/Problem-Solving-with-Python/Functions-and-Modules/Introduction.html)
+
+
+## Week 2 topics for Friday: 
+
+* Introduce:
+
+   * {ref}`assign1`
+   * {ref}`sec:debugging`  
+   * {ref}`sec:numpy`  
+   * {ref}`sec:planck`  

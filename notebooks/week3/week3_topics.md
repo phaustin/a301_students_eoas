@@ -5,8 +5,6 @@
 
   * Do Problem 3 in {ref}`week2_probs`
 
-  * Introduce {ref}`assign1`
-
   * Go over the notes on {ref}`satellite`
 
   * For Wednesday:
@@ -31,13 +29,5 @@
   * Review {ref}`sec:debugging` on using pdb
 
   * show how to set breakpoints to inspect code in {ref}`sec:planck`
-
-  * For Monday:
-
-    * Upload your notebook that solves {ref}`assign1` to canvas  (I will run it in my own container, so be sure it works from a clean directory)
-
-    * [Map projection humor from xkcd](https://m.xkcd.com/977)
-
-    * Read the first three chapters of [Understanding map projections]( https://drive.google.com/file/d/1araPnZwMui9tBTPyLO_UHVC2DDEIdZ0p/view?usp=sharing)
 
 
