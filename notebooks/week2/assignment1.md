@@ -45,7 +45,7 @@ Here is an excerpt of my code for the `modis_level1b_read.md`:
          #save them to a npz file
          np.savez('lonlat.npz',longitude=longitude_data,latitude=latitude_data)
          
-And here is what the plot looks like for my image:
+And here is what te plot looks like for my image:
 
 <img src='../figures/first_50.png' width="80%" >
 
@@ -71,8 +71,8 @@ def radiance_invert(wavelengths, Lstar):
 
 ## Problem 3
 
-Read in the radiances for channel 30 and channel 31 from the file `chan30_31.npz`. 
-You created above.
+Read in the radiances for channel 30 and channel 31 from the file `chan30_31.npz`
+you created above.
 In the next cell import your `radiance_invert function` and use it to turn the calibrated
 radiances into brightness temperatures
 in Kelvins. 

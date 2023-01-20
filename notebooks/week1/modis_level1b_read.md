@@ -65,6 +65,7 @@ Now read that file (converting PosixPath into a string since the pyhdf library i
 expecting a string).  Use the `.info` method to get the number of datasets and attributes
 
 ```{code-cell} ipython3
+:scrolled: true
 :trusted: true
 
 file_name = str(all_files[0])
@@ -102,6 +103,26 @@ for idx, sds in enumerate(datasets_dict.keys()):
  
  The "Earth View Emissive" dataset contains all the longwave channels, and all the 2030 rows and 1354 columns for each
  pixel in each channel
+
++++
+
+## read the latlon data
+
+```{code-cell} ipython3
+:trusted: true
+
+latitude_data = the_file.select("Latitude")
+longitude_data = the_file.select("Longitude")
+longitude_data = longitude_data[:50,:50]
+latitude_data = latitude_data[:50,:50]
+print(longitude_data.shape,latitude_data.shape)
+np.savez('lonlat.npz',longitude=longitude_data,latitude=latitude_data)
+fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+ax.plot(longitude_data,latitude_data,'k+')
+ax.set(title="lat/lons for first 50 rows and columns",
+       xlabel = "longitude (degrees east)",ylabel="latitude (degrees north)")
+fig.savefig("first_50.png")
+```
 
 ```{code-cell} ipython3
 :trusted: true
