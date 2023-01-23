@@ -26,6 +26,8 @@ https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchica
 
 modis swath:  https://svs.gsfc.nasa.gov/3348
 
+modis channel listing:  https://modis.gsfc.nasa.gov/about/specifications.php
+
 ```{code-cell} ipython3
 :trusted: true
 
@@ -208,6 +210,7 @@ print(f"channel 30 is located at index {ch30_index}")
 # ## Read channel 30 at index 9 into a numpy array of type uint16
 ```
 
+(modis_chan30)=
 ## Now get the data for channel 30
 
 ```{code-cell} ipython3
@@ -269,6 +272,7 @@ print(f"scale: {ch30_scale}, offset: {ch30_offset}")
 ch30_calibrated = (ch30_data - ch30_offset) * ch30_scale
 ```
 
+(modis_level1b:plot)=
 ## Plot the Channel 30 radiances
 
 Do these look right?  How would you tell?
@@ -338,6 +342,7 @@ hdf_files = list(work_dir.glob("*hdf"))
 print(hdf_files)
 ```
 
+(modis_level1b:function)=
 ## move all of this into a function
 
 ```{code-cell} ipython3

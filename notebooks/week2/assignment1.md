@@ -37,21 +37,26 @@ and plot them.
 Here is an excerpt of my code for the `modis_level1b_read.md`:
          
          # get the latitude variable
-         latitude_data = the_file.select("Latitude")
+         latitude = the_file.select("Latitude")
          ...
          #read the first 50 rows and columns into a numpy array
-         latitude_data = latitude_data[:50,:50]
+         latitude = latitude_data[:50,:50]
          ...
          #save them to a npz file
-         np.savez('lonlat.npz',longitude=longitude_data,latitude=latitude_data)
+         np.savez('lonlat.npz',longitude=longitude,latitude=latitude)
          
 And here is what te plot looks like for my image:
 
 <img src='../figures/first_50.png' width="80%" >
 
-         
-
 +++
+
+In the cell below read in your `lonlat.npz` file and make a plot from your data that looks like 
+my lat/lon plot.
+
+```{code-cell} ipython3
+:trusted: true
+```
 
 ## Problem 2
 
@@ -63,9 +68,39 @@ i.e. the top of the cell should look like:
 
 ```python
 %%writefile planck_invert.py
-def radiance_invert(wavelengths, Lstar):
+def radiance_invert(wavelength, Lstar):
    etc.
 ```
+
++++
+
+To check to see if you have a correct `radiance_invert` you should try to "roundtrip" your function with
+a radiance you calculate using `Elambda` from {ref}`sec:planck`.  That is, you should get 300 K back
+when you do the following roundtrip for a $\lambda = 10\ \mu m$
+
+
+I'll test your `radiance_invert` function this way when I autograde the notebook.
+
+```{code-cell} ipython3
+:trusted: true
+
+from radiation import Elambda
+from planck_invert import radiance_invert
+wavel=10.e-6  #10 micron wavelength
+the_temp = 300  #temp in K
+the_flux = Elambda(wavel,the_temp)
+print(f"the flux is {the_flux:8.3g} W/m^2/m")
+the_radiance = the_flux/np.pi  #E = L/pi
+the_new_temp = radiance_invert(wavel,the_radiance)
+print(f"check the temperature = {the_new_temp} K")
+```
+
+## Getting the channel 30 and 31 radiance
+
+Next, go back to {ref}`modis_level1b:function` and call this function again with
+channel 31 to get the calibrated channel 31 radiances.  Use np.savez to write
+a new file with the first 50 rows and first 50 columns of the chan30 and chan31
+radiances.
 
 +++
 
@@ -77,11 +112,15 @@ In the next cell import your `radiance_invert function` and use it to turn the c
 radiances into brightness temperatures
 in Kelvins. 
 
-Make 3 plots of the as an image, using a colorbar as in Modis level1b notebook. 
+Make 3 plots of the temperature as an image, using a colorbar as in {ref}`modis_level1b:plot`.
 
 * First plot:  channel 30 temperatures
 * Second plot: channel 31 temperatures
 * Third plot: channel 31 - channel 30 temperatures
 
-What is the sign of channel 31 - channel 30.  Why do you think the temperatures
+What is the sign of channel 31 - channel 30?  Why do you think the temperatures
 are different in the two channels?
+
+```{code-cell} ipython3
+
+```

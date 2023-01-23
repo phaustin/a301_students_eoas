@@ -14,7 +14,6 @@ kernelspec:
 (sec:planck)=
 # Integrating the Planck function with python
 
-
 ```{code-cell} ipython3
 import numpy as np
 from matplotlib import pyplot as plt

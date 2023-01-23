@@ -3,31 +3,35 @@
 
 * Week 3 topics for Monday
 
-  * Do Problem 3 in {ref}`week2_probs`
+  * Get through question 2 in {ref}`assign1`
 
-  * Go over the notes on {ref}`satellite`
+  * Download the lat/lon of your pixels at full resolution by doing the following
+    search on https://ladsweb.modaps.eosdis.nasa.gov/
+    
+    - Go to data -> find data -> filename search
+    - Enter the first part of you image name in the following format:
+    
+         MYD03.A2013222.2105*
+         
+      replacing my date and time with yours
 
-  * For Wednesday:
+  * Introduce coordinate systems {ref}`week3:coords`
+  
+  - For Wednesday, read pages 1-24 of [Understanding map projections](https://drive.google.com/file/d/1araPnZwMui9tBTPyLO_UHVC2DDEIdZ0p/view?usp=sharing) 
 
-    * Find your modis image and upload to dropbox, google drive, onedrive etc.
-      Create a download url and let me know what it is on Piazza
+## new references
 
-    * Read any part of [Stull Chapter 2]( https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch02-radiation-v102b.pdf) you haven't finished yet and prepare your answers to S11 and S21 for breakout discussion.
+### Resources for NumPy
 
-* Week 3 topics for Wednesday
+1. Nice short complement to text book reading:
+   [Introducing numpy arrays](https://pythonnumericalmethods.berkeley.edu/notebooks/chapter02.07-Introducing_numpy_arrays.html)
 
-  * Go over {ref}`modis_level1b`'
+2. More extensive documentation:  
+   [numpy user guide](https://numpy.org/doc/stable/user/)
 
-  * Discuss Stull S11 and S21
+###  Resources for Matplotlib
 
-* Week 3 topics for Friday
+1. [Visualization and plotting]( https://pythonnumericalmethods.berkeley.edu/notebooks/chapter12.00-Visualization-and-Plotting.html)
 
-  * Writing a function for reading a channel in {ref}`modis_level1b`'
-
-  * Go over [The nine rules of debugging](https://www.tygertec.com/9-rules-debugging/)
-
-  * Review {ref}`sec:debugging` on using pdb
-
-  * show how to set breakpoints to inspect code in {ref}`sec:planck`
-
+2. [Matlab user tutorial](https://matplotlib.org/stable/tutorials/introductory/usage.html)
 

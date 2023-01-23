@@ -16,14 +16,13 @@ parts:
     - file: notebooks/week2/beers_law.rst
     - file: notebooks/week2/sensors.rst
     - file: notebooks/week2/flux_from_radiance.rst
-    - file: notebooks/week2/assignment1.md
     - file: notebooks/week2/planck_function.md
     - file: notebooks/week2/debugging_intro.md
     - file: notebooks/week2/derivs_and_ints.md
   - caption: Week 3
     chapters:
     - file: notebooks/week3/week3_topics.md
-    - file: notebooks/week3/assignment1.md
+    - file: notebooks/week2/assignment1.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md
