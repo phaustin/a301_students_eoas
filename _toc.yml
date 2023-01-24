@@ -23,6 +23,7 @@ parts:
     chapters:
     - file: notebooks/week3/week3_topics.md
     - file: notebooks/week2/assignment1.md
+    - file: notebooks/week3/files_and_paths.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md
