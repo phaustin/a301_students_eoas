@@ -16,7 +16,7 @@ kernelspec:
 (assign1)=
 # Assignment 1 -- brightness temperatures
 
-Upload this notebook to canvas by 9am Friday January 26
+Upload this notebook to canvas by 11:59pm Friday January 27
 
 In addition, upload your MYD02 hdf file, your `chan30_31.npz` file (described below)
 and your `lonlat.npz` file (described below) to a folder on the a301hub inside the sat_data folder.

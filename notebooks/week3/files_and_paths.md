@@ -24,10 +24,10 @@ that has four folders:
 that are used to build the [course website](https://eoasubc.xyz/a301_2022/notebooks/index.html)
 
 2. `/home/jovyan/sat_data` -- this is a shared folder where you should put your
-   hdf and npz files that are neede by your notebook.  Because it is shared,
+   hdf and npz files that are needed by your notebook.  Because it is shared,
    you should make a folder with your initials, e.g.`~/sat_data/pha` (remember
    that `~` here means the home directory of user jovyan) to keep
-   your files separate.  The initials don't matter but they should unique for this
+   your files separate.  The initials don't matter but they should be unique for this
    class.
    
 3. `/home/jovyan/shared_files` -- this is a place to put material you want to share
@@ -43,7 +43,7 @@ that are used to build the [course website](https://eoasubc.xyz/a301_2022/notebo
 To keep things consistent, you need to make a folder on your laptop to hold the
 satellite data that is identical to the a301hub location, so you can run exactly 
 the same notebook on your laptop and on the hub.  Here is the way to use
-uses the [pathlib](https://realpython.com/python-pathlib) module to create the folder, using the `a301_lib.sat_data` path that I defined in [a301_lib](https://github.com/phaustin/a301_students_eoas/blob/main/src/a301_lib/a301_lib/__init__.py)
+the [pathlib](https://realpython.com/python-pathlib) module to create the folder, using the `a301_lib.sat_data` path that I defined in [a301_lib](https://github.com/phaustin/a301_students_eoas/blob/main/src/a301_lib/a301_lib/__init__.py)
 
 
 ```{code-cell} ipython3
@@ -69,7 +69,7 @@ and open it, assuming that your hdf file also has the date/time string `2013222.
 my_data = a301_lib.sat_data / "pha"
 print(my_data)
 the_files = list(my_data.glob("*2013222.2105*hdf"))
-print("here is the list of files (should be only 1 file")
+print("here is the list of files (should be only 1 file)")
 print(the_files)
 print("here is the file extracted from the list")
 print(the_files[0])
