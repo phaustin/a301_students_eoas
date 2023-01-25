@@ -18,15 +18,15 @@ kernelspec:
 
 ## Background
 
-https://mcst.gsfc.nasa.gov/l1b/software-system-overview
+* [https://mcst.gsfc.nasa.gov/l1b/software-system-overview](https://mcst.gsfc.nasa.gov/l1b/software-system-overview)
 
-https://modis.gsfc.nasa.gov/about/specifications.php
+* [https://modis.gsfc.nasa.gov/about/specifications.php](https://modis.gsfc.nasa.gov/about/specifications.php)
 
-https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-hdf4/
+* [hdf4](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-hdf4/)
 
-modis swath:  https://svs.gsfc.nasa.gov/3348
+* [modis swath info](https://svs.gsfc.nasa.gov/3348)
 
-modis channel listing:  https://modis.gsfc.nasa.gov/about/specifications.php
+* [modis channel listing](https://modis.gsfc.nasa.gov/about/specifications.php)
 
 ```{code-cell} ipython3
 :trusted: true
@@ -53,13 +53,13 @@ type(a301_lib.sat_data)
 
 a301_lib.sat_data is a `PosixPath` object, which is the way that python is able to treat all folder paths the same, whether they look like `C:\Users\phil` or `/Users/home/phil`
 
-There is only 1 hdf file in `sat_data`, so the cell below returns a list of length 1
+My satellite granule date and time is 2013222.2150 so the cell below returns a list of length 1 that includes that file in folder `pha`:
 
 ```{code-cell} ipython3
 :trusted: true
 
-hdf4_dir = a301_lib.sat_data 
-all_files = list(hdf4_dir.glob("*hdf"))
+hdf4_dir = a301_lib.sat_data / "pha"
+all_files = list(hdf4_dir.glob("MYD021KM*2013222*hdf"))
 print(all_files)
 ```
 

@@ -25,6 +25,8 @@ parts:
     - file: notebooks/week2/assignment1.md
     - file: notebooks/week3/files_and_paths.md
     - file: notebooks/week3/mapping.md
+    - file: notebooks/week3/modis_geom_read.md
+    - file: notebooks/week3/cartopy.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md
