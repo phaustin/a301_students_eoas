@@ -28,12 +28,29 @@
 * Week 3 topics for Wednesday
 
   - Finish up {ref}`assign1`
+  
+    - Troubleshooting 1:  note that when you do 
+    
+           data_dir = a301_lib.sat_data / 'pha'
+           latlons = np.load( data_dir / 'lonlat.npz')
+           
+      You get back a dictionary-like object that will give you its keys:
+      
+           print(list(latlons.keys()))
+           
+    - Troubleshooting 2: Python caches imports, so if you make changes
+      to `planck_invert.py`, you won't see these changes when you rerun the
+      cell, unless you restart the kernel and rerun
 
   - Reading the geometry data:  {ref}`modis_geom`
   
   - Making a map with {ref}`cartopy`
   
   - [What is your map projection?](https://xkcd.com/977/)
+
+* For Friday
+
+  - Create a notebook that sets the cartopy extent to the 4 corners of your Modis granule
 
 
 ## new references
