@@ -27,6 +27,7 @@ parts:
     - file: notebooks/week3/mapping.md
     - file: notebooks/week3/modis_geom_read.md
     - file: notebooks/week3/cartopy.md
+    - file: notebooks/week3/radiance_values.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md
