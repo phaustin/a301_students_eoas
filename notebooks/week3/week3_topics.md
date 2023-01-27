@@ -61,9 +61,7 @@
 
 - Read Stull chapter 2 p. 42 and Stull chapter 8 p. 219-226
 
-* For Friday
-
-- Create a notebook that sets the cartopy extent to the 4 corners of your Modis granule
+- Continue on creating a notebook that sets the cartopy extent to the 4 corners of your Modis granule
 
 
 ## new references
