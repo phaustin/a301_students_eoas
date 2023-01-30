@@ -1,11 +1,10 @@
 """
   modismeta_read 
-  ___________________________
+  ______________
 
   parses a Modis Level1b CoreMetata.0 string and extracts
   a dictionary. 
 """
-from __future__ import print_function
 
 import click
 import pdb
@@ -214,12 +213,12 @@ def parseMeta(meta_source):
 
 @click.command()
 @click.argument('hdf_file',type=str)
-def main(args=None):
+def main():
     """
     print the metadata dict
     """
     hdf_path = Path(hdf_file).resolve()
     out = parseMeta(hdf_path)
-    print(f"header for {hdf_path}")
+    print(f"core metadata for {hdf_path}")
     pprint.pprint(out)
 
