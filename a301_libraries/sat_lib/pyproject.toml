@@ -13,6 +13,9 @@ authors = [
 ]
 version = "0.1"
 
+[project.scripts]
+meta_read = "sat_lib.modismeta_read:main"
+
 
 
 
