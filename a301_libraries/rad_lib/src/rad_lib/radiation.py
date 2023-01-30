@@ -57,26 +57,6 @@ def calc_radiance(wavel, Temp):
     Llambda_val = c1 / (wavel**5. * (np.exp(c2 / (wavel * Temp)) - 1))
     return Llambda_val
 
-def planck_invert(wavel, Lstar):
-    """
-    Calculate the brightness temperature
-    
-    Parameters
-    ----------
-
-      wavel: float
-           wavelength (meters)
-
-      Lstar: float or array
-           Blackbody radiance (W/m^2/m/sr)
-    Returns
-    -------
-
-    Tbright:  float or arr
-           brightness temperature (K)
-    """
-    Tbright = c2 / (wavel * np.log(c1 / (wavel**5. * Lstar) + 1.))
-    return Tbright
 
 def test_planck_wavelen():
     """
@@ -99,33 +79,6 @@ def test_planck_wavelen():
     answer = [0.4521,   0.8954,   1.1955,   2.7324,   3.7835,   3.9883,
               21.4495,  19.8525,  16.0931]
     np.testing.assert_array_almost_equal(out, answer, decimal=4)
-    return None
-
-
-def test_planck_inverse():
-    """
-       test planck inverse for several round trips
-       and Temps
-    """
-    #
-    # need Temp in K and wavelen in m
-    #
-    the_temps = [200., 250., 350.]
-    the_wavelens = np.array([8., 10., 12.]) * 1.e-6
-    out = []
-    for a_temp in the_temps:
-        for a_wavelen in the_wavelens:
-            #
-            # convert to W/m^2/micron/sr
-            #
-            the_bbr = calc_radiance(a_wavelen, a_temp)
-            out.append((a_wavelen, the_bbr))
-
-    brights = []
-    for wavelen, bbr in out:
-        brights.append(planck_invert(wavelen, bbr))
-    answer = [200.0, 200.0, 200.0, 250.0, 250.0, 250.0, 350.0, 350.0, 350.0]
-    np.testing.assert_array_almost_equal(brights, answer, decimal=10)
     return None
 
 

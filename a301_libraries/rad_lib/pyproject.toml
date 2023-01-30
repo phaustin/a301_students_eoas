@@ -7,12 +7,17 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "sat_lib"
-description = "a301 radiation code"
+description = "a301 satellite code"
 authors = [
   { name="Philip Austin", email="paustin@eoas.ubc.ca" },
 ]
 version = "0.1"
-
+dependencies = [
+    "pyhdf",
+    "click"
+]
+[project.scripts]
+read_modis_meta = "sat_lib.modismeta_read:main"
 
 
 

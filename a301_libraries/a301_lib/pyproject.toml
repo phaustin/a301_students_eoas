@@ -10,7 +10,7 @@ name = "a301_lib"
 description = "a301 utility functions"
 version = "0.0.1"
 authors = [
-  { name="Philip Austin", email="paustin@Aeoas.ubc.ca" },
+  { name="Philip Austin", email="paustin@eoas.ubc.ca" },
 ]
 [project.urls]
 "Homepage" = "https://github.com/phaustin/a301_students_eoas"

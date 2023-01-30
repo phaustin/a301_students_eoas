@@ -212,8 +212,8 @@ def parseMeta(meta_source):
 
 
 @click.command()
-@click.argument('hdf_file',type=str)
-def main():
+@click.argument('hdf_file',type=str,nargs=1)
+def main(hdf_file):
     """
     print the metadata dict
     """
