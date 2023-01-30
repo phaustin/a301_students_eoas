@@ -69,7 +69,7 @@ a terminal, do `conda activate a301` then
 ```{code-cell} ipython3
 import a301_lib
 from pathlib import Path
-from modismeta_read import parseMeta
+from sat_lib.modismeta_read import parseMeta
 the_path = a301_lib.sat_data / "pha"
 granules =list(the_path.glob("*hdf"))
 parseMeta(granules[0])
