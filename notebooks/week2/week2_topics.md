@@ -30,6 +30,7 @@
 - To bring those commits into your local repository, do the following:
 
           cd ~/repos/a301_students_eoas
+          conda activate a301
           git status
 
   You should see the following line:
