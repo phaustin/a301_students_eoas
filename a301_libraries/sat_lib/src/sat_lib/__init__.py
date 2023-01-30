@@ -1,3 +1,3 @@
 print("in sat_lib init")
-pass
+from .modis_chans import chan_dict
 

@@ -1,3 +1,8 @@
+"""
+Functions to calculate flux and radiance
+"""
+
+
 import numpy as np
 import pytest
 from scipy.constants import c, h, k
