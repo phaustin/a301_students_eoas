@@ -17,8 +17,9 @@
     - Hand in a notebook that plots a map with a rectangle linking the corners
       of your Modis swath
 
-- continue making map with {ref}`week3:coords` and {ref}`cartopy`
+- Introduce {ref}`using_libraries`
 
+- continue making map with {ref}`week3:coords` and {ref}`cartopy`
 
 
 
