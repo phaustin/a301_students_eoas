@@ -23,8 +23,8 @@
 
 
 
-## For Wednesday
+## Week 4 topics for Wednesday
 
   * Read {ref}`schwartz`  through equation 17
 
-
+  * Modified assignment 2 
