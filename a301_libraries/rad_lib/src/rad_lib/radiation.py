@@ -1,11 +1,14 @@
 """
-Functions to calculate flux and radiance
-"""
+  radiation code
+  ______________
 
+  Functions to calculate flux and radiance
+"""
 
 import numpy as np
 import pytest
 from scipy.constants import c, h, k
+
 #
 # get Stull's c_1 and c_2 from fundamental constants
 #
@@ -16,6 +19,8 @@ from scipy.constants import c, h, k
 c1 = 2. * h * c**2.
 c2 = h * c / k
 sigma = 2. * np.pi**5. * k**4. / (15 * h**3. * c**2.)
+
+
 
 
 def Elambda(wavel, Temp):
@@ -62,6 +67,29 @@ def calc_radiance(wavel, Temp):
     Llambda_val = c1 / (wavel**5. * (np.exp(c2 / (wavel * Temp)) - 1))
     return Llambda_val
 
+def radiance_invert(wavel, L):
+    """
+    Calculate the brightness temperature
+    
+    Parameters
+    ----------
+      wavel: float
+           wavelength (meters)
+      L: float or array
+           radiance (W/m^2/m/sr)
+    
+    Returns
+    -------
+    Tbright:  float or arr
+           brightness temperature (K)
+    """
+    c, h, k = 299792458.0, 6.62607004e-34, 1.38064852e-23
+    c1 = 2.0 * h * c ** 2.0
+    c2 = h * c / k
+    sigma = 2.0 * np.pi ** 5.0 * k ** 4.0 / (15 * h ** 3.0 * c ** 2.0)
+    Tbright = c2 / (wavel * np.log(c1 / (wavel ** 5.0 * L) + 1.0))
+    return Tbright
+
 
 def test_planck_wavelen():
     """
@@ -85,6 +113,11 @@ def test_planck_wavelen():
               21.4495,  19.8525,  16.0931]
     np.testing.assert_array_almost_equal(out, answer, decimal=4)
     return None
+
+
+
+
+
 
 
 if __name__ == "__main__":

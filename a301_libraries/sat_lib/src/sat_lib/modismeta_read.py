@@ -221,6 +221,16 @@ def parseMeta(meta_source):
 def main(hdf_file):
     """
     print the metadata dict
+
+    Parameters
+    ----------
+
+    hdf_file: path or str to hdf data
+
+    Returns
+    -------
+
+    side effect: printing the metadata dictionary
     """
     hdf_path = Path(hdf_file).resolve()
     out = parseMeta(hdf_path)

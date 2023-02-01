@@ -57,7 +57,7 @@ ___
 import warnings
 
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np 
 from cartopy import crs as ccrs, feature as cfeature
 
 #  Suppress warnings issued by Cartopy when downloading data files
@@ -186,7 +186,7 @@ Now, let's go back to PlateCarree, but let's use Cartopy's `set_extent` method t
 
 +++
 
-Reference for Natural Earth's three resolutions (10m, 50m, 110m; higher is coarser): https://www.naturalearthdata.com/downloads/ 
+Reference for Natural Earth's three resolutions (10m, 50m, 110m; higher is coarser): https://www.naturalearthdata.com/downloads/
 
 ```{code-cell} ipython3
 projPC = ccrs.PlateCarree()
@@ -219,7 +219,7 @@ ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue');
 
 +++
 
-The PlateCarree projection exaggerates the spatial extent of regions closer to the poles. Let's try a couple different projections. 
+The PlateCarree projection exaggerates the spatial extent of regions closer to the poles. Let's try a couple different projections.
 
 ```{code-cell} ipython3
 projStr = ccrs.Stereographic(central_longitude=cLon, central_latitude=cLat)
@@ -257,7 +257,7 @@ ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue');
 
 +++
 
-### Create a regional map centered over New York State 
+### Create a regional map centered over New York State
 
 +++
 

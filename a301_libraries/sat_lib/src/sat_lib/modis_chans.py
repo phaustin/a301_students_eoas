@@ -1,4 +1,11 @@
-#https://modis.gsfc.nasa.gov/about/specifications.php
+"""
+Modis channel properties taken from
+https://modis.gsfc.nasa.gov/about/specifications.php
+
+chan_dict is a dictionary indexed by channel -- i.e.
+sat_lib.chan_dict['1'] gives channel information for channel 1
+in EV_250_Aggr1km_RefSB
+"""
 chan_dict={
     "1": {
         "field_name": "EV_250_Aggr1km_RefSB",
