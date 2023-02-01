@@ -25,6 +25,14 @@
 
 ## Week 4 topics for Wednesday
 
-  * Read {ref}`schwartz`  through equation 17
+  * new functions at [https://phaustin.github.io/a301_web](https://phaustin.github.com/a301_web)
 
-  * Modified assignment 2 
+  * Read {ref}`schwartz` through equation 17
+
+  * Modified {ref}`assign2` and released  [the assignment 2a handin](https://github.com/phaustin/a301_students_eoas/blob/main/notebooks/assignments/assignment2a_handin.ipynb)
+
+  * go over {ref}`weeK4:coords` to get started with assignment2b.  Edit this to set your extent coords
+    on the Lambert projection  (will upload assign3b_handin.ipynb tonight)
+    
+    
+    
