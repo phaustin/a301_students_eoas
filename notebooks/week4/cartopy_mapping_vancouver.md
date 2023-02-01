@@ -174,6 +174,6 @@ using the same syntax as [Kazarinoff 7.4](https://atsc_web.eoas.ubc.ca/Plotting-
 ```{code-cell} ipython3
 :trusted: true
 
-png_file = a301_lib.data_share / 'pha_map.png'
+png_file = a301_lib.data_share / 'pha/pha_map.png'
 fig.savefig(png_file)
 ```
