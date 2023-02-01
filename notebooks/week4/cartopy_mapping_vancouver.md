@@ -54,18 +54,19 @@ Chapter 2 describes map projections.  We will generally be using the LAEA projec
 :trusted: true
 
 import a301_lib
+import warnings
+warnings.filterwarnings('ignore')
 hdf4_dir = a301_lib.sat_data / "pha"
-all_files = list(hdf4_dir.glob("MYD02*2105*hdf"))
-print(all_files[0])
+granules = list(hdf4_dir.glob("MYD02*2105*hdf"))
+print(granules[0])
 ```
 
 ```{code-cell} ipython3
 :trusted: true
 
-from pathlib import Path
 from sat_lib.modismeta_read import parseMeta
-the_path = a301_lib.sat_data / "pha"
-granules =list(the_path.glob("MYD02*hdf"))
+granules =list(hdf4_dir.glob("MYD02*2105*hdf"))
+print(granules[0].is_file())
 meta_dict = parseMeta(granules[0])
 meta_dict
 ```
@@ -82,10 +83,6 @@ meta_dict
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import cartopy
-from pathlib import Path
-import pprint
-import numpy as np
-
 #
 # Datum: radius of the earth in meters
 #
