@@ -35,4 +35,12 @@
     on the Lambert projection  (will upload assign3b_handin.ipynb tonight)
     
     
+## Week 4 topics for Friday
+
+  * Go over [the assignment 2a handin](https://github.com/phaustin/a301_students_eoas/blob/main/notebooks/assignments/assignment2a_handin.ipynb) and [the assignment 2b handin](https://github.com/phaustin/a301_students_eoas/blob/main/notebooks/assignments/assignment2b_handin.ipynb) 
     
+  * For Monday:  read [the split window retrieval](https://cimss.ssec.wisc.edu/satellite-blog/archives/23702) page and [Stull chapter 8](https://www.eoas.ubc.ca/books/Practical_Meteorology/) through pathe 239 on temperature retrievals.   
+  
+  * Go to [Nasa Laadsweb](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/MYD05_L2) and do a search for the [level 2 MYD05_L2 water vapor product](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/MYD05_L2) for your Modis granule.  This may take a day or two to deliver -- they'll send you an email when it's ready to download
+  
+  
