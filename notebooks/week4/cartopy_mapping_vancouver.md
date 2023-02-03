@@ -51,8 +51,14 @@ Chapter 2 describes map projections.  We will generally be using the LAEA projec
 * Step 1: Use [cartopy](http://scitools.org.uk/cartopy/docs/latest/index.html) to make a LAEA map of BC including Vancouver.
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:07.612882Z'
+  iopub.status.busy: '2023-02-01T19:22:07.612370Z'
+  iopub.status.idle: '2023-02-01T19:22:07.630766Z'
+  shell.execute_reply: '2023-02-01T19:22:07.629152Z'
+trusted: true
+---
 import a301_lib
 import warnings
 warnings.filterwarnings('ignore')
@@ -62,8 +68,14 @@ print(granules[0])
 ```
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:07.634441Z'
+  iopub.status.busy: '2023-02-01T19:22:07.634131Z'
+  iopub.status.idle: '2023-02-01T19:22:07.913237Z'
+  shell.execute_reply: '2023-02-01T19:22:07.911920Z'
+trusted: true
+---
 from sat_lib.modismeta_read import parseMeta
 granules =list(hdf4_dir.glob("MYD02*2105*hdf"))
 print(granules[0].is_file())
@@ -78,8 +90,14 @@ meta_dict
 **This cell sets up the datum and the LAEA projection, with the tangent point at the North Pole and the central meridian at -90 degrees west of Greenwich**
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:07.918470Z'
+  iopub.status.busy: '2023-02-01T19:22:07.918056Z'
+  iopub.status.idle: '2023-02-01T19:22:08.649679Z'
+  shell.execute_reply: '2023-02-01T19:22:08.648535Z'
+trusted: true
+---
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import cartopy
@@ -108,8 +126,14 @@ print(f"pro4 program params: {projection.proj4_params}")
 **Use matplotlib to draw the map and add a coastline**
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:08.654027Z'
+  iopub.status.busy: '2023-02-01T19:22:08.653679Z'
+  iopub.status.idle: '2023-02-01T19:22:13.885299Z'
+  shell.execute_reply: '2023-02-01T19:22:13.884125Z'
+trusted: true
+---
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": projection})
 ax.gridlines(linewidth=2)
 ax.add_feature(cartopy.feature.GSHHSFeature(scale="coarse", levels=[1, 2, 3]))
@@ -125,8 +149,14 @@ get it's x,y coords, then use that to set the corners of the map so that
 you have your region of interest
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:13.892869Z'
+  iopub.status.busy: '2023-02-01T19:22:13.892529Z'
+  iopub.status.idle: '2023-02-01T19:22:13.898981Z'
+  shell.execute_reply: '2023-02-01T19:22:13.897697Z'
+trusted: true
+---
 #
 # pick a bounding box in map coordinates
 # (we know from the next cell that vancouver is located
@@ -144,8 +174,14 @@ This is how we put Vancouver (in lon,lat coords) on the map (in LAEA x,y coords)
 We use the `projection.transform_point` method to get the lat/lon of Vancouver into map coordinates
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:13.902860Z'
+  iopub.status.busy: '2023-02-01T19:22:13.902480Z'
+  iopub.status.idle: '2023-02-01T19:22:14.226224Z'
+  shell.execute_reply: '2023-02-01T19:22:14.225313Z'
+trusted: true
+---
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": projection})
 #
 # clip with 0,0 in the center:  [xleft, xright, ybot, ytop]
@@ -169,8 +205,14 @@ Since we have created a figure object, we can use that to save the png file
 using the same syntax as [Kazarinoff 7.4](https://atsc_web.eoas.ubc.ca/Plotting-with-Matplotlib/Saving-Plots.html)
 
 ```{code-cell} ipython3
-:trusted: true
-
+---
+execution:
+  iopub.execute_input: '2023-02-01T19:22:14.229850Z'
+  iopub.status.busy: '2023-02-01T19:22:14.229126Z'
+  iopub.status.idle: '2023-02-01T19:22:14.352910Z'
+  shell.execute_reply: '2023-02-01T19:22:14.351697Z'
+trusted: true
+---
 png_file = a301_lib.data_share / 'pha/pha_map.png'
 fig.savefig(png_file)
 ```
