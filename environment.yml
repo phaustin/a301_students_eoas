@@ -4,34 +4,15 @@ channels:
   - conda-forge
 dependencies:
   # NOTE: pip required for running tests in this repo
-  - python<3.11
-  - pip>=22.0
-  - numpy
-  - scipy
-  - pooch
-  - git
-  - matplotlib
-  - mamba
-  - netcdf4
+  - python
   - pyhdf
-  - jupyterlab>3.2
-  - hdf4
-  - h5py
-  - Pillow
+  - numpy
+  - pip
   - jupytext
-  - cartopy
+  - jupyterhub=2.3.1
+  - cartopy>0.21
   - pyresample
-  - earthpy
-  - rasterio
-  - fiona
-  # - jupyter-book
+  - netcdf4
   - jupyterlab
-  - setuptools_scm
-  - pandas
-  - pytest
-  - shapely
-  - requests
-  - bs4
-  - geopandas
-  - conda-lock
-# conda-lock --kind explicit -f environment.yml -p linux-64
+  - dask
+# conda-lock --kind explicit -f environment_trun.yml -p linux-64
