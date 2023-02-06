@@ -12,6 +12,10 @@
 
 * Introduce new library routines: [readband_lw](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#readband_lw) and [read_plainvar](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#read_plainvar)
 
+* To install these:  `pip install -r requirements.txt --upgrade`
+
+* Start using error handling with [exceptions](https://pythonnumericalmethods.berkeley.edu/notebooks/chapter10.03-Try-Except.html) -- see the code in the [sd_open_file](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#read_plainvar) function.
+
 * New command line program:  [hdf_inspect](https://phaustin.github.io/a301_web/index.html)
 
 * Introduce [command line tutorial](https://realpython.com/python-command-line-arguments/)
