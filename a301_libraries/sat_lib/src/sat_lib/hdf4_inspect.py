@@ -1,21 +1,9 @@
 import a301_lib
 import click
-import numpy as np
 from pyhdf.SD import SD
 from pyhdf.SD import SDC
 from pathlib import Path
-from contextlib import contextmanager
-import os
-import sys
 
-@contextmanager
-def cd(newdir):
-    prevdir = os.getcwd()
-    os.chdir(newdir)
-    try:
-        yield
-    finally:
-        os.chdir(prevdir)
 
 @click.command()
 @click.argument('hdf_file',type=str,nargs=1)
