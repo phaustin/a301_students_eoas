@@ -1,3 +1,7 @@
+"""
+reading channels and variables
+______________________________
+"""
 from pyhdf.SD import SD, SDC
 import pyhdf
 import numpy as np

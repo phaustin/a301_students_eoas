@@ -6,42 +6,36 @@
 
 * Map the 1 km and 5 km water vapor retrievals for your granule
 
-* Week 5 topics for Monday
+## Week 5 topics for Monday
 
-  * Go over the [assignment 1 solution](
+* Go over the {ref}`assign1_solution`
 
-  * 
+* Introduce new library routines: [readband_lw](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#readband_lw) and [read_plainvar](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#read_plainvar)
 
-  * Introduce [command line tutorial](https://realpython.com/python-command-line-arguments/)
+* New command line program:  [hdf_inspect](https://phaustin.github.io/a301_web/index.html)
 
-  * Demonstrate how this works in the terminal with [hdf4_inspect]( https://github.com/phaustin/a301_2020/blob/master/sat_lib/bin/h5_list.py)
+* Introduce [command line tutorial](https://realpython.com/python-command-line-arguments/)
 
-  * To list all geom hdf5 files and then print
-    the contents of the myd03 file belonging to max:
+* Try hdf_inspect out on your MYD05 water vapor file
 
-         cd /home/jovyan/work/sat_data/h5_dir
-         ls geom*h5
-         ~/work/sat_lib/bin/h5_list.py geom*max*
+       cd /home/jovyan/sat_data/pha
+       hdf_inspect MYD05*hdf
 
-   * Useful shell commands
+ * Useful shell commands
 
-         cd ..  (go up one directory)
-         pwd    (print working directory)
-         cd ~   (change to home directory)
-         ls *    (list all files)
-         ls -lRd *  (long listing all files, decending into directories recursively)
+       cd ..  (go up one directory)
+       pwd    (print working directory)
+       cd ~   (change to home directory)
+       ls *    (list all files)
+       ls -lRd *  (long listing all files, decending into directories recursively)
 
-  * Go over {ref}`testing`
 
-  * Introduce {ref}`assign3`
+ * Mapping and resampling:  {ref}`cartopy_resample_ch30}`
 
-  * For Friday: Read [Stull Chapter 1 pages 8-11](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch01-atmos-v102b.pdf) and my   {ref}`hydro` notes
+## For Wednesday
 
-* Topics for Friday
+* Write a function like [readband_lw](https://github.com/phaustin/a301_students_eoas/blob/main/a301_libraries/sat_lib/src/sat_lib/modischan_read.py#L6) to extract either your 1 km near-infrared or 5 km infrared water vapor data into numpy arrays.  Useful links: [product description](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/MYD05_L2) and
+[file specification](https://atmosphere-imager.gsfc.nasa.gov/sites/default/files/ModAtmo/MYD05_L2.C6.CDL.fs)
 
-  * new data files in data_share/h5_files, written by
-    [process_bands.py](https://github.com/phaustin/a301_2020/blob/master/sat_lib/process_bands.py)
+* Paper and pencil:  Write a program in pseudo-code (doesn't have to run) that would bin a list of lat/lon pairs into a regular lat/lon grid with 1 degree resolution from -180-180 degrees longitude and -90->90 degrees latitude.
 
-  * Introduction to pandas: {ref}`pandas_intro`
-
-  * Scale heights: {ref}`scale_heights`

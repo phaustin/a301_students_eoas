@@ -7,3 +7,4 @@
 
 * [Jupyter notebook server: https://a301hub.eoasubc.xyz](https://a301hub.eoasubc.xyz)
 
+* [A301 library documentation](https://phaustin.github.io/a301_web/)

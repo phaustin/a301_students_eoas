@@ -13,6 +13,7 @@ kernelspec:
   name: python3
 ---
 
+(files_paths)=
 # Course folders on a301hub and your laptop
 
 ## a301hub
