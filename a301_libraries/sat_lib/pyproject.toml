@@ -11,10 +11,12 @@ description = "a301 satellite code"
 authors = [
   { name="Philip Austin", email="paustin@eoas.ubc.ca" },
 ]
-version = "0.1"
+version = "0.2"
 
 [project.scripts]
 meta_read = "sat_lib.modismeta_read:main"
+hdf4_inspect = "sat_lib.hdf4_inspect:main"
+
 
 
 

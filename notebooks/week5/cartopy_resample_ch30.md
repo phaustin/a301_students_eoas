@@ -109,7 +109,7 @@ ch30.shape
 metadata = parseMeta(ch30_file_name)
 ```
 
-## Create the SwathDefinition using a map projection and the lats and lons
+## Create the SwathDefinition and AreaDefinition using a map projection and the lats and lons
 
 ### Make a Lambert Azimuthal projection with the WGS84 datum
 
@@ -143,7 +143,7 @@ def get_proj_params(metadata):
     projection = ccrs.LambertAzimuthalEqualArea(
         central_latitude=metadata["lat_0"],
         central_longitude=metadata["lon_0"],
-        globe=globe,
+        globe=globe
     )
     
     return projection
@@ -189,6 +189,8 @@ Man page for [cartopy.crs.Globe](https://scitools.org.uk/cartopy/docs/latest/ref
 
 print(projection.globe.to_proj4_params())
 ```
+
+Wikipedia on [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)
 
 ```{code-cell} ipython3
 :trusted: true

@@ -1,29 +1,20 @@
 # Week 5
 
+## Learning goals
+
+* Use cartopy and pyresample to regrid Modis data onto a uniform grid in a Lambert Aziumthal projection
+
+* Map the 1 km and 5 km water vapor retrievals for your granule
+
 * Week 5 topics for Monday
 
-  * Review {ref}`schwartz`
+  * Go over the [assignment 1 solution](
 
-  * Introduce [h5py](https://docs.h5py.org/en/latest/quick.html)
+  * 
 
-  * Move our files to hdf5 
+  * Introduce [command line tutorial](https://realpython.com/python-command-line-arguments/)
 
-    * {ref}`week4:resample`
-
-    * For Wednesday
-
-      * finish assignment 2
-
-      * move your satellite images over to {ref}`week4:resample`
-
-      * read the rest of {ref}`schwartz`
-
-
-* Week 5 topics for Wednesday
-
-  * Go over this [command line tutorial](https://realpython.com/python-command-line-arguments/)
-
-  * Demonstrate how this works in the terminal with [h5_list]( https://github.com/phaustin/a301_2020/blob/master/sat_lib/bin/h5_list.py)
+  * Demonstrate how this works in the terminal with [hdf4_inspect]( https://github.com/phaustin/a301_2020/blob/master/sat_lib/bin/h5_list.py)
 
   * To list all geom hdf5 files and then print
     the contents of the myd03 file belonging to max:

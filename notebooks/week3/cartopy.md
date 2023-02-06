@@ -41,7 +41,7 @@ Later tutorials will focus on how to plot data on map projections.
 
 | Concepts | Importance | Notes |
 | --- | --- | --- |
-| [Matplotlib](../matplotlib) | Necessary | |
+| Matplotlib | Necessary | |
 
 - **Time to learn**: 30 minutes
 
