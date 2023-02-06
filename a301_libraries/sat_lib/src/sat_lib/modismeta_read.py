@@ -1,14 +1,10 @@
 """
-  satellite utilities
-  ___________________
+  reading metadata
+  ________________
 
-  parses a Modis Level1b CoreMetata.0 string and extracts
+  get the  Level1b CoreMetata.0 string and extract
   a dictionary.
 
-  Usage:
-
-      from sat_lib.modismeta_read import parseMeta
-      parseMeta(file_path)
 """
 
 import click

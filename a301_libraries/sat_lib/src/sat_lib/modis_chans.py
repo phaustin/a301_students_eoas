@@ -1,12 +1,15 @@
 """
+
+**sat_lib.modischan_dict**
+
 Modis channel properties taken from
 https://modis.gsfc.nasa.gov/about/specifications.php
 
-chan_dict is a dictionary indexed by channel -- i.e.
-sat_lib.chan_dict['1'] gives channel information for channel 1
+modischan_dict is a dictionary indexed by channel (str) -- i.e.
+sat_lib.modischan_dict['1'] gives channel information for channel 1
 in EV_250_Aggr1km_RefSB
 """
-chan_dict={
+modischan_dict={
     "1": {
         "field_name": "EV_250_Aggr1km_RefSB",
         "wavelength_um": [
