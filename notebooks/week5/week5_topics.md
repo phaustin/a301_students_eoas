@@ -16,7 +16,7 @@
 
 * Start using error handling with [exceptions](https://pythonnumericalmethods.berkeley.edu/notebooks/chapter10.03-Try-Except.html) -- see the code in the [sd_open_file](https://phaustin.github.io/a301_web/_modules/sat_lib/modischan_read.html#read_plainvar) function.
 
-* New command line program:  [hdf_inspect](https://phaustin.github.io/a301_web/index.html)
+* New command line program:  [hdf4_inspect](https://phaustin.github.io/a301_web/index.html)
 
 * Introduce [command line tutorial](https://realpython.com/python-command-line-arguments/)
 
