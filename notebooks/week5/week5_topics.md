@@ -43,3 +43,16 @@
 
 * Paper and pencil:  Write a program in pseudo-code (doesn't have to run) that would bin a list of lat/lon pairs into a regular lat/lon grid with 1 degree resolution from -180-180 degrees longitude and -90->90 degrees latitude.
 
+## Wednesday
+
+* Go over 
+ 
+ - {ref}`assign2a_solution` 
+ - {ref}`assign2b_solution`
+ 
+* Introduce:
+
+  - {ref}`assign3a`
+  
+
+

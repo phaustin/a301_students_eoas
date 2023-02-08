@@ -9,14 +9,14 @@ from pathlib import Path
 
 def readband_lw(the_file, the_band):
     """
-    read and calibrate a MODIS L1B longwave band from an open hdf4 SD dataset
-    or a path to the hdf4 file
+    read and calibrate a MODIS L1B longwave band from the 
+     path to the hdf4 file
     
     Parameters
     ----------
     
-       the_file: Path object or str for 
-           hdf file
+       the_file: str
+           path to the hdf4 file
        the_band: int
            band number for MODIS (20-36)
            

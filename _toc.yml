@@ -39,6 +39,13 @@ parts:
     chapters:
     - file: notebooks/week5/week5_topics.md
     - file: notebooks/week5/cartopy_resample_ch30.md
+    - file: notebooks/week5/assignment3a.md
+    - file: notebooks/week5/wv_resample.md
+  - caption: Assignments
+    chapters:
+    - file: notebooks/assignments/assign1_handin_solution.md
+    - file: notebooks/assignments/assign2a_solution.md
+    - file: notebooks/assignments/assign2b_solution.md
   - caption: References
     chapters:
     - file: notebooks/assignments.md
