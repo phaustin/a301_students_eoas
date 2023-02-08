@@ -179,5 +179,6 @@ cs = ax.imshow(
     norm=the_norm,
 )
 fig.colorbar(cs, extend="both");
-fig.savefig("wv_ir.png")
+png_file = a301_lib.data_share / 'pha/pha_wv_ir.png'
+fig.savefig(png_file)
 ```
