@@ -1,11 +1,17 @@
-import a301_lib
 import click
 from pyhdf.SD import SD
 from pyhdf.SD import SDC
 from pathlib import Path
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version("sat_lib")
+except PackageNotFoundError:
+    __version__ = "unknown version"
 
 
 @click.command()
+@click.version_option(__version__)
 @click.argument('hdf_file',type=str,nargs=1)
 def main(hdf_file):
     """
