@@ -40,6 +40,45 @@ def readband_lw(the_file, the_band):
     sd_file.end()
     return thechan_calibrated
 
+
+def readband_wv(the_file, band_name):
+    """
+    see: https://atmosphere-imager.gsfc.nasa.gov/sites/default/files/ModAtmo/MYD05_L2.C6.CDL.fs
+       for file format
+       
+    read and calibrate a MODIS level 2 water vapor file
+    
+    Parameters
+    ----------
+    
+       the_file: str
+           path to the hdf file
+       band_name: str
+           either 'Water_Vapor_Near_Infrared` or `Water_Vapor_Infrared` 
+           
+    Returns
+    -------
+       the_chan_calibrated: ndarray
+           column water vapor in cm
+    """
+    sd_file = sd_open_file(the_file)
+    wv_data = sd_file.select(band_name)  # select sds
+    wv_image = wv_data.get()
+    #
+    # convert from int16 to float64
+    #
+    wv_image = wv_image.astype('float64')
+    wv_scale = wv_data.attributes()['scale_factor']
+    wv_offset = wv_data.attributes()['add_offset']
+    fill_value = wv_data.attributes()['_FillValue']
+    #
+    # convert fill values = -9999 to np.nan
+    #
+    wv_image[wv_image == fill_value] = np.nan
+    wv_calibrated = (wv_image * wv_scale) + wv_offset
+    sd_file.end()
+    return wv_calibrated
+
 def read_plainvar(the_file, the_var):
     """
     read a modis variable like latitude or longitude that doesn't require
@@ -85,3 +124,7 @@ def sd_open_file(the_file):
     # don't forget to close with sd_file.end() when finished
     #
     return sd_file
+
+
+
+

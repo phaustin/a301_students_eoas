@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-(assign2a_sol)=
+(assign2a_solution)=
 # Assignment 2a - solutions
 
 Chapter 2: A23, A24, A25, A26(i)

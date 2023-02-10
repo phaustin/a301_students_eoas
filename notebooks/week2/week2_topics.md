@@ -75,7 +75,7 @@ turn photon counts into radiance with units of $W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$
 
 * Introduce:
 
-   * {ref}`assign1`
-   * {ref}`sec:debugging`  
-   * {ref}`sec:numpy`  
-   * {ref}`sec:planck`  
+* {ref}`assign1`
+* {ref}`sec:debugging`  
+* {ref}`sec:numpy`  
+* {ref}`sec:planck`  

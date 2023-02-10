@@ -45,14 +45,20 @@
 
 ## Wednesday
 
-* Go over 
+- Go over 
+  - {ref}`assign2a_solution` 
+  - {ref}`assign2b_solution`
  
- - {ref}`assign2a_solution` 
- - {ref}`assign2b_solution`
- 
-* Introduce:
-
+- Introduce:
   - {ref}`assign3a`
   
+## Friday
 
+- Set up Assignment 3b
 
+  - New functions to read and write area_defs: [area_def_from_dict](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.mapping.area_def_to_dict) and
+[area_def_from_dict](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.mapping.area_def_from_dict)
+
+- New notebook that resamples the 1 km ch31 radiance to the 5 km ir water vapor grid: {ref}`longwave_resample`
+
+- For Monday: Read [Stull Chapter 1 pages 8-11](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch01-atmos-v102b.pdf) and my   {ref}`hydro` notes
