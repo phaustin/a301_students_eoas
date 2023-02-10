@@ -54,6 +54,12 @@
   
 ## Friday
 
+Continue with resampling -- how do we resample several images with different geometries onto
+the same projection?  Demonstrate how to do this with channel 31 resampled onto the ir water vapor
+grid.
+
+- Interesting jupyter book:  [The Environmental Data Science book](https://the-environmental-ds-book.netlify.app/welcome.html)
+
 - Set up Assignment 3b
 
   - New functions to read and write area_defs: [area_def_from_dict](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.mapping.area_def_to_dict) and
@@ -62,3 +68,4 @@
 - New notebook that resamples the 1 km ch31 radiance to the 5 km ir water vapor grid: {ref}`longwave_resample`
 
 - For Monday: Read [Stull Chapter 1 pages 8-11](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch01-atmos-v102b.pdf) and my   {ref}`hydro` notes
+
