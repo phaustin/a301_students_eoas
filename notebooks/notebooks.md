@@ -1,15 +1,27 @@
 # List of notebooks
 
+## Week 2
+
 * {ref}`sec:numpy`
 * {ref}`sec:planck`
 * {ref}`modis_level1b`
-* {ref}`radiance_check`
 * {ref}`sec:debugging`
+
+## Week 3
+
 * {ref}`cartopy`
+* {ref}`radiance_check`
 * {ref}`week3:files_paths`
 * {ref}`week3:modis_geom`
+
+## Week 4
+
+
 * {ref}`week4:coords`
 * {ref}`using_libraries`
+
+## Week 5
+
 * {ref}`week5:resample`
 * {ref}`week5:wv_resample`
 * {ref}`week5:longwave_resample`

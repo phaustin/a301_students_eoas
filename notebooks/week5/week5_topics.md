@@ -65,7 +65,19 @@ grid.
   - New functions to read and write area_defs: [area_def_from_dict](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.mapping.area_def_to_dict) and
 [area_def_from_dict](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.mapping.area_def_from_dict)
 
-- New notebook that resamples the 1 km ch31 radiance to the 5 km ir water vapor grid: {ref}`longwave_resample`
+- Browse the source and note the use of [list expansion](https://note.nkmk.me/en/python-argument-expand/) and [dictionary comprehension](https://www.programiz.com/python-programming/dictionary-comprehension)
+
+- Add cells in {ref}`week5:wv_resample` to save an `area_def` to a [json file](https://realpython.com/python-json/)
+
+- New notebook that resamples the 1 km ch31 radiance to the 5 km ir water vapor grid: {ref}`week5:longwave_resample`
+
+- Give a demo of [Modtran](http://climatemodels.uchicago.edu/modtran/) -- interactive version of 
+  [Stull Figure 8.4.c](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch08-satellite_radar-v102b.pdf)
+  
+  - Channel 31:  10.78-11.28 $\mu m$
+  - Channel 32:  11.77-12.27 $\mu m$
+
+  Increase the water vapor mixing ratio (water vapor scale) and note the change in the "dirty window".  Why is the brightness temperature decreasing with increasing H2O?
 
 - For Monday: Read [Stull Chapter 1 pages 8-11](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch01-atmos-v102b.pdf) and my   {ref}`hydro` notes
 
