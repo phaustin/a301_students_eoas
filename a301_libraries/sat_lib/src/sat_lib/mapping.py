@@ -1,4 +1,5 @@
 import cartopy.crs as ccrs
+from pyresample import geometry
 
 def get_proj_params(metadata):
     """
@@ -29,3 +30,60 @@ def get_proj_params(metadata):
     
     return projection
 
+
+def area_def_to_dict(area_def):
+    """
+    given an area_def, save it as a dictionary`
+
+    introduced in week5/wv_resample.md
+
+    Parameters
+    ----------
+    
+    area_def: pyresample area_def object
+         
+    Returns
+    -------
+    
+    area_dict: dict 
+       area_def dictionary
+         
+    """
+    keys = [
+        "area_id",
+        "proj_id",
+        "name",
+        "proj_dict",
+        "x_size",
+        "y_size",
+        "area_extent",
+        "pixel_size_x",
+        "pixel_size_y"
+    ]
+    area_dict = {key: getattr(area_def, key) for key in keys}
+    area_dict["proj_id"] = area_dict["area_id"]
+    return area_dict
+
+def area_def_from_dict(area_def_dict):
+    """
+    given an dictionary produced by area_def_to_dict
+    return a pyresample area_def
+
+    introduced in week5/longwave_resample.md
+    
+    Parameters
+    ----------
+    
+    area_def_dict: dict
+        dictionary containing area_def parameters
+        
+    Returns
+    -------
+    
+    pyresample.area_def 
+
+    """
+    keys=['area_id','proj_id','name','proj_dict','x_size','y_size','area_extent']    
+    arglist=[area_def_dict[key] for key in keys]
+    area_def=geometry.AreaDefinition(*arglist)
+    return area_def

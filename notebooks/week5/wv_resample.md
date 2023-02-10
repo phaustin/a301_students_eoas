@@ -14,7 +14,7 @@ kernelspec:
 toc-autonumbering: true
 ---
 
-(wv_resample)=
+(week5:wv_resample)=
 # Resampling the water vapor
 
 +++
@@ -29,13 +29,16 @@ from matplotlib import pyplot as plt
 import numpy as np
 import cartopy.crs as ccrs
 import cartopy
+import json
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 from pyresample import kd_tree, SwathDefinition
 
 from sat_lib.modischan_read import sd_open_file, read_plainvar
 #
 # new get_proj_params function
 #
-from sat_lib.mapping import get_proj_params
+from sat_lib.mapping import get_proj_params, area_def_to_dict
 from sat_lib.modismeta_read import parseMeta
 import a301_lib
 
@@ -178,6 +181,34 @@ cs = ax.imshow(
     cmap=pal,
     norm=the_norm,
 )
+ax.set(title="wv ir 5km resolution for 2013.222.2105")
 fig.colorbar(cs, extend="both");
-fig.savefig("wv_ir.png")
+outfile = a301_lib.data_share / "pha/wv_ir_5km.png"
+fig.savefig(outfile)
+```
+
+## write the `area_def` out for reuse
+
+This will write out the file `~/shared_files/pha/area_dict.json`
+
+```{code-cell} ipython3
+area_dict = area_def_to_dict(area_def)
+outfile = a301_lib.data_share / "pha/area_dict.json"
+with open(outfile,"w") as out:
+    json.dump(area_dict,out,indent=4)
+    
+pp.pprint(area_dict)
+```
+
+## Save the resampled image as an npz file
+
+This will write out the file `~/shared_files/pha/wv_5km_resampled.npz`
+
+```{code-cell} ipython3
+outfile = a301_lib.data_share / "pha/wv_5km_resampled.npz"
+np.savez(outfile,image_wv)
+```
+
+```{code-cell} ipython3
+a301_lib.data_share
 ```

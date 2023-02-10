@@ -41,6 +41,8 @@ parts:
     - file: notebooks/week5/cartopy_resample_ch30.md
     - file: notebooks/week5/assignment3a.md
     - file: notebooks/week5/wv_resample.md
+    - file: notebooks/week5/longwave_resample.md
+    - file: notebooks/week5/hydrostat.rst
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md

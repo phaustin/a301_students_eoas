@@ -15,7 +15,7 @@ kernelspec:
 toc-autonumbering: true
 ---
 
-(assign2b_sol)=
+(assign2b_solution)=
 # Assignment 2b solutions: Drawing your satellite swath
 
 Adapt the code in the week4/cartopy_mapping_vancouver.md notebook to show the boundary of your Modis

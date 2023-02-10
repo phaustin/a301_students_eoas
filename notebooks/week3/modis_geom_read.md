@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-(modis_geom)=
+(week3:modis_geom)=
 # Reading modis level1b data
 
 ## Background
