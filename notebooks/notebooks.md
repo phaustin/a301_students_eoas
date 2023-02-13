@@ -25,3 +25,9 @@
 * {ref}`week5:resample`
 * {ref}`week5:wv_resample`
 * {ref}`week5:longwave_resample`
+
+## Week 6
+
+* {ref}`week6:pandas_intro`
+* {ref}`week6:pandas_cheatsheet`
+* {ref}`week6:scale_heights`

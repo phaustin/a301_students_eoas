@@ -15,4 +15,5 @@ dependencies:
   - netcdf4
   - jupyterlab
   - dask
+  - pythia-datasets
 # conda-lock --kind explicit -f environment_trun.yml -p linux-64

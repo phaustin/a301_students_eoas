@@ -42,12 +42,19 @@ parts:
     - file: notebooks/week5/wv_resample.md
     - file: notebooks/week5/longwave_resample.md
     - file: notebooks/week5/hydrostat.rst
+  - caption: Week 6
+    chapters:
+    - file: notebooks/week6/week6_topics.md
+    - file: notebooks/week6/pandas_intro.md
+    - file: notebooks/week6/pandas-cheatsheet.md
+    - file: notebooks/week6/hydrostatic_balance.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
     - file: notebooks/assignments/assign2a_solution.md
     - file: notebooks/assignments/assign2b_solution.md
     - file: notebooks/assignments/assignment3a.md
+    - file: notebooks/assignments/assignment3b.md
   - caption: References
     chapters:
     - file: notebooks/assignments.md
