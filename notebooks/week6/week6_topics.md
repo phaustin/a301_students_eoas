@@ -33,4 +33,11 @@
 * {ref}`week6:pandas_cheatsheet`
 * {ref}`week6:scale_heights`
 
+## Week 6 topics for Wednesday
+
+* new library:
+
+* {ref}`assign3a_solution`
+* {ref}`week6:weighting_funs`
+
 
