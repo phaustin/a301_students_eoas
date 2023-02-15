@@ -33,6 +33,7 @@
 
 * {ref}`week6:pandas_intro`
 * {ref}`week6:pandas_cheatsheet`
+* {ref}`sec:numpy`
 * {ref}`week6:scale_heights`
 
 ## Week 6 topics for Wednesday
