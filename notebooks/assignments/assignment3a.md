@@ -18,6 +18,10 @@ Do these questions on paper and scan for upload a pdf created using one of these
 
 +++
 
+
+
++++
+
 ## Q1: Flux from radiance  (6 points)
 
 Suppose a satellite is looking at the surface with the following field of view:
@@ -38,14 +42,30 @@ $$
 E = \int dE = \int_0^{2\pi} \int_0^{\theta} \cos \theta^\prime \, L \, d \omega^\prime =\int_0^{2\pi} \int_0^{\theta} L \cos \theta^\prime  \sin \theta^\prime \, d\theta^\prime \, d \phi^\prime 
 $$
 
-### Q1a (2 points)
++++
 
-Use the change of variables $\mu^\prime = \cos \theta^\prime$ to change this integral into a integral with respect to $d\mu^\prime$ and $d\phi^\prime$
+Q1a (2 points)
+Use the change of variables  𝜇′=cos𝜃′
+  to change this integral into a integral with respect to  𝑑𝜇′
+  and  𝑑𝜙′
+ 
+
++++
+
+$\mu = \cos \theta$
+$\d\mu = 
+
++++
 
 ### Q1b (2 points)
 
 Evaluate this intergral for the limit $\theta$ appropriate for the h=800 km and r=5 km case mentioned above.
 
++++
+
+
+
++++
 
 ### Q1c (2 points)
 

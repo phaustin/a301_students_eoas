@@ -31,3 +31,4 @@
 * {ref}`week6:pandas_intro`
 * {ref}`week6:pandas_cheatsheet`
 * {ref}`week6:scale_heights`
+* {ref}`week6:weighting_funs`
