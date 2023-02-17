@@ -14,7 +14,7 @@ kernelspec:
 ---
 
 (assign3b)=
-# Assignment 3b -- Due Friday, Feb. 16 midnight
+# Assignment 3b -- Due Wednesday, Feb. 22 midnight
 
 (This notebook will be replaced by the official handin notebook on Tuesday)
 

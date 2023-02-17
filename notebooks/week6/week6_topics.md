@@ -12,6 +12,8 @@
 
 * Work with raster images using the affine transform
 
+* Write out regridded files as geotifs
+
 ## At the start of class
 
 * `conda activate a301`
@@ -35,9 +37,17 @@
 
 ## Week 6 topics for Wednesday
 
-* new library:
+* new library module: sat_lib.thermo calculates pressure and density scale heights
 
 * {ref}`assign3a_solution`
 * {ref}`week6:weighting_funs`
 
+## Week 6 topics for Friday
+
+* new library function sat_lib.mapping.make_areadef_dict creates a pyresample areadef
+  from projection and raster information
+
+* Assignment 3b due Wednesday Feb. 22 at midnight
+* Finish discussion of {ref}`week6:weighting_funs`
+* Introduce geotiffs: {ref}`week6:geotiffs`
 
