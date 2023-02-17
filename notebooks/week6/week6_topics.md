@@ -50,4 +50,6 @@
 * Assignment 3b due Wednesday Feb. 22 at midnight
 * Finish discussion of {ref}`week6:weighting_funs`
 * Introduce geotiffs: {ref}`week6:geotiffs`
+* [Standard representations for coordinate reference systems](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-vector-data-python/spatial-data-vector-shapefiles/epsg-proj4-coordinate-reference-system-formats-python/)
+* [https://spatialreference.org/](https://spatialreference.org/)
 

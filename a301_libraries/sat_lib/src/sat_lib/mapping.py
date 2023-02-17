@@ -76,7 +76,8 @@ def make_areadef_dict(lat_0,lon_0,ll_x,ll_y,pixel_size_x,pixel_size_y,
         "no_defs": None,
         "type": "crs"}
     #
-    # find the 
+    # find the ur corner by adding all rows
+    # and columns to ll corner
     #
     ur_x = ll_x + x_size*pixel_size_x
     ur_y = ll_y + y_size*pixel_size_y
