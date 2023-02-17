@@ -31,6 +31,67 @@ def get_proj_params(metadata):
     return projection
 
 
+def make_areadef_dict(lat_0,lon_0,ll_x,ll_y,pixel_size_x,pixel_size_y,
+                 x_size, y_size,
+                 proj="laea",area_id="laea_a301",proj_id="laea_a301",
+                 name="human readable area def"):
+    """
+    construct a pyresample area_def from central lon/lat and raster
+    characteristics
+
+    Parameters
+    ----------
+
+    lat_0: float
+      crs central latitude
+    lon_0: float
+      crs central longitude
+    ll_x: float
+      projection x coord of lower left pixel edge
+    ll_y: float
+      projection y coord of lower left pixel bottom
+    pixel_x_size: float
+      pixel horizontal size in projection coords
+    pixel_y_size: float
+      pixel vertical size in projection coords
+    x_size: float
+      number of columns in raster
+    y_size: float
+      number of rows in raster
+
+    Returns
+    -------
+
+    area_dict: dict
+       dictionary used as input to mapping.area_def_from_dict
+    """
+    
+    proj_dict = {"proj": proj,
+        "lat_0": lat_0,
+        "lon_0": lon_0,
+        "x_0": 0,
+        "y_0": 0,
+        "datum": "WGS84",
+        "units": "m",
+        "no_defs": None,
+        "type": "crs"}
+    #
+    # find the 
+    #
+    ur_x = ll_x + x_size*pixel_size_x
+    ur_y = ll_y + y_size*pixel_size_y
+    area_extent = [ll_x,ll_y, ur_x, ur_y]
+    area_dict = dict(area_id = area_id,
+                     proj_id=proj_id,
+                     name = name,
+                     proj_dict = proj_dict,
+                     x_size = x_size,
+                     y_size = y_size,
+                     area_extent = area_extent)
+    return area_dict
+
+
+
 def area_def_to_dict(area_def):
     """
     given an area_def, save it as a dictionary`

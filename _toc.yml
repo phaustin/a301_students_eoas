@@ -57,7 +57,6 @@ parts:
     - file: notebooks/assignments/assign3a_solution.md
     - file: notebooks/assignments/assignment3a.md
     - file: notebooks/assignments/assignment3b.md
-    - file: notebooks/assignments/assignment3a_solution.md
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/mid_term_reviewI.rst
