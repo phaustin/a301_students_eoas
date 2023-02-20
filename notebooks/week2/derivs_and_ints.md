@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: '0.8'
-    jupytext_version: 1.5.0
+    format_version: 0.13
+    jupytext_version: 1.14.0
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -18,8 +18,7 @@ This notebook demonstrates how to use differences and sums to calculate derivati
 
 Coverage:  [Kazrinoff Chapter 6](https://atsc_web.eoas.ubc.ca/NumPy-and-Arrays/Introduction.html#)
 
-
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -53,11 +52,11 @@ Answer: $\frac{dy}{dx} = 18x^2$
 
 In first year you learned that the first derivative was:
 
-$\frac{dy}{dx} = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$
+$$\frac{dy}{dx} = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$(eq:deriv)
 
 So calculate $\Delta y$ and $\Delta x$ in python using [numpy.diff](http://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html) and divide, does it agree with the calculus answer?
 
-```{code-cell}
+```{code-cell} ipython3
 %matplotlib inline
 #
 # create 1000 x values from -5 to 5
@@ -106,13 +105,13 @@ $\int_{-5}^5 6 x^3 + 5 dx = \left .\left (  (6/4)x^4 + 5x \right ) \right |_{-5}
 
 So to do this integral in python, just use numpy.sum(I*dx).  The only trick is that np.diff(x) creates a vector that is 1 shorter than x.  So replace y with the average value of y in each dx inteval so that you can multiply vectors of the same length.
 
-```{code-cell}
+```{code-cell} ipython3
 yavg = (y[1:] + y[:-1]) / 2.0
 np.sum(yavg * dx)
 ```
 
 This isn't very close to the right answer, even though we are using 1000 x values when spacing=0.01.  Why is python struggling?
 
-```{code-cell}
+```{code-cell} ipython3
 
 ```

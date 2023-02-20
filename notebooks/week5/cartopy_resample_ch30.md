@@ -262,8 +262,7 @@ print(dir(area_def))
 
 ### Get the number of rows and columns in the regridded image
 
-Below we dump imformation about the `area_def` -- in particular `area_def.width, area_def.height, area_def.pixel_size_x, area_def.pixel_size_y`  Note that pyresample has increase the image size from the original 2040 x 1354 to the new 2244 x 2534.  This produces resampled pixels that are "downscaled" to higher resolution in the row direction, so that the new pixels are approximately square (1105 meters wide by 1088 meters high( 
-
+Below we dump imformation about the `area_def` -- in particular `area_def.width, area_def.height, area_def.pixel_size_x, area_def.pixel_size_y`  Note that pyresample has increase the image size from the original 2040 x 1354 to the new 2244 x 2534.  This produces resampled pixels that are "downscaled" to higher resolution in the row direction, so that the new pixels are approximately square (1105 meters wide by 1088 meters high(
 
 ```{code-cell} ipython3
 :trusted: true
@@ -283,7 +282,6 @@ The `pyresample.kd_tree` samples data that is defined on the `swath_def` grid on
 that a pixel's nearest neighbors can be rapidily found, and data from neighbors can be used to fill in any
 holes that appear when mapping to the new grid.  It uses a 5 km "radius of influence" to determine which pixels
 to use for hole filling.
-
 
 ```{code-cell} ipython3
 :trusted: true
@@ -384,7 +382,7 @@ if do_write:
     out_dict["y_size"] = area_def.y_size
     out_dir_name = "ch30_resample"
     out_dict["out_dir"] = out_dir_name
-    out_dir = a301_lib.data_share / Path("test_data") / Path(out_dir_name)
+    out_dir = a301_lib.data_share / "pha/ch30_resample"
     out_dir.mkdir(parents=True, exist_ok=True)
     image_name = out_dir / Path(f"{out_dir_name}.npz")
     json_name = out_dir / Path(f"{out_dir_name}.json")
