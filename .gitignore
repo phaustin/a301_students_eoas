@@ -1,2 +1,3 @@
 /_build/
 /book_html_source/
+*ipynb*checkpoints
