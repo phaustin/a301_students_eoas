@@ -28,6 +28,8 @@ Thi notebook resamples the 5 km water vapor datasets onto a 5km area_def. Note h
 week5/cartopy_resample_ch30.md
 
 ```{code-cell} ipython3
+:trusted: true
+
 import warnings
 
 from matplotlib import pyplot as plt
@@ -57,6 +59,8 @@ print(radiance_file)
 ## Get the 1 km lats and lons
 
 ```{code-cell} ipython3
+:trusted: true
+
 lat_1km = read_plainvar(geom_file,'Latitude')
 lon_1km = read_plainvar(geom_file,'Longitude')
 print(f"{lat_1km.shape=},{lon_1km.shape=}")
@@ -67,11 +71,15 @@ print(f"{lat_1km.shape=},{lon_1km.shape=}")
 plot a histogram to make sure they are reasonable
 
 ```{code-cell} ipython3
+:trusted: true
+
 ch31 = readband_lw(radiance_file,31)
 ch31.shape
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 fig, ax = plt.subplots(1,1)
 ax.hist(ch31.flat[:5000]);
 ```
@@ -79,6 +87,8 @@ ax.hist(ch31.flat[:5000]);
 ## Read in the `area_def` from the 5 km water vapor ir image
 
 ```{code-cell} ipython3
+:trusted: true
+
 areafile = a301_lib.data_share / "pha/area_dict.json"
 with open(areafile,"r") as infile:
     area_dict = json.load(infile)
@@ -90,12 +100,16 @@ pp.pprint(area_dict)
 ## Create the `swath_def` from the 1 km lons and lats
 
 ```{code-cell} ipython3
+:trusted: true
+
 swath_def = SwathDefinition(lon_1km, lat_1km)
 ```
 
 ## Now resample using the swath_def onto the 5 km area def
 
 ```{code-cell} ipython3
+:trusted: true
+
 fill_value = -9999.0
 area_name = "channel 31 5 km resample"
 image_31 = kd_tree.resample_nearest(
@@ -113,6 +127,8 @@ print(f"resampled image shape: {image_31.shape}")
 ## make a plot
 
 ```{code-cell} ipython3
+:trusted: true
+
 pal = plt.get_cmap("plasma")
 pal.set_bad("0.6")  # 75% grey for out-of-map cells
 pal.set_over("r")  # color cells > vmax red
@@ -124,6 +140,8 @@ the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 crs = area_def.to_cartopy_crs()
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": crs})
 ax.gridlines(linewidth=2)

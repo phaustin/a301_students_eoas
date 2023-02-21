@@ -25,6 +25,8 @@ Thi notebook resamples the 5 km water vapor datasets onto a 5km area_def. Note h
 week5/cartopy_resample_ch30.md
 
 ```{code-cell} ipython3
+:trusted: true
+
 import warnings
 
 from matplotlib import pyplot as plt
@@ -54,6 +56,8 @@ print(the_file)
 ## get the metadata
 
 ```{code-cell} ipython3
+:trusted: true
+
 meta_dict = parseMeta(the_file)
 meta_dict
 ```
@@ -61,6 +65,8 @@ meta_dict
 ## new function to calibrate the wv dataset
 
 ```{code-cell} ipython3
+:trusted: true
+
 def readband_wv(the_file, band_name):
     """
     see: https://atmosphere-imager.gsfc.nasa.gov/sites/default/files/ModAtmo/MYD05_L2.C6.CDL.fs
@@ -103,12 +109,16 @@ def readband_wv(the_file, band_name):
 ## check the values and make a raw image
 
 ```{code-cell} ipython3
+:trusted: true
+
 wv_data = readband_wv(the_file,'Water_Vapor_Infrared')
 fig, ax = plt.subplots(1,1)
 ax.hist(wv_data.flat);
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 fig, ax = plt.subplots(1,1)
 ax.imshow(wv_data);
 ```
@@ -116,6 +126,8 @@ ax.imshow(wv_data);
 ## Check the lats and lons
 
 ```{code-cell} ipython3
+:trusted: true
+
 lons = read_plainvar(the_file, 'Longitude')
 lats = read_plainvar(the_file, 'Latitude')
 fig, ax = plt.subplots(1,1)
@@ -125,6 +137,8 @@ ax.plot(lons,lats,'r+');
 ## Create the swath and area definitoins
 
 ```{code-cell} ipython3
+:trusted: true
+
 projection = get_proj_params(meta_dict)
 proj_params =  projection.proj4_params
 swath_def = SwathDefinition(lons, lats)
@@ -132,6 +146,8 @@ area_def = swath_def.compute_optimal_bb_area(proj_dict=proj_params)
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 print(
     (
         f"\nx and y pixel dimensions in meters:"
@@ -143,6 +159,8 @@ print(
 ## resample the image
 
 ```{code-cell} ipython3
+:trusted: true
+
 fill_value = -9999.0
 image_wv = kd_tree.resample_nearest(
     swath_def,
@@ -158,6 +176,8 @@ image_wv[image_wv < -9000] = np.nan
 ## make a plot
 
 ```{code-cell} ipython3
+:trusted: true
+
 pal = plt.get_cmap("plasma")
 pal.set_bad("0.75")  # 75% grey for out-of-map cells
 pal.set_over("r")  # color cells > vmax red
@@ -169,6 +189,8 @@ the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 crs = area_def.to_cartopy_crs()
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": crs})
 ax.gridlines(linewidth=2)
@@ -194,6 +216,8 @@ fig.savefig(outfile)
 This will write out the file `~/shared_files/pha/area_dict.json`
 
 ```{code-cell} ipython3
+:trusted: true
+
 area_dict = area_def_to_dict(area_def)
 outfile = a301_lib.data_share / "pha/area_dict.json"
 with open(outfile,"w") as out:
@@ -207,10 +231,24 @@ pp.pprint(area_dict)
 This will write out the file `~/shared_files/pha/wv_5km_resampled.npz`
 
 ```{code-cell} ipython3
+:trusted: true
+
 outfile = a301_lib.data_share / "pha/wv_5km_resampled.npz"
 np.savez(outfile,image_wv)
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 a301_lib.data_share
+```
+
+```{code-cell} ipython3
+:trusted: true
+
+infile = a301_lib.data_share / "pha/wv_5km_resampled.npz"
+the_npz = np.load(infile)
+print(f"{list(the_npz.keys())=}")
+the_raster = the_npz['arr_0']
+print(f"{the_raster.shape=}")
 ```
