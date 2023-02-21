@@ -1,17 +1,19 @@
 ---
 jupytext:
-  cell_metadata_filter: -all
-  notebook_metadata_filter: -all
+  cell_metadata_filter: all
+  notebook_metadata_filter: all,-language_info,-toc,-latex_envs
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 toc-autonumbering: true
+toc-showmarkdowntxt: false
+toc-showtags: true
 ---
 
 (week5:wv_resample)=

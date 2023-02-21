@@ -7,7 +7,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -26,6 +26,8 @@ swath on a Lambert Azimuthal Equal Area map.
 ## Edit this cell to fetch your granual
 
 ```{code-cell} ipython3
+:trusted: true
+
 import a301_lib
 import warnings
 warnings.filterwarnings('ignore')
@@ -35,6 +37,8 @@ print(granules[0])
 ```
 
 ```{code-cell} ipython3
+:trusted: true
+
 from sat_lib.modismeta_read import parseMeta
 granules =list(hdf4_dir.glob("MYD02*2105*hdf"))
 print(granules[0].is_file())
@@ -49,6 +53,8 @@ meta_dict
 **This cell sets up the datum and the LAEA projection, with the tangent point at the center of your swath**
 
 ```{code-cell} ipython3
+:trusted: true
+
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import cartopy
@@ -94,6 +100,7 @@ nbgrader:
   schema_version: 3
   solution: true
   task: false
+trusted: true
 ---
 ### BEGIN SOLUTION
 out_x = []
@@ -116,12 +123,16 @@ an np.array of lons, an np array of lats, and optionally an np.array of heights 
 array with the xcoord,ycoord,zcoord for each point
 
 ```{code-cell} ipython3
+:trusted: true
+
 help(projection.transform_points)
 ```
 
 Note you get the same answer as with `projection.transform_point`
 
 ```{code-cell} ipython3
+:trusted: true
+
 lons = np.array(meta_dict['lon_list'])
 lats = np.array(meta_dict['lat_list'])
 projection.transform_points(geodetic,lons,lats)
@@ -142,6 +153,7 @@ nbgrader:
   schema_version: 3
   solution: true
   task: false
+trusted: true
 ---
 ### BEGΙΝ SOLUTION
 ll_x = min(out_x)
@@ -166,6 +178,7 @@ nbgrader:
   schema_version: 3
   solution: true
   task: false
+trusted: true
 ---
 ### BEGIN SOLUTION
 fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": projection})
@@ -191,6 +204,8 @@ Put the location of `(min_lon,min_lat)` and `(max_lon, max_lat)` on the map as b
 of the extent we used above as red dots.
 
 ```{code-cell} ipython3
+:trusted: true
+
 ll_corner = (meta_dict['min_lon'], meta_dict['min_lat'])
 ur_corner = (meta_dict['max_lon'], meta_dict['max_lat'])
 newll_x, newll_y = projection.transform_point(ll_corner[0], ll_corner[1], geodetic)

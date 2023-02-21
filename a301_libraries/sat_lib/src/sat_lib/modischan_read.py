@@ -37,6 +37,7 @@ def readband_lw(the_file, the_band):
     thechan_scale = scales[thechan_index]
     thechan_offset = offsets[thechan_index]
     thechan_calibrated = (thechan_data - thechan_offset) * thechan_scale
+    print(f"f{thechan_offset=}, {thechan_scale=}")
     sd_file.end()
     return thechan_calibrated
 

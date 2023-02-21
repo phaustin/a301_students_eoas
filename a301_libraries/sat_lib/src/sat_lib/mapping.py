@@ -146,6 +146,6 @@ def area_def_from_dict(area_def_dict):
 
     """
     keys=['area_id','proj_id','name','proj_dict','x_size','y_size','area_extent']    
-    arglist=[area_def_dict[key] for key in keys]
+    arglist=[area_def_dict.get(key,'unknown') for key in keys]
     area_def=geometry.AreaDefinition(*arglist)
     return area_def
