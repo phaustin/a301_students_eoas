@@ -4,135 +4,161 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+toc-autonumbering: true
+toc-showmarkdowntxt: false
 ---
 
-(week6:geotiffs)=
-# Writing the 5km water vapor image to a geotiff file
++++ {"tags": []}
 
-The most common data format for satellite data is called geotiff, which is a contraction of "georeferenced tagged image file format".  
+(week6:geotiff_xarray)=
+# Using xarray to work with geotiffs
 
-The details are outlined in this [geotiff explainer](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/fundamentals-raster-data/intro-to-the-geotiff-file-format/). 
+In the week6 {ref}`week6:geotiffs` notebook we wrote a geotiff file for the 5km water vapor data resampled at 5500 x 5500 m on a Lambert aziumthal crs.  Suppose we want to
+crop that dataset, or use it in a machine learning pipeline, or combine it with other data?  How do we work with the raster in python without losing all of the
+extra information about the affine transform, crs, etc?  The most useful tool for this is an [xarray DataArray](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray), which extends numpy arrays by adding coordinates, named dimensions and attributes.
+In this notebook, we'll first create an xarray using the `wv_ir_5km.tif` and use it to show a slice of the data.  Then we'll create an xarray from scratch given
+the numpy array, affine transform, and crs.
 
-Briefly -- the file format allows us to save the raster images for multiple bands, the crs used by the raster to
-get back lats/lons for the grid, the extent and grid size of the raster, and possibly a palette to use to present
-the plotted image in a geographic information system.
+The module that we'll use for this is called [the rasterio xarray extension](https://corteva.github.io/rioxarray/html/readme.html) or rioxarray.  It provides a natural
+way to read and write geotiffs, and to clip, merge and reproject rasters.
 
-In this notebook we'll read in the image produced by the {ref}`week5:wv_resample` notebook, resample it once more
-onto a grid with a uniform pixel size of 5500 x 5500 meters and a grid of 510 rows and 500 columns,
-and write this out as geotiff.
+Below we read the geotiff back in as an xarray Dataset, make a plot, and write it out as a new geotiff.
 
 +++
 
-## Read in the `area_def` and raster written by `wv_resample.md`
+## Reading in the geotiff to a DataArray
+
+rioxarray uses rasterio to handle the gis attributes like the map projection and affine_transform
 
 ```{code-cell} ipython3
-import a301_lib
-import numpy as np
-import json
 from copy import copy
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
-
-from matplotlib import pyplot as plt
+import a301_lib
+import rioxarray
 import cartopy
+from matplotlib import pyplot as plt
 
-from pyresample import kd_tree, SwathDefinition
 
-from sat_lib.mapping import area_def_from_dict
+the_tif  = a301_lib.data_share / "pha/wv_ir_5km.tif"
+xds = rioxarray.open_rasterio(the_tif)
 ```
 
+## DataArray attributes and coordinates
+
++++
+
+If you look at the coordnates below, you can see that x and y are the map coords for the center of each pixel.
+x,y values for the center of each pixel.  These same coordinates are also written out as pandas indexes
+for [compatibility with pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html)
+
 ```{code-cell} ipython3
-infile = a301_lib.data_share / "pha/wv_5km_resampled.npz"
-wv_raster = np.load(infile)
-print("npz array names",list(wv_raster.keys()))
-wv_raster = wv_raster['arr_0']
+xds
+```
+
+## Getting GIS metadata from rasterio
+
+In this section we'll extract the information we need to put the raster on a map.  rioxarray has access to many of the rasterio methods via the xds.rio shortcut.
+
++++
+
+### Getting the tags/attributes
+
+The `attrs` attribute returns the tags as a dictionary.
+
+```{code-cell} ipython3
+xds.attrs
+```
+
+### getting the affine transform
+
+To get the transform and the crs we need to go through the `rio` attribute, which was added to the DataArray when we imported `rioxarray`
+
+```{code-cell} ipython3
+affine_transform = xds.rio.transform()
+affine_transform
+```
+
+### getting coordinate reference system
+
+rioxarray uses the rasterio crs, which it represents as well known text (wkt)
+
+```{code-cell} ipython3
+rio_crs= xds.rio.crs
+print(f"{rio_crs=}\n\n")
+```
+
+### reading the raster
+
+To get the numpy array out of the DataArray, we can use standard numpy indexing, or there's a `to_numpy` method if we want to change the dtype, assign missing values etc.
+Note that the raster array is three dimensional, so that it can hold multiple bands.  Since we are only working with 1 band, we can
+use the `squeeze` method to make it two dimensional.
+
+```{code-cell} ipython3
+wv_raster = xds[...]
+print(f"{wv_raster.shape=}")
+#
+# squeeze out the unneeded dimension
+#
+wv_raster = wv_raster.squeeze()
 print(f"{wv_raster.shape=}")
 ```
 
-## Read in the `area_def`
++++ {"tags": []}
 
-Our `area_def` was calculated "on the fly" by pyresample, and it gave us some pretty
-ragged extents and pixel sizes.  Humans do better when the work with round numbers,
-so we want to regrid to clean up these decimals.
+### calculating the image extent for cartopy 
 
-```{code-cell} ipython3
-infile = a301_lib.data_share / "pha/area_dict.json"
-with open(infile,'r') as the_in:
-    old_area_dict = json.load(the_in)
-old_area_def = area_def_from_dict(old_area_dict)
-pp.pprint(old_area_dict)
-```
-
-## create a more regular `area_def` for sharing
-
-Here's a close approximation to the old `area_def`, produced by a new `sat_lib.mapping` function
-called `sat_lib.mapping.make_areadef`
-
-We'll give the new raster more easily used/uniform coordinates
-
-```{code-cell} ipython3
-from sat_lib.mapping import make_areadef_dict
-lat_0 = 39.5
-lon_0 = -121.5
-ll_x = -1238500
-ll_y = -1155500
-pixel_size_x = 5500
-pixel_size_y = 5500
-x_size = 500
-y_size = 510
-area_dict = make_areadef_dict(lat_0,lon_0,ll_x, ll_y,pixel_size_x,pixel_size_y,
-                        x_size, y_size)
-pp.pprint(area_dict)
-new_area_def = area_def_from_dict(area_dict)
-print(f"\n\n{new_area_def=}")
-```
-
-## regrid onto the new `area_def`
-
-We need to redo the resample with the SwathDefiniton set to the lons
-and lats taken from the old grid using the `get_lonlats` method.
+Recall that cartopy needs the extent of the image, defined as `[ll_x,ur_x,ll_y,ur_y]`.  We can get that from the `affine_transform` by putting in
+the (column,row) of (column 0, row 0) and (column ncols+1, row nrows+1) for the ll and ur corners.   We need to add one cell to the nrows and ncols because
+we want the left, bottom, top and right edges of the cells,
+to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.
 
 +++
 
-### get lons and lats to make the SwathDefinition
+#### The hard way
 
 ```{code-cell} ipython3
-lons, lats =old_area_def.get_lonlats()
-print(f"{lons.shape=}, {lats.shape=}")
-old_swath = SwathDefinition(lons, lats)
+nrows, ncols = wv_raster.shape
+ll_x, ll_y = affine_transform*(0,nrows+1)
+ur_x, ur_y = affine_transform*(ncols+1,0)
+extent = (ll_x,ur_x, ll_y, ur_y)
+extent
 ```
 
-### resample from the old raster onto the new more uniform raster
+#### The easy way
+
+This same information is also available from rasterio via the `bounds()` method
 
 ```{code-cell} ipython3
-fill_value = -9999.0
-new_wv_raster = kd_tree.resample_nearest(
-    old_swath,
-    wv_raster.ravel(),
-    new_area_def,
-    radius_of_influence=5000,
-    nprocs=2,
-    fill_value=fill_value,
-)
-new_wv_raster[new_wv_raster < -9000] = np.nan
-
-print(f"{new_wv_raster.shape=}")
+xds.rio.bounds()
 ```
 
-### set up the palette and plot the new raster
+## Making a cartopy map
+
++++
+
+### Convert the rasterio crs to a cartopy crs
+
+
+
+One friction point is that cartopy has a slightly different form of the crs than rasterio.  Cartopy requires that the
+bounds (i.e. full raster extent in map coordinates) be included in the crs. In the cell below we use a  pyresample  utility `pyresample.utils.cartopy.Projection` to make
+the cartopy crs with bounds included.
 
 ```{code-cell} ipython3
-'area_extent': [-1238500, -1155500, 1511500, 1649500],
+from pyresample.utils.cartopy import Projection
+cartopy_crs = Projection(rio_crs, bounds=extent)
+cartopy_crs.bounds
 ```
 
-```{code-cell} ipython3
+### Copy code from `week6/wv_resample.md`
 
-```
+Below is a straight copy of last week's plotting code.  Note that if we wanted to plot only a part of the scene,
+we could change the extent argument to imshow to crop the image.  In the next notebook we'll go over the
+standard way to crop/clip a raster.
 
 ```{code-cell} ipython3
 pal = copy(plt.get_cmap("plasma"))
@@ -146,276 +172,47 @@ the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
 ```
 
 ```{code-cell} ipython3
-crs = new_area_def.to_cartopy_crs()
-fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": crs})
+fig, ax = plt.subplots(1, 1, figsize=(10, 10), subplot_kw={"projection": cartopy_crs})
 ax.gridlines(linewidth=2)
 ax.add_feature(cartopy.feature.GSHHSFeature(scale="coarse", levels=[1, 2, 3]))
-ax.set_extent(crs.bounds, crs)
+ax.set_extent(cartopy_crs.bounds, cartopy_crs)
 cs = ax.imshow(
-    new_wv_raster,
-    transform=crs,
-    extent=crs.bounds,
+    wv_raster,
+    transform=cartopy_crs,
+    extent=extent,
     origin="upper",
     alpha=0.8,
     cmap=pal,
     norm=the_norm,
 )
-ax.set(title="wv ir 5km resolution for 2013.222.2105")
+ax.set(title="wv ir 5km using cartopy")
 fig.colorbar(cs, extend="both");
 ```
 
-## Write this out as a geotiff using rasterio and read it back in to check
+### Quick plots with xarray
 
-We need to use a python module called [rasterio](https://rasterio.readthedocs.io/en/latest/) to write this image out as
-a geotiff.  We'll do this in three steps:
-
-1) Define the [affine transform](http://www.perrygeo.com/python-affine-transforms.html)
-2) Write out the new_wv_raster 
-3) Read it back in and plot using rasterio
-
-+++
-
-### The role of the affine transform
-
-We can move back and forth from geodetic lons/lats to mapx/mapy using [cartopy's transform_point](https://eoasubc.xyz/a301_2022/notebooks/assignments/assign2b_solution.html).  The affine transform does the next step,
-which is to move back and forth from mapx/mapy to row/column on the raster.  We need to specify both the crs and the
-affine transform when we write our raster out as a geotiff.
-
-+++
-
-### Defining the affine transform
-
-+++
-
-The affine transform requires the following information:
-
-    a = width of a pixel
-    b = row rotation (typically zero)
-    c = x-coordinate of the upper-left corner of the upper-left pixel
-    d = column rotation (typically zero)
-    e = height of a pixel (typically negative)
-    f = y-coordinate of the of the upper-left corner of the upper-left pixel
-
-Looking at help(new_area_def) shows that these are available as attributes:
-
-     |  width : int
-     |      x dimension in number of pixels, aka number of grid columns
-     |  height : int
-     |      y dimension in number of pixels, aka number of grid rows
-     |  rotation: float
-     |      rotation in degrees (negative is cw)
-     |  size : int
-     |      Number of points in grid
-     |  area_extent_ll : tuple
-     |      Area extent in lons lats as a tuple (lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)
-     |  pixel_size_x : float
-     |      Pixel width in projection units
-     |      Pixel height in projection units
-     |  pixel_upper_left : tuple
-     |      Coordinates (x, y) of center of upper left pixel in projection units
-
-+++
-
-### Pull the values from `area_def` to create an Affine instance
+If you don't need the cartopy map, then xarray can handle the plot setup for you:
 
 ```{code-cell} ipython3
-from affine import Affine
-a = new_area_def.pixel_size_x
-b = 0
-c, f = new_area_def.pixel_upper_left
-d = 0
-#
-# pixel height is negative, because we are
-# starting in the ul corner and going down
-#
-e = -1*new_area_def.pixel_size_y
-the_transform = Affine(a,b,c,d,e,f)
-print(f"{the_transform=}")
+fig, ax = plt.subplots(1,1, figsize=(10,10))
+xds.plot(ax=ax, norm=the_norm, cmap=pal)
+ax.set(title="wv ir 5km using rioxarray");
 ```
 
+## Writing the geotiff
+
+Using rasterio to write the geotiff is just a one-liner, because all of the GIS metadata is available in the `xds` variable. Any new or modified tags we want to add
+to the file can be included in a dictionary.  All the old tags will remain if not modified.
+
 ```{code-cell} ipython3
-1646750 - 5500*510
+the_tif  = a301_lib.data_share / "pha/wv_ir_5km_rioxarray.tif"
+tags=dict(label = "ir_wv -- rioxarray (cm/m^2)")
+xds.rio.to_raster(the_tif,tags=tags)
 ```
 
-### Write out the geotiff with rioxarray
-
-
-
-In addition to the raster, the crs, and the affine transform, you can also 
-add comments/history etc. as arbitrary tags using update_tags.  This allows us to
-write arbitrary metadata (dates, titles, units etc.) into the geotiff file
-
-See [rasterio tagging](https://rasterio.readthedocs.io/en/latest/topics/tags.html)
+### Read it back in to check
 
 ```{code-cell} ipython3
-the_transform*(499,509)
-```
-
-```{code-cell} ipython3
-new_area_def
-```
-
-```{code-cell} ipython3
-the_transform*(510,509)
-```
-
-```{code-cell} ipython3
-x'area_extent': [-1238500, -1155500, 1511500, 1649500],
-```
-
-```{code-cell} ipython3
-the_transform*(-1,-1)
-```
-
-```{code-cell} ipython3
-import rioxarray
-import xarray
-nrows, ncols = new_area_def.height,new_area_def.width
-xcoords = [(the_transform*(column,0))[0] for column in range(0,ncols)]
-ycoords = [(the_transform*(0,row))[1] for row in range(0,nrows)]
-coords = [[1],xcoords, ycoords]
-new_wv_raster_3d = new_wv_raster[np.newaxis,:,:]
-dims = ["bands", "y", "x"]
-# xcs = (
-#     xarray.DataArray(new_wv_raster_3d, coords=coords, dims=dims)
-#     .rio.write_nodata(np.nan)
-#     .rio.write_transform(the_transform)
-# )
-```
-
-```{code-cell} ipython3
-new_wv_raster_3d.shape
-dims = ["bands", "y", "x"]
-coords = dict(
-           x = xcoords,
-           y =ycoords,
-           bands = [1]
-)
-xcs = xarray.DataArray(new_wv_raster_3d, coords=coords, dims=dims)
-xcs = (xcs.rio.write_nodata(np.nan)
-       .rio.write_transform(the_transform))
-```
-
-```{code-cell} ipython3
-outtif = a301_lib.data_share / "pha/rio_geotiff.tif"
-xcs.rio.to_raster(outtif)
-```
-
-```{code-cell} ipython3
-len(xcoords), len(ycoords)
-```
-
-```{code-cell} ipython3
-new_wv_raster.dtype
-```
-
-```{code-cell} ipython3
-import rasterio
-import datetime
-tif_filename = a301_lib.data_share / "pha/wv_ir_5km.tif"
-num_chans = 1
-with rasterio.open(
-    tif_filename,
-    "w",
-    driver="GTiff",
-    height=new_area_def.height,
-    width=new_area_def.width,
-    count=num_chans,
-    dtype=new_wv_raster.dtype,
-    crs=crs,
-    transform=the_transform,
-    nodata=np.nan
-) as outtif:
-    outtif.write(new_wv_raster,1)
-    outtif.update_tags(
-        title ="5 km ir water vapor, Modis Aqua",
-        history="written by week6/writing_geotiffs.md",
-        written_on=str(datetime.date.today()),
-    )
-    band_tag = "ir_wv (cm/m^2)"
-    outtif.update_tags(1,label= band_tag)
-    
-    
-    
-```
-
-## Read the geotiff back in using rasterio
-
-In addition to the raster, the crs, and the affine transform, you can also 
-add comments/history etc. as arbitrary tags
-
-```{code-cell} ipython3
-tif_filename = a301_lib.data_share / "pha/wv_ir_5km.tif"
-
-with rasterio.open(tif_filename,'r') as wv_tif:
-    #
-    # get tags for entire file
-    #
-    file_tags = wv_tif.tags()
-    #
-    # get raster and tags for band 1
-    #
-    wv_raster = wv_tif.read(1)
-    band_tags = wv_tif.tags(1)
-    #
-    # get the laea crs
-    #
-    crs = wv_tif.profile["crs"]
-    #
-    # get the affine transform
-    #
-    transform = wv_tif.profile["transform"]
-    
-print((f"\n{file_tags=}\n"
-    f"\n{band_tags=}\n"
-    f"\n{crs=}\n"
-    f"\n{transform=}"))
-            
-        
-```
-
-### Get the pyresample `area_def` from the geotiff
-
-We don't need my `area_def_from_dict` function when working with geotiffs, pyresample has
-a utility for getting the `area_def` from the file in case you want to resample other rasters
-to the same grid
-
-```{code-cell} ipython3
-import pyresample
-with rasterio.open(tif_filename) as wv_tif:
-    area_def = pyresample.utils.rasterio.get_area_def_from_raster(wv_tif)
-area_def
-```
-
-### Plot the image using rasterio
-
-Rasterio works with matplotlib axes -- you can pass an axis to rasterio's `show_hist` or `show`
-commands and it will plot into that axis.
-
-Below we use the tags we retrieved from the geotiff to set the title and legend label
-
-See [rasterio plotting](https://rasterio.readthedocs.io/en/latest/topics/plotting.html)
-
-```{code-cell} ipython3
-from rasterio.plot import show_hist, show
-fig, ax = plt.subplots(1,1)
-with rasterio.open(tif_filename) as src:
-    show_hist(src,ax=ax, title = file_tags['title'],
-              label=band_tags['label'])
-
-    
-```
-
-```{code-cell} ipython3
-fig, ax = plt.subplots(1,1,figsize=(8,8))
-with rasterio.open(tif_filename) as src:
-    show(src, ax=ax, cmap='plasma')
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
+xds = rioxarray.open_rasterio(the_tif)
+xds.attrs
 ```
