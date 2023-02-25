@@ -25,7 +25,7 @@ In this notebook, we'll first create an xarray using the `wv_ir_5km.tif` and use
 the numpy array, affine transform, and crs.
 
 The module that we'll use for this is called [the rasterio xarray extension](https://corteva.github.io/rioxarray/html/readme.html) or rioxarray.  It provides a natural
-way to read and write geotiffs, and to clip, merge and reproject rasters.
+way to read and write geotiffs, and to clip, merge and reproject rasters.  Using rioxarray, we can eliminate about 80% of the boilerplate of working with raster data.
 
 Below we read the geotiff back in as an xarray Dataset, make a plot, and write it out as a new geotiff.
 
@@ -111,14 +111,16 @@ print(f"{wv_raster.shape=}")
 
 ### calculating the image extent for cartopy 
 
-Recall that cartopy needs the extent of the image, defined as `[ll_x,ur_x,ll_y,ur_y]`.  We can get that from the `affine_transform` by putting in
-the (column,row) of (column 0, row 0) and (column ncols+1, row nrows+1) for the ll and ur corners.   We need to add one cell to the nrows and ncols because
-we want the left, bottom, top and right edges of the cells,
-to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.
+Recall that cartopy needs the extent of the image, defined as `[ll_x,ur_x,ll_y,ur_y]`.  Here are two ways to get the extent.
 
 +++
 
 #### The hard way
+
+We can use the `affine_transform` by putting in
+the (column,row) of (column 0, row 0) and (column ncols+1, row nrows+1) for the ll and ur corners.   We need to add one cell to the nrows and ncols because
+we want the left, bottom, top and right edges of the cells,
+to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.
 
 ```{code-cell} ipython3
 nrows, ncols = wv_raster.shape
@@ -145,7 +147,7 @@ xds.rio.bounds()
 
 
 One friction point is that cartopy has a slightly different form of the crs than rasterio.  Cartopy requires that the
-bounds (i.e. full raster extent in map coordinates) be included in the crs. In the cell below we use a  pyresample  utility `pyresample.utils.cartopy.Projection` to make
+bounds (i.e. full raster extent in map coordinates) be included in the crs. In the cell below we use a  pyresample  utility `pyresample.utils.cartopy.Projection` to create
 the cartopy crs with bounds included.
 
 ```{code-cell} ipython3
