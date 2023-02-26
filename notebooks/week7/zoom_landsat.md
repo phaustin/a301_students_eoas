@@ -19,7 +19,6 @@ toc-autonumbering: true
 
 In this notebook we read in a landsat image geotiff for Band 5, which is in the near infrared:
 
-
 ```{code-cell} ipython3
 import numpy
 from pathlib  import Path

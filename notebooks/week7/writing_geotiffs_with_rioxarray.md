@@ -40,7 +40,6 @@ An [xarray](https://foundations.projectpythia.org/core/xarray/xarray-intro.html)
 - the_array.coords: the coordinates for each dimension.  In our case the lons and lats coordinates of the center of each pixel, and the band numbers.
 - the_array.attrs:  a dictionary of keys and values for metadata -- in our case this would be all the geotiff tags
 
-
 +++
 
 ## rioxarray
@@ -265,8 +264,8 @@ xds.rio.to_raster(the_tif,tags=tags)
 You can also matplotlib save the image as a png file for browsing
 
 ```{code-cell} ipython3
-from skimage.io import imsave, imread
 png_file = a301_lib.data_share / "pha/wv_ir_5km_rioxarray.png"
+fig.savefig(png_file)
 ```
 
 ```{code-cell} ipython3
