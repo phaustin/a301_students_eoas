@@ -9,11 +9,16 @@ dependencies:
   - numpy
   - pip
   - jupytext
-  - jupyterhub=2.3.1
   - cartopy>0.21
   - pyresample
   - netcdf4
   - jupyterlab
   - dask
   - pythia-datasets
+  - pytest
+  - rasterio
+  - fiona
+  - rioxarray
+  - pystac-client
+  - shapely
 # conda-lock --kind explicit -f environment_trun.yml -p linux-64
