@@ -58,7 +58,7 @@ from matplotlib import pyplot as plt
 
 
 the_tif  = a301_lib.data_share / "pha/wv_ir_5km.tif"
-xds = rioxarray.open_rasterio(the_tif)
+band_xarray = rioxarray.open_rasterio(the_tif)
 ```
 
 ## Anatomy of a rioxarray
@@ -70,13 +70,13 @@ Here are some of the import attributes of a rioxarray
 ### The raster data
 
 ```{code-cell} ipython3
-xds.data.shape, xds.data.dtype, type(xds.data)
+band_xarray.data.shape, band_xarray.data.dtype, type(band_xarray.data)
 ```
 
 ### The named dimensions
 
 ```{code-cell} ipython3
-xds.dims
+band_xarray.dims
 ```
 
 ### The pixel center coordinates
@@ -84,35 +84,35 @@ xds.dims
 These pixel centers are given in the map projection coordinates
 
 ```{code-cell} ipython3
-xds.coords
+band_xarray.coords
 ```
 
 ### The geotiff tags
 
 ```{code-cell} ipython3
-print(f"{type(xds.attrs)=}\n\n{xds.attrs=}")
+print(f"{type(band_xarray.attrs)=}\n\n{band_xarray.attrs=}")
 ```
 
 ### Rasterio specific metadata
 
-There are also rasterio specific attributes that can be obtained using `xds.rio`
+There are also rasterio specific attributes that can be obtained using `band_xarray.rio`
 
 +++
 
 #### The coordinate reference system
 
 ```{code-cell} ipython3
-xds.rio.crs
+band_xarray.rio.crs
 ```
 
 #### The affine transform
 
 ```{code-cell} ipython3
-xds.rio.transform()
+band_xarray.rio.transform()
 ```
 
 ```{code-cell} ipython3
-out = xds.rio.transform()
+out = band_xarray.rio.transform()
 out.f
 ```
 
@@ -121,19 +121,19 @@ out.f
 This is ll_x, ur_x, ll_y, ur_y in map coordinates
 
 ```{code-cell} ipython3
-xds.rio.bounds()
+band_xarray.rio.bounds()
 ```
 
 #### Image width, height
 
 ```{code-cell} ipython3
-xds.rio.width, xds.rio.height
+band_xarray.rio.width, band_xarray.rio.height
 ```
 
 #### x and y dimension names
 
 ```{code-cell} ipython3
-xds.rio.x_dim, xds.rio.y_dim
+band_xarray.rio.x_dim, band_xarray.rio.y_dim
 ```
 
 ## Reading the raster
@@ -141,7 +141,7 @@ xds.rio.x_dim, xds.rio.y_dim
 Since we only have one channel, it's simpler to just convert the raster to 2 dimensions using numpy's `squeeze` method
 
 ```{code-cell} ipython3
-wv_raster = xds.data
+wv_raster = band_xarray.data
 print(f"{wv_raster.shape=}")
 #
 # squeeze out the unneeded dimension
@@ -167,8 +167,8 @@ to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.
 
 ```{code-cell} ipython3
 nrows, ncols = wv_raster.shape
-ll_x, ll_y = xds.rio.transform()*(0,nrows+1)
-ur_x, ur_y = xds.rio.transform()*(ncols+1,0)
+ll_x, ll_y = band_xarray.rio.transform()*(0,nrows+1)
+ur_x, ur_y = band_xarray.rio.transform()*(ncols+1,0)
 extent = (ll_x,ur_x, ll_y, ur_y)
 extent
 ```
@@ -178,7 +178,7 @@ extent
 This same information is also available from rasterio via the `bounds()` method
 
 ```{code-cell} ipython3
-xds.rio.bounds()
+band_xarray.rio.bounds()
 ```
 
 ## Making a cartopy map
@@ -195,7 +195,7 @@ the cartopy crs with bounds included.
 
 ```{code-cell} ipython3
 from pyresample.utils.cartopy import Projection
-cartopy_crs = Projection(xds.rio.crs, bounds=extent)
+cartopy_crs = Projection(band_xarray.rio.crs, bounds=extent)
 cartopy_crs.bounds
 ```
 
@@ -243,20 +243,20 @@ fig.colorbar(cs, extend="both");
 If you don't need the cartopy map, then xarray can handle the plot setup for you using the `plot` wrapper that calls matplotlib to do the plotting.
 
 ```{code-cell} ipython3
-fig2, ax = plt.subplots(1,1, figsize=(10,10))
-xds.plot(ax=ax, norm=the_norm, cmap=pal)
+fig, ax = plt.subplots(1,1, figsize=(10,10))
+band_xarray.plot(ax=ax, norm=the_norm, cmap=pal)
 ax.set(title="wv ir 5km using rioxarray");
 ```
 
 ## Writing the geotiff
 
-Using rasterio to write the geotiff is just a one-liner, because all of the GIS metadata is available in the `xds` variable. Any new or modified tags we want to add
+Using rasterio to write the geotiff is just a one-liner, because all of the GIS metadata is available in the `band_xarray` variable. Any new or modified tags we want to add
 to the file can be included in a dictionary.  All the old tags will remain if not modified.
 
 ```{code-cell} ipython3
 the_tif  = a301_lib.data_share / "pha/wv_ir_5km_rioxarray.tif"
 tags=dict(label = "ir_wv -- rioxarray (cm/m^2)")
-xds.rio.to_raster(the_tif,tags=tags)
+band_xarray.rio.to_raster(the_tif,tags=tags)
 ```
 
 ## Writing a quick-look png
@@ -275,8 +275,10 @@ fig.savefig(png_file)
 ### Read the geotif back in to check
 
 ```{code-cell} ipython3
-xds = rioxarray.open_rasterio(the_tif)
-xds.attrs
+clipped_xarray = rioxarray.open_rasterio(the_tif)
+fig2, ax = plt.subplots(1,1, figsize=(10,10))
+clipped_xarray.plot(ax=ax, norm=the_norm, cmap=pal)
+ax.set(title="wv ir 5km using rioxarray");
 ```
 
 ## Summary
