@@ -17,11 +17,12 @@
 # %%
 import numpy
 from pathlib  import Path
-from sat_lib.landsat.landsat_metadata import landsat_metadata
 import inspect
 from pystac_client import Client
 from shapely.geometry import Point
-
+from matplotlib import pyplot as plt
+import numpy as np
+from copy import copy
 
 # %%
 # connect to the STAC endpoint
@@ -55,7 +56,8 @@ import rioxarray
 assets['browse'].href
 
 # %%
-assets["B01"].href
+band_name="B08"
+assets[band_name].href
 
 # %%
 true_color_image = rioxarray.open_rasterio(assets["browse"].href) 
@@ -65,9 +67,18 @@ ax = true_color_image.plot.imshow(figsize=(14,14),origin="upper");
 ax.axes.set_title("vancouver browse image");
 
 # %%
+true_color_image.shape
+
+# %%
 import a301_lib
 outfile = a301_lib.data_share / "pha/vancouver_browse.png"
 ax.write_png(outfile)
+
+# %%
+true_color_image
+
+# %%
+true_color_image.rio.transform()
 
 # %%
 import os
@@ -75,8 +86,40 @@ os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
 os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 
 # %%
-b01_href = assets["B01"].href
-b01 = rioxarray.open_rasterio(b01_href)
+the_band_href = assets[band_name].href
+the_band = rioxarray.open_rasterio(the_band_href,masked=True)
+masked_raster = the_band.where(the_band > 0)
+the_raster = masked_raster[...].squeeze()
+the_raster = the_raster*the_band.scale_factor
+the_band
 
 # %%
-help(b01.rio.write_grid_mapping)
+the_band.to_numpy()
+
+# %%
+the_raster
+
+# %%
+the_raster.plot.hist()
+
+# %%
+writeit=True
+if writeit:
+    outfile = a301_lib.data_share / f"pha/vancouver_landsat8_{band_name}.tif"
+    the_band.rio.to_raster(outfile)
+the_band
+
+# %%
+pal = copy(plt.get_cmap("Greys_r"))
+pal.set_bad("0.75")  # 75% grey for out-of-map cells
+pal.set_over("w")  # color cells > vmax red
+pal.set_under("k")  # color cells < vmin black
+vmin = 0.0  #anything under this is colored black
+vmax = 0.8  #anything over this is colored red
+from matplotlib.colors import Normalize
+the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
+
+# %%
+fig, ax = plt.subplots(1,1, figsize=(10,10))
+the_band.plot(ax=ax, cmap=pal, norm = the_norm)
+ax.set_title(f"Landsat band {band_name}")

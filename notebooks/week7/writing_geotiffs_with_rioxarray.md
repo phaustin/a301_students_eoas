@@ -31,9 +31,24 @@ Below we read the geotiff back in as an xarray Dataset, make a plot, and write i
 
 +++
 
-## Reading in the geotiff to a DataArray
+## xarray introduction
 
-rioxarray uses rasterio to handle the gis attributes like the map projection and affine_transform
+An [xarray](https://foundations.projectpythia.org/core/xarray/xarray-intro.html) is a python container that wraps a numpy array.  It adds some additional features:
+
+- the_array.data:  the original numpy array (in our case, the raster)
+- the_array.dims:  named dimensions for the array, for example a 3 dimensional remote sensing DataArray might have dimensions named ["channel","lons","lats"] or ["band","y","x"]
+- the_array.coords: the coordinates for each dimension.  In our case the lons and lats coordinates of the center of each pixel, and the band numbers.
+- the_array.attrs:  a dictionary of keys and values for metadata -- in our case this would be all the geotiff tags
+
+
++++
+
+## rioxarray
+
+The [rioxarray](https://corteva.github.io/rioxarray/stable/getting_started/getting_started.html) library is an xarray plugin that 
+uses rasterio to handle the gis attributes like the map projection and affine_transform and passes data back and forth
+between rasterio and xarray.  In the cells below we open the geotiff we wrote in {ref}`week6:geotiffs` and read it in as an
+xarray.DataArray using rasterio.  We'll print out data, dims, coords, and attrs and gis attributes like the crs and the affine_transform
 
 ```{code-cell} ipython3
 from copy import copy
@@ -47,58 +62,87 @@ the_tif  = a301_lib.data_share / "pha/wv_ir_5km.tif"
 xds = rioxarray.open_rasterio(the_tif)
 ```
 
-## DataArray attributes and coordinates
+## Anatomy of a rioxarray
+
+Here are some of the import attributes of a rioxarray
 
 +++
 
-If you look at the coordnates below, you can see that x and y are the map coords for the center of each pixel.
-x,y values for the center of each pixel.  These same coordinates are also written out as pandas indexes
-for [compatibility with pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html)
+### The raster data
 
 ```{code-cell} ipython3
-xds
+xds.data.shape, xds.data.dtype, type(xds.data)
 ```
 
-## Getting GIS metadata from rasterio
+### The named dimensions
 
-In this section we'll extract the information we need to put the raster on a map.  rioxarray has access to many of the rasterio methods via the xds.rio shortcut.
+```{code-cell} ipython3
+xds.dims
+```
+
+### The pixel center coordinates
+
+These pixel centers are given in the map projection coordinates
+
+```{code-cell} ipython3
+xds.coords
+```
+
+### The geotiff tags
+
+```{code-cell} ipython3
+print(f"{type(xds.attrs)=}\n\n{xds.attrs=}")
+```
+
+### Rasterio specific metadata
+
+There are also rasterio specific attributes that can be obtained using `xds.rio`
 
 +++
 
-### Getting the tags/attributes
-
-The `attrs` attribute returns the tags as a dictionary.
+#### The coordinate reference system
 
 ```{code-cell} ipython3
-xds.attrs
+xds.rio.crs
 ```
 
-### getting the affine transform
-
-To get the transform and the crs we need to go through the `rio` attribute, which was added to the DataArray when we imported `rioxarray`
+#### The affine transform
 
 ```{code-cell} ipython3
-affine_transform = xds.rio.transform()
-affine_transform
+xds.rio.transform()
 ```
 
-### getting coordinate reference system
-
-rioxarray uses the rasterio crs, which it represents as well known text (wkt)
-
 ```{code-cell} ipython3
-rio_crs= xds.rio.crs
-print(f"{rio_crs=}\n\n")
+out = xds.rio.transform()
+out.f
 ```
 
-### reading the raster
+#### The raster bounds (or extent)
 
-To get the numpy array out of the DataArray, we can use standard numpy indexing, or there's a `to_numpy` method if we want to change the dtype, assign missing values etc.
-Note that the raster array is three dimensional, so that it can hold multiple bands.  Since we are only working with 1 band, we can
-use the `squeeze` method to make it two dimensional.
+This is ll_x, ur_x, ll_y, ur_y in map coordinates
 
 ```{code-cell} ipython3
-wv_raster = xds[...]
+xds.rio.bounds()
+```
+
+#### Image width, height
+
+```{code-cell} ipython3
+xds.rio.width, xds.rio.height
+```
+
+#### x and y dimension names
+
+```{code-cell} ipython3
+xds.rio.x_dim, xds.rio.y_dim
+```
+
+## Reading the raster
+
+Since we only have one channel, it's simpler to just convert the raster to 2 dimensions using numpy's `squeeze` method
+
+```{code-cell} ipython3
+wv_raster = xds.data
 print(f"{wv_raster.shape=}")
 #
 # squeeze out the unneeded dimension
@@ -124,8 +168,8 @@ to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.
 
 ```{code-cell} ipython3
 nrows, ncols = wv_raster.shape
-ll_x, ll_y = affine_transform*(0,nrows+1)
-ur_x, ur_y = affine_transform*(ncols+1,0)
+ll_x, ll_y = xds.rio.transform()*(0,nrows+1)
+ur_x, ur_y = xds.rio.transform()*(ncols+1,0)
 extent = (ll_x,ur_x, ll_y, ur_y)
 extent
 ```
@@ -152,8 +196,12 @@ the cartopy crs with bounds included.
 
 ```{code-cell} ipython3
 from pyresample.utils.cartopy import Projection
-cartopy_crs = Projection(rio_crs, bounds=extent)
+cartopy_crs = Projection(xds.rio.crs, bounds=extent)
 cartopy_crs.bounds
+```
+
+```{code-cell} ipython3
+cartopy_crs
 ```
 
 ### Copy code from `week6/wv_resample.md`
@@ -193,10 +241,10 @@ fig.colorbar(cs, extend="both");
 
 ### Quick plots with xarray
 
-If you don't need the cartopy map, then xarray can handle the plot setup for you:
+If you don't need the cartopy map, then xarray can handle the plot setup for you using the `plot` wrapper that calls matplotlib to do the plotting.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(1,1, figsize=(10,10))
+fig2, ax = plt.subplots(1,1, figsize=(10,10))
 xds.plot(ax=ax, norm=the_norm, cmap=pal)
 ax.set(title="wv ir 5km using rioxarray");
 ```
@@ -212,9 +260,27 @@ tags=dict(label = "ir_wv -- rioxarray (cm/m^2)")
 xds.rio.to_raster(the_tif,tags=tags)
 ```
 
-### Read it back in to check
+## Writing a quick-look png
+
+You can also matplotlib save the image as a png file for browsing
+
+```{code-cell} ipython3
+from skimage.io import imsave, imread
+png_file = a301_lib.data_share / "pha/wv_ir_5km_rioxarray.png"
+```
+
+```{code-cell} ipython3
+fig.savefig(png_file)
+```
+
+### Read the geotif back in to check
 
 ```{code-cell} ipython3
 xds = rioxarray.open_rasterio(the_tif)
 xds.attrs
 ```
+
+## Summary
+
+rioxarray provides a well-designed container that can hold a raster image along with all of the gis attributes and geotiff tags.  It has become
+a standard way of working with geotiffs, and we'll use it extensively going forward.
