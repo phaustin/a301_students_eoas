@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -21,9 +21,15 @@ In this notebook, we'll first create an xarray using the `wv_ir_5km.tif` and use
 the numpy array, affine transform, and crs.
 
 The module that we'll use for this is called [the rasterio xarray extension](https://corteva.github.io/rioxarray/html/readme.html) or rioxarray.  It provides a natural
-way to read and write geotiffs, and to clip, merge and reproject rasters.  Using rioxarray, we can eliminate about 80% of the boilerplate of working with raster data.
+way to read and write geotiffs, and to clip, merge and reproject rasters.  Using rioxarray, we can eliminate about 80% of the boilerplate of working with raster data.  
 
-Below we read the geotiff back in as an xarray Dataset, make a plot, and write it out as a new geotiff.
+In this notebook we:
+
+1) Go over the components of an xarray container (a DataArray)
+2) Read in a water vapor geotiff and plot it with cartopy
+3) Write the DataArray back out as a geotiff
+
+You'll need to do `mamba install rioxarray` to bring in the rioxarray extension
 
 +++
 
@@ -257,7 +263,7 @@ band_xarray.rio.to_raster(the_tif,tags=tags)
 
 ## Writing a quick-look png
 
-You can also matplotlib save the image as a png file for browsing
+You can also use matplotlib to save the image as a png file for browsing
 
 ```{code-cell} ipython3
 png_file = a301_lib.data_share / "pha/wv_ir_5km_rioxarray.png"

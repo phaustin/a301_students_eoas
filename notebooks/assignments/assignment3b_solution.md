@@ -7,15 +7,13 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.4
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 toc-autonumbering: true
 ---
-
-+++ 
 
 (assign3b_solution)=
 # Assignment 3b -- Solution
@@ -28,7 +26,6 @@ toc-autonumbering: true
    you will need to mask the brightness temperature pixels so that only pixels which also have column water vapor are
    plotted
 4) comment on the correlation you see, if any
-
 
 ```{code-cell} ipython3
 :trusted: true
@@ -54,9 +51,6 @@ from rad_lib.radiation import radiance_invert
 
 from sat_lib.mapping import area_def_from_dict
 ```
-
-
-+++
 
 ## Read in the channel 31 and 32 radiances and the 1 km MYD03 lons/lats
 
@@ -294,4 +288,4 @@ If you find a correlation, how does it compare with what you would expect for th
 
 Answer:  Channel 32 has more water vapor absorption, so increasing water vapor content increases the absorption in Channel 31.  Because the vapor is colder than the surface,'
 emission to space is reduced, and the channel 31 brightness temperature is lower than
-the surface temperature as seen in the clearer Channel 3..  This explains the negative values, and the fact that the negative magnitude becomes larger at large vapor concentrations.  There's a lot of scatter, however.
+the surface temperature as seen in the clearer Channel 3..  This explains the negative values, and the fact that the negative magnitude becomes larger at large vapor concentrations.  There's a lot of scatter, however and the BTD rapidily becomes independent of water vapor for moister grid cells
