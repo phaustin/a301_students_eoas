@@ -32,7 +32,7 @@ import a301_lib
 
 ```{code-cell} ipython3
 band_name = 'B05'
-infile = a301_lib.data_share / f"pha/vancouver_landsat8_{band_name}.tif"
+infile = a301_lib.data_share / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
 the_band = rioxarray.open_rasterio(infile,masked=True) 
 the_band
 ```

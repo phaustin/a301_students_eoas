@@ -33,3 +33,9 @@
 * {ref}`week6:scale_heights`
 * {ref}`week6:weighting_funs`
 * {ref}`week6:geotiffs`
+
+## Week 7
+
+* {ref}`week7:geotiff_xarray`
+* {ref}`week7:hls`
+* {ref}`week7:zoom_landsat`

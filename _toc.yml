@@ -50,6 +50,12 @@ parts:
     - file: notebooks/week6/hydrostatic_balance.md
     - file: notebooks/week6/weighting_functions.md
     - file: notebooks/week6/writing_geotiffs.md
+  - caption: Week 7
+    chapters:
+    - file: notebooks/week7/week7_topics.md
+    - file: notebooks/week7/writing_geotiffs_with_rioxarray.md
+    - file: notebooks/week7/get_nasa_bands.md
+    - file: notebooks/week7/zoom_landsat.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
@@ -60,6 +66,7 @@ parts:
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/mid_term_reviewI.rst
+    - file: notebooks/midterm/mid_term_reviewI_solutions.rst
     - file: notebooks/midterm/mid_term_reviewII.rst
   - caption: References
     chapters:

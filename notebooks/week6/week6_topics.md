@@ -8,8 +8,6 @@
 
 * Use the Schwartzchild equation (Stull 8.5) to retrieve temperaure and vapor profiles with height
 
-* Understand how radiance profiles can be used to estimate flux with the diffusivity approximation
-
 * Work with raster images using the affine transform
 
 * Write out regridded files as geotifs

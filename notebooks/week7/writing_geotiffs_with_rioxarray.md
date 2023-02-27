@@ -9,13 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-toc-autonumbering: true
-toc-showmarkdowntxt: false
 ---
 
-+++ {"tags": []}
-
-(week6:geotiff_xarray)=
+(week7:geotiff_xarray)=
 # Using xarray to work with geotiffs
 
 In the week6 {ref}`week6:geotiffs` notebook we wrote a geotiff file for the 5km water vapor data resampled at 5500 x 5500 m on a Lambert aziumthal crs.  Suppose we want to
