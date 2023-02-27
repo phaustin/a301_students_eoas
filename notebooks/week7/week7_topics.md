@@ -27,6 +27,14 @@
 
 ## Week 7 topics for Monday
 
+### Midterm coverage
+
+* Schwartzchild equation
+* Beers law, absorptivity, emissivity, transmissivity
+* calculating optical depth
+* solid angle
+* Calculating flux, radiance, power at satellite
+
 * {ref}`mid_review1_sol`
 * {ref}`assign3b_solution`
 * {ref}`week7:geotiff_xarray`
