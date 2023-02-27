@@ -2,13 +2,13 @@
 
 ## Learning goals
 
-- Friday midterm practice
+- Review Assignment 3b solution
+
+- Review Friday midterm practice solutions
 
 - Introduction to using rasterio and xarray to manage geotiff data
 
-- Introduction to the Landsat/Sentinel satellites
-
-- Using xarray to clip/zoom a region within a geotiff
+- Wednesday: Introduction to Landsat and Sentinel data
 
 ## At the start of class
 
@@ -29,3 +29,4 @@
 
 * {ref}`mid_review1_sol`
 * {ref}`assign3b_solution`
+* {ref}`week7:geotiff_xarray`
