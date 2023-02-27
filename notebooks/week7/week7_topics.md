@@ -38,3 +38,13 @@
 * {ref}`mid_review1_sol`
 * {ref}`assign3b_solution`
 * {ref}`week7:geotiff_xarray`
+
+### For Wednesday
+
+* Midterm part II
+* Read these links about Landsat and Sentinel
+  - https://en.wikipedia.org/wiki/Landsat_program
+  - https://en.wikipedia.org/wiki/Sentinel-2
+  - https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/
+  - https://earthobservatory.nasa.gov/blogs/earthmatters/2021/05/17/data-in-harmony/
+  
