@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -118,8 +118,7 @@ os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 ```{code-cell} ipython3
 the_band_href = assets[band_name].href
 the_band = rioxarray.open_rasterio(the_band_href,masked=True)
-masked_raster = the_band.where(the_band > 0)
-the_raster = masked_raster[...].squeeze()
+the_raster = the_band.squeeze()
 the_raster = the_raster*the_band.scale_factor
 the_band
 ```
@@ -157,6 +156,6 @@ the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1,1, figsize=(10,10))
-the_band.plot(ax=ax, cmap=pal, norm = the_norm)
+the_raster.plot(ax=ax, cmap=pal, norm = the_norm)
 ax.set_title(f"Landsat band {band_name}")
 ```
