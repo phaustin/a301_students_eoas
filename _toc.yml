@@ -68,6 +68,7 @@ parts:
     - file: notebooks/midterm/mid_term_reviewI.rst
     - file: notebooks/midterm/mid_term_reviewI_solutions.rst
     - file: notebooks/midterm/mid_term_reviewII.rst
+    - file: notebooks/midterm/mid_term_reviewII_solutions.rst
   - caption: References
     chapters:
     - file: notebooks/assignments.md

@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -47,13 +47,15 @@ If you're working on a Mac latop, you'll also need to do:
 import numpy
 from pathlib  import Path
 import inspect
-from pystac_client import Client
-from shapely.geometry import Point
+
 from matplotlib import pyplot as plt
 import numpy as np
 from copy import copy
 
 import rioxarray
+from pystac_client import Client
+from shapely.geometry import Point
+import a301_lib
 ```
 
 ##  Doing an image search using pystac_client
@@ -85,12 +87,15 @@ client = Client.open(cmr_api_url)
 
 ### setup the search
 
+The client takes the search parameters as the following keywords:
+
 ```{code-cell} ipython3
 search = client.search(
     collections=["HLSL30.v2.0"],
     intersects=vancouver,
     datetime= june_2015
 ) 
+search
 ```
 
 ### get the metadata for search items
@@ -117,6 +122,8 @@ There are also geotiffs for the
 
 and a jpg image file called 'browse' which is a 1000 x 1000 pixel true color image for the scene.
 
+The June 14 scene was taken by Landsat -- Landsat filenames begin with HLS.L30, Sentinel with HLS.S30.
+
 ```{code-cell} ipython3
 june14_scene = items[1]
 june14_scene.assets
@@ -141,7 +148,7 @@ ax.set_title('June 14, 2015, Landsat 8');
 ## Saving the Band5 geotiff
 
 Landsat Band5 in the near-infrared spans wavelengths between  0.845–0.885 $\mu m$.  This is a wavelength region where vegetation is very reflective,
-because the leafs want to absorb red photons for photosynthesis and reflect slightly longer photons so they don't get absorbed and 
+because the leaves want to absorb red photons for photosynthesis and reflect slightly longer photons so they don't get absorbed and 
 raise the leaf temperature.  This difference between red (Band4) and near-infrared (Band 5) is called the ["red edge"](https://agrio.app/Red-Edge-reflectance-monitoring-for-early-plant-stress-detection/).  
 
 If you have managed to get your earthdata login into the `~/.netrc` file you should be able to download and save band 5 as shown below:
@@ -166,37 +173,42 @@ os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 The next cell reads in the raster.  By setting `masked=True` we are telling rasterio to look up the `_FillValue` tag in the
 geotiff, and replace all pixels that have that value to `np.nan`.
 
-```{code-cell} ipython3
-the_band_href
-```
+After we've got the masked image, we create the raster by multiplying by the `scale_factor`
 
 ```{code-cell} ipython3
-the_band_href = june14_scene.assets[band_name].href
-the_band = rioxarray.open_rasterio(the_band_href,masked=True)
-the_raster = the_band.squeeze()
-the_raster = the_raster*the_band.scale_factor
-the_band
+june14_band5 = rioxarray.open_rasterio(june14_scene.assets['B05'].href, masked=True)
+june14_raster = june14_band5.squeeze()
+june14_raster = june14_raster*june14_band5.scale_factor
+june14_raster
 ```
 
-```{code-cell} ipython3
-the_band.to_numpy()
-```
+Note that scaling the image removed all the attributes from the xarray.
+They are still there in the original, however
 
 ```{code-cell} ipython3
-the_raster
+june14_band5
 ```
 
+### Histogram the raster
+
+Make sure the scaled band5 reflectance is in the range 0-1
+
 ```{code-cell} ipython3
-the_raster.plot.hist()
+june14_raster.plot.hist();
 ```
+
+### Write out the raster as a geotiff
+
+Save the original 
 
 ```{code-cell} ipython3
 writeit=True
 if writeit:
     outfile = a301_lib.data_share / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
-    the_band.rio.to_raster(outfile)
-the_band
+    june14_band5.rio.to_raster(outfile)
 ```
+
+### Plot it using a grey palette
 
 ```{code-cell} ipython3
 pal = copy(plt.get_cmap("Greys_r"))
@@ -211,6 +223,15 @@ the_norm = Normalize(vmin=vmin, vmax=vmax, clip=False)
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1,1, figsize=(10,10))
-the_raster.plot(ax=ax, cmap=pal, norm = the_norm)
-ax.set_title(f"Landsat band {band_name}")
+june14_raster.plot(ax=ax, cmap=pal, norm = the_norm)
+ax.set_title(f"Landsat band {band_name}");
 ```
+
+## What's next
+
++++
+
+Now that we can get landsat and sentinel scenes, we need to be able to 
+subset to a particular part of the image, apply the cloud mask to remove cloudy
+pixels and use channel ratios to infer surface properties.  That's the topic for the
+next few notebooks

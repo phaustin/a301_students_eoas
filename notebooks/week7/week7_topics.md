@@ -40,13 +40,17 @@
 * {ref}`assign3b_solution`
 * {ref}`week7:geotiff_xarray`
 
-### For Wednesday
+### Week 7 topics for Wednesday
 
-* Midterm part II  practice
+* {ref}`mid_review2_sols`
+* [Equation sheet from previous midterm](https://drive.google.com/file/d/1vzFhERy1thQ80gpiInWQJFs2ipFKYvoZ/view?)
+
 * Read these links about Landsat and Sentinel
   - [landsat program](https://en.wikipedia.org/wiki/Landsat_program)
   - [sentinel program](https://en.wikipedia.org/wiki/Sentinel-2)
   - [landsat bands](https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/)
   - [NASA hls program](https://earthobservatory.nasa.gov/blogs/earthmatters/2021/05/17/data-in-harmony/)
   
-  
+* Go over {ref}`week7:hls` with your own landsat image.
+
+
