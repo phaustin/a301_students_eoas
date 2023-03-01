@@ -35,7 +35,7 @@
 
 * Bookmark this cheatsheet:  [https://www.guru99.com/linux-commands-cheat-sheet.html#1](https://www.guru99.com/linux-commands-cheat-sheet.html#1)
 
- * Mapping and resampling:  {ref}`cartopy_resample_ch30`
+ * Mapping and resampling:  {ref}`week5:resample`
 
 ## For Wednesday
 

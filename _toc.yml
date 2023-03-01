@@ -61,8 +61,8 @@ parts:
     - file: notebooks/assignments/assign1_handin_solution.md
     - file: notebooks/assignments/assign2a_solution.md
     - file: notebooks/assignments/assign2b_solution.md
-    - file: notebooks/assignments/assign3a_solution.md
-    - file: notebooks/assignments/assign3a_solution.md
+    - file: notebooks/assignments/assignment3a_solution.md
+    - file: notebooks/assignments/assignment3b_solution.md
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/mid_term_reviewI.rst
