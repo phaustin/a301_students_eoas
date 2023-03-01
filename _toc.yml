@@ -54,7 +54,7 @@ parts:
     chapters:
     - file: notebooks/week7/week7_topics.md
     - file: notebooks/week7/writing_geotiffs_with_rioxarray.md
-    - file: notebooks/week7/get_nasa_bands.md
+    - file: notebooks/week7/get_landsat_bands.md
     - file: notebooks/week7/zoom_landsat.md
   - caption: Assignments
     chapters:
