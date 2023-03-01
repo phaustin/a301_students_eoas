@@ -204,8 +204,10 @@ Save the original
 ```{code-cell} ipython3
 writeit=True
 if writeit:
-    outfile = a301_lib.data_share / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
-    june14_band5.rio.to_raster(outfile)
+   landsat_dir = a301_lib.data_share / "pha/landsat"
+   landsat_dir.mkdir(exist_ok=True, parents=True)
+   outfile = landsat_dir / "vancouver_landsat8_{band_name}.tif"
+   june14_band5.rio.to_raster(outfile)
 ```
 
 ### Plot it using a grey palette
