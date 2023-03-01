@@ -34,6 +34,7 @@
 * calculating optical depth
 * solid angle
 * Calculating flux, radiance, power at satellite
+* [Midterm planck diagram](https://www.dropbox.com/s/kt9jx98b6p3pw94/planck_midterm.pdf?dl=0)
 
 * {ref}`mid_review1_sol`
 * {ref}`assign3b_solution`
@@ -41,10 +42,11 @@
 
 ### For Wednesday
 
-* Midterm part II
+* Midterm part II  practice
 * Read these links about Landsat and Sentinel
-  - https://en.wikipedia.org/wiki/Landsat_program
-  - https://en.wikipedia.org/wiki/Sentinel-2
-  - https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/
-  - https://earthobservatory.nasa.gov/blogs/earthmatters/2021/05/17/data-in-harmony/
+  - [landsat program](https://en.wikipedia.org/wiki/Landsat_program)
+  - [sentinel program](https://en.wikipedia.org/wiki/Sentinel-2)
+  - [landsat bands](https://landsat.gsfc.nasa.gov/satellites/landsat-8/landsat-8-bands/)
+  - [NASA hls program](https://earthobservatory.nasa.gov/blogs/earthmatters/2021/05/17/data-in-harmony/)
+  
   
