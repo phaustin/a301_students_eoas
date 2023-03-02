@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -255,8 +255,6 @@ df[0]
 Knowing now that we can pull out one of our columns as a series with its label, and using our experience interacting with the `Series` `df["Nino34"]`, we can chain our brackets to pull out any value from any of our columns in `df`.
 
 ```{code-cell} ipython3
-:tags: []
-
 df["Nino34"]["1982-04-01"]
 ```
 

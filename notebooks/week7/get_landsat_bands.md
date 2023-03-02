@@ -1,7 +1,5 @@
 ---
 jupytext:
-  cell_metadata_filter: -all
-  notebook_metadata_filter: -all
   text_representation:
     extension: .md
     format_name: myst
@@ -11,7 +9,6 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-toc-autonumbering: true
 ---
 
 (week7:hls)=
@@ -206,7 +203,7 @@ writeit=True
 if writeit:
    landsat_dir = a301_lib.data_share / "pha/landsat"
    landsat_dir.mkdir(exist_ok=True, parents=True)
-   outfile = landsat_dir / "vancouver_landsat8_{band_name}.tif"
+   outfile = landsat_dir / f"vancouver_landsat8_{band_name}.tif"
    june14_band5.rio.to_raster(outfile)
 ```
 

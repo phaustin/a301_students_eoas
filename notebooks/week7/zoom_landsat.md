@@ -1,17 +1,14 @@
 ---
 jupytext:
-  cell_metadata_filter: -all
-  notebook_metadata_filter: -all
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-toc-autonumbering: true
 ---
 
 (week7:zoom_landsat)=
@@ -75,7 +72,7 @@ cartopy_crs = Projection(the_band.rio.crs, the_band.rio.bounds())
 cartopy_crs
 ```
 
-## Clip the raster to a 100 $km^2$ region centered on UBC
+## Clip the raster to a 120 $km^2$ region centered on UBC
 
 ```{code-cell} ipython3
 import cartopy.crs as ccrs
@@ -89,6 +86,10 @@ van_x, van_y = cartopy_crs.transform_point(ubc_lon,ubc_lat,ccrs.Geodetic())
 van_x, van_y
 ```
 
+### make the bounding box
+
+go 5 km on each side of the center in the x dimension, and 6 km above and below in the y direction
+
 ```{code-cell} ipython3
 ll_x = van_x - 5000
 ll_y = van_y - 6000
@@ -96,14 +97,21 @@ ur_x = van_x + 5000
 ur_y = van_y + 6000
 ```
 
-```{code-cell} ipython3
-ll_x, ll_y, ur_x, ur_y
-```
+bounding_box = ll_x, ll_y, ur_x, ur_y
+
++++
+
+### use a list expansion (*boundib_box) to pass the box
+
+Recall in week 5 we went over [list expansion](https://note.nkmk.me/en/python-argument-expand/).
+Use it here to pass 4 expanded list members to the `clip_box` function
 
 ```{code-cell} ipython3
-ubc = masked_band.rio.clip_box(ll_x, ll_y, ur_x, ur_y)
+ubc = masked_band.rio.clip_box(*bounding_box)
 ubc
 ```
+
+### Check the xarray to see if it's correct
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1,1, figsize=(10,10))
@@ -152,6 +160,11 @@ coords = affine_to_coords(new_transform,width,height)
 
 ### create the data array
 
+Write out the geotiff -- for the attrs, use the full set of attributes that are attached to the `the_band` xarray.
+
+`inplace=True` means overwrite the `clipped_ds` xarray instead of returning a new array.  This can
+save memory for large arrays.
+
 ```{code-cell} ipython3
 clipped_ds=xarray.DataArray(ubc.data,coords=coords,dims=ubc.dims,attrs=the_band.attrs)
 clipped_ds.rio.write_crs(the_band.rio.crs, inplace=True)
@@ -166,8 +179,14 @@ clipped_ds.rio.to_raster(outfile)
 ```
 
 ```{code-cell} ipython3
+clipped_ds
+```
+
+### Read in the geotiff and plot to check
+
+```{code-cell} ipython3
 test_ds = rioxarray.open_rasterio(outfile)
-fig, ax = plt.subplots(1,1, figsize=(10,10))
-xds.plot(ax=ax, norm=the_norm, cmap=pal)
+fig, ax= plt.subplots(1,1, figsize=(10,10))
+test_ds.plot(ax=ax, norm=the_norm, cmap=pal)
 ax.set(title="wv ir 5km using rioxarray");
 ```
