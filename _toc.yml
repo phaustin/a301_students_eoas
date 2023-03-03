@@ -55,7 +55,10 @@ parts:
     - file: notebooks/week7/week7_topics.md
     - file: notebooks/week7/writing_geotiffs_with_rioxarray.md
     - file: notebooks/week7/get_landsat_bands.md
-    - file: notebooks/week7/zoom_landsat.md
+  - caption: Week 8
+    chapters:
+    - file: notebooks/week8/fetch_stac_metadata.md
+    - file: notebooks/week8/zoom_landsat.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md

@@ -38,4 +38,8 @@
 
 * {ref}`week7:geotiff_xarray`
 * {ref}`week7:hls`
-* {ref}`week7:zoom_landsat`
+
+## Week 8
+
+* {ref}`week8:fetch`
+* {ref}`week8:zoom_landsat`

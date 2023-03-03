@@ -42,12 +42,12 @@ def main():
     except FileNotFoundError:
         homeDir = os.path.expanduser("~")
         Popen('touch {0}.netrc | chmod og-rw {0}.netrc | echo machine {1} >> {0}.netrc'.format(homeDir + os.sep, urs), shell=True)
-        Popen('echo login {} >> {}.netrc'.format(getpass(prompt=prompts[0]), homeDir + os.sep), shell=True)
-        Popen('echo password {} >> {}.netrc'.format(getpass(prompt=prompts[1]), homeDir + os.sep), shell=True)
+        Popen('echo login {} >> {}.netrc'.format(input(prompts[0]), homeDir + os.sep), shell=True)
+        Popen('echo password {} >> {}.netrc'.format(input(prompts[1]), homeDir + os.sep), shell=True)
 
     # Determine OS and edit netrc file if it exists but is not set up for NASA Earthdata Login
     except TypeError:
         homeDir = os.path.expanduser("~")
         Popen('echo machine {1} >> {0}.netrc'.format(homeDir + os.sep, urs), shell=True)
-        Popen('echo login {} >> {}.netrc'.format(getpass(prompt=prompts[0]), homeDir + os.sep), shell=True)
-        Popen('echo password {} >> {}.netrc'.format(getpass(prompt=prompts[1]), homeDir + os.sep), shell=True)
+        Popen('echo login {} >> {}.netrc'.format(input(prompts[0]), homeDir + os.sep), shell=True)
+        Popen('echo password {} >> {}.netrc'.format(input(prompts[1]), homeDir + os.sep), shell=True)

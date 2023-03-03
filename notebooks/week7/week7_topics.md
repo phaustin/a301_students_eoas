@@ -53,4 +53,11 @@
   
 * Go over {ref}`week7:hls` with your own landsat image.
 
+### Week 7 topics for Friday
+
+* Midterm
+* For Monday -- review {ref}`week6:pandas_intro` and make sure {ref}`week8:fetch` works
+  for your Landsat location
+  
+  
 
