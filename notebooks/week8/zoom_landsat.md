@@ -11,10 +11,13 @@ kernelspec:
   name: python3
 ---
 
++++ {"tags": [], "user_expressions": []}
+
 (week8:zoom_landsat)=
 # Using rioaxarray to zoom a landsat image
 
-In this notebook we read in a landsat image geotiff for Band 5, which is in the near infrared:
+In this notebook we read in the image we found in {ref}`week7:hls` and clip a smaller portion
+that's easier to work with.
 
 ```{code-cell} ipython3
 import numpy
@@ -27,6 +30,12 @@ import xarray
 import a301_lib
 ```
 
++++ {"tags": [], "user_expressions": []}
+
+## Read in the geotiff with rioxarray
+
+We set `masked=True` so that the missing pixels set to _FillValue are replaced by np.nan floating point values
+
 ```{code-cell} ipython3
 band_name = 'B05'
 infile = a301_lib.data_share / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
@@ -34,8 +43,15 @@ the_band = rioxarray.open_rasterio(infile,masked=True)
 the_band
 ```
 
++++ {"tags": [], "user_expressions": []}
+
+## Scale and histogram the scene using the `scale_factor`
+
+The data are stored as integer values, we need to divide by 10,000 to convert
+to surface reflectivities.  Make sure the band 5 values look reasonable
+
 ```{code-cell} ipython3
-np.sum(np.isnan(the_band.data))
+the_band.scale_factor
 ```
 
 ```{code-cell} ipython3
@@ -44,8 +60,16 @@ masked_band = scaled_band
 ```
 
 ```{code-cell} ipython3
-masked_band.plot.hist()
+fig, ax = plt.subplots(1,1)
+masked_band.plot.hist(ax = ax)
+ax.set(title="band 5 reflectivities");
 ```
+
++++ {"tags": [], "user_expressions": []}
+
+### Use imshow to make a grayscale image
+
+Looks familiar
 
 ```{code-cell} ipython3
 pal = copy(plt.get_cmap("Greys_r"))
@@ -64,7 +88,11 @@ masked_band.plot(ax=ax, cmap=pal, norm = the_norm)
 ax.set_title(f"Landsat band {band_name}")
 ```
 
++++ {"tags": [], "user_expressions": []}
+
 ## Create the cartopy map projection
+
+As in {ref}`week7:hls` we're going to need to add the image bounds to the cartopy crs
 
 ```{code-cell} ipython3
 from pyresample.utils.cartopy import Projection
@@ -72,7 +100,13 @@ cartopy_crs = Projection(the_band.rio.crs, the_band.rio.bounds())
 cartopy_crs
 ```
 
-## Clip the raster to a 120 $km^2$ region centered on UBC
++++ {"tags": [], "user_expressions": []}
+
+## Clip the raster to a 7 x 8 $km^2$ region centered on UBC
+
+In the cells below we get the x,y corners of subset of the scene that
+is centered on ubc and extends 8 km north/south and 7 km east/west.  To do this
+we transform the lon,lat coordinate into map coordinates, which are given in meters.
 
 ```{code-cell} ipython3
 import cartopy.crs as ccrs
@@ -86,50 +120,64 @@ van_x, van_y = cartopy_crs.transform_point(ubc_lon,ubc_lat,ccrs.Geodetic())
 van_x, van_y
 ```
 
++++ {"tags": [], "user_expressions": []}
+
 ### make the bounding box
 
-go 5 km on each side of the center in the x dimension, and 6 km above and below in the y direction
+crop this big scene so that we've got mostly Point Grey in the image.  We make a box that extends
+2 km west, 5 km east, 3 km north and 5 km sounth of the center of UBC
 
 ```{code-cell} ipython3
-ll_x = van_x - 5000
+ll_x = van_x - 2000
 ll_y = van_y - 6000
 ur_x = van_x + 5000
-ur_y = van_y + 6000
+ur_y = van_y + 3000
 ```
 
+```{code-cell} ipython3
 bounding_box = ll_x, ll_y, ur_x, ur_y
+```
 
-+++
++++ {"tags": [], "user_expressions": []}
 
-### use a list expansion (*boundib_box) to pass the box
+### use a list expansion (*bounding_box) to pass the box
 
 Recall in week 5 we went over [list expansion](https://note.nkmk.me/en/python-argument-expand/).
 Use it here to pass 4 expanded list members to the `clip_box` function
+
+The bounding box clipping takes the image size down from 3660 rows x 3660 columns
+to 301 rows x 234 columns
 
 ```{code-cell} ipython3
 ubc = masked_band.rio.clip_box(*bounding_box)
 ubc
 ```
 
++++ {"tags": [], "user_expressions": []}
+
 ### Check the xarray to see if it's correct
+
+Use rioxarray to make quick check on the clipped scene
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1,1, figsize=(10,10))
 ubc.plot(ax=ax, cmap=pal, norm = the_norm)
-ax.set_title(f"Landsat band {band_name}")
+ax.set_title(f"Landsat band {band_name}");
 ```
+
++++ {"tags": [], "user_expressions": []}
 
 ## Write a new geotiff
 
-To write the clipped image as a geotiff, we need to construct a new DataArray, with data, dims, coords and attrs.
+To write the clipped image as a geotiff, we need to construct a new xarray DataArray, with data, dims, coords and attrs.
 After that is constructed we can use rioxarray to add the affine transform and the crs.
 
-+++
++++ {"tags": [], "user_expressions": []}
 
-### Construct the new affine transform
+### Step 1: Construct the new affine transform
 
 Recall how we constructed the  [affine transform](http://www.perrygeo.com/python-affine-transforms.html) in {ref}`week6:geotiffs`.  The pixel size
-remains the same, but we've moved the upper left corner of the image, and so we need a new for the c and f variables.  Since the image is rectangular in map coords, we can just use the lower left and upper right coordinates
+remains the same, but we've changed the upper left corner of the image, and so we need a new for the c and f components of the transform.  Since the image is rectangular in map coords, we can just use the lower left and upper right coordinates of the bounding box
 for the upper left corner.
 
 ```{code-cell} ipython3
@@ -142,11 +190,13 @@ new_transform = Affine(a,b,c,d,e,f)
 new_transform
 ```
 
-### Construct the new coords
++++ {"tags": [], "user_expressions": []}
+
+### Step 2: Construct the new coords
 
 We need the map coordinates for the pixel x and y dimensions.  We could get these using the affine transform,
 but rioxarray has a utility function that does this, called `affine_to_coords`.  It takes the affine transform
-and the height and width of the raster image and figures out the pixel coordinates.
+and the height and width of the clipped raster image and figures out the pixel coordinates.
 
 ```{code-cell} ipython3
 from rioxarray.rioxarray import affine_to_coords
@@ -158,31 +208,50 @@ band, height, width = ubc.data.shape
 coords = affine_to_coords(new_transform,width,height)
 ```
 
-### create the data array
++++ {"tags": [], "user_expressions": []}
 
-Write out the geotiff -- for the attrs, use the full set of attributes that are attached to the `the_band` xarray.
+### Step 3: create the data array
 
-`inplace=True` means overwrite the `clipped_ds` xarray instead of returning a new array.  This can
-save memory for large arrays.
-
-```{code-cell} ipython3
-clipped_ds=xarray.DataArray(ubc.data,coords=coords,dims=ubc.dims,attrs=the_band.attrs)
-clipped_ds.rio.write_crs(the_band.rio.crs, inplace=True)
-clipped_ds.rio.write_transform(new_transform, inplace=True)
-```
-
-### Write out the geotiff
+Make the xarray DataArray -- for the attrs, copy the full set of attributes that are attached to the `the_band` xarray.
 
 ```{code-cell} ipython3
-outfile = a301_lib.data_share / "pha/week7_clipped_vancouver.tif"
-clipped_ds.rio.to_raster(outfile)
+clipped_ds=xarray.DataArray(ubc.data,coords=coords,
+                            dims=ubc.dims,
+                            attrs=the_band.attrs)
 ```
 
 ```{code-cell} ipython3
 clipped_ds
 ```
 
-### Read in the geotiff and plot to check
++++ {"tags": [], "user_expressions": []}
+
+### Step 4: add the crs and transform
+
+`inplace=True` means overwrite the `clipped_ds` xarray instead of returning a new array.  This can
+save memory for large arrays.
+
+```{code-cell} ipython3
+clipped_ds.rio.write_crs(the_band.rio.crs, inplace=True)
+clipped_ds.rio.write_transform(new_transform, inplace=True);
+```
+
++++ {"user_expressions": []}
+
+### Write out the geotiff
+
+Once we've got the full DataArray, we can write the geotiff out in one line
+
+```{code-cell} ipython3
+outfile = a301_lib.data_share / "pha/week7_clipped_vancouver.tif"
+clipped_ds.rio.to_raster(outfile)
+```
+
++++ {"tags": [], "user_expressions": []}
+
+## Read in the geotiff and plot to check
+
+Double check to make sure we can open the cipped file and read it back in
 
 ```{code-cell} ipython3
 test_ds = rioxarray.open_rasterio(outfile)
