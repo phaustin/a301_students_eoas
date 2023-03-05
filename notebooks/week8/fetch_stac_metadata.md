@@ -4,12 +4,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
+
++++ {"user_expressions": []}
 
 (week8:fetch)=
 # Getting multiple scenes using stac
@@ -36,6 +38,8 @@ from shapely.geometry import Point
 import a301_lib
 ```
 
++++ {"user_expressions": []}
+
 ## Ask for all UBC scenes from 2013 to 2022
 
 ```{code-cell} ipython3
@@ -51,6 +55,8 @@ cmr_api_url = "https://cmr.earthdata.nasa.gov/stac/LPCLOUD"
 client = Client.open(cmr_api_url)
 ```
 
++++ {"user_expressions": []}
+
 ## Start the search
 
 The client takes the search parameters as the following keywords:
@@ -64,6 +70,8 @@ search = client.search(
 search
 ```
 
++++ {"user_expressions": []}
+
 ### get the metadata for search items
 
 This search should find 388 scenes that contain UBC
@@ -72,6 +80,8 @@ This search should find 388 scenes that contain UBC
 items = search.get_all_items()
 print(len(items))
 ```
+
++++ {"user_expressions": []}
 
 ### Put the results into a list of scenes
 
@@ -97,6 +107,8 @@ for index, value in enumerate(items):
 scene_list[0]
 ```
 
++++ {"user_expressions": []}
+
 ## Creating the dataframe
 
 We can make a dataframe from a list of dictionaries, using the `from_records` constructor
@@ -107,6 +119,8 @@ the_df = pd.DataFrame.from_records(scene_list)
 the_df.head()
 ```
 
++++ {"user_expressions": []}
+
 ## Find the low-cloud scenes
 
 We don't have a huge number of scenes, so accept any that have less than 50% cloud cover and hope that UBC isn't under a cloud
@@ -115,6 +129,8 @@ We don't have a huge number of scenes, so accept any that have less than 50% clo
 clear_df = the_df[the_df['cloud_cover'] < 50]
 len(clear_df)
 ```
+
++++ {"user_expressions": []}
 
 ## Add seasons and month columns to the clear_df
 
@@ -137,6 +153,8 @@ def make_seasoncol(row):
 clear_df = clear_df.apply(make_seasoncol,axis=1)
 clear_df.head()
 ```
+
++++ {"user_expressions": []}
 
 ## Separate the seasons with groupby
 
