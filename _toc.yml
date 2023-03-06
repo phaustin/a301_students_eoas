@@ -57,6 +57,7 @@ parts:
     - file: notebooks/week7/get_landsat_bands.md
   - caption: Week 8
     chapters:
+    - file: notebooks/week8/week8_topics.md
     - file: notebooks/week8/fetch_stac_metadata.md
     - file: notebooks/week8/zoom_landsat.md
   - caption: Assignments
@@ -68,9 +69,10 @@ parts:
     - file: notebooks/assignments/assignment3b_solution.md
   - caption: Midterm
     chapters:
+    - file: notebooks/midterm/a301_mid_2022t2_solutions.md
     - file: notebooks/midterm/mid_term_reviewI.rst
-    - file: notebooks/midterm/mid_term_reviewI_solutions.rst
     - file: notebooks/midterm/mid_term_reviewII.rst
+    - file: notebooks/midterm/mid_term_reviewI_solutions.rst
     - file: notebooks/midterm/mid_term_reviewII_solutions.rst
   - caption: References
     chapters:

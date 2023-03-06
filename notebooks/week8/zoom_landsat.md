@@ -11,13 +11,14 @@ kernelspec:
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
-
 (week8:zoom_landsat)=
-# Using rioaxarray to zoom a landsat image
+# Clipping and saving landsat scenes
 
-In this notebook we read in the image we found in {ref}`week7:hls` and clip a smaller portion
-that's easier to work with.
+In this notebook we read in the large (3660 x 3660 pixel) landsat band5 file we downloaded 
+in the {ref}`week7:hls` notebook from week7.  That file is 14 Mbytes, and if we want a couple
+dozen landsat scenes over the course of a decade, it would be good to reduce the file size
+by a factor of 3-4 if possible.  One way to do that is to clip only that part of the scene
+we're interested in, and write the clipped region out as a smaller geoiff.  That's what this notebook does, using the `rioxarray.rio.clip_box` method.
 
 ```{code-cell} ipython3
 import numpy
@@ -32,9 +33,7 @@ import a301_lib
 
 +++ {"tags": [], "user_expressions": []}
 
-## Read in the geotiff with rioxarray
-
-We set `masked=True` so that the missing pixels set to _FillValue are replaced by np.nan floating point values
+## Open the band 5 image and read it in to a DataArray 
 
 ```{code-cell} ipython3
 band_name = 'B05'
@@ -177,7 +176,7 @@ After that is constructed we can use rioxarray to add the affine transform and t
 ### Step 1: Construct the new affine transform
 
 Recall how we constructed the  [affine transform](http://www.perrygeo.com/python-affine-transforms.html) in {ref}`week6:geotiffs`.  The pixel size
-remains the same, but we've changed the upper left corner of the image, and so we need a new for the c and f components of the transform.  Since the image is rectangular in map coords, we can just use the lower left and upper right coordinates of the bounding box
+remains the same, but we've changed the upper left corner of the image, and so we need new corner coordinates for the uperleft corner values c and f of the transform.  Since the image is rectangular in map coords, we can just use the lower left and upper right coordinates of the bounding box
 for the upper left corner.
 
 ```{code-cell} ipython3
@@ -243,7 +242,7 @@ clipped_ds.rio.write_transform(new_transform, inplace=True);
 Once we've got the full DataArray, we can write the geotiff out in one line
 
 ```{code-cell} ipython3
-outfile = a301_lib.data_share / "pha/week7_clipped_vancouver.tif"
+outfile = a301_lib.data_share / "pha/week8_clipped_vancouver.tif"
 clipped_ds.rio.to_raster(outfile)
 ```
 

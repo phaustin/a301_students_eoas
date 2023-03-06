@@ -41,5 +41,6 @@
 
 ## Week 8
 
-* {ref}`week8:fetch`
+* {ref}`mid_2022t2_solutions`
 * {ref}`week8:zoom_landsat`
+* {ref}`week8:fetch`
