@@ -1,4 +1,5 @@
 git+https://github.com/phaustin/a301_students_eoas.git#subdirectory=a301_libraries/a301_lib
 git+https://github.com/phaustin/a301_students_eoas.git#subdirectory=a301_libraries/sat_lib
 git+https://github.com/phaustin/a301_students_eoas.git#subdirectory=a301_libraries/rad_lib
+jupyterlab-myst
 

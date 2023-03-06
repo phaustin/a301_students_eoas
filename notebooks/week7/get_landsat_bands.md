@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 jupytext:
   text_representation:
@@ -11,6 +12,8 @@ kernelspec:
   name: python3
 toc-autonumbering: true
 ---
+=======
+>>>>>>> 13ea29a (add myst)
 
 (week7:hls)=
 # Dowloading Landsat and Sentinel data from NASA
