@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 jupytext:
   text_representation:
@@ -12,8 +11,8 @@ kernelspec:
   name: python3
 toc-autonumbering: true
 ---
-=======
->>>>>>> 13ea29a (add myst)
+
++++ {"user_expressions": []}
 
 (week7:hls)=
 # Dowloading Landsat and Sentinel data from NASA
@@ -59,18 +58,20 @@ from shapely.geometry import Point
 import a301_lib
 ```
 
++++ {"user_expressions": []}
+
 ##  Doing an image search using pystac_client
 
 STAC is an acronym for "Spatio-temporal asset catalog", which is a standard way of cataloging
 GIS resources in the cloud.  A STAC catalog hold metadata, including web addresses, for geotiff
 files like those uploaded by the [NASA harmonized landsat-sentinel project](https://www.earthdata.nasa.gov/learn/articles/hls-cloud-efforts) (HLS) to Amazon Web Services.
 
-+++
++++ {"user_expressions": []}
 
 We get the url for the stac catalog from the [NASA CMR page](https://nasa-openscapes.github.io/2021-Cloud-Hackathon/tutorials/02_Data_Discovery_CMR-STAC_API.html). The HLS project catalog is called "LPCLOUD"  (for land processes cloud and is available at [https://cmr.earthdata.nasa.gov/stac/LPCLOUD](https://cmr.earthdata.nasa.gov/stac/LPCLOUD).  This is called a "stac endpoint" and will receive
 and process requests sent to it by the pystac Client.
 
-+++
++++ {"user_expressions": []}
 
 We'll also need the [shapely](https://towardsdatascience.com/geospatial-adventures-step-1-shapely-e911e4f86361) library to specify a point on the earth that we want to be included in our search. In addition, we need to specify a date range to search.
 
@@ -86,6 +87,8 @@ cmr_api_url = "https://cmr.earthdata.nasa.gov/stac/LPCLOUD"
 client = Client.open(cmr_api_url)
 ```
 
++++ {"user_expressions": []}
+
 ### setup the search
 
 The client takes the search parameters as the following keywords:
@@ -99,6 +102,8 @@ search = client.search(
 search
 ```
 
++++ {"user_expressions": []}
+
 ### get the metadata for search items
 
 This search should find 4 scenes -- 2 of which have 4% cloud cover.
@@ -108,6 +113,8 @@ items = search.get_all_items()
 for index, the_scene in enumerate(items):
     print(f"\n\n{index=}\nproperties: {the_scene.properties}")
 ```
+
++++ {"user_expressions": []}
 
 ### Get the assets for scene 1 (June 14, 2015)
 
@@ -130,6 +137,8 @@ june14_scene = items[1]
 june14_scene.assets
 ```
 
++++ {"user_expressions": []}
+
 ### Download and display the true-color browse image
 
 You can see the browse image by clicking on the asset href above. We can also use rioxarray to download the browse image from its url
@@ -138,6 +147,8 @@ You can see the browse image by clicking on the asset href above. We can also us
 june14_browse = rioxarray.open_rasterio(june14_scene.assets['browse'].href)
 ```
 
++++ {"user_expressions": []}
+
 and we can plot it using imshow
 
 ```{code-cell} ipython3
@@ -145,6 +156,8 @@ fig, ax = plt.subplots(1,1,figsize=(10,10))
 june14_browse.plot.imshow(ax=ax, origin = 'upper')
 ax.set_title('June 14, 2015, Landsat 8');
 ```
+
++++ {"user_expressions": []}
 
 ## Saving the Band5 geotiff
 
@@ -159,6 +172,8 @@ band_name="B05"
 june14_scene.assets[band_name].href
 ```
 
++++ {"user_expressions": []}
+
 ### set the cookiefile
 
 The nasa earthdata site will put an encrypted token into the file `cookies.txt` in the current directory
@@ -168,6 +183,8 @@ import os
 os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
 os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 ```
+
++++ {"user_expressions": []}
 
 ### Read the band 5 raster
 
@@ -183,12 +200,16 @@ june14_raster = june14_raster*june14_band5.scale_factor
 june14_raster
 ```
 
++++ {"user_expressions": []}
+
 Note that scaling the image removed all the attributes from the xarray.
 They are still there in the original, however
 
 ```{code-cell} ipython3
 june14_band5
 ```
+
++++ {"user_expressions": []}
 
 ### Histogram the raster
 
@@ -197,6 +218,8 @@ Make sure the scaled band5 reflectance is in the range 0-1
 ```{code-cell} ipython3
 june14_raster.plot.hist();
 ```
+
++++ {"user_expressions": []}
 
 ### Write out the raster as a geotiff
 
@@ -210,6 +233,8 @@ if writeit:
    outfile = landsat_dir / f"vancouver_landsat8_{band_name}.tif"
    june14_band5.rio.to_raster(outfile)
 ```
+
++++ {"user_expressions": []}
 
 ### Plot it using a grey palette
 
@@ -230,9 +255,11 @@ june14_raster.plot(ax=ax, cmap=pal, norm = the_norm)
 ax.set_title(f"Landsat band {band_name}");
 ```
 
++++ {"user_expressions": []}
+
 ## What's next
 
-+++
++++ {"user_expressions": []}
 
 Now that we can get landsat and sentinel scenes, we need to be able to 
 subset to a particular part of the image, apply the cloud mask to remove cloudy

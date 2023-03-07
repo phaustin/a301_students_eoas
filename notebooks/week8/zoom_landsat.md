@@ -11,6 +11,8 @@ kernelspec:
   name: python3
 ---
 
++++ {"user_expressions": []}
+
 (week8:zoom_landsat)=
 # Clipping and saving landsat scenes
 
@@ -33,11 +35,11 @@ import a301_lib
 
 +++ {"tags": [], "user_expressions": []}
 
-## Open the band 5 image and read it in to a DataArray 
+## Open the band 5 image and read it in to a DataArray
 
 ```{code-cell} ipython3
 band_name = 'B05'
-infile = a301_lib.data_share / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
+infile = a301_lib.sat_data / f"pha/landsat/vancouver_landsat8_{band_name}.tif"
 the_band = rioxarray.open_rasterio(infile,masked=True) 
 the_band
 ```
@@ -242,7 +244,7 @@ clipped_ds.rio.write_transform(new_transform, inplace=True);
 Once we've got the full DataArray, we can write the geotiff out in one line
 
 ```{code-cell} ipython3
-outfile = a301_lib.data_share / "pha/week8_clipped_vancouver.tif"
+outfile = a301_lib.sat_data / "pha/week8_clipped_vancouver.tif"
 clipped_ds.rio.to_raster(outfile)
 ```
 
@@ -257,4 +259,8 @@ test_ds = rioxarray.open_rasterio(outfile)
 fig, ax= plt.subplots(1,1, figsize=(10,10))
 test_ds.plot(ax=ax, norm=the_norm, cmap=pal)
 ax.set(title="wv ir 5km using rioxarray");
+```
+
+```{code-cell} ipython3
+test_ds.rio.bounds()
 ```

@@ -101,6 +101,21 @@ for index, value in enumerate(items):
                       datetime = the_date 
                        )
     scene_list.append(scene_dict)
+    
+```
+
+```{code-cell} ipython3
+import os
+os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
+os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
+```
+
+```{code-cell} ipython3
+test = rioxarray.open_rasterio('https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSL30.020/HLS.L30.T10UDV.2013118T190858.v2.0/HLS.L30.T10UDV.2013118T190858.v2.0.B04.tif')
+```
+
+```{code-cell} ipython3
+test.data
 ```
 
 ```{code-cell} ipython3
@@ -139,19 +154,22 @@ by using the month number -- January-December are months 1-12
 
 ```{code-cell} ipython3
 def make_seasoncol(row):
-    seasons = {'winter':[12,1,2],
-               'spring':[3,4,5],
-               'summer':[6,7,8],
-               'fall':[9,10,11]}
+    seasons = {'djf':[12,1,2],
+               'mam':[3,4,5],
+               'jja':[6,7,8],
+               'son':[9,10,11]}
     for season,months in seasons.items():
         month = row['datetime'].month
         if month in months:
             row['season']=season
+            row['year']= row['datetime'].year
             row['month']= month
+            row['day']= row['datetime'].day
     return row
 
-clear_df = clear_df.apply(make_seasoncol,axis=1)
-clear_df.head()
+new_df = clear_df.apply(make_seasoncol,axis=1)
+new_df = new_df[['scene','cloud_cover','season','year','month','day']]
+new_df.head()
 ```
 
 +++ {"user_expressions": []}
@@ -162,13 +180,12 @@ Below we use the pandas groupby operator https://realpython.com/pandas-groupby/
 to produce a new set of dataframes that all have the same season
 
 ```{code-cell} ipython3
-season_df = clear_df.groupby('season')
+season_df = new_df.groupby(['year','season'])
 season_dict = dict(list(season_df))
-winter_df = season_dict['winter']
-summer_df = season_dict['summer']
-winter_df
+season_dict
 ```
 
 ```{code-cell} ipython3
-summer_df
+season_dict[(2014,'jja')]['cloud_cover']
+season_dict[(2014,'jja')].iloc[2]
 ```
