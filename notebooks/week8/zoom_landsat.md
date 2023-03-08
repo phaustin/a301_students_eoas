@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -33,7 +33,7 @@ import xarray
 import a301_lib
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Open the band 5 image and read it in to a DataArray
 
@@ -44,7 +44,7 @@ the_band = rioxarray.open_rasterio(infile,masked=True)
 the_band
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Scale and histogram the scene using the `scale_factor`
 
@@ -66,7 +66,7 @@ masked_band.plot.hist(ax = ax)
 ax.set(title="band 5 reflectivities");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Use imshow to make a grayscale image
 
@@ -89,7 +89,7 @@ masked_band.plot(ax=ax, cmap=pal, norm = the_norm)
 ax.set_title(f"Landsat band {band_name}")
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Create the cartopy map projection
 
@@ -101,7 +101,7 @@ cartopy_crs = Projection(the_band.rio.crs, the_band.rio.bounds())
 cartopy_crs
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Clip the raster to a 7 x 8 $km^2$ region centered on UBC
 
@@ -121,7 +121,7 @@ van_x, van_y = cartopy_crs.transform_point(ubc_lon,ubc_lat,ccrs.Geodetic())
 van_x, van_y
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### make the bounding box
 
@@ -139,7 +139,7 @@ ur_y = van_y + 3000
 bounding_box = ll_x, ll_y, ur_x, ur_y
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### use a list expansion (*bounding_box) to pass the box
 
@@ -154,7 +154,7 @@ ubc = masked_band.rio.clip_box(*bounding_box)
 ubc
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Check the xarray to see if it's correct
 
@@ -166,14 +166,14 @@ ubc.plot(ax=ax, cmap=pal, norm = the_norm)
 ax.set_title(f"Landsat band {band_name}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Write a new geotiff
 
 To write the clipped image as a geotiff, we need to construct a new xarray DataArray, with data, dims, coords and attrs.
 After that is constructed we can use rioxarray to add the affine transform and the crs.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Step 1: Construct the new affine transform
 
@@ -191,7 +191,7 @@ new_transform = Affine(a,b,c,d,e,f)
 new_transform
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Step 2: Construct the new coords
 
@@ -209,7 +209,7 @@ band, height, width = ubc.data.shape
 coords = affine_to_coords(new_transform,width,height)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Step 3: create the data array
 
@@ -225,7 +225,7 @@ clipped_ds=xarray.DataArray(ubc.data,coords=coords,
 clipped_ds
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Step 4: add the crs and transform
 
@@ -248,7 +248,7 @@ outfile = a301_lib.sat_data / "pha/week8_clipped_vancouver.tif"
 clipped_ds.rio.to_raster(outfile)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Read in the geotiff and plot to check
 
