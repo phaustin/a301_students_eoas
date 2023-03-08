@@ -3,6 +3,8 @@ import numpy as np
 from pystac_client import Client
 from shapely.geometry import Point
 from rasterio.windows import Window
+from pyproj import CRS
+import rioxarray
 
 def get_clear_mask(fmask_ds):
     """
@@ -137,7 +139,11 @@ def get_landsat_scene(date, lon, lat, window):
         clipped_ds.attrs['cloud_cover'] = props['eo:cloud_cover']
         clipped_ds.attrs['band_name'] = chan
         utm_zone = clipped_ds.attrs['HORIZONTAL_CS_NAME'][-3:].strip()
-        clipped_ds.attrs['cartopy_epsg_code'] = find_epsg_code(utm_zone)
+        if lat < 0:
+            is_southern=True
+        else:
+            is_southern=False
+        clipped_ds.attrs['cartopy_epsg_code'] = find_epsg_code(utm_zone,south=is_southern)
         clipped_ds.attrs['day']=props['datetime'][:10]  #yyyy-mm-dd
         out_dict[array_name] = clipped_ds
     #
@@ -145,3 +151,15 @@ def get_landsat_scene(date, lon, lat, window):
     #
     out_dict['fmask_ds'] = get_clear_mask(out_dict['fmask_ds'])
     return out_dict
+
+def find_epsg_code(utm_zone, south=False):
+    """
+    https://gis.stackexchange.com/questions/365584/convert-utm-zone-into-epsg-code
+    
+    cartopy wants crs names as epsg codes, i.e. UTM zone 10N is EPSG:32610, 10S is EPSG:32710
+    """
+    crs = CRS.from_dict({'proj': 'utm', 'zone': utm_zone, 'south': south})
+    epsg, code = crs.to_authority()
+    cartopy_epsg_code = code
+    return cartopy_epsg_code
+
