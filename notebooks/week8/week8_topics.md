@@ -41,14 +41,10 @@
 * {ref}`week6:pandas_cheatsheet`
 * {ref}`week8:fetch`
 
-### Assignment 4
+# Week 8 topics for Wednesday
 
-For assignment 4, you'll construct a timeseries of Landsat normalized vegetation index (NDVΙ) for
-spring, summer, fall, and winter between 2013 and 2022. 
+* Midterm handback/midterm takehome problem
+* {ref}`assign4`
+* fetching a windowed landsat scene with {ref}`week8:windowed`
 
-1) Read the metadata for all images into a pandas dataframe
-2) Use pandas to select 1 scene for each season with minimum cloud cover
-3) Select a 200 pixel x 300 pixel subregion of the scene to study
-4) Write functions to fetch and store the clipped region for each scene
-5) Calculate and plotting the NDVI time series
 

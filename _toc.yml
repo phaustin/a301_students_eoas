@@ -60,6 +60,7 @@ parts:
     - file: notebooks/week8/week8_topics.md
     - file: notebooks/week8/fetch_stac_metadata.md
     - file: notebooks/week8/zoom_landsat.md
+    - file: notebooks/week8/windowed_read.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
