@@ -7,7 +7,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -48,8 +48,8 @@ From the definition of optical depth we've got
           
 $$
  \begin{aligned}
- \rho(z) &= \rho_0 \exp( -z/H_\rho) \\
- \tau_T &= \int_0^{20} \rho_0 \exp(-z/H) k_\lambda dz = - H \rho_0 r_{mix} k_\lambda (\exp(-20/9)-1)\\
+ \rho(z) &= \rho_0 r_{mix} \exp( -z/H_\rho) \\
+ \tau_T &= \int_0^{20} \rho_0 r_{mix} \exp(-z/H) k_\lambda dz = - H \rho_0 r_{mix} k_\lambda (\exp(-20/9)-1)\\
  \tau_T &= 9000 \times 4 \times 10^{-4} *0.15 * (1 - 0.108) = 0.53\\
  t_T &= \exp(-\tau_T) = 0.589
  \end{aligned}
@@ -165,7 +165,7 @@ Recall this picture from {ref}`mid_review2_sols`
 ```{figure} figures/midII_layers.png
 ---
 width: 60%
-name: fig:planck
+name: fig:layers
 ---
 Schwartzchild layers
 ```
@@ -179,8 +179,8 @@ but now the bottom and top levels have changed from the $z_T$ (where $t^\prime=1
 transmissivities are:
 
 \begin{align}
-\tau_{1km} &= \int_0^{1} \rho_0 \exp(-z/H) k_\lambda dz =  H \rho_0 k_\lambda (1 - \exp(-1/9)) = 0.06 \\
-\tau_{6km} &= \int_0^{6} \rho_0 \exp(-z/H) k_\lambda dz =  H \rho_0 k_\lambda (1 - \exp(-6/9))=0.29
+\tau_{1km} &= \int_0^{1} \rho_0 r_{mix} \exp(-z/H) k_\lambda dz =  H \rho_0 r_{mix} k_\lambda (1 - \exp(-1/9)) = 0.06 \\
+\tau_{6km} &= \int_0^{6} \rho_0 r_{mix} \exp(-z/H) k_\lambda dz =  H \rho_0 r_{mix} k_\lambda (1 - \exp(-6/9))=0.29
 \end{align}
 
 and the corresponding transmissivities are:

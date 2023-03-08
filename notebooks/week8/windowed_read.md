@@ -4,14 +4,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week8:windowed)=
 # Reading landsat data with a rasterio window
@@ -48,7 +48,7 @@ from shapely.geometry import Point
 import a301_lib
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Find the rasterio window
 
@@ -101,7 +101,7 @@ clipped_transform
 clipped_bounds
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Step 3: turn the clipped image bounds into a rasterio window
 
@@ -119,7 +119,7 @@ the_window = rasterio.windows.from_bounds(*clipped_bounds,
 the_window
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 rasterio is telling us that our clipped window starts 2761 columns to the right
 and 1352 rows down from the upper left corner of the original raster.
@@ -142,7 +142,7 @@ the_window = the_window.round_offsets()
 the_window
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Next turn these into array slices using [windows.toslices](https://rasterio.readthedocs.io/en/latest/api/rasterio.windows.html#rasterio.windows.Window.toslices)
 
@@ -169,11 +169,11 @@ check_window.plot();
 
 So it looks like the window is correct.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Reading data using the window
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 The payoff for defining the window region is that you can use it to reduce the landsat band to your clipped region with a single line of code. 
 
@@ -185,7 +185,7 @@ new_clip = orig_ds.rio.isel_window(the_window)
 new_clip
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Wrapping things up in functions
 
@@ -204,7 +204,7 @@ os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
 os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Function to mark all clear pixels over land
 
@@ -277,9 +277,9 @@ def get_clear_mask(fmask_ds):
     
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
-### Function to get band 4, band 5 and fmask from NASA 
+### Function to get band 4, band 5 and fmask from NASA
 
 ```{code-cell} ipython3
 from pystac_client import Client
@@ -367,11 +367,11 @@ def find_epsg_code(utm_zone, south=False):
     return cartopy_epsg_code
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Fetch a date from NASA
 
-+++ {"user_expressions": [], "tags": []}
++++ {"user_expressions": []}
 
 ### Add secret key file to environment
 
@@ -381,7 +381,7 @@ os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
 os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"user_expressions": []}
 
 ### download for a date, lon/lat and window
 
@@ -394,7 +394,7 @@ scenes_dict = get_landsat_scene(date, lon, lat, the_window)
     
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Check fmask 
 

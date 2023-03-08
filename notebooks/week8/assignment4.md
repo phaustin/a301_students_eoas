@@ -64,4 +64,7 @@ in one of your landsat scenes and get back a dictionary containing the band4, ba
 Write a function called `calc_ndvi` that takes this dictionary and returns a new rioxarray DataArray
 that contains the [normalized vegetation difference index](https://www.usgs.gov/landsat-missions/landsat-normalized-difference-vegetation-index) for each pixel in your scene.
 
-Hand in a notebook that produces a greyscale ndvi image using rioxarray, with a title that contains the image date.
+Hand in a notebook produces the ndvi image and plots it in greyscale with a title that contains the image date.  Make sure you
+multply your ndvi array by the cloud mask to set all cloudy/water pixels to np.nan, and in the last cell of the notebook write the ndvi
+DataArray out as geotiff.
+
