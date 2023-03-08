@@ -48,9 +48,9 @@ from shapely.geometry import Point
 import a301_lib
 ```
 
-+++ {"user_expressions": []}
++++ {"tags": [], "user_expressions": []}
 
-## Find the window
+## Find the rasterio window
 
 From {ref}`week8:zoom_landsat` we've got a new clipped geotiff over a much smaller area of Point Grey.  We can teach rioxarray to only fetch data that fitis into this clipped
 window by using a [rasterio.window](https://rasterio.readthedocs.io/en/latest/topics/windowed-rw.html) which uses row and column offsets to specify the location of our
