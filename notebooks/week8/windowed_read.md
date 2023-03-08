@@ -46,6 +46,8 @@ import rioxarray
 from pystac_client import Client
 from shapely.geometry import Point
 import a301_lib
+
+from rasterio.windows import Window
 ```
 
 +++ {"user_expressions": []}
@@ -384,6 +386,10 @@ os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 +++ {"user_expressions": []}
 
 ### download for a date, lon/lat and window
+
+```{code-cell} ipython3
+from sat_lib.landsat_read import get_landsat_scene
+```
 
 ```{code-cell} ipython3
 date = "2015-06-14"

@@ -45,4 +45,5 @@
 * {ref}`week8:zoom_landsat`
 * {ref}`week8:fetch`
 * {ref}`week8:windowed`
+* {ref}`week8:test_landsat`
 
