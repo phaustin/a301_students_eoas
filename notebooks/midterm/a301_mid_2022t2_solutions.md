@@ -49,7 +49,7 @@ From the definition of optical depth we've got
 $$
  \begin{aligned}
  \rho(z) &= \rho_0 \exp( -z/H_\rho) \\
- \tau_T &= \int_0^{20} \rho_0 \exp(-z/H) k_\lambda dz = - H \rho_0 k_\lambda (\exp(-20/9)-1)\\
+ \tau_T &= \int_0^{20} \rho_0 \exp(-z/H) k_\lambda dz = - H \rho_0 r_{mix} k_\lambda (\exp(-20/9)-1)\\
  \tau_T &= 9000 \times 4 \times 10^{-4} *0.15 * (1 - 0.108) = 0.53\\
  t_T &= \exp(-\tau_T) = 0.589
  \end{aligned}
