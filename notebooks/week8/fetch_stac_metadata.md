@@ -129,6 +129,11 @@ the_df.head()
 
 Since it takes a while to do this search, we'll save a copy of the dataframe for future reference
 
+```{code-cell} ipython3
+csv_filename = a301_lib.data_share / "pha/landsat/vancouver_search.csv"
+the_df.to_csv(csv_filename,index=False)
+```
+
 +++ {"user_expressions": []}
 
 ## Add seasons and month columns to the clear_df
