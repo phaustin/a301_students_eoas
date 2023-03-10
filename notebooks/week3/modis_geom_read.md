@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -40,6 +40,13 @@ print(a301_lib.sat_data)
 type(a301_lib.sat_data)
 ```
 
+```{code-cell} ipython3
+:tags: []
+:trusted: true
+
+dir(a301_lib)
+```
+
 ## get the geom file in the `sat_data` pha flder
 
 a301_lib.sat_data is a `PosixPath` object, which is the way that python is able to treat all folder paths the same, whether they look like `C:\Users\phil` or `/Users/home/phil`
@@ -47,9 +54,10 @@ a301_lib.sat_data is a `PosixPath` object, which is the way that python is able 
 ```{code-cell} ipython3
 :trusted: true
 
-hdf4_dir = a301_lib.sat_data / "pha"
-all_files = list(hdf4_dir.glob("MYD03*2105*hdf"))
-print(all_files[0])
+hdf4_dir = a301_lib.data_share / "pha/cloudsat"
+all_files = list(hdf4_dir.glob("*hdf"))
+test = all_files[0]
+test
 ```
 
 Now read that file (converting PosixPath into a string since the pyhdf library is
@@ -73,6 +81,13 @@ print(
 )
 ```
 
+```{code-cell} ipython3
+:tags: []
+:trusted: true
+
+the_file.attributes()
+```
+
 ## Find the datasets and print their indices
 
 We know we've got 46 datasets in the file -- what are their names?
@@ -86,6 +101,14 @@ for idx, sds in enumerate(datasets_dict.keys()):
     print(idx, sds)
 
 #breakpoint()
+```
+
+```{code-cell} ipython3
+:tags: []
+:trusted: true
+
+out=the_file.select('precip_liquid_water')
+out.dimensions()
 ```
 
  ## open the latitude and longitude dataset
