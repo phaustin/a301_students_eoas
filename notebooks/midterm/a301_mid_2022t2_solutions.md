@@ -17,6 +17,14 @@ kernelspec:
 (mid_2022t2_solutions)=
 # A301 midterm -- solutions
 
+**March 10, 2023**: Note that Q2 had a error for the question 2 python code.  The original (incorrect) function had this typo:  `tr_1km = np.exp(-(tr_tot - tau_1km))` 
+
+Below I've fixed that so that it now is:
+
+
+`tr_1km = np.exp(-(tau_tot - tau_1km))`
+
+
 ## Q1
 
 
