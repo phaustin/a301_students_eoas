@@ -43,10 +43,13 @@ import a301_lib
 ## Ask for all UBC scenes from 2013 to 2022
 
 ```{code-cell} ipython3
-#van_lon, van_lat = -123.120, 49.2827
-ubc_lon, ubc_lat = -123.2460, 49.2606
-vancouver = Point(ubc_lon, ubc_lat)
-all_scenes = "2013-01-01/2022-12-31"
+the_lon, the_lat = -123.2460, 49.2606
+location = Point(the_lon, the_lat)
+date_range = "2013-01-01/2022-12-31"
+#
+# filename to save the dataframe for future analysis
+#
+csv_filename = a301_lib.data_share / "pha/landsat/vancouver_search.csv"
 ```
 
 ```{code-cell} ipython3
@@ -64,8 +67,8 @@ The client takes the search parameters as the following keywords:
 ```{code-cell} ipython3
 search = client.search(
     collections=["HLSL30.v2.0"],
-    intersects=vancouver,
-    datetime= all_scenes
+    intersects=location,
+    datetime= date_range
 ) 
 search
 ```
@@ -105,20 +108,6 @@ for index, value in enumerate(items):
 ```
 
 ```{code-cell} ipython3
-import os
-os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
-os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
-```
-
-```{code-cell} ipython3
-test = rioxarray.open_rasterio('https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSL30.020/HLS.L30.T10UDV.2013118T190858.v2.0/HLS.L30.T10UDV.2013118T190858.v2.0.B04.tif')
-```
-
-```{code-cell} ipython3
-test.data
-```
-
-```{code-cell} ipython3
 scene_list[0]
 ```
 
@@ -136,14 +125,9 @@ the_df.head()
 
 +++ {"user_expressions": []}
 
-## Find the low-cloud scenes
+## Storing the dataframe as a csv file
 
-We don't have a huge number of scenes, so accept any that have less than 50% cloud cover and hope that UBC isn't under a cloud
-
-```{code-cell} ipython3
-clear_df = the_df[the_df['cloud_cover'] < 50]
-len(clear_df)
-```
+Since it takes a while to do this search, we'll save a copy of the dataframe for future reference
 
 +++ {"user_expressions": []}
 
@@ -167,9 +151,24 @@ def make_seasoncol(row):
             row['day']= row['datetime'].day
     return row
 
-new_df = clear_df.apply(make_seasoncol,axis=1)
+new_df = the_df.apply(make_seasoncol,axis=1)
 new_df = new_df[['scene','cloud_cover','season','year','month','day']]
 new_df.head()
+```
+
+```{code-cell} ipython3
+new_df.to_csv(csv_filename,index=False)
+```
+
++++ {"user_expressions": []}
+
+## Find the low-cloud scenes
+
+We don't have a huge number of scenes, so accept any that have less than 50% cloud cover and hope that UBC isn't under a cloud
+
+```{code-cell} ipython3
+clear_df = the_df[the_df['cloud_cover'] < 50]
+len(clear_df)
 ```
 
 +++ {"user_expressions": []}

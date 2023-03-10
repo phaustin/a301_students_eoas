@@ -46,5 +46,6 @@
 * Midterm handback/midterm takehome problem
 * {ref}`assign4`
 * fetching a windowed landsat scene with {ref}`week8:windowed`
+* test the library code with {ref}`week8:test_landsat`
 
 
