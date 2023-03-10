@@ -185,18 +185,18 @@ transmissivities are:
 
 and the corresponding transmissivities are:
 
-$$t_{6km} = \exp(-(\tau_T - 0.29)) = 0.74$$
+$$t_{6km} = \exp(-(\tau_T - 0.29)) = 0.79$$
 
-$$t_{1km} = \exp(-(\tau_T - 0.06)) = 0.59$$
+$$t_{1km} = \exp(-(\tau_T - 0.06)) = 0.63$$
 
 and the Schwartzchild integral becomes:
 
-$$L_{6km} = \int_{0.591}^{0.74} B_{\lambda} dt^\prime = (0.74 - 0.59) \times 4.6 = 0.69\  W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$$
+$$L_{6km} = \int_{0.591}^{0.74} B_{\lambda} dt^\prime = (0.79 - 0.63) \times 4.6 = 0.74\  W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$$
 
-Finally -- how much of the $0.69\  W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$ makes it out through the atmosphere to 20 km?
+Finally -- how much of the $0.74\  W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$ makes it out through the atmosphere to 20 km?
 From the picture, we just need to multiply the radiance leaving 6 km with the transmissivity from 6 km to the top of the atmosphere:
 
-$$L_{top} = L_{6km} \times t_{6km} = 0.69 \times 0.74 = 0.51\ W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$$
+$$L_{top} = L_{6km} \times t_{6km} = 0.74 \times 0.79 = 0.58\ W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$$
 
 +++
 
@@ -206,8 +206,8 @@ $$L_{top} = L_{6km} \times t_{6km} = 0.69 \times 0.74 = 0.51\ W\,m^{-2}\,\mu m^{
 tau_6km =k*rmix*rho_air*Hrho*(1 - np.exp(-(6000/Hrho)))
 tau_1km = k*rmix*rho_air*Hrho*(1 - np.exp(-(1000/Hrho)))
 print(f"{tau_6km=:5.2f},{tau_1km=:5.2f}")
-tr_1km = np.exp(-(tr_tot - tau_1km))
-tr_6km = np.exp(-(tr_tot - tau_6km))
+tr_1km = np.exp(-(tau_tot - tau_1km))
+tr_6km = np.exp(-(tau_tot - tau_6km))
 print(f"{tr_6km=:5.2f}\n{tr_1km=:5.3f}")
 L_6km = Batm*(tr_6km - tr_1km)
 print(f"{L_6km=:5.2f} W/(m^2 um sr)")
