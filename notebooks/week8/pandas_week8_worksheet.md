@@ -4,21 +4,29 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"user_expressions": []}
++++ {"tags": [], "user_expressions": []}
 
-(week8:fetch)=
+(week8:pandas_worksheet)=
 # Week8 worksheet -- using pandas 
 
 ## Introduction
 
-This worksheet has 3 questions 
+Feel free to work in groups or individually on this.  For each of the three questions below, the idea
+is to figure out what the code is doing and explain it.  Upload the notebook with answers to the `~/shared_files/your_initials` folder on a301hub
+
+To produce your own version of my "vancouver_search.csv" file, rerun the current version of {ref}`week8:fetch`
+with your own lat/lon point.  You can stick with mine for this tutorial or use your own.
+
+The notebook, groups all the satellite scenes by year and season, then goes over all the grouped dataframes,
+finding the scene in each season with the smallest cloud fraction, and builds a new dataframe with
+just those scenes.
 
 ```{code-cell} ipython3
 import numpy
@@ -58,8 +66,6 @@ the_df.head()
 
 
 `
-
-
 
 +++ {"user_expressions": []}
 
@@ -172,7 +178,6 @@ Also, why is the scene index now out of chronological order?
 `
 
 `
-
 
 ```{code-cell} ipython3
 

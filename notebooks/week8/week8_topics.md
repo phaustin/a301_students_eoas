@@ -1,3 +1,18 @@
+---
+jupytext:
+  cell_metadata_filter: -all
+  notebook_metadata_filter: -all
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.0
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
 # Week 8
 
 ## Learning goals
@@ -41,11 +56,18 @@
 * {ref}`week6:pandas_cheatsheet`
 * {ref}`week8:fetch`
 
-# Week 8 topics for Wednesday
+## Week 8 topics for Wednesday
 
 * Midterm handback/midterm takehome problem
 * {ref}`assign4`
 * fetching a windowed landsat scene with {ref}`week8:windowed`
 * test the library code with {ref}`week8:test_landsat`
 
+## Week 8 topics for Friday
 
+* Do the {ref}`week8:pandas_worksheet`
+
+## For Monday
+
+* Read [Stull Chapter 8 pp. 240-248](https://www.eoas.ubc.ca/books/Practical_Meteorology/) on weather radar
+* Read this article on [Cloudsat](https://journals.ametsoc.org/view/journals/bams/96/4/bams-d-13-00282.1.xml) to get ready for our next set of satellite data

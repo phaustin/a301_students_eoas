@@ -62,6 +62,7 @@ parts:
     - file: notebooks/week8/zoom_landsat.md
     - file: notebooks/week8/windowed_read.md
     - file: notebooks/week8/test_landsat_read.md
+    - file: notebooks/week8/pandas_week8_worksheet.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md

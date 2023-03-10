@@ -46,4 +46,4 @@
 * {ref}`week8:fetch`
 * {ref}`week8:windowed`
 * {ref}`week8:test_landsat`
-
+* {ref}`week8:pandas_worksheet`
