@@ -105,9 +105,56 @@ def get_geo(hdfname):
     variable_names=['latitude','longitude','profile_time','dem_elevation','distance_km']
     for var_name,var_data in var_dict.items():
         x_dict[var_name] = (['time'],var_data)
-    coords={'time':(['time'],var_dict['time_vals'])}
-    geom_array = Dataset(data_vars=x_dict, coords=coords)
-    return geom_array
+    #
+    # get the height array if it exists
+    #  
+    hdf_SD = sd_open_file(hdfname)
+    var_sd=hdf_SD.select('Height')
+    var_vals=var_sd.get()
+    height_array =var_vals.astype(np.float32)
+    hdf_SD.end()
+    x_dict['full_heights'] = (['time','height'],height_array)
+    coords={'time':(['time'],var_dict['time_vals']),
+            'height':(['height'],height_array[0,:])}
+    the_data = Dataset(data_vars=x_dict, coords=coords)
+    return the_data
+```
+
+```{code-cell} ipython3
+def read_cloudsat_var(varname, filename):
+    the_data = get_geo(filename)
+    hdf_SD = sd_open_file(filename)
+    print(f"in read_cloudsat_var, reading {varname=}")
+    var_sd=hdf_SD.select(varname)
+    var_vals=var_sd.get()
+    try:
+        fill_value=var_sd.attributes()["_FillValue"]
+        missing_vals = var_vals == fill_value
+        var_vals =var_vals.astype(np.float32)
+        var_vals[missing_vals]=np.nan
+    except:
+        var_vals =var_vals.astype(np.float32)
+    hdf_SD.end()
+    scale_factor = 1
+    new_name = varname
+    if varname == 'Radar_Reflectivity':
+        # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
+        scale_factor = 0.001
+        var_vals = var_vals*scale_factor
+        var_array = DataArray(var_vals,dims=['time','height'])
+    elif varname == 'LayerTop':
+        var_vals[var_vals < 0]=np.nan
+        #
+        # 5 nray values, take the first 1
+        #
+        var_value = var_vals[:,0] 
+        var_array = DataArray(var_value,dims=['time'])
+    else:
+        var_array = DataArray(var_vals,dims=['time'])
+    the_data[varname] = var_array
+    return the_data
+    
+    
 ```
 
 ```{code-cell} ipython3
@@ -115,61 +162,50 @@ datetime.datetime.strptime('2008291', '%Y%j').date()
 ```
 
 ```{code-cell} ipython3
-if __name__=="__main__":
-    #radar reflectivity data see
-    #http://www.cloudsat.cira.colostate.edu/dataSpecs.php?prodid=9
-    radar_dir = a301_lib.data_share / "pha/cloudsat"
-    radar_file = list(radar_dir.glob("2008291*2B-GEOPROF_GR*hdf"))[0].resolve()
-    print(f"{radar_file=}")
-    lidar_file = list(radar_dir.glob("2008291*2B-GEOPROF-LIDAR*GR*hdf"))[0].resolve()
-    print(f"{lidar_file=}")
-    geom_array=get_geo(radar_file)
-    distance_km = geom_array['distance_km']
-    #
-    # height values stored as an SD dataset
-    #
-    hdf_SD = sd_open_file(radar_file)
-    height_sd=hdf_SD.select('Height')
-    height_vals=height_sd.get()
-    height=height_vals.astype(np.float32)
-    refl=hdf_SD.select('Radar_Reflectivity')
-    refl_vals=refl.get()
-    fill_value=refl.attributes()["_FillValue"]
-    missing_vals = refl_vals == fill_value
-    #
-    # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
-    #
-    scale_factor = 0.001
-    refl_vals=refl_vals*scale_factor
-    refl_vals[missing_vals] = np.nan
-    hdf_SD.end()
-    hdf_SD = sd_open_file(lidar_file)
-    layerTop=hdf_SD.select('LayerTop')
-    layerTop=layerTop.get()
-    layerTop=layerTop.astype(np.float32)
-    layerTop[layerTop < 0]=np.nan
-    hdf_SD.end()
-    
-    fig1,axis1=plt.subplots(1,1)
-    start=21000
-    stop=22000
-    storm_distance = distance_km[start:stop]
-    storm_distance = storm_distance - storm_distance[0]
-    im=axis1.pcolor(storm_distance,height[0,:]/1.e3,refl_vals[start:stop,:].T)
-    axis1.set_xlabel('storm distance (km)')
-    axis1.set_ylabel('height (km)')
-    cb=fig1.colorbar(im)
-    cb.set_label('reflectivity (dbZ)')
-    fig1.savefig('reflectivity.png')
-    
-    fig2,axis2=plt.subplots(1,1)
-    axis2.plot(distance_km,layerTop[:,0]/1.e3,'b')
-    axis2.plot(distance_km,dem_elevation/1.e3,'r')
-    axis2.set_xlabel('track distance (km)')
-    axis2.set_ylabel('height (km)')
-    axis2.set_title('whole orbit: lidar cloud top (blue) and dem surface elevation (red)')
-    fig2.savefig('lidar_height.png')
-    plt.show()
+#read_cloudsat_var('Radar_Reflectivity',radar_file)
+lidar_ds = read_cloudsat_var('LayerTop',lidar_file)
+lidar_ds
+```
+
+```{code-cell} ipython3
+#radar reflectivity data see
+#http://www.cloudsat.cira.colostate.edu/dataSpecs.php?prodid=9
+radar_dir = a301_lib.data_share / "pha/cloudsat"
+radar_file = list(radar_dir.glob("2008291*2B-GEOPROF_GR*hdf"))[0].resolve()
+print(f"{radar_file=}")
+lidar_file = list(radar_dir.glob("2008291*2B-GEOPROF-LIDAR*GR*hdf"))[0].resolve()
+print(f"{lidar_file=}")
+```
+
+```{code-cell} ipython3
+refl_ds = read_cloudsat_var('Radar_Reflectivity',radar_file)
+refl_array = refl_ds['Radar_Reflectivity']
+dem_elevation = refl_ds['dem_elevation']
+height = refl_ds.coords['height']
+lidar_ds = read_cloudsat_var('LayerTop',lidar_file)
+layer_top = lidar_ds['LayerTop']
+
+fig1,axis1=plt.subplots(1,1)
+start=21000
+stop=22000
+meters2km = 1.e-3
+storm_distance = distance_km[start:stop]
+storm_distance = storm_distance - storm_distance[0]
+im=axis1.pcolor(storm_distance,height*meters2km,refl_array[start:stop,:].T)
+axis1.set_xlabel('storm distance (km)')
+axis1.set_ylabel('height (km)')
+cb=fig1.colorbar(im)
+cb.set_label('reflectivity (dbZ)')
+fig1.savefig('reflectivity.png')
+
+fig2,axis2=plt.subplots(1,1)
+axis2.plot(distance_km,layer_top*meters2km,'b')
+axis2.plot(distance_km,dem_elevation*meters2km,'r')
+axis2.set_xlabel('track distance (km)')
+axis2.set_ylabel('height (km)')
+axis2.set_title('whole orbit: lidar cloud top (blue) and dem surface elevation (red)')
+fig2.savefig('lidar_height.png')
+plt.show()
 ```
 
 ```{code-cell} ipython3
