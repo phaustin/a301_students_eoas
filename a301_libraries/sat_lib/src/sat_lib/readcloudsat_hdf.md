@@ -111,11 +111,6 @@ def get_geo(hdfname):
 ```
 
 ```{code-cell} ipython3
-test=get_geo(radar_file)
-test
-```
-
-```{code-cell} ipython3
 datetime.datetime.strptime('2008291', '%Y%j').date()
 ```
 
@@ -128,7 +123,8 @@ if __name__=="__main__":
     print(f"{radar_file=}")
     lidar_file = list(radar_dir.glob("2008291*2B-GEOPROF-LIDAR*GR*hdf"))[0].resolve()
     print(f"{lidar_file=}")
-    lat,lon,time_vals,prof_seconds,dem_elevation=get_geo(radar_file)
+    geom_array=get_geo(radar_file)
+    distance_km = geom_array['distance_km']
     #
     # height values stored as an SD dataset
     #
@@ -157,19 +153,21 @@ if __name__=="__main__":
     fig1,axis1=plt.subplots(1,1)
     start=21000
     stop=22000
-    im=axis1.pcolor(prof_seconds[start:stop],height[0,:]/1.e3,refl_vals[start:stop,:].T)
-    axis1.set_xlabel('time after orbit start (seconds)')
+    storm_distance = distance_km[start:stop]
+    storm_distance = storm_distance - storm_distance[0]
+    im=axis1.pcolor(storm_distance,height[0,:]/1.e3,refl_vals[start:stop,:].T)
+    axis1.set_xlabel('storm distance (km)')
     axis1.set_ylabel('height (km)')
     cb=fig1.colorbar(im)
     cb.set_label('reflectivity (dbZ)')
     fig1.savefig('reflectivity.png')
     
     fig2,axis2=plt.subplots(1,1)
-    axis2.plot(prof_seconds,layerTop[:,0]/1.e3,'b')
-    axis2.plot(prof_seconds,dem_elevation/1.e3,'r')
-    axis2.set_xlabel('time after orbit start (seconds)')
+    axis2.plot(distance_km,layerTop[:,0]/1.e3,'b')
+    axis2.plot(distance_km,dem_elevation/1.e3,'r')
+    axis2.set_xlabel('track distance (km)')
     axis2.set_ylabel('height (km)')
-    axis2.set_title('lidar cloud top (blue) and dem surface elevation (red)')
+    axis2.set_title('whole orbit: lidar cloud top (blue) and dem surface elevation (red)')
     fig2.savefig('lidar_height.png')
     plt.show()
 ```
