@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-```{code-cell}
+```{code-cell} ipython3
 """ modified 2012/11/24 to add cast for LayerTop"""
 import matplotlib
 import datetime
@@ -30,7 +30,7 @@ import a301_lib
 from xarray import DataArray
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 def get_geo(hdfname):
     """given the name of any hdf file from the Cloudsat data archive
        return lat,lon,time_vals,prof_times,dem_elevation
@@ -54,14 +54,16 @@ def get_geo(hdfname):
     out=vs.vdatainfo()
     #uncomment this line to see the variable names
     # print("VS variable names: ",out)
-    variable_names=['Longitude','Latitude','Profile_time','DEM_elevation']
+    old_variable_names=['Longitude','Latitude','Profile_time','DEM_elevation']
+    new_variable_names=['longitude','latitude','profile_time','dem_elevation']
     var_dict={}
-    for var_name in variable_names:
-        the_var=vs.attach(var_name)
+    for old_var_name,new_var_name in zip(old_variable_names,new_variable_names):
+        print(f"{old_var_name=}")
+        the_var=vs.attach(old_var_name)
         nrecs=the_var._nrecs
         the_data=the_var.read(nRec=nrecs)
         the_data=np.array(the_data).squeeze()
-        var_dict[var_name]=the_data
+        var_dict[new_var_name]=the_data
         the_var.detach()
     tai_start=vs.attach('TAI_start')
     nrecs=tai_start._nrecs
@@ -77,16 +79,25 @@ def get_geo(hdfname):
     time_vals=[]
     #now loop throught he radar profile times and convert them to 
     #python datetime objects in utc
-    for the_time in var_dict['Profile_time']:
+    for the_time in var_dict['profile_time']:
         time_vals.append(orbitStart + datetime.timedelta(seconds=float(the_time)))
     var_dict['time_vals']=time_vals
-    neg_values=var_dict['DEM_elevation'] < 0
-    var_dict['DEM_elevation'][neg_values]=0
-    variable_names=['Latitude','Longitude','time_vals','Profile_time','DEM_elevation']
+    neg_values=var_dict['dem_elevation'] < 0
+    var_dict['dem_elevation'][neg_values]=0
+    variable_names=['latitude','longitude','time_vals','profile_time','dem_elevation']
     out_list=[var_dict[varname] for varname in variable_names]
     #test_array = DataArray(coords={'time':time_vals},dims=['time'])
     return tuple(out_list)
 ```
+
+x_dict={}
+variable_names=['latitude','longitude','profile_time','dem_elevation']
+for var_name,var_data in var_dict.items():
+    x_dict[var_name] = {['time'],var_data}
+    coords={'time':['time',var_dict['time_values']]}
+    try_this = xarrary.Dataset(data_vars=x_dict, coords=coords)
+
++++
 
 great_circle=pyproj.Geod(ellps='WGS84')
 distance=[0]
@@ -95,11 +106,11 @@ for index in np.arange(1,len(storm_lons)):
     azi12,azi21,step= great_circle.inv(storm_lons[index-1],storm_lats[index-1],storm_lons[index],storm_lats[index])    distance.append(distance[index-1] + step)
 distance=np.array(distance)/meters2km
 
-```{code-cell}
+```{code-cell} ipython3
 datetime.datetime.strptime('2008291', '%Y%j').date()
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 if __name__=="__main__":
     #radar reflectivity data see
     #http://www.cloudsat.cira.colostate.edu/dataSpecs.php?prodid=9
@@ -154,10 +165,10 @@ if __name__=="__main__":
     plt.show()
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 
 ```
