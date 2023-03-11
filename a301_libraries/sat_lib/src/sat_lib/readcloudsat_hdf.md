@@ -1,7 +1,7 @@
 ---
 jupytext:
   cell_metadata_filter: -all
-  notebook_metadata_filter: -all
+  notebook_metadata_filter: all,-language_info,-toc,-latex_envs
   text_representation:
     extension: .md
     format_name: myst
@@ -54,7 +54,7 @@ def get_geo(hdfname):
     out=vs.vdatainfo()
     #uncomment this line to see the variable names
     # print("VS variable names: ",out)
-    variable_names=['Longitude','Latitude','Profile_time','DEM_elevation']
+    variable_names=['longitude','latitude','profile_time','dem_elevation']
     var_dict={}
     for var_name in variable_names:
         the_var=vs.attach(var_name)
@@ -77,16 +77,23 @@ def get_geo(hdfname):
     time_vals=[]
     #now loop throught he radar profile times and convert them to 
     #python datetime objects in utc
-    for the_time in var_dict['Profile_time']:
+    for the_time in var_dict['profile_time']:
         time_vals.append(orbitStart + datetime.timedelta(seconds=float(the_time)))
     var_dict['time_vals']=time_vals
-    neg_values=var_dict['DEM_elevation'] < 0
-    var_dict['DEM_elevation'][neg_values]=0
-    variable_names=['Latitude','Longitude','time_vals','Profile_time','DEM_elevation']
+    neg_values=var_dict['dem_elevation'] < 0
+    var_dict['dem_elevation'][neg_values]=0
+    variable_names=['latitude','longitude','time_vals','profile_time','dem_elevation']
     out_list=[var_dict[varname] for varname in variable_names]
     #test_array = DataArray(coords={'time':time_vals},dims=['time'])
     return tuple(out_list)
 ```
+
+great_circle=pyproj.Geod(ellps='WGS84')
+distance=[0]
+start=(storm_lons[0],storm_lats[0])
+for index in np.arange(1,len(storm_lons)):
+    azi12,azi21,step= great_circle.inv(storm_lons[index-1],storm_lats[index-1],storm_lons[index],storm_lats[index])    distance.append(distance[index-1] + step)
+distance=np.array(distance)/meters2km
 
 ```{code-cell} ipython3
 datetime.datetime.strptime('2008291', '%Y%j').date()
@@ -148,7 +155,7 @@ if __name__=="__main__":
 ```
 
 ```{code-cell} ipython3
-    
+
 ```
 
 ```{code-cell} ipython3
