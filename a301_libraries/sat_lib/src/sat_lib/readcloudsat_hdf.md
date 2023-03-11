@@ -82,10 +82,9 @@ def get_geo(hdfname):
     var_dict['time_vals']=time_vals
     neg_values=var_dict['DEM_elevation'] < 0
     var_dict['DEM_elevation'][neg_values]=0
-    variable_names=['Latitude','Longitude','Profile_time','DEM_elevation']
+    variable_names=['Latitude','Longitude','time_vals','Profile_time','DEM_elevation']
     out_list=[var_dict[varname] for varname in variable_names]
-    
-    test_array = DataArray(coords={'time':time_vals},dims=['time'])
+    #test_array = DataArray(coords={'time':time_vals},dims=['time'])
     return tuple(out_list)
 ```
 
@@ -103,7 +102,6 @@ if __name__=="__main__":
     lidar_file = list(radar_dir.glob("2008291*2B-GEOPROF-LIDAR*GR*hdf"))[0].resolve()
     print(f"{lidar_file=}")
     lat,lon,time_vals,prof_seconds,dem_elevation=get_geo(radar_file)
-    print(lat)
     #
     # height values stored as an SD dataset
     #
