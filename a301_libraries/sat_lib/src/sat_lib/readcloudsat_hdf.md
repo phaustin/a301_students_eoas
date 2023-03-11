@@ -27,7 +27,8 @@ import pyhdf.HDF as HDF
 from pathlib import Path
 from sat_lib.modischan_read import sd_open_file
 import a301_lib
-from xarray import DataArray
+from xarray import DataArray,Dataset
+import pyproj
 ```
 
 ```{code-cell} ipython3
@@ -58,7 +59,6 @@ def get_geo(hdfname):
     new_variable_names=['longitude','latitude','profile_time','dem_elevation']
     var_dict={}
     for old_var_name,new_var_name in zip(old_variable_names,new_variable_names):
-        print(f"{old_var_name=}")
         the_var=vs.attach(old_var_name)
         nrecs=the_var._nrecs
         the_data=the_var.read(nRec=nrecs)
@@ -84,27 +84,36 @@ def get_geo(hdfname):
     var_dict['time_vals']=time_vals
     neg_values=var_dict['dem_elevation'] < 0
     var_dict['dem_elevation'][neg_values]=0
-    variable_names=['latitude','longitude','time_vals','profile_time','dem_elevation']
-    out_list=[var_dict[varname] for varname in variable_names]
-    #test_array = DataArray(coords={'time':time_vals},dims=['time'])
-    return tuple(out_list)
+    #
+    # great circle distance
+    #
+    great_circle=pyproj.Geod(ellps='WGS84')
+    distance=[0]
+    lons, lats = var_dict['longitude'], var_dict['latitude']
+    start=(lons[0],lats[0])
+    meters2km = 1.e-3
+    for index in np.arange(1,len(var_dict['longitude'])):
+        azi12,azi21,step= \
+            great_circle.inv(lons[index-1],lats[index-1],lons[index],lats[index])   
+        distance.append(distance[index-1] + step)
+    distance=np.array(distance)*meters2km
+    var_dict['distance_km']=distance
+    #
+    # write the dataset
+    # 
+    x_dict={}
+    variable_names=['latitude','longitude','profile_time','dem_elevation','distance_km']
+    for var_name,var_data in var_dict.items():
+        x_dict[var_name] = (['time'],var_data)
+    coords={'time':(['time'],var_dict['time_vals'])}
+    geom_array = Dataset(data_vars=x_dict, coords=coords)
+    return geom_array
 ```
 
-x_dict={}
-variable_names=['latitude','longitude','profile_time','dem_elevation']
-for var_name,var_data in var_dict.items():
-    x_dict[var_name] = {['time'],var_data}
-    coords={'time':['time',var_dict['time_values']]}
-    try_this = xarrary.Dataset(data_vars=x_dict, coords=coords)
-
-+++
-
-great_circle=pyproj.Geod(ellps='WGS84')
-distance=[0]
-start=(storm_lons[0],storm_lats[0])
-for index in np.arange(1,len(storm_lons)):
-    azi12,azi21,step= great_circle.inv(storm_lons[index-1],storm_lats[index-1],storm_lons[index],storm_lats[index])    distance.append(distance[index-1] + step)
-distance=np.array(distance)/meters2km
+```{code-cell} ipython3
+test=get_geo(radar_file)
+test
+```
 
 ```{code-cell} ipython3
 datetime.datetime.strptime('2008291', '%Y%j').date()
