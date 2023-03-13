@@ -75,10 +75,3 @@ Hand in a notebook that:
 * plots it in greyscale with a title that contains the image date.
 * writes the ndvi DataArray out as geotiff
 
-```{code-cell} ipython3
-the_lon, the_lat = -123.2460, 49.2606
-location = Point(the_lon, the_lat)
-date_range = "2015-06-14"
-cmr_api_url = "https://cmr.earthdata.nasa.gov/stac/LPCLOUD"
-client = Client.open(cmr_api_url)
-```
