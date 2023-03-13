@@ -47,3 +47,9 @@
 * {ref}`week8:windowed`
 * {ref}`week8:test_landsat`
 * {ref}`week8:pandas_worksheet`
+
+## Week 9
+
+* {ref}`week9:datasets`
+* {ref}`week9:radar`
+* {ref}`week9:marshall`

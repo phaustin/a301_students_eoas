@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -14,7 +14,7 @@ kernelspec:
 (assign4)=
 # Assignment 4 -- due midnight, march 15
 
-+++
++++ {"user_expressions": [], "tags": []}
 
 ## Q1) midterm question 2 revisit  
 
@@ -49,7 +49,7 @@ $$
 L(6km) = \int_{1km}^{6km} B(t^\prime) dt^\prime
 $$ (eq:schwartz)
 
-as an equation.  You'll find [this page](https://en.wikipedia.org/wiki/List_of_integrals_of_exponential_functions) helpful.
+as an equation. 
 
 +++ {"user_expressions": []}
 
@@ -74,3 +74,11 @@ Hand in a notebook that:
   multply your ndvi array by the cloud mask to set all cloudy/water pixels to np.nan)
 * plots it in greyscale with a title that contains the image date.
 * writes the ndvi DataArray out as geotiff
+
+```{code-cell} ipython3
+the_lon, the_lat = -123.2460, 49.2606
+location = Point(the_lon, the_lat)
+date_range = "2015-06-14"
+cmr_api_url = "https://cmr.earthdata.nasa.gov/stac/LPCLOUD"
+client = Client.open(cmr_api_url)
+```

@@ -5,6 +5,7 @@ from shapely.geometry import Point
 from rasterio.windows import Window
 from pyproj import CRS
 import rioxarray
+from xarray import Dataset
 
 def get_clear_mask(fmask_ds):
     """
@@ -101,7 +102,7 @@ def get_landsat_scene(date, lon, lat, window):
     Returns
     -------
     out_dict: dict
-       dictionary with three xarray DataArraysband4, band5, Fmask: rioxarrays with the data
+       dictionary with three rioxarray DataArrays: band4, band5, Fmask
     """
     #
     # set up the search -- we are looking for only 1 scene per date
@@ -122,11 +123,11 @@ def get_landsat_scene(date, lon, lat, window):
     #
     props = items[0].properties
     out_dict = {}
-    chan_names = ['B04','B05','Fmask']
+    band_names = ['B04','B05','Fmask']
     array_names = ['b4_ds','b5_ds','fmask_ds']
-    for chan,array_name in zip(chan_names, array_names):
-        print(f"inside get_landsat_scene: reading {chan} into {array_name}")
-        href = items[0].assets[chan].href
+    for band,array_name in zip(band_names, array_names):
+        print(f"inside get_landsat_scene: reading {band} into {array_name}")
+        href = items[0].assets[band].href
         lazy_ds = rioxarray.open_rasterio(href,mask_and_scale=True)
         #
         # now read the window
@@ -137,7 +138,7 @@ def get_landsat_scene(date, lon, lat, window):
         #
         clipped_ds.attrs['date'] = props['datetime'] #date and time
         clipped_ds.attrs['cloud_cover'] = props['eo:cloud_cover']
-        clipped_ds.attrs['band_name'] = chan
+        clipped_ds.attrs['band_name'] = band
         utm_zone = clipped_ds.attrs['HORIZONTAL_CS_NAME'][-3:].strip()
         if lat < 0:
             is_southern=True
@@ -151,6 +152,86 @@ def get_landsat_scene(date, lon, lat, window):
     #
     out_dict['fmask_ds'] = get_clear_mask(out_dict['fmask_ds'])
     return out_dict
+
+def get_landsat_dataset(date, lon, lat, window, bands=None):
+    """
+    retrieve windowed bands specified in the bands variable.
+    Save the clipped geotiffs as xarray.DattArrays, returned
+    in an xarray Dataset
+    
+    Parameters
+    ----------
+    
+    date: str
+       date in the form yyy-mm-yy
+    lon: float
+       longitude of point in the scene (degrees E)
+    lat: 
+        latitude of point in the scene (degrees N)
+    window: rasterio.Window
+        window for clipping the scene to a subscene
+    bands: list
+        list of bands in the form ['B01','B02',...]
+        the default is ['B04','B05','B06']
+  
+    Returns
+    -------
+    the_dataset: xarray.Dataset
+       dataset with rioxarrays of requested bands plus Fmask
+    """
+    if bands is None:
+        bands = ['B04','B05','B06']
+    #
+    # set up the search -- we are looking for only 1 scene per date
+    #
+    the_point = Point(lon, lat)
+    cmr_api_url = "https://cmr.earthdata.nasa.gov/stac/LPCLOUD"
+    client = Client.open(cmr_api_url)
+    
+    search = client.search(
+        collections=["HLSL30.v2.0"],
+        intersects=the_point,
+        datetime= date
+    )
+    items = search.get_all_items()
+    print(f"found {len(items)} item")
+    #
+    # get the metadata and add date, cloud_cover and band_name to the new DataArrays
+    #
+    props = items[0].properties
+    out_dict = {}
+    bands.extend(['Fmask'])
+    for the_band in bands:
+        print(f"inside get_landsat_scene: reading {the_band}")
+        href = items[0].assets[the_band].href
+        lazy_ds = rioxarray.open_rasterio(href,mask_and_scale=True)
+        #
+        # now read the window
+        #
+        clipped_ds = lazy_ds.rio.isel_window(window)
+        #
+        # add some custom attributes
+        #
+        clipped_ds.attrs['date'] = props['datetime'] #date and time
+        clipped_ds.attrs['cloud_cover'] = props['eo:cloud_cover']
+        clipped_ds.attrs['band_name'] = the_band
+        utm_zone = clipped_ds.attrs['HORIZONTAL_CS_NAME'][-3:].strip()
+        if lat < 0:
+            is_southern=True
+        else:
+            is_southern=False
+        clipped_ds.attrs['cartopy_epsg_code'] = find_epsg_code(utm_zone,south=is_southern)
+        clipped_ds.attrs['day']=props['datetime'][:10]  #yyyy-mm-dd
+        out_dict[the_band] = clipped_ds
+    #
+    # convert the mask to 1=no cloud over land, np.nan=otherwise
+    #
+    out_dict['Fmask'] = get_clear_mask(out_dict['Fmask'])
+    coords = out_dict['Fmask'].coords
+    attrs = out_dict['Fmask'].attrs
+    dataset = Dataset(data_vars = out_dict, coords = coords, attrs = attrs )
+    return dataset
+
 
 def find_epsg_code(utm_zone, south=False):
     """

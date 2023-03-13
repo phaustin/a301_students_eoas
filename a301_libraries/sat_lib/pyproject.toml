@@ -20,6 +20,7 @@ dynamic = ["version"]
 meta_read = "sat_lib.modismeta_read:main"
 hdf4_inspect = "sat_lib.hdf4_inspect:main"
 set_nasa_password = "sat_lib.set_nasa_password:main"
+plot_marshall = "sat_lib.utils.marshall_palmer:plot_marshall"
 [tool.setuptools_scm]
 write_to = "a301_libraries/sat_lib/src/sat_lib/_version.py"
 root = "../.."

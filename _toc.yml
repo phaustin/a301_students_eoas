@@ -63,6 +63,12 @@ parts:
     - file: notebooks/week8/windowed_read.md
     - file: notebooks/week8/test_landsat_read.md
     - file: notebooks/week8/pandas_week8_worksheet.md
+  - caption: Week 9
+    chapters:
+    - file: notebooks/week9/week9_topics.md
+    - file: notebooks/week9/xarray_datasets.md
+    - file: notebooks/week9/radar.rst
+    - file: notebooks/week9/marshall_palmer.rst
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
