@@ -13,10 +13,9 @@ kernelspec:
 
 +++ {"tags": [], "user_expressions": []}
 
-(week9:datasets)=
 # xarray datasets
 
-+++
++++ {"user_expressions": []}
 
 ## Introduction
 
@@ -33,23 +32,28 @@ to the `get_landsat_scene` function used in {ref}`week8:test_landsat`, with two 
 the same coordinates (in this case x,y in the map projection).  Datasets have a variety of useful features, but the most
 important one for work in this class is the ability to write the Dataset to disk, via [xarray.Dataset.to_netcdf](https://docs.xarray.dev/en/stable/generated/xarray.Dataset.to_netcdf.html) -- demonstrated below.
 
-Below we repeat the plot from `week8:test_landsat` using the new function and saving all channels to disk in a file called `week9_landsat.nc`
+Below we repeat the plot from {ref}`week8:test_landsat` using the new function and saving all channels to disk in a file called `week9_landsat.nc`
 
 ```{code-cell} ipython3
 from matplotlib import pyplot as plt
 from sat_lib.landsat_read import get_landsat_dataset
 from rasterio.windows import Window
+import a301_lib
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## function arguments
+
+You can pass any combination of valid landsat/sentinel bands in as a list in the form \
+['B01','B02',...] -- the default is for the ndvi bands 'B04','B05' plus the near-ir 'B06' with
+'Fmask' always included.
 
 ```{code-cell} ipython3
 help(get_landsat_dataset)
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Reading the default bands
 
@@ -70,7 +74,7 @@ the_dataset = get_landsat_dataset(date, lon, lat, the_window)
 the_dataset
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Plotting the mask
 
@@ -84,4 +88,21 @@ fig, ax = plt.subplots(1,1)
 the_date = the_dataset.attrs['day']
 the_dataset['Fmask'].plot()
 ax.set_title(f"Land/cloud mask for Landsat {the_date}");
+```
+
++++ {"tags": [], "user_expressions": []}
+
+## Writing the dataset to disk
+
+Change the initials in outfile before you turn `do_write=True`
+
+```{code-cell} ipython3
+do_write = False
+if do_write:
+    outfile = a301_lib.data_share / "pha/week9_landsat.nc"
+    the_dataset.to_netcdf(outfile)
+```
+
+```{code-cell} ipython3
+!ncdump -h ~/shared_files/pha/week9_landsat.nc
 ```

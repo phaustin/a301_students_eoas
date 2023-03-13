@@ -25,15 +25,22 @@ kernelspec:
 
 - For cloudsat: 
 
-  - choose a storm from [the 50 km storm track list](https://adelaide.cira.colostate.edu/tc/tcs-50km.txt) and let me know on slack (grads) or canvas (undergrads).
+  - choose a storm from [the 50 km storm track list](https://adelaide.cira.colostate.edu/tc/tcs-50km.txt) and let me know on slack (grads) or canvas (undergrads).  Storms with surface low surface pressures might be most interesting.
 
   - download data for the orbit containing your storm  
     from the [Cloudsat data center](https://cloudsat.atmos.colostate.edu/data).
 
-  - My notes on the [Radar equation] [Stull Chapter 8 pp. 240-248](https://www.eoas.ubc.ca/books/Practical_Meteorology/) on weather radar
-* Read this article on [Cloudsat](https://journals.ametsoc.org/view/journals/bams/96/4/bams-d-13-00282.1.xml) to get ready for our next set of satellite data
+  - Go over my notes on the [Radar equation] [Stull Chapter 8 pp. 240-248](https://www.eoas.ubc.ca/books/Practical_Meteorology/) on weather radar
 
+  - Read this article on [Cloudsat](https://journals.ametsoc.org/view/journals/bams/96/4/bams-d-13-00282.1.xml)
 
+- For Lansat
+
+  - Introduce false color composites and band combinations
+  
+    - [NASA's choice of bands](https://earthobservatory.nasa.gov/features/FalseColor/page6.php)
+    
+    - [Explore different band combinations](https://gsp.humboldt.edu/olm/Courses/GSP_216/lessons/composites.html)
 
 ## At the start of class
 
@@ -50,5 +57,4 @@ kernelspec:
 
   * If needed, update the libraries with `pip install -r requirements.txt`
 
-## For Monday
 
