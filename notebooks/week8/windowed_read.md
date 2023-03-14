@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -82,6 +82,10 @@ clipped_file = a301_lib.data_share / "pha/week8_clipped_vancouver.tif"
 clipped_ds = rioxarray.open_rasterio(clipped_file, mask_and_scale=True)
 clipped_transform = clipped_ds.rio.transform()
 clipped_bounds = clipped_ds.rio.bounds()
+```
+
+```{code-cell} ipython3
+orig_transform
 ```
 
 +++ {"user_expressions": []}
