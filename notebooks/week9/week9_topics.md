@@ -34,7 +34,7 @@ kernelspec:
 
   - Read this article on [Cloudsat](https://journals.ametsoc.org/view/journals/bams/96/4/bams-d-13-00282.1.xml)
 
-- For Lansat
+- For Landsat
 
   - Introduce false color composites and band combinations
   

@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -14,7 +14,9 @@ kernelspec:
 (assign4)=
 # Assignment 4 -- due midnight, march 15
 
-+++ {"user_expressions": [], "tags": []}
+Typo in {eq}`eq:planck` fixed March 13
+
++++ {"user_expressions": []}
 
 ## Q1) midterm question 2 revisit  
 
@@ -28,7 +30,7 @@ varies with linearly with height:
 
 $$
 T(z) = 270 + (z -  3.5) \Gamma_z
-$$
+$$ (eq:temp)
 where $z$ is the height in km and $\Gamma$ is a (negative) constant (K/km).
 
 In a python notebook, make a plot of the blackbody monchromatic radiance $B_\lambda$ at $\lambda = 15\ \mu m$ versus transmittance $t$
@@ -39,7 +41,7 @@ Use your plots to find values of $\Gamma_t = \frac{dB}{dt}$ that correspond to t
 so that you can write an approximate linear function $B(t)$ that looks like:
 
 $$
-B(t) = B(t(1km)) + (t - t(3.5km))\Gamma_t
+B(t) = B(t(3.5km)) + (t - t(3.5km))\Gamma_t
 $$ (eq:planck)
 
 b) Given {eq}`eq:planck` derive an analytic solution for the radiance $L$ at 6 km coming from the air
@@ -49,7 +51,7 @@ $$
 L(6km) = \int_{1km}^{6km} B(t^\prime) dt^\prime
 $$ (eq:schwartz)
 
-as an equation. 
+as an equation.
 
 +++ {"user_expressions": []}
 
@@ -74,4 +76,3 @@ Hand in a notebook that:
   multply your ndvi array by the cloud mask to set all cloudy/water pixels to np.nan)
 * plots it in greyscale with a title that contains the image date.
 * writes the ndvi DataArray out as geotiff
-

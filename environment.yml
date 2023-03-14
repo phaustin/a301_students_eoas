@@ -21,4 +21,6 @@ dependencies:
   - rioxarray
   - pystac-client
   - shapely
+  - seaborn
+  - scikit-image
 # conda-lock --kind explicit -f environment_trun.yml -p linux-64

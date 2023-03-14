@@ -68,7 +68,7 @@ parts:
     - file: notebooks/week9/week9_topics.md
     - file: notebooks/week9/xarray_datasets.md
     - file: notebooks/week9/radar.rst
-    - file: notebooks/week9/marshall_palmer.rst
+    - file: notebooks/week9/marshall_palmer.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
