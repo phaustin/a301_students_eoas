@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -18,7 +18,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from cloudsat import read_cloudsat_var
+from sat_lib.cloudsat import read_cloudsat_var
 
 import a301_lib
 ```
@@ -78,7 +78,6 @@ axis4.plot(latitude.data[eastern],dem_elevation.data[eastern]*meters2km,'r')
 axis4.set_xlabel('latitude (deg N)')
 axis4.set_ylabel('height (km)')
 axis4.set_title('eastern hem: lidar cloud top (blue) and dem surface elevation (red)')
-
 
 
 ```

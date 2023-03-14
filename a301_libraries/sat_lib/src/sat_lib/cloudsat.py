@@ -2,7 +2,7 @@ import pyhdf.SD
 from pyhdf import VS
 import pyhdf
 import pyhdf.HDF as HDF
-from modischan_read import sd_open_file
+from .modischan_read import sd_open_file
 import numpy as np
 from xarray import DataArray,Dataset
 import pyproj
