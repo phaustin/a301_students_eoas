@@ -11,23 +11,32 @@ import datetime
 import dateutil.tz as tz
 
 def get_geo(hdfname):
-    """given the name of any hdf file from the Cloudsat data archive
-       return lat,lon,time_vals,prof_times,dem_elevation
-       for the cloudsat orbital swath
-       usage:  lat,lon,height,time_vals,prof_times,dem_elevation=get_geo(hdffile)
-       parameters:
-         input:
-           hdfname:  string with name of hdf file from http://www.cloudsat.cira.colostate.edu/dataSpecs.php
-         output:  
-           lat  -- profile latitude in degrees east  (1-D vector)
-           lon  -- profile longitude in degrees north (1-D vector)
-           time_vals -- profile times in UTC  (1D vector)
-           prof_times -- profile times in seconds since beginning of orbit (1D vector)
-           dem_elevation -- surface elevation in meters
     """
+    given the name of any hdf file from the Cloudsat data archive
+    return lat,lon,time_vals,prof_times,dem_elevation
+    for the cloudsat orbital swath
+
+    Parameters
+    ----------
+    
+    hdfname:  str or Path object
+       full path to the hdf4 file  http://www.cloudsat.cira.colostate.edu/dataSpecs.php
+
+    Returns
+    -------
+
+    the_data: xarray Datset with the following DataArrays
+
+       lat  -- profile latitude in degrees east  (1-D vector)
+       lon  -- profile longitude in degrees north (1-D vector)
+       time_vals -- profile times in UTC  (1D vector)
+       prof_times -- profile times in seconds since beginning of orbit (1D vector)
+       dem_elevation -- surface elevation in meters
+    """
+    
     hdfname = Path(hdfname).resolve()
     hdfname=str(hdfname)
-    print(f"get_geo {hdfname=}")
+    print(f"in get_geo {hdfname=}")
     hdffile=HDF.HDF(hdfname,HDF.HC.READ)
     vs=hdffile.vstart()
     out=vs.vdatainfo()
@@ -36,6 +45,9 @@ def get_geo(hdfname):
     old_variable_names=['Longitude','Latitude','Profile_time','DEM_elevation']
     new_variable_names=['longitude','latitude','profile_time','dem_elevation']
     var_dict={}
+    #
+    # save the variables and conver names to lower case
+    #
     for old_var_name,new_var_name in zip(old_variable_names,new_variable_names):
         the_var=vs.attach(old_var_name)
         nrecs=the_var._nrecs
@@ -47,9 +59,11 @@ def get_geo(hdfname):
     nrecs=tai_start._nrecs
     tai_start_value=tai_start.read(nRec=nrecs)
     tai_start.detach()
-    hdffile.close()   
+    hdffile.close()
+    #
     #tai_start is the number of seconds since Jan 1, 1993 that the orbit
-    #began
+    # began
+    #
     taiDelta=datetime.timedelta(seconds=tai_start_value[0][0])
     taiDayOne=datetime.datetime(1993,1,1,tzinfo=tz.tzutc())
     #this is the start time of the orbit in seconds since Jan 1, 1993
@@ -98,6 +112,9 @@ def get_geo(hdfname):
     return the_data
 
 def read_cloudsat_var(varname, filename):
+    """
+    Given a variable name and a file name, return a cloudsat dataset
+    """
     the_data = get_geo(filename)
     hdf_SD = sd_open_file(filename)
     print(f"in read_cloudsat_var, reading {varname=}")
