@@ -41,7 +41,8 @@ os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 
 ## get three bands plus FMask and return as an xarray dataset
 
-set `doread=True` to read the data and write to a netcdf file for future use
+To fetch a new image that hasn't been saved and write it to disk,
+set `doread=True`. Otherwise read the dataset from the netcdf file
 
 ```{code-cell} ipython3
 date = "2015-06-14"
