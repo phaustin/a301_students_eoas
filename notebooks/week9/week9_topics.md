@@ -66,14 +66,16 @@ kernelspec:
 
 ## Week 9 topics for Wednesday
 
-* {ref}`week9:cloudsat`
+* Work through {ref}`week9:cloudsat` which demonstrates how to read cloudsat data using
+  [read_cloudsat_var](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.cloudsat.read_cloudsat_var)
 
-* Go over datasets described in Table 3 of this [Cloudsat descriptive paper](https://cloudsat.atmos.colostate.edu/BAMS_CloudSat_CR.pdf)
+* Introduce datasets described in Table 3 of this [Cloudsat descriptive paper](https://cloudsat.atmos.colostate.edu/BAMS_CloudSat_CR.pdf)
 
-* Go over Stull page 245 and my {ref}`week9:radar`
+* Focus on radar equation in Stull page 245 and my {ref}`week9:radar`
 
-* Go over Stull page 247 and my {ref}`week9:marshall`
+* Focus on Z-R relationship in Stull page 247 and my {ref}`week9:marshall`
 
+* What is the bright band?  Why is it bright?
 
 ### Reserved hurricanes
 
@@ -87,17 +89,17 @@ kernelspec:
 
 ### Radar problem (part of assignment 5)
 
-1) Integrate :math:`Z=\int D^6 n(D) dD` on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
+1) Integrate $Z=\int D^6 n(D) dD$ on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
 
-   .. math::
+$$
+Z \approx 300 RR^{1.5}
+$$
 
-      Z \approx 300 RR^{1.5}
+with Z in $mm^6\,m^{-3}$ and RR in mm/hr.  It's helpful to know that:
 
-   with Z in :math:`mm^6\,m^{-3}` and RR in mm/hr.  It's helpful to know that:
-
-   .. math::
-
-      \int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+$$
+\int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+$$
 
 2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
    the result agrees.
