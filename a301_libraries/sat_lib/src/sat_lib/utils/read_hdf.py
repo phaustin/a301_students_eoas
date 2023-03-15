@@ -11,7 +11,7 @@ def describevg(refnum,v,vs,sd):
 
     # Open vgroup in read mode.
     vg = v.attach(refnum)
-    print("----------------")
+    print("+++++++++++++++++")
     print("name:", vg._name, "class:",vg._class, "tag,ref:")
     print(vg._tag, vg._refnum)
 
@@ -20,6 +20,7 @@ def describevg(refnum,v,vs,sd):
     print("datasets:", vg.nrefs(HC.DFTAG_NDG))
     print("vdatas:  ", vg.nrefs(HC.DFTAG_VH))
     print("vgroups: ", vg.nrefs(HC.DFTAG_VG))
+    print("+++++++++++++++++")
 
     # Read the contents of the vgroup.
     members = vg.tagrefs()
@@ -31,6 +32,7 @@ def describevg(refnum,v,vs,sd):
         print("member index", index)
         # Vdata tag
         if tag == HC.DFTAG_VH:
+            print("\n-----caught Vdata--------")
             vd = vs.attach(ref)
             nrecs, intmode, fields, size, name = vd.inquire()
             print("  vdata:",name, "tag,ref:",tag, ref)
@@ -40,6 +42,7 @@ def describevg(refnum,v,vs,sd):
 
         # SDS tag
         elif tag == HC.DFTAG_NDG:
+            print("\n-----caught SDS--------")
             sds = sd.select(sd.reftoindex(ref))
             name, rank, dims, type, nattrs = sds.info()
             print("  dataset:",name, "tag,ref:", tag, ref)
@@ -49,6 +52,7 @@ def describevg(refnum,v,vs,sd):
 
         # VS tag
         elif tag == HC.DFTAG_VG:
+            print("caught VS")
             vg0 = v.attach(ref)
             print("  vgroup:", vg0._name, "tag,ref:", tag, ref)
             vg0.detach()

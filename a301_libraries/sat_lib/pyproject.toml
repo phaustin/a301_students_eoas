@@ -21,6 +21,7 @@ meta_read = "sat_lib.modismeta_read:main"
 hdf4_inspect = "sat_lib.hdf4_inspect:main"
 set_nasa_password = "sat_lib.set_nasa_password:main"
 plot_marshall = "sat_lib.utils.marshall_palmer:plot_marshall"
+read_hdf = "sat_lib.utils.read_hdf:read_hdf"
 [tool.setuptools_scm]
 write_to = "a301_libraries/sat_lib/src/sat_lib/_version.py"
 root = "../.."
