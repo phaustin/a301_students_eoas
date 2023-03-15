@@ -66,6 +66,15 @@ kernelspec:
 
 ## Week 9 topics for Wednesday
 
+* {ref}`week9:cloudsat`
+
+* Go over datasets described in Table 3 of this [Cloudsat descriptive paper](https://cloudsat.atmos.colostate.edu/BAMS_CloudSat_CR.pdf)
+
+* Go over Stull page 245 and my {ref}`week9:radar`
+
+* Go over Stull page 247 and my {ref}`week9:marshall`
+
+
 ### Reserved hurricanes
 
 - Nida - 2009/11/28
@@ -74,4 +83,22 @@ kernelspec:
 - Mekkala
 - Billy - 2008
 - Mitchell
+
+
+### Radar problem (part of assignment 5)
+
+1) Integrate :math:`Z=\int D^6 n(D) dD` on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
+
+   .. math::
+
+      Z \approx 300 RR^{1.5}
+
+   with Z in :math:`mm^6\,m^{-3}` and RR in mm/hr.  It's helpful to know that:
+
+   .. math::
+
+      \int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+
+2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
+   the result agrees.
 

@@ -13,6 +13,7 @@ kernelspec:
   name: python3
 ---
 
+(week8:cloudsat)=
 # Reading cloudsat data
 
 This notebook demonstrates how to read the radar reflectivity (GEOPROF-GRAΝULE) and the lidar layer top (GEOPROF-LIDAR-GRANULE)

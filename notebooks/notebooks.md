@@ -53,3 +53,5 @@
 * {ref}`week9:datasets`
 * {ref}`week9:radar`
 * {ref}`week9:marshall`
+* {ref}`week9:cloudsat`
+

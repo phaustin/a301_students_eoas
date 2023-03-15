@@ -114,6 +114,15 @@ def get_geo(hdfname):
 def read_cloudsat_var(varname, filename):
     """
     Given a variable name and a file name, return a cloudsat dataset
+
+    Parameters
+    ----------
+
+    varname: str
+       name of cloudsat variable
+
+    filename: str or Path object
+       path to the cloudsat haf file
     """
     the_data = get_geo(filename)
     hdf_SD = sd_open_file(filename)
