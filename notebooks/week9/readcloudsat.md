@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -18,7 +18,7 @@ kernelspec:
 
 This notebook demonstrates how to read the radar reflectivity (GEOPROF-GRAΝULE) and the lidar layer top (GEOPROF-LIDAR-GRANULE)
 from cloudsat files.  We create two plots below: one showing the orbit with the location of a thundercloud, and one
-showing the reflectivity and cloudtop through the cloud transect.  
+showing the reflectivity and cloudtop through the cloud transect.
 
 ```{code-cell} ipython3
 from matplotlib import pyplot as plt
@@ -72,7 +72,7 @@ lidar_ds
 layer_top = lidar_ds['LayerTop']
 ```
 
-## Plot the orbit, with the location of a thunderstorm 
+## Plot the orbit, with the location of a thunderstorm
 
 ```{code-cell} ipython3
 import cartopy.crs as ccrs

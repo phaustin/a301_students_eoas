@@ -70,6 +70,7 @@ parts:
     - file: notebooks/week9/radar.rst
     - file: notebooks/week9/marshall_palmer.md
     - file: notebooks/week9/readcloudsat.md
+    - file: notebooks/week9/test_landsat_dataset.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
