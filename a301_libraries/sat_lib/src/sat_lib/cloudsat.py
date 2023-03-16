@@ -1,7 +1,3 @@
-import pyhdf.SD
-from pyhdf import VS
-import pyhdf
-import pyhdf.HDF as HDF
 from .modischan_read import sd_open_file
 import numpy as np
 from xarray import DataArray,Dataset
@@ -9,6 +5,45 @@ import pyproj
 from pathlib import Path
 import datetime
 import dateutil.tz as tz
+from pyhdf.HDF import *
+from pyhdf.V   import *
+from pyhdf.VS  import *
+from pyhdf.SD  import *
+
+def read_attrs(filename):
+    """
+    Extract the data for non scientific data in V mode of hdf file
+    """
+    hdf = HDF(filename, HC.READ)
+
+    # Initialize the SD, V and VS interfaces on the file.
+    sd = SD(filename)
+    vs = hdf.vstart()
+    v  = hdf.vgstart()
+    attr_dict = read_swath_attributes(v,vs)
+    # Encontrar el puto id de las Geolocation Fields
+    # Terminate V, VS and SD interfaces.
+    v.end()
+    vs.end()
+    sd.end()
+    # Close HDF file.
+    hdf.close()
+    return attr_dict
+
+def read_swath_attributes(v,vs):
+    ref = v.find('Swath Attributes')
+    vg = v.attach(ref)
+    members = vg.tagrefs()
+    attr_dict = {}
+    for tag, ref in members:
+        if tag == HC.DFTAG_VH:
+            vd = vs.attach(ref)
+            nrecs, intmode, fields, size, name = vd.inquire()
+            value = vd.read()
+            attr_dict[name] = value
+            vd.detach()
+    vg.detach()
+    return attr_dict
 
 def get_geo(hdfname):
     """
@@ -36,9 +71,10 @@ def get_geo(hdfname):
     
     hdfname = Path(hdfname).resolve()
     hdfname=str(hdfname)
+    the_attrs = read_attrs(hdfname)
     print(f"in get_geo {hdfname=}")
-    hdffile=HDF.HDF(hdfname,HDF.HC.READ)
-    vs=hdffile.vstart()
+    hdffile=HDF(hdfname,HC.READ)
+    vs = hdffile.vstart()
     out=vs.vdatainfo()
     #uncomment this line to see the variable names
     # print("VS variable names: ",out)
@@ -108,8 +144,11 @@ def get_geo(hdfname):
     x_dict['full_heights'] = (['time','height'],height_array)
     coords={'time':(['time'],var_dict['time_vals']),
             'height':(['height'],height_array[0,:])}
+    print(the_attrs.keys())
     the_data = Dataset(data_vars=x_dict, coords=coords)
     return the_data
+
+
 
 def read_cloudsat_var(varname, filename):
     """
@@ -124,6 +163,7 @@ def read_cloudsat_var(varname, filename):
     filename: str or Path object
        path to the cloudsat haf file
     """
+    print("current version")
     the_data = get_geo(filename)
     hdf_SD = sd_open_file(filename)
     print(f"in read_cloudsat_var, reading {varname=}")
