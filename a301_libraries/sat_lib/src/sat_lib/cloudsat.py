@@ -14,13 +14,20 @@ def read_attrs(filename):
     """
     Extract the data for non scientific data in V mode of hdf file
     """
+    filename = Path(filename)
+    filename = str(filename)
     hdf = HDF(filename, HC.READ)
 
     # Initialize the SD, V and VS interfaces on the file.
     sd = SD(filename)
     vs = hdf.vstart()
     v  = hdf.vgstart()
+    ref = -1
+    ref = v.getid(ref)
+    vg = v.attach(ref)
+    file_type = vg._name
     attr_dict = read_swath_attributes(v,vs)
+    attr_dict['file_type']=file_type
     # Encontrar el puto id de las Geolocation Fields
     # Terminate V, VS and SD interfaces.
     v.end()
@@ -72,7 +79,8 @@ def get_geo(hdfname):
     hdfname = Path(hdfname).resolve()
     hdfname=str(hdfname)
     the_attrs = read_attrs(hdfname)
-    print(f"in get_geo {hdfname=}")
+    granule_id = int(the_attrs['granule_number'][0][0])
+    file_type = the_attrs['file_type']
     hdffile=HDF(hdfname,HC.READ)
     vs = hdffile.vstart()
     out=vs.vdatainfo()
@@ -109,6 +117,9 @@ def get_geo(hdfname):
     #python datetime objects in utc
     for the_time in var_dict['profile_time']:
         time_vals.append(orbitStart + datetime.timedelta(seconds=float(the_time)))
+    print(f"{time_vals[0]=}")
+    orbit_start_time = time_vals[0]
+    orbit_end_time = time_vals[-1]
     var_dict['time_vals']=time_vals
     neg_values=var_dict['dem_elevation'] < 0
     var_dict['dem_elevation'][neg_values]=0
@@ -141,11 +152,12 @@ def get_geo(hdfname):
     var_vals=var_sd.get()
     height_array =var_vals.astype(np.float32)
     hdf_SD.end()
+    attrs = dict(file_type=file_type,orbit_start_time = orbit_start_time,
+                orbit_end_time = orbit_end_time, granule_id=granule_id)
     x_dict['full_heights'] = (['time','height'],height_array)
     coords={'time':(['time'],var_dict['time_vals']),
             'height':(['height'],height_array[0,:])}
-    print(the_attrs.keys())
-    the_data = Dataset(data_vars=x_dict, coords=coords)
+    the_data = Dataset(data_vars=x_dict, coords=coords,attrs=attrs)
     return the_data
 
 
@@ -163,26 +175,30 @@ def read_cloudsat_var(varname, filename):
     filename: str or Path object
        path to the cloudsat haf file
     """
-    print("current version")
     the_data = get_geo(filename)
+    swath_attrs = read_attrs(filename)
+    print(f"in read_cloudsat_var: reading file type {the_data.file_type}")
     hdf_SD = sd_open_file(filename)
-    print(f"in read_cloudsat_var, reading {varname=}")
+    print(f"in read_cloudsat_var: reading {varname=}")
     var_sd=hdf_SD.select(varname)
     var_vals=var_sd.get()
-    try:
-        fill_value=var_sd.attributes()["_FillValue"]
-        missing_vals = var_vals == fill_value
-        var_vals =var_vals.astype(np.float32)
-        var_vals[missing_vals]=np.nan
-    except:
-        var_vals =var_vals.astype(np.float32)
+    print(f"variable type before scaling: {var_vals.dtype=}")
+    #
+    # mask on the integer fill_value
+    #
+    fill_value=var_sd.attributes()["_FillValue"]
+    print(f"{fill_value=}")
+    missing_vals = (var_vals == fill_value)
+    var_vals =var_vals.astype(np.float32)
+    var_vals[missing_vals]=np.nan
     hdf_SD.end()
     scale_factor = 1
     new_name = varname
     if varname == 'Radar_Reflectivity':
+        scale_factor = swath_attrs['Radar_Reflectivity.factor']
+        # scale_factor should be 100
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
-        scale_factor = 0.001
-        var_vals = var_vals*scale_factor
+        var_vals = var_vals/scale_factor
         var_array = DataArray(var_vals,dims=['time','height'])
     elif varname == 'LayerTop':
         var_vals[var_vals < 0]=np.nan
