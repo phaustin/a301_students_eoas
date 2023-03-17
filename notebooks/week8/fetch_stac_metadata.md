@@ -23,6 +23,10 @@ of all low-cloudcover satellite scenes for ubc, along with their datetime,
 month, and season (winter, spring, summer, fall).  Before starting on this
 notebook, it would be good to review {ref}`week6:pandas_intro`.
 
+
+March 17, 2023:  introduced "season_year" column to account for the fact that winter begins december but
+continues into the next year.
+
 ```{code-cell} ipython3
 import numpy
 from pathlib  import Path
@@ -149,15 +153,25 @@ def make_seasoncol(row):
                'son':[9,10,11]}
     for season,months in seasons.items():
         month = row['datetime'].month
+        year = row['datetime'].year
         if month in months:
+            #
+            # the winter of 2013 begins in
+            # december 2012.  So the year of the
+            # scene and the year of the season diverge
+            #
+            if month == 12:
+                row['season_year'] = year + 1
+            else:
+                row['season_year'] = year
             row['season']=season
-            row['year']= row['datetime'].year
+            row['year']= year
             row['month']= month
             row['day']= row['datetime'].day
     return row
 
 new_df = the_df.apply(make_seasoncol,axis=1)
-new_df = new_df[['scene','cloud_cover','season','year','month','day']]
+new_df = new_df[['scene','cloud_cover','season','year','season_year','month','day']]
 new_df.head()
 ```
 
@@ -184,8 +198,12 @@ Below we use the pandas groupby operator https://realpython.com/pandas-groupby/
 to produce a new set of dataframes that all have the same season
 
 ```{code-cell} ipython3
-season_df = new_df.groupby(['year','season'])
+season_df = new_df.groupby(['season_year','season'])
 season_dict = dict(list(season_df))
+season_dict
+```
+
+```{code-cell} ipython3
 season_dict
 ```
 
