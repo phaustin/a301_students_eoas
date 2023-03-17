@@ -85,6 +85,10 @@ kernelspec:
 - Mekkala
 - Billy - 2008
 - Mitchell
+- Mirinae
+- Iggy
+- Amara
+- Faxai
 
 ## Week 9 topics for Friday
 
