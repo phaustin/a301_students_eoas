@@ -179,7 +179,6 @@ fig2.colorbar(col,extend='both',ax=ax2);
 ax2.set(ylim=[0,10],xlim=(0,1200),
        xlabel='distance (km)',ylabel='height (km)',
        title="ECMWF temperture (deg C)")
-fig2.savefig('temps.png')
 ```
 
 +++ {"user_expressions": []}
