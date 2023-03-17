@@ -6,14 +6,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week9:cloudsat_ecmwf)=
 # Working with cloudsat data
@@ -27,7 +27,7 @@ isotherm on top of the reflectivities.
 I'll use the [seaborn color palette module](https://seaborn.pydata.org/tutorial/color_palettes.html) to pick a palette that
 emphasizes the freezing level in the temperature plot
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Step 1: Plot the radar reflectivity for a storm
 
@@ -36,7 +36,6 @@ emphasizes the freezing level in the temperature plot
 ### Read in the radar reflectivity using `read_cloudsat_var`
 
 ```{code-cell} ipython3
-import h5py
 import numpy as np
 import datetime as dt
 from datetime import timezone as tz
@@ -57,7 +56,7 @@ radar_ds = read_cloudsat_var('Radar_Reflectivity',z_file)
 radar_ds
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 #### I know the storm covers 3 minutes of data starting at 6:45 UTC
 
@@ -102,7 +101,7 @@ distance_km = radar_ds['distance_km'][time_hit]
 storm_date_times=orbit_times[time_hit]
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 #### Use pcolormeash to plot the reflectivity image
 
@@ -135,7 +134,7 @@ ax.set(ylim=[0,17],xlabel = "distance (km)",ylabel="height (km)",
 fig.colorbar(col,extend='both',ax=ax);
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Step 2: Compare cloudsat and the ECMWF model
 
@@ -152,7 +151,7 @@ temperature = temperature - 273.15
 temperature
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Plot the temperature
 
@@ -183,7 +182,7 @@ ax2.set(ylim=[0,10],xlim=(0,1200),
 fig2.savefig('temps.png')
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Find the 0 degree isotherm
 
@@ -202,7 +201,7 @@ index_vals=np.nanargmin(abs_temps,axis=1)
 height_vec=[height_km.data[index] for index in index_vals]
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Redraw figure 1 with the isotherm
 
