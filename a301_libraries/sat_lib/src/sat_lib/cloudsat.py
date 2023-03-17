@@ -9,6 +9,7 @@ from pyhdf.HDF import *
 from pyhdf.V   import *
 from pyhdf.VS  import *
 from pyhdf.SD  import *
+import pandas as pd
 
 def read_attrs(filename):
     """
@@ -86,8 +87,8 @@ def get_geo(hdfname):
     out=vs.vdatainfo()
     #uncomment this line to see the variable names
     # print("VS variable names: ",out)
-    old_variable_names=['Longitude','Latitude','Profile_time','DEM_elevation']
-    new_variable_names=['longitude','latitude','profile_time','dem_elevation']
+    old_variable_names=['Longitude','Latitude','Profile_time']
+    new_variable_names=['longitude','latitude','profile_time']
     var_dict={}
     #
     # save the variables and conver names to lower case
@@ -98,6 +99,20 @@ def get_geo(hdfname):
         the_data=the_var.read(nRec=nrecs)
         the_data=np.array(the_data).squeeze()
         var_dict[new_var_name]=the_data
+        the_var.detach()
+    if file_type == 'ECMWF-AUX':
+        the_var = vs.attach('EC_height')
+        nrecs=the_var._nrecs
+        the_data=the_var.read(nRec=nrecs)
+        the_data=np.array(the_data).squeeze()
+        var_dict['ec_height']=the_data
+        the_var.detach()
+    else: 
+        the_var = vs.attach('DEM_elevation')
+        nrecs=the_var._nrecs
+        the_data=the_var.read(nRec=nrecs)
+        the_data=np.array(the_data).squeeze()
+        var_dict['dem_elevation']=the_data
         the_var.detach()
     tai_start=vs.attach('TAI_start')
     nrecs=tai_start._nrecs
@@ -121,8 +136,6 @@ def get_geo(hdfname):
     orbit_start_time = time_vals[0]
     orbit_end_time = time_vals[-1]
     var_dict['time_vals']=time_vals
-    neg_values=var_dict['dem_elevation'] < 0
-    var_dict['dem_elevation'][neg_values]=0
     #
     # great circle distance
     #
@@ -140,24 +153,33 @@ def get_geo(hdfname):
     #
     # write the dataset
     # 
-    x_dict={}
-    variable_names=['latitude','longitude','profile_time','dem_elevation','distance_km']
-    for var_name,var_data in var_dict.items():
-        x_dict[var_name] = (['time'],var_data)
+    coord_names=['profile_time','distance_km','time_vals']
+    variable_names=['latitude','longitude']
+    variable_dict = {key:(['time'],var_dict[key]) for key in variable_names}
+    coord_dict = {key:var_dict[key] for key in coord_names}
     #
     # get the height array if it exists
-    #  
-    hdf_SD = sd_open_file(hdfname)
-    var_sd=hdf_SD.select('Height')
-    var_vals=var_sd.get()
-    height_array =var_vals.astype(np.float32)
-    hdf_SD.end()
+    #
+    if file_type != 'ECMWF-AUX':
+        hdf_SD = sd_open_file(hdfname)
+        var_sd=hdf_SD.select('Height')
+        var_vals=var_sd.get()
+        height_array =var_vals.astype(np.float32)
+        height = height_array[0,:]
+        var_dict['full_heights'] = (['time','height'],height_array)
+        coord_dict['height'] = height_array[0,:]
+        variable_dict['dem_elevation'] = (['time'], var_dict['dem_elevation'])
+        hdf_SD.end()
+    else:
+        coord_dict['height'] = var_dict['ec_height']
     attrs = dict(file_type=file_type,orbit_start_time = orbit_start_time,
                 orbit_end_time = orbit_end_time, granule_id=granule_id)
-    x_dict['full_heights'] = (['time','height'],height_array)
-    coords={'time':(['time'],var_dict['time_vals']),
-            'height':(['height'],height_array[0,:])}
-    the_data = Dataset(data_vars=x_dict, coords=coords,attrs=attrs)
+    coords={'time':(['time'],coord_dict['time_vals']),
+            'height':(['height'],coord_dict['height']),
+            'distance_km':(['time'],coord_dict['distance_km']),
+            'profile_time':(['time'],coord_dict['profile_time'])
+            }
+    the_data = Dataset(data_vars=variable_dict, coords=coords,attrs=attrs)
     return the_data
 
 
@@ -207,6 +229,8 @@ def read_cloudsat_var(varname, filename):
         #
         var_value = var_vals[:,0] 
         var_array = DataArray(var_value,dims=['time'])
+    elif swath_attrs['file_type'] == "ECMWF-AUX":
+        var_array = DataArray(var_vals,dims=['time','height'])
     else:
         var_array = DataArray(var_vals,dims=['time'])
     the_data[varname] = var_array

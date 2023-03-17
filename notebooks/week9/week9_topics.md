@@ -86,6 +86,13 @@ kernelspec:
 - Billy - 2008
 - Mitchell
 
+## Week 9 topics for Friday
+
+* Review {ref}`assign4_solution`
+* Show how to add data to a raster image: {ref}`week9:test_dataset`
+* Origins of the bright band: Stull page 248
+* Show how to combine cloudsat and ECMWF data with {ref}`week9:cloudsat_ecmwf`
+
 
 ### Radar problem (part of assignment 5)
 
@@ -103,4 +110,19 @@ $$
 
 2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
    the result agrees.
+
+
+### Landsat problem (part of assignment 5)
+
+Create geotifs for your landsat windowed scene for 10 years of seasonal data (40 images) and make a plot of average ndvi vs. time for your scene.  Hand in a notebook that has
+
+1)  a function that saves the date of the lowest cloud fraction for each scene, folllowing {ref}`week8:pandas_worksheet` as a python list
+
+2) a function that retrieve each scene and saves it to a geotiff in a folder if it hasn't already
+   been downloaded
+   
+4) a function that writes an ndvi geotiff to a folder if it hasn't already been saved
+
+3) a function that reads and sorts the ndvi arrays by date, calculates the mean and makes the plot
+
 

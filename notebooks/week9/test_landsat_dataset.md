@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -89,7 +89,6 @@ projection
 ### Create a plot axis with the projection and add a point for the EOAS building
 
 ```{code-cell} ipython3
-
 kw_dict = dict(projection=projection)
 #
 # pass the landsat projection to the axis

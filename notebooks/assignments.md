@@ -9,4 +9,5 @@
 * {ref}`assign3a_solution`
 * {ref}`assign3b_solution`
 * {ref}`assign4`
+* {ref}`assign4_solution`
 

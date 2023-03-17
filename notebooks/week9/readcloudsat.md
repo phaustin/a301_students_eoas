@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -76,7 +76,7 @@ layer_top = lidar_ds['LayerTop']
 
 ```{code-cell} ipython3
 import cartopy.crs as ccrs
-start=21500  #seconds in orbit --this is storm starting point
+start=21750  #seconds in orbit --this is storm starting point
 stop=22000
 projection=ccrs.Robinson()
 transform = ccrs.Geodetic()
@@ -104,8 +104,8 @@ fig, axis1 =plt.subplots(1,1,figsize=(14,4))
 meters2km = 1.e-3
 storm_distance = distance_km[start:stop]
 storm_distance = storm_distance - storm_distance[0]
-vmin=-6
-vmax=4
+vmin=-10
+vmax=20
 pal = copy(plt.get_cmap("viridis"))
 pal.set_bad("0.2")  # 75% grey for out-of-map cells
 pal.set_under("0.75")

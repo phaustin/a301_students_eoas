@@ -71,6 +71,8 @@ parts:
     - file: notebooks/week9/marshall_palmer.md
     - file: notebooks/week9/readcloudsat.md
     - file: notebooks/week9/test_landsat_dataset.md
+    - file: notebooks/week9/cloudsat_ecmwf.md
+    
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
@@ -78,7 +80,7 @@ parts:
     - file: notebooks/assignments/assign2b_solution.md
     - file: notebooks/assignments/assignment3a_solution.md
     - file: notebooks/assignments/assignment3b_solution.md
-    - file: notebooks/assignments/assignment4.md
+    - file: notebooks/assignments/assignment4_solution.md
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/a301_mid_2022t2_solutions.md

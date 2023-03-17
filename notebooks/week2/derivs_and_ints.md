@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -89,8 +89,9 @@ _ = ax2.set(ylabel="(approx - exact)/exact", xlabel="x", title="relative error")
 
 ### What's going on above at x=0?
 
-+++
++++ {"user_expressions": [], "tags": []}
 
+(week2:numint)=
 ## 2) Find the definite integral of this function with python
 
 In first year you learned that if you start with this sum:
