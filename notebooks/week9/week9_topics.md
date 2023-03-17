@@ -86,9 +86,13 @@ kernelspec:
 - Billy - 2008
 - Mitchell
 - Mirinae
-- Iggy
+- Prapiroon
 - Amara
 - Faxai
+- Gelane
+- Becky
+- Bondo
+
 
 ## Week 9 topics for Friday
 
