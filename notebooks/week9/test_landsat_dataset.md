@@ -89,6 +89,7 @@ projection
 ### Create a plot axis with the projection and add a point for the EOAS building
 
 ```{code-cell} ipython3
+from cartopy import feature as cfeature
 kw_dict = dict(projection=projection)
 #
 # pass the landsat projection to the axis
@@ -101,5 +102,6 @@ band5.plot(ax=ax)
 #
 transform = ccrs.Geodetic()
 ax.plot(lon,lat,'bo',markersize=11,transform=transform)
+ax.add_feature(cfeature.COASTLINE,color='black')
 ax.set_title(f"landsat band 5 on {band5.day}");
 ```

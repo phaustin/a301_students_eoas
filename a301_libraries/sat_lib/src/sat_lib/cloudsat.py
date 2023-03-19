@@ -29,6 +29,7 @@ def read_attrs(filename):
     file_type = vg._name
     attr_dict = read_swath_attributes(v,vs)
     attr_dict['file_type']=file_type
+    print(f"{attr_dict=}")
     # Encontrar el puto id de las Geolocation Fields
     # Terminate V, VS and SD interfaces.
     v.end()
@@ -205,6 +206,7 @@ def read_cloudsat_var(varname, filename):
     var_sd=hdf_SD.select(varname)
     var_vals=var_sd.get()
     print(f"variable type before scaling: {var_vals.dtype=}")
+    print(f"variable attributes: {var_sd.attributes()}")
     #
     # mask on the integer fill_value
     #
@@ -213,7 +215,6 @@ def read_cloudsat_var(varname, filename):
     missing_vals = (var_vals == fill_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
-    hdf_SD.end()
     scale_factor = 1
     new_name = varname
     if varname == 'Radar_Reflectivity':
@@ -233,6 +234,7 @@ def read_cloudsat_var(varname, filename):
         var_array = DataArray(var_vals,dims=['time','height'])
     else:
         var_array = DataArray(var_vals,dims=['time'])
+    hdf_SD.end()
     the_data[varname] = var_array
     return the_data
     
