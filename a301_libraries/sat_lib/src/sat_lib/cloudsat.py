@@ -29,7 +29,7 @@ def read_attrs(filename):
     file_type = vg._name
     attr_dict = read_swath_attributes(v,vs)
     attr_dict['file_type']=file_type
-    print(f"{attr_dict=}")
+    # print(f"{attr_dict=}")
     # Encontrar el puto id de las Geolocation Fields
     # Terminate V, VS and SD interfaces.
     v.end()
@@ -206,20 +206,18 @@ def read_cloudsat_var(varname, filename):
     var_sd=hdf_SD.select(varname)
     var_vals=var_sd.get()
     print(f"variable type before scaling: {var_vals.dtype=}")
-    print(f"variable attributes: {var_sd.attributes()}")
+    var_attrs = var_sd.attributes()
     #
     # mask on the integer fill_value
     #
-    fill_value=var_sd.attributes()["_FillValue"]
-    print(f"{fill_value=}")
+    fill_value=var_attrs['missing']
     missing_vals = (var_vals == fill_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
-    scale_factor = 1
+    scale_factor = var_attrs['factor']
     new_name = varname
-    if varname == 'Radar_Reflectivity':
-        scale_factor = swath_attrs['Radar_Reflectivity.factor']
-        # scale_factor should be 100
+    two_d_list = ['Radar_reflectivity','precip_liquid_water']
+    if varname in two_d_list:
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
         var_vals = var_vals/scale_factor
         var_array = DataArray(var_vals,dims=['time','height'])
