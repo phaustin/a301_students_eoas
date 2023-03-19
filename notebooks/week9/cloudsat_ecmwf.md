@@ -46,12 +46,12 @@ import a301_lib
 from sat_lib.cloudsat import read_cloudsat_var
 import seaborn as sns
 
-z_file=(a301_lib.data_share / 'pha/cloudsat').glob('20080820*CS_2C*RAIN*hdf')
+z_file=(a301_lib.data_share / 'pha/cloudsat').glob('20080820*CS_2B-GEOPROF_GRANULE*hdf')
 z_file = list(z_file)[0]
 meters2km=1.e3
 print(z_file)
 
-radar_ds = read_cloudsat_var('precip_liquid_water',z_file)
+radar_ds = read_cloudsat_var('Radar_Reflectivity',z_file)
     
 radar_ds
 ```
@@ -206,7 +206,7 @@ height_vec=[height_km.data[index] for index in index_vals]
 
 It looks like the model and the radar agree on the freezing level for this storm
 
-+++
-
+```{code-cell} ipython3
 ax.plot(distance_km,height_vec,'r')
 display(fig)
+```
