@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -29,6 +29,7 @@ import inspect
 from matplotlib import pyplot as plt
 import numpy as np
 from copy import copy
+import datetime
 
 import rioxarray
 from pystac_client import Client
@@ -162,7 +163,7 @@ new_df = new_df[['scene','cloud_cover','season','year','season_year','month','da
 new_df.head()
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Store this full list as a csv file
 
@@ -199,7 +200,7 @@ season_dict[(2014,'jja')]['cloud_cover']
 season_dict[(2014,'jja')].iloc[2]
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## New for week10: Write one scene for each season
 Take the code from {ref}`week8:pandas_worksheet` to locate the lowest cloud fraction for each season
@@ -228,30 +229,16 @@ new_frame = pd.DataFrame.from_records(out_list, index='scene')
 new_frame.head()
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Get the windowed region and write to netcdfs
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 We can take the code from {ref}`week9:test_dataset` to loop over the rows of the data frame
 and grab the scenes.  Here's how to do it for the first 5 rows:
 
 +++ {"user_expressions": []}
-
-### Move the write code from {ref}`week9:test_dataset` to a function
-
-+++ {"user_expressions": []}
-
-def write_dataset(the_ds,filepath,date, lon, lat, the_window):
-    scenes_data = get_landsat_dataset(date, lon, lat, the_window) 
-    #
-    # write out the file for reuse
-    #
-    scenes_data.to_netcdf(filepath)
-    return None
-
-+++ {"tags": [], "user_expressions": []}
 
 ### Make a directory to hold the datasets
 
@@ -266,7 +253,7 @@ os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
 os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Loop over each row in the dataframe and write the files
 

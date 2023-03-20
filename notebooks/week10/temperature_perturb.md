@@ -6,14 +6,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week9:temperature_perturb)=
 # Plotting ECMWF temperature and wind speed
@@ -21,12 +21,13 @@ kernelspec:
 In this notebook we extend the {ref}`week9:cloudsat_ecmwf` notebook by plotting the temperature perturbation and wind speed
 to see if we can spot the effect of the storm.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Step 1: Read in the week 9 reflectivity and temperature
 
-We save the 1125 x 125 temperature and reflectivity datasets at the bottom of the `cloudsat_ecmwf.md` notebook.
-Read those back in using `xarray.open_dataset`
+Added this week: there is now a new cell at the bottom of {ref}`week9:cloudsat_ecmwf`
+That saves the storm segement for the temperature and reflectivity datasets.  You'll
+need to run that notebook to produce `stormm_zvals.nc` and `temperature.nc`
 
 ```{code-cell} ipython3
 import numpy as np
@@ -50,7 +51,7 @@ temperature = xr.open_dataset(infile_temp)
 temperature
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Write a new function to add the "storm distance" as a coordinate
 
@@ -89,7 +90,7 @@ storm_zvals = add_storm_distance(storm_zvals)
 storm_zvals
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Plotting using xarray.plot
 
@@ -144,12 +145,12 @@ ax2.set(ylim = [0,17], xlabel = "distance (km)", ylabel = "height (km)",
          title = f"temperature perturbation (K) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Comparing the radar plot and the region of warmer temperatures, it look like the model has the storm about 300 km to the
 right of the radar location
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Plot the wind speed
 
@@ -166,7 +167,7 @@ u_ds = read_cloudsat_var('U_velocity',ecmwf_file)
 v_ds = read_cloudsat_var('V_velocity',ecmwf_file)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Clip the orbit to the storm times
 
@@ -182,7 +183,7 @@ uvel = u_ds['U_velocity'][time_hit,:]
 vvel = v_ds['V_velocity'][time_hit,:]
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Add the storm distance
 
@@ -193,7 +194,7 @@ uvel = add_storm_distance(uvel)
 vvel = add_storm_distance(vvel)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Find the wind speed
 
@@ -204,7 +205,7 @@ wind_speed = np.sqrt(uvel**2. + vvel**2.)
 wind_speed
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### make the plot
 
