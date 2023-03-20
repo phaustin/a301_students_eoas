@@ -67,6 +67,11 @@ kernelspec:
 - Gelane
 - Bondo
 - Maria
+- Chebi
+- Yagi
+- Choi-wan
+- Dolores
+
 
 ## For Wednesday
 

@@ -246,9 +246,13 @@ temperature = temperature_ds.sel(time=time_hit)
 
 ### Now write to netcdf files
 
+Change the output directory and make `do_write=True` to write out your storm checkpoint files
+
 ```{code-cell} ipython3
-outfile_zvals = a301_lib.data_share / "pha/cloudsat/storm_zvals.nc"
-storm_zvals.to_netcdf(outfile_zvals,mode='w')
-outfile_temp = a301_lib.data_share / "pha/cloudsat/temperature.nc"
-temperature.to_netcdf(outfile_temp,mode='w')
+do_write=False
+if do_write:   
+    outfile_zvals = a301_lib.data_share / "pha/cloudsat/storm_zvals.nc"
+    storm_zvals.to_netcdf(outfile_zvals,mode='w')
+    outfile_temp = a301_lib.data_share / "pha/cloudsat/temperature.nc"
+    temperature.to_netcdf(outfile_temp,mode='w')
 ```
