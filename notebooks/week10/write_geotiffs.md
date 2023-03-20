@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -13,19 +13,13 @@ kernelspec:
 
 +++ {"user_expressions": []}
 
-(week8:fetch)=
-# Getting multiple scenes using stac
+(week10:write_geotiff)=
+# Writing the scenes for each season to geotiffs
 
 ## Introduction
 
-In this notebook we construct a set of pandas dataframes that contains a list
-of all low-cloudcover satellite scenes for ubc, along with their datetime,
-month, and season (winter, spring, summer, fall).  Before starting on this
-notebook, it would be good to review {ref}`week6:pandas_intro`.
-
-
-March 17, 2023:  introduced "season_year" column to account for the fact that winter begins december but
-continues into the next year.
+This notebook starts with a replay of {ref}`week8:fetch` and extends it by showing how to 
+write the first 5 scenes out as geottif files.
 
 ```{code-cell} ipython3
 import numpy
@@ -40,6 +34,10 @@ import rioxarray
 from pystac_client import Client
 from shapely.geometry import Point
 import a301_lib
+
+from sat_lib.landsat_read import get_landsat_dataset
+from rasterio.windows import Window
+import xarray as xr
 ```
 
 +++ {"user_expressions": []}
@@ -129,17 +127,6 @@ the_df.head()
 
 +++ {"user_expressions": []}
 
-## Storing the dataframe as a csv file
-
-Since it takes a while to do this search, we'll save a copy of the dataframe for future reference
-
-```{code-cell} ipython3
-csv_filename = a301_lib.data_share / "pha/landsat/vancouver_search.csv"
-the_df.to_csv(csv_filename,index=False)
-```
-
-+++ {"user_expressions": []}
-
 ## Add seasons and month columns to the clear_df
 
 The `make_seasoncol` function finds the season for each scene
@@ -175,7 +162,12 @@ new_df = new_df[['scene','cloud_cover','season','year','season_year','month','da
 new_df.head()
 ```
 
++++ {"tags": [], "user_expressions": []}
+
+### Store this full list as a csv file
+
 ```{code-cell} ipython3
+csv_filename = a301_lib.data_share / "pha/landsat/vancouver_search.csv"
 new_df.to_csv(csv_filename,index=False)
 ```
 
@@ -200,14 +192,135 @@ to produce a new set of dataframes that all have the same season
 ```{code-cell} ipython3
 season_df = new_df.groupby(['season_year','season'])
 season_dict = dict(list(season_df))
-season_dict
-```
-
-```{code-cell} ipython3
-season_dict
 ```
 
 ```{code-cell} ipython3
 season_dict[(2014,'jja')]['cloud_cover']
 season_dict[(2014,'jja')].iloc[2]
+```
+
++++ {"tags": [], "user_expressions": []}
+
+## New for week10: Write one scene for each season
+Take the code from {ref}`week8:pandas_worksheet` to locate the lowest cloud fraction for each season
+and save to a new dataset
+
+```{code-cell} ipython3
+def find_min(a_df):
+    """
+    What does this function do?
+    """
+    min_row = a_df['cloud_cover'].argmin()
+    return min_row
+
+#
+# explain this loop
+#
+out_list = []
+for the_key, a_df in season_dict.items():
+    min_row = find_min(a_df)
+    min_scene = a_df.iloc[min_row]
+    the_series = pd.Series(min_scene)
+    out_list.append(the_series)
+    
+new_frame = pd.DataFrame.from_records(out_list, index='scene')
+
+new_frame.head()
+```
+
++++ {"tags": [], "user_expressions": []}
+
+### Get the windowed region and write to netcdfs
+
++++ {"tags": [], "user_expressions": []}
+
+We can take the code from {ref}`week9:test_dataset` to loop over the rows of the data frame
+and grab the scenes.  Here's how to do it for the first 5 rows:
+
++++ {"user_expressions": []}
+
+### Move the write code from {ref}`week9:test_dataset` to a function
+
++++ {"user_expressions": []}
+
+def write_dataset(the_ds,filepath,date, lon, lat, the_window):
+    scenes_data = get_landsat_dataset(date, lon, lat, the_window) 
+    #
+    # write out the file for reuse
+    #
+    scenes_data.to_netcdf(filepath)
+    return None
+
++++ {"tags": [], "user_expressions": []}
+
+### Make a directory to hold the datasets
+
+```{code-cell} ipython3
+geotiff_dir = a301_lib.data_share / "pha/landsat/ndvi_geotiffs"
+geotiff_dir.mkdir(exist_ok = True, parents=True)
+```
+
+```{code-cell} ipython3
+import os
+os.environ["GDAL_HTTP_COOKIEFILE"] = "./cookies.txt"
+os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
+```
+
++++ {"tags": [], "user_expressions": []}
+
+### Loop over each row in the dataframe and write the files
+
+```{code-cell} ipython3
+date = "2015-06-14"
+lon, lat  = -123.2460, 49.2606
+the_window = Window(col_off=2671, row_off=1352, width=234, height=301)
+for row_num in np.arange(0,5):
+    row = new_frame.iloc[row_num]
+    year,month,day = row['year'],row['month'],row['day']
+    the_date = f"{year:02d}-{month:02d}-{day:02d}"
+    the_scene = get_landsat_dataset(the_date, lon, lat, the_window) 
+    file_path = geotiff_dir / f"landsat_{the_date}_vancouver.nc"
+    print(f"saving to {file_path}")
+    the_scene.to_netcdf(file_path)
+```
+
++++ {"user_expressions": []}
+
+## Check: read the datasets back into a dictionary
+
+Make sure we can read these back into a dictionary indexed by the date
+
+```{code-cell} ipython3
+all_files = list(geotiff_dir.glob("landsat*vancouver*nc"))
+print(all_files)
+```
+
+```{code-cell} ipython3
+scene_dict = {}
+for the_file in all_files:
+    the_ds = rioxarray.open_rasterio(the_file)
+    the_key = the_ds.day
+    scene_dict[the_key] = the_ds
+```
+
+```{code-cell} ipython3
+scene_dict.keys()
+```
+
+### Sort the keys by date
+
+Note that the file listing code doesn't sort the dates in time order
+We can fix that by defining a sort function that returns a datetime object
+instead of a character string using [datetime.strptime](https://www.digitalocean.com/community/tutorials/python-string-to-datetime-strptime)
+
+```{code-cell} ipython3
+def date_sort(x):
+    the_date = datetime.datetime.strptime(x,"%Y-%m-%d")
+    return the_date
+```
+
+```{code-cell} ipython3
+sorted_keys = list(scene_dict.keys())
+sorted_keys.sort(key=date_sort)
+print(sorted_keys)
 ```

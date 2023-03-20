@@ -21,10 +21,12 @@ kernelspec:
 In this notebook we extend the {ref}`week9:cloudsat_ecmwf` notebook by plotting the temperature perturbation and wind speed
 to see if we can spot the effect of the storm.
 
-
 +++ {"tags": [], "user_expressions": []}
 
 ## Step 1: Read in the week 9 reflectivity and temperature
+
+We save the 1125 x 125 temperature and reflectivity datasets at the bottom of the `cloudsat_ecmwf.md` notebook.
+Read those back in using `xarray.open_dataset`
 
 ```{code-cell} ipython3
 import numpy as np
@@ -152,6 +154,7 @@ right of the radar location
 ## Plot the wind speed
 
 To see the wind speed for this storm, we need to get the horizontal velocity components from the ECMWF hdf
+and find their magnitude
 
 ```{code-cell} ipython3
 ecmwf_file=(a301_lib.data_share / 'pha/cloudsat').glob('20080820*ECMWF-AUX*_GRANULE_*.hdf')
@@ -183,6 +186,8 @@ vvel = v_ds['V_velocity'][time_hit,:]
 
 ### Add the storm distance
 
+Use our new function to add the storm_distance coordinate
+
 ```{code-cell} ipython3
 uvel = add_storm_distance(uvel)
 vvel = add_storm_distance(vvel)
@@ -191,6 +196,8 @@ vvel = add_storm_distance(vvel)
 +++ {"tags": [], "user_expressions": []}
 
 ### Find the wind speed
+
+Here's the magnitude of the horizontal wind vector
 
 ```{code-cell} ipython3
 wind_speed = np.sqrt(uvel**2. + vvel**2.)
@@ -201,7 +208,7 @@ wind_speed
 
 ### make the plot
 
-Not too dramatic for this storm
+The wind's not too dramatic for this storm
 
 ```{code-cell} ipython3
 vmin=0

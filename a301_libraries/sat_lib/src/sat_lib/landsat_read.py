@@ -215,6 +215,8 @@ def get_landsat_dataset(date, lon, lat, window, bands=None):
         clipped_ds.attrs['date'] = props['datetime'] #date and time
         clipped_ds.attrs['cloud_cover'] = props['eo:cloud_cover']
         clipped_ds.attrs['band_name'] = the_band
+        clipped_ds.attrs['target_lat']= lat
+        clipped_ds.attrs['target_lon']= lon
         utm_zone = clipped_ds.attrs['HORIZONTAL_CS_NAME'][-3:].strip()
         if lat < 0:
             is_southern=True
