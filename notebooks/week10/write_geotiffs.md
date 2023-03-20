@@ -9,17 +9,31 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+numbering:
+  heading_2: true
+  heading_3: true
+toc-autonumbering: true
 ---
 
-+++ {"user_expressions": []}
++++ {"tags": [], "user_expressions": []}
 
 (week10:write_geotiff)=
-# Writing the scenes for each season to geotiffs
+# Writing the scenes for each season to netcdf files
 
 ## Introduction
 
 This notebook starts with a replay of {ref}`week8:fetch` and extends it by showing how to 
-write the first 5 scenes out as geottif files.
+write the first 5 scenes out as netcdf files that store bands 4,5 and 6 plus the Fmask
+
+Starting in section [](#sec:week10) we demonstrate how to go through a dataframe a row at a time, fetching
+the geotiffs with `get_landsat_datasets` and saving them to disk as netcdf files.  We also show
+how to sort files by date in a list, using a sort key.
+
+Edit the variables in [](#sec:loop) with your landsat specifics and rerun
+
+At the end of a full run 10 year run, you should have about (depending on coverage)
+40 separate season files in your folder.  If your window is about 230 x 300 pixels each file
+should take about 0.5 Mbytes, so about 20 Mbytes for the whole folder.
 
 ```{code-cell} ipython3
 import numpy
@@ -39,6 +53,8 @@ import a301_lib
 from sat_lib.landsat_read import get_landsat_dataset
 from rasterio.windows import Window
 import xarray as xr
+
+import datetime
 ```
 
 +++ {"user_expressions": []}
@@ -183,11 +199,11 @@ clear_df = the_df[the_df['cloud_cover'] < 50]
 len(clear_df)
 ```
 
-+++ {"user_expressions": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Separate the seasons with groupby
 
-Below we use the pandas groupby operator https://realpython.com/pandas-groupby/
+Below we use the pandas groupby operator [https://realpython.com/pandas-groupby/](https://realpython.com/pandas-groupby/)
 to produce a new set of dataframes that all have the same season
 
 ```{code-cell} ipython3
@@ -202,6 +218,7 @@ season_dict[(2014,'jja')].iloc[2]
 
 +++ {"user_expressions": []}
 
+(sec:week10)=
 ## New for week10: Write one scene for each season
 Take the code from {ref}`week8:pandas_worksheet` to locate the lowest cloud fraction for each season
 and save to a new dataset
@@ -231,16 +248,13 @@ new_frame.head()
 
 +++ {"user_expressions": []}
 
+(sec:windowed_write)=
 ### Get the windowed region and write to netcdfs
 
 +++ {"user_expressions": []}
 
 We can take the code from {ref}`week9:test_dataset` to loop over the rows of the data frame
 and grab the scenes.  Here's how to do it for the first 5 rows:
-
-+++ {"user_expressions": []}
-
-### Make a directory to hold the datasets
 
 ```{code-cell} ipython3
 geotiff_dir = a301_lib.data_share / "pha/landsat/ndvi_geotiffs"
@@ -255,20 +269,26 @@ os.environ["GDAL_HTTP_COOKIEJAR"] = "./cookies.txt"
 
 +++ {"user_expressions": []}
 
+(sec:loop)=
 ### Loop over each row in the dataframe and write the files
 
+Change the `ate, lon, lat and window` for your case and turn
+`do_write` to `True`
+
 ```{code-cell} ipython3
-date = "2015-06-14"
-lon, lat  = -123.2460, 49.2606
-the_window = Window(col_off=2671, row_off=1352, width=234, height=301)
-for row_num in np.arange(0,5):
-    row = new_frame.iloc[row_num]
-    year,month,day = row['year'],row['month'],row['day']
-    the_date = f"{year:02d}-{month:02d}-{day:02d}"
-    the_scene = get_landsat_dataset(the_date, lon, lat, the_window) 
-    file_path = geotiff_dir / f"landsat_{the_date}_vancouver.nc"
-    print(f"saving to {file_path}")
-    the_scene.to_netcdf(file_path)
+do_write=False
+if do_write:
+    date = "2015-06-14"
+    lon, lat  = -123.2460, 49.2606
+    the_window = Window(col_off=2671, row_off=1352, width=234, height=301)
+    for row_num in np.arange(0,5):
+        row = new_frame.iloc[row_num]
+        year,month,day = row['year'],row['month'],row['day']
+        the_date = f"{year:02d}-{month:02d}-{day:02d}"
+        the_scene = get_landsat_dataset(the_date, lon, lat, the_window) 
+        file_path = geotiff_dir / f"landsat_{the_date}_vancouver.nc"
+        print(f"saving to {file_path}")
+        the_scene.to_netcdf(file_path)
 ```
 
 +++ {"user_expressions": []}
@@ -278,7 +298,7 @@ for row_num in np.arange(0,5):
 Make sure we can read these back into a dictionary indexed by the date
 
 ```{code-cell} ipython3
-all_files = list(geotiff_dir.glob("landsat*vancouver*nc"))
+all_files = list(geotiff_dir.glob("*nc"))
 print(all_files)
 ```
 
