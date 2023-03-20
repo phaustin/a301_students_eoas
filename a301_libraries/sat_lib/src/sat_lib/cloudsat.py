@@ -172,6 +172,7 @@ def get_geo(hdfname):
         # y axis is first height column
         #
         coord_dict['height'] = height_array[0,:]
+        coord_dict['full_heights'] = height_array[:,:]
         variable_dict['dem_elevation'] = (['time'], var_dict['dem_elevation'])
         hdf_SD.end()
     else:
@@ -190,6 +191,7 @@ def get_geo(hdfname):
     coords={'time':(['time'],coord_dict['time_vals']),
             'height':(['height'],coord_dict['height']),
             'height_km':(['height'],coord_dict['height_km']),
+            'full_heights':(['time','height'],coord_dict['full_heights']),
             'distance_km':(['time'],coord_dict['distance_km']),
             'profile_time':(['time'],coord_dict['profile_time'])
             }
