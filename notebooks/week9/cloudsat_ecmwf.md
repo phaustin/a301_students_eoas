@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -46,7 +46,7 @@ import a301_lib
 from sat_lib.cloudsat import read_cloudsat_var
 import seaborn as sns
 
-z_file=(a301_lib.data_share / 'pha/cloudsat').glob('20080820*CS_2B-GEOPROF_GRANULE*hdf')
+z_file=(a301_lib.data_share / 'pha/cloudsat').glob('20080820*CS_2B*GEOPROF*hdf')
 z_file = list(z_file)[0]
 meters2km=1.e3
 print(z_file)
@@ -54,6 +54,14 @@ print(z_file)
 radar_ds = read_cloudsat_var('Radar_Reflectivity',z_file)
     
 radar_ds
+```
+
+```{code-cell} ipython3
+radar_ds.time.data
+```
+
+```{code-cell} ipython3
+radar_ds.orbit_end_time
 ```
 
 +++ {"user_expressions": []}
@@ -80,7 +88,7 @@ print(f'orbit start: {first_time}')
 start_hour=6
 start_minute=45
 storm_start=starttime=dt.datetime(first_time.year,first_time.month,first_time.day,
-                                        start_hour,start_minute,0,tzinfo=tz.utc)
+                                        start_hour,start_minute,0)
 #
 # get 3 minutes of data from the storm_start
 #
@@ -99,6 +107,10 @@ storm_prof_times=radar_ds.coords['profile_time'][time_hit]
 storm_zvals=radar_ds['Radar_Reflectivity'][time_hit,:]
 distance_km = radar_ds['distance_km'][time_hit]
 storm_date_times=orbit_times[time_hit]
+```
+
+```{code-cell} ipython3
+storm_start.isoformat()
 ```
 
 +++ {"user_expressions": []}
@@ -170,8 +182,8 @@ cmap_ec.set_over('w')
 cmap_ec.set_under('b',alpha=0.2)
 cmap_ec.set_bad('0.75') #75% grey
 fig2, ax2 = plt.subplots(1,1,figsize=(14,4))
-height_km=temperature.coords['height']/meters2km
-distance_km = temperature.coords['distance_km'] 
+height_km=temperature.height/meters2km
+distance_km = temperature.distance_km
 distance_km = distance_km - distance_km[0]
 col = ax2.pcolormesh(distance_km,cloud_height_km,temperature.T,
                    cmap = cmap_ec, norm=the_norm)
@@ -209,4 +221,34 @@ It looks like the model and the radar agree on the freezing level for this storm
 ```{code-cell} ipython3
 ax.plot(distance_km,height_vec,'r')
 display(fig)
+```
+
+```{code-cell} ipython3
+storm_zvals.time
+```
+
++++ {"tags": [], "user_expressions": []}
+
+## Save the datasets
+
+Save these datasets for week10 -- write them out as netcdf files
+
+### First, select just the storm times
+
+We can clip along the time axis by using the `sel` method -- see [https://docs.xarray.dev/en/stable/user-guide/indexing.html](https://docs.xarray.dev/en/stable/user-guide/indexing.html)
+
+```{code-cell} ipython3
+storm_zvals = radar_ds.sel(time=time_hit)
+temperature = temperature_ds.sel(time=time_hit)
+```
+
++++ {"user_expressions": []}
+
+### Now write to netcdf files
+
+```{code-cell} ipython3
+outfile_zvals = a301_lib.data_share / "pha/cloudsat/storm_zvals.nc"
+storm_zvals.to_netcdf(outfile_zvals,mode='w')
+outfile_temp = a301_lib.data_share / "pha/cloudsat/temperature.nc"
+temperature.to_netcdf(outfile_temp,mode='w')
 ```

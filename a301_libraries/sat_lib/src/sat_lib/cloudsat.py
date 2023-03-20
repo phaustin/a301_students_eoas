@@ -29,7 +29,7 @@ def read_attrs(filename):
     file_type = vg._name
     attr_dict = read_swath_attributes(v,vs)
     attr_dict['file_type']=file_type
-    # print(f"{attr_dict=}")
+    #print(f"{attr_dict=}")
     # Encontrar el puto id de las Geolocation Fields
     # Terminate V, VS and SD interfaces.
     v.end()
@@ -133,9 +133,12 @@ def get_geo(hdfname):
     #python datetime objects in utc
     for the_time in var_dict['profile_time']:
         time_vals.append(orbitStart + datetime.timedelta(seconds=float(the_time)))
+    time_vals = np.array(time_vals)
+    day = time_vals[0].strftime("%Y-%m-%d")
+    orbit_start_time = time_vals[0].isoformat()
+    orbit_end_time = time_vals[-1].isoformat()
+    time_vals = time_vals.astype("datetime64[ns]")
     print(f"{time_vals[0]=}")
-    orbit_start_time = time_vals[0]
-    orbit_end_time = time_vals[-1]
     var_dict['time_vals']=time_vals
     #
     # great circle distance
@@ -149,11 +152,8 @@ def get_geo(hdfname):
         azi12,azi21,step= \
             great_circle.inv(lons[index-1],lats[index-1],lons[index],lats[index])   
         distance.append(distance[index-1] + step)
-    distance=np.array(distance)*meters2km
-    var_dict['distance_km']=distance
-    #
-    # write the dataset
-    # 
+    distance_km=np.array(distance)*meters2km
+    var_dict['distance_km']=distance_km
     coord_names=['profile_time','distance_km','time_vals']
     variable_names=['latitude','longitude']
     variable_dict = {key:(['time'],var_dict[key]) for key in variable_names}
@@ -168,18 +168,32 @@ def get_geo(hdfname):
         height_array =var_vals.astype(np.float32)
         height = height_array[0,:]
         var_dict['full_heights'] = (['time','height'],height_array)
+        #
+        # y axis is first height column
+        #
         coord_dict['height'] = height_array[0,:]
         variable_dict['dem_elevation'] = (['time'], var_dict['dem_elevation'])
         hdf_SD.end()
     else:
+        #
+        # model only has vector height
+        #
         coord_dict['height'] = var_dict['ec_height']
+    coord_dict['height_km']= coord_dict['height']*meters2km
+    # print(f"making new height_km, {coord_dict['height_km'][:5]=}")
+    #
+    # write the dataset
+    # 
     attrs = dict(file_type=file_type,orbit_start_time = orbit_start_time,
-                orbit_end_time = orbit_end_time, granule_id=granule_id)
+                 orbit_end_time = orbit_end_time, granule_id=granule_id,
+                 day = day)
     coords={'time':(['time'],coord_dict['time_vals']),
             'height':(['height'],coord_dict['height']),
+            'height_km':(['height'],coord_dict['height_km']),
             'distance_km':(['time'],coord_dict['distance_km']),
             'profile_time':(['time'],coord_dict['profile_time'])
             }
+    # print(f"making distance_km: {coords['distance_km'][1][:5]=}")
     the_data = Dataset(data_vars=variable_dict, coords=coords,attrs=attrs)
     return the_data
 
@@ -207,16 +221,30 @@ def read_cloudsat_var(varname, filename):
     var_vals=var_sd.get()
     print(f"variable type before scaling: {var_vals.dtype=}")
     var_attrs = var_sd.attributes()
+    # print(f"{var_attrs}")
     #
     # mask on the integer fill_value
     #
-    fill_value=var_attrs['missing']
+    fill_value = np.nan
+    if varname == 'Radar_Reflectivity':
+        fill_value = swath_attrs['Radar_Reflectivity.missing']
+    else:
+        try:
+            fill_value=var_attrs['missing']
+        except KeyError:
+            fill_value = var_attrs['_FillValue']
     missing_vals = (var_vals == fill_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
-    scale_factor = var_attrs['factor']
-    new_name = varname
-    two_d_list = ['Radar_reflectivity','precip_liquid_water']
+    try:
+        scale_factor = var_attrs['factor']
+    except KeyError:
+        #print(f"{swath_attrs=}")
+        if varname == "Radar_Reflectivity":
+            scale_factor = swath_attrs['Radar_Reflectivity.factor']
+        else:
+            scale_factor = 1
+    two_d_list = ['Radar_Reflectivity','precip_liquid_water']
     if varname in two_d_list:
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
         var_vals = var_vals/scale_factor
