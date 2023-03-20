@@ -68,5 +68,10 @@ kernelspec:
 - Bondo
 - Maria
 
+## For Wednesday
+
+- Make sure your hurricane looks reasonable when run through the {ref}`week10:temperature_perturb` notebook
+
+- Download all of your windowed landsat scenes to disk, and start making your ndvi timeseries plot for Assignment 5
 
 
