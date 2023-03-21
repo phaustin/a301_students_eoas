@@ -39,6 +39,7 @@ def read_attrs(filename):
     hdf.close()
     return attr_dict
 
+
 def read_swath_attributes(v,vs):
     ref = v.find('Swath Attributes')
     vg = v.attach(ref)
@@ -138,7 +139,6 @@ def get_geo(hdfname):
     orbit_start_time = time_vals[0].isoformat()
     orbit_end_time = time_vals[-1].isoformat()
     time_vals = time_vals.astype("datetime64[ns]")
-    print(f"{time_vals[0]=}")
     var_dict['time_vals']=time_vals
     #
     # great circle distance
@@ -164,8 +164,12 @@ def get_geo(hdfname):
     if file_type != 'ECMWF-AUX':
         hdf_SD = sd_open_file(hdfname)
         var_sd=hdf_SD.select('Height')
+        var_attrs = var_sd.attributes()
         var_vals=var_sd.get()
-        height_array =var_vals.astype(np.float32)
+        missing_vals = (var_vals == var_attrs['missing'])
+        var_vals =var_vals.astype(np.float32)
+        var_vals[missing_vals]=np.nan
+        height_array =var_vals
         height = height_array[0,:]
         var_dict['full_heights'] = (['time','height'],height_array)
         #
@@ -191,15 +195,69 @@ def get_geo(hdfname):
     coords={'time':(['time'],coord_dict['time_vals']),
             'height':(['height'],coord_dict['height']),
             'height_km':(['height'],coord_dict['height_km']),
-            'full_heights':(['time','height'],coord_dict['full_heights']),
             'distance_km':(['time'],coord_dict['distance_km']),
             'profile_time':(['time'],coord_dict['profile_time'])
             }
+    if attrs['file_type'] != "ECMWF-AUX":
+        coords["full_heights"]=(['time','height'],coord_dict['full_heights'])
+
     # print(f"making distance_km: {coords['distance_km'][1][:5]=}")
     the_data = Dataset(data_vars=variable_dict, coords=coords,attrs=attrs)
     return the_data
 
-
+def read_var(varname, hdfname):
+    hdfname = Path(hdfname).resolve()
+    hdfname=str(hdfname)
+    sd = sd_open_file(hdfname)
+    hdf = HDF(hdfname, HC.READ)
+    vs = hdf.vstart()
+    v  = hdf.vgstart()
+    ref = v.find('Data Fields')
+    vg = v.attach(ref)
+    members = vg.tagrefs()
+    var_dict = dict()
+    #
+    # build a dictionary with all variable names
+    #
+    for tag, ref in members:
+        # Vdata tag
+        if tag == HC.DFTAG_VH:
+            vd = vs.attach(ref)
+            nrecs, intmode, fields, size, name = vd.inquire()
+            # nrecs, intmode, fields, size, name = vd.inquire()
+            # nrecs.append(vd.inquire()[0]) # number of records of the Vdata
+            # names.append(vd.inquire()[-1])# name of the Vdata
+            vd.detach()
+            row_dict = dict(ref=ref,nrecs=nrecs,intmod=intmode,fields=fields,size=size)
+            var_dict[name] = row_dict
+        elif tag == HC.DFTAG_NDG:
+            sds = sd.select(sd.reftoindex(ref))
+            name, rank, dims, the_type, nattrs = sds.info()
+            row_dict = dict(ref=ref,rank=rank,dims=dims,the_type=the_type,nattrs=nattrs)
+            var_dict[name] = row_dict
+            sds.endaccess()
+    if varname not in var_dict:
+        raise KeyError(f"can't fine {varname} in {hdfname}")
+    else:
+        if 'rank' in var_dict[varname]:
+            print(f"in read_cloudsat_var: reading {varname=}")
+            var_sd=sd.select(varname)
+            var_vals=var_sd.get()
+            var_attrs = var_sd.attributes()
+            print(f"sd variable type before scaling: {var_vals.dtype=}")
+        else:
+            nrecs = var_dict[varname]['nrecs']
+            ref = var_dict[varname]['ref']
+            var = vs.attach(ref)
+            var_vals   = var.read(nrecs)
+            var_vals=np.array(var_vals).squeeze()
+            var_attrs = None
+            print(f"vdata variable type before scaling: {var_vals.dtype=}")
+            var.detach()
+    v.end()
+    vs.end()
+    hdf.close()
+    return var_vals, var_attrs
 
 def read_cloudsat_var(varname, filename):
     """
@@ -216,53 +274,45 @@ def read_cloudsat_var(varname, filename):
     """
     the_data = get_geo(filename)
     swath_attrs = read_attrs(filename)
-    print(f"in read_cloudsat_var: reading file type {the_data.file_type}")
-    hdf_SD = sd_open_file(filename)
-    print(f"in read_cloudsat_var: reading {varname=}")
-    var_sd=hdf_SD.select(varname)
-    var_vals=var_sd.get()
-    print(f"variable type before scaling: {var_vals.dtype=}")
-    var_attrs = var_sd.attributes()
-    # print(f"{var_attrs}")
+    var_vals, var_attrs = read_var(varname, filename)
     #
     # mask on the integer fill_value
     #
     fill_value = np.nan
-    if varname == 'Radar_Reflectivity':
-        fill_value = swath_attrs['Radar_Reflectivity.missing']
-    else:
-        try:
-            fill_value=var_attrs['missing']
-        except KeyError:
-            fill_value = var_attrs['_FillValue']
+    if (var_attrs is not None) and "_FillValue" in var_attrs:
+        fill_value = var_attrs["_FillValue"]
+    elif (var_attrs is not None) and "missing" in var_attrs:
+        fill_value = var_attrs["missing"]
+    print(f"using {fill_value=}")
     missing_vals = (var_vals == fill_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
-    try:
-        scale_factor = var_attrs['factor']
-    except KeyError:
-        #print(f"{swath_attrs=}")
-        if varname == "Radar_Reflectivity":
-            scale_factor = swath_attrs['Radar_Reflectivity.factor']
-        else:
-            scale_factor = 1
-    two_d_list = ['Radar_Reflectivity','precip_liquid_water']
-    if varname in two_d_list:
+    if var_attrs is not None:
+        try:
+            scale_factor = var_attrs['factor']
+        except KeyError:
+            #print(f"{swath_attrs=}")
+            if varname == "Radar_Reflectivity":
+                scale_factor = swath_attrs['Radar_Reflectivity.factor']
+            else:
+                scale_factor = 1
+    else:
+        scale_factor = 1
+    if var_vals.ndim == 2 and varname != "LayerTop":
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
         var_vals = var_vals/scale_factor
-        var_array = DataArray(var_vals,dims=['time','height'])
+        var_array = DataArray(var_vals,dims=['time','height'],attrs=var_attrs)
     elif varname == 'LayerTop':
         var_vals[var_vals < 0]=np.nan
         #
         # 5 nray values, take the first 1
         #
         var_value = var_vals[:,0] 
-        var_array = DataArray(var_value,dims=['time'])
-    elif swath_attrs['file_type'] == "ECMWF-AUX":
-        var_array = DataArray(var_vals,dims=['time','height'])
+        var_array = DataArray(var_value,dims=['time'],attrs=var_attrs)
+    elif var_vals.ndim == 1:
+        var_array = DataArray(var_vals,dims=['time'],attrs=var_attrs)
     else:
-        var_array = DataArray(var_vals,dims=['time'])
-    hdf_SD.end()
+        raise ValueError(f"problem reading {varname} from {filename}")
     the_data[varname] = var_array
     return the_data
     

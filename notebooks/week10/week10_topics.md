@@ -71,6 +71,7 @@ kernelspec:
 - Yagi
 - Choi-wan
 - Dolores
+- Gonu
 
 
 ## For Wednesday

@@ -4,18 +4,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
-numbering:
-  heading_2: true
-  heading_3: true
-toc-autonumbering: true
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week10:write_geotiff)=
 # Landsat: Writing the scenes for each season to netcdf files
@@ -199,7 +195,7 @@ clear_df = the_df[the_df['cloud_cover'] < 50]
 len(clear_df)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Separate the seasons with groupby
 
@@ -313,6 +309,8 @@ for the_file in all_files:
 ```{code-cell} ipython3
 scene_dict.keys()
 ```
+
++++ {"user_expressions": []}
 
 ### Sort the keys by date
 
