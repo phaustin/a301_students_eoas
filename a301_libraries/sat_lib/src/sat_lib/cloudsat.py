@@ -95,6 +95,7 @@ def get_geo(hdfname):
     #
     # save the variables and conver names to lower case
     #
+    swath_attrs = read_attrs(hdfname)
     for old_var_name,new_var_name in zip(old_variable_names,new_variable_names):
         the_var=vs.attach(old_var_name)
         nrecs=the_var._nrecs
@@ -166,11 +167,10 @@ def get_geo(hdfname):
         var_sd=hdf_SD.select('Height')
         var_attrs = var_sd.attributes()
         var_vals=var_sd.get()
-        if 'missing' in var_attrs:
-            missing_value = var_attrs['missing']
-            missing_vals = (var_vals == missing_value)
-            var_vals[missing_vals]=np.nan
+        missing_value = swath_attrs['Height.missing']
+        missing_vals = (var_vals == missing_value)
         var_vals =var_vals.astype(np.float32)
+        var_vals[missing_vals]=np.nan
         height_array =var_vals
         height = height_array[0,:]
         var_dict['full_heights'] = (['time','height'],height_array)
@@ -246,7 +246,7 @@ def read_var(varname, hdfname):
             var_sd=sd.select(varname)
             var_vals=var_sd.get()
             var_attrs = var_sd.attributes()
-            print(f"found sds {varname=}: var_attrs")
+            print(f"found sds {varname=}: {var_attrs=}")
             print(f"sd variable type before scaling: {var_vals.dtype=}")
         else:
             nrecs = var_dict[varname]['nrecs']
@@ -255,6 +255,7 @@ def read_var(varname, hdfname):
             var_vals   = var.read(nrecs)
             var_vals=np.array(var_vals).squeeze()
             var_attrs = None
+            print(f"found Vdata {varname=}\n{var_vals=}\n{var_attrs=}")
             print(f"vdata variable type before scaling: {var_vals.dtype=}")
             var.detach()
     v.end()
@@ -278,39 +279,36 @@ def read_cloudsat_var(varname, filename):
     the_data = get_geo(filename)
     swath_attrs = read_attrs(filename)
     var_vals, var_attrs = read_var(varname, filename)
-    print(f"{var_attrs=}")
+    var_vals = var_vals.squeeze()
+    print(f"{var_vals=}\n{var_attrs=}")
     #
     # mask on the integer missing_value
     #
-    missing_value = np.nan
-    if (var_attrs is not None) and "missing" in var_attrs:
-        missing_value = var_attrs["missing"]
-    elif (var_attrs is not None) and "_FillValue" in var_attrs:
-        missing_value = var_attrs["_FillValue"]
-    print(f"using {missing_value=}")
-    missing_vals = (var_vals == missing_value)
-    var_vals =var_vals.astype(np.float32)
-    var_vals[missing_vals]=np.nan
-    if (var_attrs is not None) and ('factor' in var_attrs):
-        scale_factor = var_attrs['factor']
-    else:
-        #print(f"{swath_attrs=}")
-        if varname == "Radar_Reflectivity":
-            scale_factor = swath_attrs['Radar_Reflectivity.factor']
-        else:
-            scale_factor = 1
+    missing_name = f"{varname}.missing"
+    if missing_name in swath_attrs:
+        missing_value = np.array(swath_attrs[missing_name]).squeeze()
+        missing_vals = (var_vals == missing_value).squeeze()
+        print(f"{missing_vals.shape=}, {var_vals.shape=}")
+        var_vals =var_vals.astype(np.float32)
+        var_vals[missing_vals]=np.nan
+        print(f"replacing {missing_value=} with np.nan")
+    factor_name = f"{varname}.factor"
+    if factor_name in swath_attrs:
+        factor = np.array(swath_attrs[factor_name]).squeeze()
+        print(f"dividing by factor {factor}")
+        var_vals = var_vals/factor
     if var_vals.ndim == 2 and varname != "LayerTop":
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
-        var_vals = var_vals/scale_factor
         var_array = DataArray(var_vals,dims=['time','height'],attrs=var_attrs)
     elif varname == 'LayerTop':
         var_vals[var_vals < 0]=np.nan
         #
         # 5 nray values, take the first 1
         #
-        var_value = var_vals[:,0] 
+        var_value = var_vals[:,0]
         var_array = DataArray(var_value,dims=['time'],attrs=var_attrs)
     elif var_vals.ndim == 1:
+        print(f"final {var_vals=}")
         var_array = DataArray(var_vals,dims=['time'],attrs=var_attrs)
     else:
         raise ValueError(f"problem reading {varname} from {filename}")
