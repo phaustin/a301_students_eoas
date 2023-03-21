@@ -246,6 +246,7 @@ def read_var(varname, hdfname):
             var_sd=sd.select(varname)
             var_vals=var_sd.get()
             var_attrs = var_sd.attributes()
+            print(f"found sds {varname=}: var_attrs")
             print(f"sd variable type before scaling: {var_vals.dtype=}")
         else:
             nrecs = var_dict[varname]['nrecs']
@@ -277,6 +278,7 @@ def read_cloudsat_var(varname, filename):
     the_data = get_geo(filename)
     swath_attrs = read_attrs(filename)
     var_vals, var_attrs = read_var(varname, filename)
+    print(f"{var_attrs=}")
     #
     # mask on the integer missing_value
     #
