@@ -167,8 +167,8 @@ def get_geo(hdfname):
         var_attrs = var_sd.attributes()
         var_vals=var_sd.get()
         if 'missing' in var_attrs:
-            fill_value = var_attrs['missing']
-            missing_vals = (var_vals == fill_value)
+            missing_value = var_attrs['missing']
+            missing_vals = (var_vals == missing_value)
             var_vals[missing_vals]=np.nan
         var_vals =var_vals.astype(np.float32)
         height_array =var_vals
@@ -278,15 +278,15 @@ def read_cloudsat_var(varname, filename):
     swath_attrs = read_attrs(filename)
     var_vals, var_attrs = read_var(varname, filename)
     #
-    # mask on the integer fill_value
+    # mask on the integer missing_value
     #
-    fill_value = np.nan
-    if (var_attrs is not None) and "_FillValue" in var_attrs:
-        fill_value = var_attrs["_FillValue"]
-    elif (var_attrs is not None) and "missing" in var_attrs:
-        fill_value = var_attrs["missing"]
-    print(f"using {fill_value=}")
-    missing_vals = (var_vals == fill_value)
+    missing_value = np.nan
+    if (var_attrs is not None) and "missing" in var_attrs:
+        missing_value = var_attrs["missing"]
+    elif (var_attrs is not None) and "_FillValue" in var_attrs:
+        missing_value = var_attrs["_FillValue"]
+    print(f"using {missing_value=}")
+    missing_vals = (var_vals == missing_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
     if (var_attrs is not None) and ('factor' in var_attrs):
