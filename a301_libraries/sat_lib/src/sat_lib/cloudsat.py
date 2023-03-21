@@ -166,9 +166,11 @@ def get_geo(hdfname):
         var_sd=hdf_SD.select('Height')
         var_attrs = var_sd.attributes()
         var_vals=var_sd.get()
-        missing_vals = (var_vals == var_attrs['missing'])
+        if 'missing' in var_attrs:
+            fill_value = var_attrs['missing']
+            missing_vals = (var_vals == fill_value)
+            var_vals[missing_vals]=np.nan
         var_vals =var_vals.astype(np.float32)
-        var_vals[missing_vals]=np.nan
         height_array =var_vals
         height = height_array[0,:]
         var_dict['full_heights'] = (['time','height'],height_array)
@@ -287,17 +289,14 @@ def read_cloudsat_var(varname, filename):
     missing_vals = (var_vals == fill_value)
     var_vals =var_vals.astype(np.float32)
     var_vals[missing_vals]=np.nan
-    if var_attrs is not None:
-        try:
-            scale_factor = var_attrs['factor']
-        except KeyError:
-            #print(f"{swath_attrs=}")
-            if varname == "Radar_Reflectivity":
-                scale_factor = swath_attrs['Radar_Reflectivity.factor']
-            else:
-                scale_factor = 1
+    if (var_attrs is not None) and ('factor' in var_attrs):
+        scale_factor = var_attrs['factor']
     else:
-        scale_factor = 1
+        #print(f"{swath_attrs=}")
+        if varname == "Radar_Reflectivity":
+            scale_factor = swath_attrs['Radar_Reflectivity.factor']
+        else:
+            scale_factor = 1
     if var_vals.ndim == 2 and varname != "LayerTop":
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
         var_vals = var_vals/scale_factor
