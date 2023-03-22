@@ -57,7 +57,9 @@
 * {ref}`week9:test_dataset`
 * {ref}`week9:cloudsat_ecmwf`
 
-## Week 9
+## Week 10
 
 * {ref}`week10:temperature_perturb`
 * {ref}`week10:write_geotiff`
+* {ref}`week10:radar_micro`
+

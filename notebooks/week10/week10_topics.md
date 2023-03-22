@@ -80,4 +80,55 @@ kernelspec:
 
 - Download all of your windowed landsat scenes to disk, and start making your ndvi timeseries plot for Assignment 5
 
+## Week 10 topics for Monday
+
+- Cloudsat: {ref}
+
+## Assignment 5: Due midnight on Wednesday, March 29
+
+### Radar problem
+
+1) Integrate $Z=\int D^6 n(D) dD$ on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
+
+$$
+Z \approx 300 RR^{1.5}
+$$
+
+with Z in $mm^6\,m^{-3}$ and RR in mm/hr.  It's helpful to know that:
+
+$$
+\int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+$$
+
+2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
+   the result agrees.
+
+
+### Landsat problem 
+
+Main objective: 
+
+1) Download rioxarray datasets for 40 landsat windowed scenes for 10 years of seasonal data
+
+2) For each dataset, add the new masked ndvi for that image as another rioxarray.
+
+3) Loop through the 40 datasets, calculate the area-averaged ndvi for each scene, and
+   make a simple x-y plot of average ndvi vs. time for the 40 scenes
+
+Your notebook should have:
+
+1)  a function that saves the date of the lowest cloud fraction for each scene, folllowing {ref}`week8:pandas_worksheet` as a python list.
+
+2) a function that retrieves each scene from the list if it hasn't been downloaded and saves
+   it to a netcdf dataset using code from {ref}`week10:write_geotiff`
+
+3) a function that reads an image datset and adds the ndvi image as a new rioxarray
+   
+4) a function that reads and sorts the ndvi arrays by date, calculates the mean and makes the 
+   x-y plot
+   
+Hand in:  pencil and paer for the radar problem with a notebook cell for the
+verification, and a notebook that defines the functions and runs and makes the ndvi plot
+for the landsat 
+
 

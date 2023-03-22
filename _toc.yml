@@ -77,6 +77,7 @@ parts:
     - file: notebooks/week10/week10_topics.md
     - file: notebooks/week10/temperature_perturb.md
     - file: notebooks/week10/write_geotiffs.md
+    - file: notebooks/week10/rainrate.md
     
   - caption: Assignments
     chapters:

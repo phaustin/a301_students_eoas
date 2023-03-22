@@ -14,7 +14,7 @@ kernelspec:
 +++ {"user_expressions": []}
 
 (week9:test_dataset)=
-# Adding data to an image with xarray
+# Adding data to an image with xarray datasets
 
 This is a copy of {ref}`week8:test_landsat` that uses [get_landsat_dataset](https://phaustin.github.io/a301_web/full_listing.html#sat_lib.landsat_read.get_landsat_dataset) and saves the scene to
 a netcdf file for safekeeping.

@@ -18,9 +18,15 @@ kernelspec:
 (week10:radar_micro)=
 # Cloudsat: liquid and ice precipitation and rain rate
 
-In this notebook we'll assemble a case study dataset that combines the temperature perturbatio and reflectivity dataset from {ref}`week10:temperature_perturb` with
-cloud variables including surface rain rate and ice and liquid water concentrations taken from the 2C-RAIN-PROFILE hdffile.  We are looking to see whether
-The 
+It's useful to be able to combine multiple datasets into a single netcdf file to build a case study that makes it easy to track a data analysis.  In this notebook we'll do this for the Texas storm we've been looking at.
+Below we combine the temperature perturbatio and reflectivity dataset from {ref}`week10:temperature_perturb` with
+new radar cloud variables (surface rain rate and ice and liquid water concentrations) taken from the 2C-RAIN-PROFILE hdffile. 
+
+New concepts: 
+
+1) clipping all data arrays in a dataset to the same time slice using [xarray.isel](https://docs.xarray.dev/en/stable/generated/xarray.Dataset.isel.html)
+
+2) dealing with coordinate differences when combining different datasets
 
 ```{code-cell} ipython3
 import numpy as np
@@ -36,13 +42,31 @@ from sat_lib.cloudsat import add_storm_distance
 
 +++ {"tags": [], "user_expressions": []}
 
-## Read in the storm we saved in week9
-
-rerun {ref}`week10:temperature_perturb` to produce the `week10_wind_temps.nc` file -- I added a file write to the end of the notebook
+## Read in the dataArrays
 
 +++ {"tags": [], "user_expressions": []}
 
-## Read in the rain rate and precipitation ice and liquid water content
+### Read in the storm we saved in week9
+
+I've added an output cell at the bottom of  {ref}`week10:temperature_perturb` to produce the `week10_wind_temps.nc` file.  You'll need to 
+rerun that notebook so we can read in the temperature perturbation data from Monday.
+
+```{code-cell} ipython3
+#
+# we'll need  the storm reflectivities and temperatures we created the `temp_perturbation` notebook
+#
+infile_zvals = a301_lib.data_share / "pha/cloudsat/storm_zvals.nc"
+storm_zvals = xr.open_dataset(infile_zvals)
+infile_temp = a301_lib.data_share / "pha/cloudsat/week10_wind_temps.nc"
+temp_ds = xr.open_dataset(infile_temp)
+```
+
++++ {"tags": [], "user_expressions": []}
+
+### Read in the radar rain rate, precipitation ice and liquid water content and the cloud liquid water
+
+Since reflectivity goes as $D^6$, cloudsast gets a much stronger signal from 1000 micron rain drops than
+10 micron cloud drops.
 
 ```{code-cell} ipython3
 radar_dir = a301_lib.data_share / "pha/cloudsat"
@@ -69,7 +93,8 @@ cloud_ds
 
 ## add the new RΑΙΝ cloud variables to the rain_ds rainrate dataset
 
-Since all variables are on the same time and height axes, we can merge them together.
+Since all the variables from the 2C-RAIN file are on the same time and height axes, we can merge them together with
+a simple copy
 
 ```{code-cell} ipython3
 rain_ds['precip_liquid_water'] = liquid_ds['precip_liquid_water']
@@ -82,7 +107,9 @@ rain_ds
 
 ## Clip to the storm times using an xarray indexer
 
-Recall how we clipped to the storm start and end using indexing in the {ref}`week9:cloudsat_ecmwf` notebook:
+The [xarray.sel](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.sel.html) gives a 1-step way
+to clip every dataArray in a dataset.  First decall how we clipped to the storm start and end using indexing in the {ref}`week9:cloudsat_ecmwf` notebook:
+
 
 ```python
 #
@@ -144,7 +171,13 @@ the heights differ by about 18-20 meters at each level.  It's not clear why the 
 and 2B (GEOPROF) files have this difference (perhaps the difference between bin centers and bin edges), 
 In the same way, the heights, taken from `temp_ds` differ from `rain_ds` by about -19 meters.
 It's not crucial to the analysis, so we'll 
-just overwrite the storm_zvals height dimension to force them to be equal.
+just overwrite the storm_zvals height dimension to force them to be equal.  If the difference was important,
+I'd either have to interpolate the arrays onto a common grid, or maintain two separate height dimensions, at
+the cost of not being able to subtract/add the arrays.
+
++++ {"tags": [], "user_expressions": []}
+
+### The two radar field heights differ from each other by about 18 meters
 
 ```{code-cell} ipython3
 #
@@ -153,9 +186,25 @@ just overwrite the storm_zvals height dimension to force them to be equal.
 np.array(storm_slice.height) - np.array(storm_zvals.height)
 ```
 
++++ {"tags": [], "user_expressions": []}
+
+### The model heights differ from the radar by about 19 meters
+
 ```{code-cell} ipython3
 np.array(rain_ds.height) - np.array(temp_ds.height)
 ```
+
++++ {"tags": [], "user_expressions": []}
+
+## Question -- In the cell below plot a slice along the time axis ([:,100]) for rain_ds.full_heights at height index 100
+
+How much variation in there in the radar height from timestep to timestep?
+
++++ {"tags": [], "user_expressions": []}
+
+### Brute force solution -- give every dataset the same height vector
+
+Again, since 20 meters isn't much of a difference, force agreement by overwriting the coordinate
 
 ```{code-cell} ipython3
 #
@@ -201,12 +250,12 @@ storm_slice.storm_distance
 
 ## Make some plots
 
-Now that we have all the data in one place, see how the model and the radar observations agree
+Now that we have all the data in one place, see how the various radar fields compare with the model temperatures
 
 ### Radar Reflectivity
 
 Replot the reflectivity to get the storm structure.  We use a palette that shows the difference between missing data (red) and very low values (blue).
-We'll be looking below to see whether the 
+We'll be looking below to see whether what the structure of the precipitation is inside the storm.
 
 Make a convenience function to return the colormap with normalization
 
@@ -251,11 +300,12 @@ ax2.set(ylim = [0,17], xlabel = "distance (km)", ylabel = "height (km)",
 
 +++ {"tags": [], "user_expressions": []}
 
-
 ### Radar Rain rate
+
 
 Note some problems with the radar rainrates -- those
 negative values are definitely unphysical.  The record for heaviest 1 hour rainfall is 30 cm, so 6 cm/hour is  definitely possible for a large storm.
+The precipitation spikes line up with the highest reflectivity regions of the radar image.
 
 ```{code-cell} ipython3
 rain_rate = storm_slice['rain_rate']
@@ -268,9 +318,13 @@ ax1.set_title(f'rain rate (mm/hour)  on {storm_zvals.day}, granule {storm_zvals.
 
 ### Radar Liquid water precipitation
 
+
 The model carries cloud water (droplets too small to precipitate) and liquid precipitation (falling rain drops). If you
-compare the figure below with the temperature pertubation plot in {ref}`week10:temperature_perturb` you can see
-that the cool perturbations line up with evaporating precipitation below the freezing level.
+compare the figure below with the temperature pertubation plot it looks like the 
+the cool perturbations may be lining up with  evaporating precipitation below the freezing level.
+
+The red bands are missing data where the radar algorithm couldn't infer a precipitation content.  That makes the
+spike at 450 km a little suspect.
 
 ```{code-cell} ipython3
 vmin=0
@@ -283,6 +337,11 @@ liquid_precip.T.plot.pcolormesh(x='storm_distance',y='height_km',
 ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
        title = f"liquid water precip (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
+
++++ {"tags": [], "user_expressions": []}
+
+In the two cells below, the radar is showing ice in the convective updrafts above the freezing level
+and cloud water down to the ground.  Inside the cloud itself, it can only see the larger precipitation drops.
 
 ```{code-cell} ipython3
 vmin=0
@@ -325,5 +384,9 @@ if do_write:
 
 +++ {"tags": [], "user_expressions": []}
 
-Comparing the radar plot and the region of warmer temperatures, it look like the model has the storm about 300 km to the
-right of the radar location
+In general, the precipitation structure looks reasonable, and evaporating precipitation may be driving the cooling
+perturbations in the model.  Some next steps:
+
+1) add the surface temperature and 10 meter wind fields
+
+2) add the rain rate uncertainty to see how confident the algorithm is in the spike values
