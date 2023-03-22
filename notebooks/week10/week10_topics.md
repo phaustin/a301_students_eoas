@@ -80,9 +80,9 @@ kernelspec:
 
 - Download all of your windowed landsat scenes to disk, and start making your ndvi timeseries plot for Assignment 5
 
-## Week 10 topics for Monday
+## Week 10 topics for Wednesday
 
-- Cloudsat: {ref}
+- Cloudsat: Combining datasets and analyzing radar microphysics with {ref}`week10:radar_micro`
 
 ## Assignment 5: Due midnight on Wednesday, March 29
 
