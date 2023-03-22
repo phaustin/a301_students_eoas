@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -233,4 +233,24 @@ col = wind_speed.T.plot.pcolormesh(x='storm_distance',y='height_km',ax=ax3, norm
 ax3.set(ylim=[0,17],
        xlabel='distance (km)',ylabel='height (km)',
        title=f"ECMWF wind speed (m/s) for granule {u_ds.granule_id} on {u_ds.day}");
+```
+
++++ {"tags": [], "user_expressions": []}
+
+## Save the tempeture perturbation and wind speed
+
+To save these for future work, we can combine them and write them out as a single dataset
+
+```{code-cell} ipython3
+temp_perturb['wind_speed'] = wind_speed
+temp_perturb['u_vel'] = u_ds['U_velocity']
+temp_perturb['v_vel'] = v_ds['V_velocity']
+temp_perturb['Temperature'].data
+```
+
+```{code-cell} ipython3
+outfile = a301_lib.data_share / "pha/cloudsat/week10_wind_temps.nc"
+do_write = True
+if do_write:
+    temp_perturb.to_netcdf(outfile)
 ```

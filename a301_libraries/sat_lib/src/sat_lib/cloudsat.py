@@ -11,6 +11,27 @@ from pyhdf.VS  import *
 from pyhdf.SD  import *
 import pandas as pd
 
+def add_storm_distance(the_ds):
+    """Add a new coordinate called "storm_distance" to the dataset the_ds that is the distance in
+       km from the start of the storm
+       
+       Parameters
+       ----------
+       
+       the_ds: xarray dataset
+          dataset with a coordinate named "distance_km"
+          
+       Returns
+       -------
+       
+       the_ds: xarray dataset
+          same dataset with a new coordinate "storm_distance"
+    """
+    storm_distance = the_ds.distance_km - the_ds.distance_km[0]
+    the_ds = the_ds.assign_coords(coords={'storm_distance':('time',storm_distance.data)})
+    return the_ds 
+
+
 def read_attrs(filename):
     """
     Extract the data for non scientific data in V mode of hdf file
@@ -241,13 +262,13 @@ def read_var(varname, hdfname):
     if varname not in var_dict:
         raise KeyError(f"can't fine {varname} in {hdfname}")
     else:
+        print(f"in read_cloudsat_var: reading {varname=}")
         if 'rank' in var_dict[varname]:
-            print(f"in read_cloudsat_var: reading {varname=}")
             var_sd=sd.select(varname)
             var_vals=var_sd.get()
             var_attrs = var_sd.attributes()
-            print(f"found sds {varname=}: {var_attrs=}")
-            print(f"sd variable type before scaling: {var_vals.dtype=}")
+            #print(f"found sds {varname=}: {var_attrs=}")
+            #print(f"sd variable type before scaling: {var_vals.dtype=}")
         else:
             nrecs = var_dict[varname]['nrecs']
             ref = var_dict[varname]['ref']
@@ -255,8 +276,8 @@ def read_var(varname, hdfname):
             var_vals   = var.read(nrecs)
             var_vals=np.array(var_vals).squeeze()
             var_attrs = None
-            print(f"found Vdata {varname=}\n{var_vals=}\n{var_attrs=}")
-            print(f"vdata variable type before scaling: {var_vals.dtype=}")
+            #print(f"found Vdata {varname=}\n{var_vals=}\n{var_attrs=}")
+            #print(f"vdata variable type before scaling: {var_vals.dtype=}")
             var.detach()
     v.end()
     vs.end()
@@ -280,22 +301,22 @@ def read_cloudsat_var(varname, filename):
     swath_attrs = read_attrs(filename)
     var_vals, var_attrs = read_var(varname, filename)
     var_vals = var_vals.squeeze()
-    print(f"{var_vals=}\n{var_attrs=}")
     #
     # mask on the integer missing_value
     #
     missing_name = f"{varname}.missing"
     if missing_name in swath_attrs:
-        missing_value = np.array(swath_attrs[missing_name]).squeeze()
+        if varname in ["cloud_liquid_water","precip_liquid_water","precip_ice_water"]:
+            missing_value = -9999
+        else:
+            missing_value = np.array(swath_attrs[missing_name]).squeeze()
         missing_vals = (var_vals == missing_value).squeeze()
-        print(f"{missing_vals.shape=}, {var_vals.shape=}")
         var_vals =var_vals.astype(np.float32)
         var_vals[missing_vals]=np.nan
         print(f"replacing {missing_value=} with np.nan")
     factor_name = f"{varname}.factor"
     if factor_name in swath_attrs:
         factor = np.array(swath_attrs[factor_name]).squeeze()
-        print(f"dividing by factor {factor}")
         var_vals = var_vals/factor
     if var_vals.ndim == 2 and varname != "LayerTop":
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
@@ -308,8 +329,7 @@ def read_cloudsat_var(varname, filename):
         var_value = var_vals[:,0]
         var_array = DataArray(var_value,dims=['time'],attrs=var_attrs)
     elif var_vals.ndim == 1:
-        print(f"final {var_vals=}")
-        var_array = DataArray(var_vals,dims=['time'],attrs=var_attrs)
+         var_array = DataArray(var_vals,dims=['time'],attrs=var_attrs)
     else:
         raise ValueError(f"problem reading {varname} from {filename}")
     the_data[varname] = var_array

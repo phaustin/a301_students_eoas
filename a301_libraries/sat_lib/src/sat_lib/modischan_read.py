@@ -118,7 +118,7 @@ def sd_open_file(the_file):
         if not hdf_path.is_file():
             raise ValueError(f"can't find file {hdf_path}")
         sd_file = SD(str(the_file), SDC.READ)
-        print(f"sd_open -- file: {the_file}")
+        # print(f"sd_open -- file: {the_file}")
     except TypeError:
         raise ValueError(f"need a str or path got {the_file}")
     #
