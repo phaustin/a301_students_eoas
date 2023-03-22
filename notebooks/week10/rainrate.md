@@ -18,10 +18,9 @@ kernelspec:
 (week10:radar_micro)=
 # Cloudsat: liquid and ice precipitation and rain rate
 
-In this notebook we look at new variables in the 2C-RAIN-PROFILE file that give values for liquid and ice precipitation amounts
-(in $g/m^3$) and the rain rate in mm/hour.
-
-We'll define two new functions to help with clipping an orbit to the storm start and end times
+In this notebook we'll assemble a case study dataset that combines the temperature perturbatio and reflectivity dataset from {ref}`week10:temperature_perturb` with
+cloud variables including surface rain rate and ice and liquid water concentrations taken from the 2C-RAIN-PROFILE hdffile.  We are looking to see whether
+The 
 
 ```{code-cell} ipython3
 import numpy as np
@@ -204,9 +203,10 @@ storm_slice.storm_distance
 
 Now that we have all the data in one place, see how the model and the radar observations agree
 
-### Reflectivity
+### Radar Reflectivity
 
-Replot the reflectivity to get the storm structure
+Replot the reflectivity to get the storm structure.  We use a palette that shows the difference between missing data (red) and very low values (blue).
+We'll be looking below to see whether the 
 
 Make a convenience function to return the colormap with normalization
 
@@ -237,11 +237,7 @@ ax.set(ylim=[0,17],xlabel = "distance (km)",ylabel="height (km)",
 
 +++ {"tags": [], "user_expressions": []}
 
-### Temperature
-
-```{code-cell} ipython3
-temp_ds['Temperature'].data
-```
+### Model Temperature
 
 ```{code-cell} ipython3
 vmin=-2
@@ -250,17 +246,16 @@ the_norm, cmap = make_cmap(vmin, vmax,cmap = cm.coolwarm)
 fig2, ax2 = plt.subplots(1,1,figsize=(14,4))
 col = storm_slice['Temperature'].T.plot.pcolormesh(x='storm_distance',y='height_km',ax=ax2, cmap = cmap, norm=the_norm)
 ax2.set(ylim = [0,17], xlabel = "distance (km)", ylabel = "height (km)",
-         title = f"temperature perturbation (K) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
+         title = f"model temperature perturbation (K) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
 +++ {"tags": [], "user_expressions": []}
 
 
-### Rain rate
+### Radar Rain rate
 
-The model precipitation peaks line up with the cloud reflectivity maxima much more closely than the warm/cold temperature
-perturbations did in the {ref}`week10:temperature_perturb` notebook.  Note some problems with the model rainrates -- those
-negative values are definitely unphysical.  The record for heaviest 1 hour rainfall is 30 cm, so 6 cm/hour is possible but rare.
+Note some problems with the radar rainrates -- those
+negative values are definitely unphysical.  The record for heaviest 1 hour rainfall is 30 cm, so 6 cm/hour is  definitely possible for a large storm.
 
 ```{code-cell} ipython3
 rain_rate = storm_slice['rain_rate']
@@ -271,7 +266,7 @@ ax1.set_title(f'rain rate (mm/hour)  on {storm_zvals.day}, granule {storm_zvals.
 
 +++ {"tags": [], "user_expressions": []}
 
-### Liquid water precipitation
+### Radar Liquid water precipitation
 
 The model carries cloud water (droplets too small to precipitate) and liquid precipitation (falling rain drops). If you
 compare the figure below with the temperature pertubation plot in {ref}`week10:temperature_perturb` you can see
@@ -298,7 +293,7 @@ ice_precip = storm_slice['precip_ice_water']
 ice_precip.T.plot.pcolormesh(x='storm_distance',y='height_km',
                    ax=ax,cmap = cmap_ref, norm=the_norm)
 ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
-       title = f"ice water precip (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
+       title = f"Radar ice water precip (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
 ```{code-cell} ipython3
@@ -310,7 +305,7 @@ ice_precip = storm_slice['cloud_liquid_water']
 ice_precip.T.plot.pcolormesh(x='storm_distance',y='height_km',
                    ax=ax,cmap = cmap_ref, norm=the_norm)
 ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
-       title = f"cloud_liquid_water (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
+       title = f"Radar cloud_liquid_water (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
 +++ {"tags": [], "user_expressions": []}
@@ -318,9 +313,9 @@ ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
 ## save the file to disk
 
 ```{code-cell} ipython3
-do_write = True
+do_write = False
 if do_write:
-    outfile = a301_lib.data_share / "pha/cloudsat/cloudsat_case_study.nc"
+    outfile = a301_lib.data_share / "pha/cloudsat/week10_cloudsat_case_study.nc"
     storm_slice.to_netcdf(outfile)
 ```
 

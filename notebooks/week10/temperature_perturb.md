@@ -250,7 +250,7 @@ temp_perturb['Temperature'].data
 
 ```{code-cell} ipython3
 outfile = a301_lib.data_share / "pha/cloudsat/week10_wind_temps.nc"
-do_write = True
+do_write = False
 if do_write:
     temp_perturb.to_netcdf(outfile)
 ```
