@@ -78,6 +78,7 @@ parts:
     - file: notebooks/week10/temperature_perturb.md
     - file: notebooks/week10/write_geotiffs.md
     - file: notebooks/week10/rainrate.md
+    - file: notebooks/week10/false_color.md
     
   - caption: Assignments
     chapters:
