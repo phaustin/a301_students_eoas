@@ -235,7 +235,7 @@ ax3.set(ylim=[0,17],
        title=f"ECMWF wind speed (m/s) for granule {u_ds.granule_id} on {u_ds.day}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Save the tempeture perturbation and wind speed
 
