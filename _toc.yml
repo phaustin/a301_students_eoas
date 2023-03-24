@@ -79,6 +79,10 @@ parts:
     - file: notebooks/week10/write_geotiffs.md
     - file: notebooks/week10/rainrate.md
     - file: notebooks/week10/false_color.md
+  - caption: Week 11
+    chapters:
+    - file: notebooks/week11/flux_from_radiance_rev.rst
+    - file: notebooks/week11/flux_schwartzchild.rst
     
   - caption: Assignments
     chapters:

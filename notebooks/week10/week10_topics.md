@@ -72,6 +72,8 @@ kernelspec:
 - Choi-wan
 - Dolores
 - Gonu
+- Mangkhut
+- Omais
 
 
 ## For Wednesday
@@ -84,6 +86,18 @@ kernelspec:
 
 - Cloudsat: Combining datasets and analyzing radar microphysics with {ref}`week10:radar_micro`
 
+## Week10: topics for Friday
+
+- Landsat: Color image processing: {ref}`week10:false_color`
+
+## Reading for Monday -- two sets of notes on flux and radiance
+
+- These two readings provide the background to look at Cloudsat's flux-heating rate dataset
+
+  - Week 11 folder: Flux and radiance review
+  
+  - Week 11 folder: The flux version of the Schwartzchild equation
+  
 ## Assignment 5: Due midnight on Wednesday, March 29
 
 ### Radar problem
