@@ -304,16 +304,29 @@ def read_cloudsat_var(varname, filename):
     #
     # mask on the integer missing_value
     #
+    print(f"{var_vals.shape=}")
     missing_name = f"{varname}.missing"
     if missing_name in swath_attrs:
-        if varname in ["cloud_liquid_water","precip_liquid_water","precip_ice_water"]:
-            missing_value = -9999
+        if varname in ["cloud_liquid_water","precip_liquid_water","precip_ice_water","QR"]:
+            if varname == "QR":
+                fu_missing = np.array(swath_attrs['FU.missing']).squeeze()
+                if fu_missing == -999:
+                    missing_value = -999
+                elif fu_missing == -9990:
+                    missing_value = -9999
+                else:
+                    raise ValueError("new value of {fu_missing=}")
+            else:
+                missing_value = -9999
+        elif varname in ['QR']:
+            missing_value = -999
+            print(f"here: {var_vals=}")
         else:
             missing_value = np.array(swath_attrs[missing_name]).squeeze()
+        print(f"replacing {missing_value=} with np.nan")
         missing_vals = (var_vals == missing_value).squeeze()
         var_vals =var_vals.astype(np.float32)
         var_vals[missing_vals]=np.nan
-        print(f"replacing {missing_value=} with np.nan")
     factor_name = f"{varname}.factor"
     if factor_name in swath_attrs:
         factor = np.array(swath_attrs[factor_name]).squeeze()
@@ -321,6 +334,10 @@ def read_cloudsat_var(varname, filename):
     if var_vals.ndim == 2 and varname != "LayerTop":
         # https://www.cloudsat.cira.colostate.edu/data-products/2b-geoprof
         var_array = DataArray(var_vals,dims=['time','height'],attrs=var_attrs)
+    elif varname == "QR":
+        the_data = the_data.expand_dims(dim = {'sw_lw':2}).squeeze()
+        var_attrs['sw_lw'] = 'index 0 = shortwave, index 1 = longwave'
+        var_array = DataArray(var_vals,dims=['sw_lw','time','height'],attrs=var_attrs)
     elif varname == 'LayerTop':
         var_vals[var_vals < 0]=np.nan
         #

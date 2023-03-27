@@ -4,11 +4,15 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+numbering:
+  heading_2: true
+  heading_3: true
+toc-autonumbering: true
 ---
 
 +++ {"user_expressions": []}
@@ -238,7 +242,8 @@ for the_key, a_df in season_dict.items():
     out_list.append(the_series)
     
 new_frame = pd.DataFrame.from_records(out_list, index='scene')
-
+season_list = Path() / "save_seasons.csv"
+new_frame.to_csv(season_list)
 new_frame.head()
 ```
 
