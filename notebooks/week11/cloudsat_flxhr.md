@@ -38,7 +38,6 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 from sat_lib.cloudsat import add_storm_distance
-from sat_lib.utils.plotting import make_cmap
 from matplotlib import pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import Normalize
