@@ -46,7 +46,7 @@ import copy
 
 ```{code-cell} ipython3
 cloudsat_dir = a301_lib.data_share / "pha/cloudsat"
-flxhr_file = list(cloudsat_dir.glob("*2008*FLXHR*hdf"))[0]
+flxhr_file = list(cloudsat_dir.glob("*2008*FLXHR_GR*hdf"))[0]
 ```
 
 ```{code-cell} ipython3
