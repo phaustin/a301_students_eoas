@@ -81,8 +81,12 @@ parts:
     - file: notebooks/week10/false_color.md
   - caption: Week 11
     chapters:
+    - file: notebooks/week11/week11_topics.md
+    - file: notebooks/week11/cloudsat_flxhr.md
     - file: notebooks/week11/flux_from_radiance_rev.rst
     - file: notebooks/week11/flux_schwartzchild.rst
+    - file: notebooks/week11/diffuse_flux.md
+    - file: notebooks/week11/heating_rate.rst
     
   - caption: Assignments
     chapters:
@@ -92,6 +96,7 @@ parts:
     - file: notebooks/assignments/assignment3a_solution.md
     - file: notebooks/assignments/assignment3b_solution.md
     - file: notebooks/assignments/assignment4_solution.md
+    - file: notebooks/assignments/assign5_handin.md
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/a301_mid_2022t2_solutions.md

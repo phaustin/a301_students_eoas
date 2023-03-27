@@ -64,3 +64,8 @@
 * {ref}`week10:radar_micro`
 * {ref}`week10:false_color`
 
+## Week 11
+
+* {ref}`week11:cloudsat_heat`
+* {ref}`week11:diffuse_flux`
+
