@@ -232,6 +232,7 @@ def get_landsat_dataset(date, lon, lat, window, bands=None):
     coords = out_dict['Fmask'].coords
     attrs = out_dict['Fmask'].attrs
     dataset = Dataset(data_vars = out_dict, coords = coords, attrs = attrs )
+    dataset = dataset.squeeze()
     return dataset
 
 

@@ -46,7 +46,8 @@ import copy
 
 ```{code-cell} ipython3
 cloudsat_dir = a301_lib.data_share / "pha/cloudsat"
-flxhr_file = list(cloudsat_dir.glob("*2008*FLXHR_GR*hdf"))[0]
+flxhr_file = list(cloudsat_dir.glob("*2008*FLXHR*hdf"))[0]
+print(flxhr_file)
 ```
 
 ```{code-cell} ipython3
@@ -83,7 +84,7 @@ using the function we wrote last week
 qr_slice = add_storm_distance(qr_slice)
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Set up the colormap
 
@@ -143,7 +144,7 @@ sw_heating.plot.pcolormesh(x='storm_distance',y='height_km',ax=ax, cmap = cmap, 
 ax.set(ylim=(0,17),title="shortwave heating rate (K/day)");
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Plot the net heating rate
 

@@ -245,7 +245,6 @@ ax.hist(x,bins=200,density=True)
 ax.set(title="gaussian pdf n(l) and cumulative distribution N(l)",
        xlabel="pixel level",
        ylabel = "n(l) (#pixels/(bin width)) and N(l) (#pixels with level < l)");
-
 ```
 
 +++ {"tags": [], "user_expressions": []}
@@ -375,10 +374,6 @@ figt, ax = plt.subplots(1,1,figsize=(12,8))
 ax.imshow(band_values[0, :, :]);
 ```
 
-+++ {"user_expressions": []}
-
-
-
 +++ {"tags": [], "user_expressions": []}
 
 ### Create the dataArray
@@ -478,29 +473,4 @@ nrows, ncols = b3.shape
 raw_values = np.empty([3, nrows, ncols], dtype=np.uint8)
 for index, raw_image in enumerate([masked_b5,masked_b4,masked_b3]):
     raw_values[index, :, :] = img_as_ubyte(raw_image)
-```
-
-```{code-cell} ipython3
-fig, ax = plt.subplots(1,1, figsize=(6,9))
-false_color.data = raw_values
-false_color.plot.imshow(ax=ax)
-```
-
-```{code-cell} ipython3
-import datetime
-from pathlib import Path
-
-import numpy as np
-import seaborn as sns
-from IPython.display import Image
-import rioxarray
-import xarray
-import copy
-import a301_lib
-from sat_lib.landsat_read import get_landsat_dataset
-```
-
-```{code-cell} ipython3
-from matplotlib import pyplot as plt
-from skimage import exposure, img_as_ubyte
 ```

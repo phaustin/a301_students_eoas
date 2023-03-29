@@ -27,6 +27,8 @@ toc-autonumbering: true
 There are two questions below with cells to place your code and comments.  Before you do that, you'll need to run the {ref}`week10:write_geotiff` notebook
 to download your windowed landsat scenes into a folder.
 
+(Hand in the Marshall-Palmer question in a separate notebook)
+
 ```{code-cell} ipython3
 import numpy
 from pathlib  import Path
