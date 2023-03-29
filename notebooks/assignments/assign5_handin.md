@@ -18,16 +18,20 @@ toc-autonumbering: true
 +++ {"tags": [], "user_expressions": []}
 
 (assign5)=
-# Assignment 5 Landsat handin
+# Assignment 5 Handin
+
+Hand in this notebook with answers to the 3 questions (2 Landsat, 1 Marshall Palmer)
 
 +++ {"tags": [], "user_expressions": []}
 
 ## Preliminaries
 
-There are two questions below with cells to place your code and comments.  Before you do that, you'll need to run the {ref}`week10:write_geotiff` notebook
+There are two Landsat questions below with cells to place your code and comments.  Before you do that, you'll need to run the {ref}`week10:write_geotiff` notebook
 to download your windowed landsat scenes into a folder.
 
-(Hand in the Marshall-Palmer question in a separate notebook)
+There is a third question that can be uploaded as a handwritten pdf, with a cell to do the numerical integration
+
+
 
 ```{code-cell} ipython3
 import numpy
@@ -192,8 +196,7 @@ annual variablity?
 # Question 2 answer here
 ```
 
-
-## Marshall-Palmer question
+##  Question 3Marshall-Palmer question
 
 2) Integrate $Z=\int D^6 n(D) dD$ on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
 
@@ -209,3 +212,7 @@ $$
 
 2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
    the result agrees.
+
+```{code-cell} ipython3
+# Marshall Palmer numerical integration here
+```
