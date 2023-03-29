@@ -191,3 +191,21 @@ annual variablity?
 ```{code-cell} ipython3
 # Question 2 answer here
 ```
+
+
+## Marshall-Palmer question
+
+2) Integrate $Z=\int D^6 n(D) dD$ on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
+
+$$
+Z \approx 300 RR^{1.5}
+$$
+
+with Z in $mm^6\,m^{-3}$ and RR in mm/hr.  It's helpful to know that:
+
+$$
+\int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+$$
+
+2) Repeat using numerical integration in python (i.e. np.diff and np.sum) and show that the
+   the result agrees.

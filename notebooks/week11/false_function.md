@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
 (week11:false_color_examples)=
 # Landsat 8 false color examples
@@ -48,7 +48,7 @@ reflectance values with the landsat band locations in microns
 
 1) coastal aerosol: 0.44, 2)  blue: 0.47, 3) green: 0.55, 4) red:  0.65, 5) near-ir:  0.86, 6) swir1  1.6, 7) swir2: 2.2
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ```{figure} figures/hou_reflectance.png
 :name: fig:reflectance_spectra
@@ -57,7 +57,7 @@ reflectance values with the landsat band locations in microns
 Reflectance spectra
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Landsat bands by surface type
 
@@ -70,11 +70,11 @@ Reflectance spectra
 Landsat 8 band wavelengths
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Landsat false color combinations
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ```{figure} figures/arc_gis_bands.png
 :width: 80%
@@ -83,7 +83,7 @@ Landsat 8 band wavelengths
 
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Show some of these below
 
@@ -117,11 +117,11 @@ if not write_it:
 six_bands
 ```
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
 Here is the code that fetched the original dataset from NASA
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## True color (red, green, blue)
 
@@ -158,7 +158,7 @@ veg_ir.plot.imshow(ax=ax3);
 ax3.set(title="veg ir 654");
 ```
 
-+++ {"user_expressions": [], "tags": []}
++++ {"tags": [], "user_expressions": []}
 
 ## Agriculture swir-1, near-ir, blue
 
@@ -182,6 +182,6 @@ types of urban development.  Less contrast for turbid/fresh water.  See: [band76
 ```{code-cell} ipython3
 urban = make_false_color(six_bands, band_names=["B07","B06","B04"])
 fig5, ax5 = plt.subplots(1,1,figsize=(6,9))
-urban.plot.imshow(ax=ax4);
+urban.plot.imshow(ax=ax5);
 ax5.set(title="Urban 764");
 ```
