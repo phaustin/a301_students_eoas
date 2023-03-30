@@ -57,6 +57,7 @@ import a301_lib
 import rioxarray
 import cartopy
 from matplotlib import pyplot as plt
+import pyresample
 
 
 the_tif  = a301_lib.data_share / "pha/wv_ir_5km.tif"
@@ -174,6 +175,8 @@ ur_x, ur_y = band_xarray.rio.transform()*(ncols+1,0)
 extent = (ll_x,ur_x, ll_y, ur_y)
 extent
 ```
+
++++ {"jp-MarkdownHeadingCollapsed": true, "tags": []}
 
 #### The easy way
 
