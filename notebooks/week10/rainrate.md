@@ -6,14 +6,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week10:radar_micro)=
 # Cloudsat: liquid and ice precipitation and rain rate
@@ -40,11 +40,11 @@ import xarray as xr
 from sat_lib.cloudsat import add_storm_distance
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Read in the dataArrays
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Read in the storm we saved in week9
 
@@ -61,7 +61,7 @@ infile_temp = a301_lib.data_share / "pha/cloudsat/week10_wind_temps.nc"
 temp_ds = xr.open_dataset(infile_temp)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Read in the radar rain rate, precipitation ice and liquid water content and the cloud liquid water
 
@@ -89,7 +89,7 @@ temp_ds = xr.open_dataset(infile_temp)
 cloud_ds
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## add the new RΑΙΝ cloud variables to the rain_ds rainrate dataset
 
@@ -103,7 +103,7 @@ rain_ds['cloud_liquid_water'] = cloud_ds['cloud_liquid_water']
 rain_ds
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Clip to the storm times using an xarray indexer
 
@@ -130,7 +130,7 @@ storm_date_times=orbit_times[time_hit]
 That's a lot of repetitive work to subset the data.  Below we write a couple of helper functions
 to automate this using tthe [xarray.sel](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.sel.html) method.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 We can do this in three steps
 
@@ -162,7 +162,7 @@ storm_slice = rain_ds.isel(indexers = {'time':time_hit})
 storm_slice
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Problem: make the two height dimensions agree
 
@@ -175,7 +175,7 @@ just overwrite the storm_zvals height dimension to force them to be equal.  If t
 I'd either have to interpolate the arrays onto a common grid, or maintain two separate height dimensions, at
 the cost of not being able to subtract/add the arrays.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### The two radar field heights differ from each other by about 18 meters
 
@@ -186,7 +186,7 @@ the cost of not being able to subtract/add the arrays.
 np.array(storm_slice.height) - np.array(storm_zvals.height)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### The model heights differ from the radar by about 19 meters
 
@@ -194,13 +194,13 @@ np.array(storm_slice.height) - np.array(storm_zvals.height)
 np.array(rain_ds.height) - np.array(temp_ds.height)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Question -- In the cell below plot a slice along the time axis ([:,100]) for rain_ds.full_heights at height index 100
 
 How much variation in there in the radar height from timestep to timestep?
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Brute force solution -- give every dataset the same height vector
 
@@ -221,7 +221,7 @@ temp_ds = temp_ds.assign_coords(coords={'height':('height',storm_slice.height.da
 np.array(storm_slice.height) - np.array(storm_zvals.height)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Now that they have the same coordinates, we can add the radar reflectivity and temperature perturbation to the storm_slice dataset
 
@@ -234,7 +234,7 @@ storm_slice['Temperature'] = temp_ds['Temperature']
 storm_slice
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### add the storm distance coordinate
 
@@ -246,7 +246,7 @@ temp_ds = add_storm_distance(temp_ds)
 storm_slice.storm_distance
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Make some plots
 
@@ -284,7 +284,7 @@ ax.set(ylim=[0,17],xlabel = "distance (km)",ylabel="height (km)",
        title = f"radar reflectivity (dbZ) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Model Temperature
 
@@ -298,7 +298,7 @@ ax2.set(ylim = [0,17], xlabel = "distance (km)", ylabel = "height (km)",
          title = f"model temperature perturbation (K) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Radar Rain rate
 
@@ -314,7 +314,7 @@ rain_rate.plot(x="storm_distance", ax=ax1)
 ax1.set_title(f'rain rate (mm/hour)  on {storm_zvals.day}, granule {storm_zvals.granule_id}');
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Radar Liquid water precipitation
 
@@ -338,7 +338,7 @@ ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
        title = f"liquid water precip (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 In the two cells below, the radar is showing ice in the convective updrafts above the freezing level
 and cloud water down to the ground.  Inside the cloud itself, it can only see the larger precipitation drops.
@@ -367,7 +367,7 @@ ax.set(ylim=[0,10],xlabel = "distance (km)",ylabel="height (km)",
        title = f"Radar cloud_liquid_water (g/m^3) on {storm_zvals.day}, granule {storm_zvals.granule_id}");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## save the file to disk
 
@@ -378,11 +378,11 @@ if do_write:
     storm_slice.to_netcdf(outfile)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Summary
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 In general, the precipitation structure looks reasonable, and evaporating precipitation may be driving the cooling
 perturbations in the model.  Some next steps:

@@ -5,36 +5,57 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
 
-GOES-16: True Color Recipe
-==========================
-**Brian Blaylock**  
-*March 4, 2018*
 
-brian.blaylock@utah.edu ([website](http://home.chpc.utah.edu/~u0553130/Brian_Blaylock/home.html))
++++ {"user_expressions": []}
 
-This Python 3 notebook shows how to make a true color image from the GOES-16
+
+
++++ {"user_expressions": []}
+
+# GOES-16: True Color Recipe
+
+## Introduction
+
+This is a modified version of [Brian Blaylock's](http://home.chpc.utah.edu/~u0553130/Brian_Blaylock/home.html)
+[UCAR python gallery](https://unidata.github.io/python-gallery/examples/mapping_GOES16_TrueColor.html) notebook;.  I've
+made some changes so that it works with rioxarray.
+
+The notebook shows how to make a true color image from the GOES-16
 Advanced Baseline Imager (ABI) level 2 data. We will plot the image with
 matplotlib and Cartopy. The image can be displayed on any map projection after
-applying a transformation. The methods shown here are stitched
-together from the following useful information found online:
+applying a transformation.
 
-- [**True Color RGB Recipe**](http://cimss.ssec.wisc.edu/goes/OCLOFactSheetPDFs/ABIQuickGuide_CIMSSRGB_v2.pdf)
-- [ABI Bands Quick Information Guides](https://www.goes-r.gov/education/ABI-bands-quick-info.html)
-- [Open Commons Consortium](http://edc.occ-data.org/goes16/python/)
-- [GeoNetCast Blog](https://geonetcast.wordpress.com/2017/07/25/geonetclass-manipulating-goes-16-data-with-python-part-vi/)
-- [Proj documentation](https://proj4.org/operations/projections/geos.html?highlight=geostationary)
-- [Pyproj documentation](http://jswhit.github.io/pyproj/pyproj.Proj-class.html)
+Some background:  Take a look at the 16 channels described on page 230 of [Stull Chapter 8](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch08-satellite_radar-v102b.pdf).  Note that
+unlike Modis or Landsat OLI, the ABI doesn't have a visible channel at green wavelengths, substituting
+the near-ir 0.846--0.885  $\mu m$ wavelength range for green.  Since that channel is very responsive to
+plant chlorophyll it's possible to still  use that as part of a proxy for green as shown below.  As of this
+January, GOES 18 is now GOES West, and GOES 16 is GOES East, with GOES 17 moved into a parking position.
+For more background on GOES, see [NOAA's beginner guide to GOES](https://www.goes-r.gov/downloads/resources/documents/Beginners_Guide_to_GOES-R_Series_Data.pdf).  
 
-True color images are an RGB composite of the following three channels:
+We will be using the [Advanced Baseline Imager Level 2 Cloud and Moisture Product](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C01502) from the [Amazon AWS GOES repository](https://registry.opendata.aws/noaa-goes/).  The
+full list of available GOES products on AWS is [here](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-goes16).
+
++++
+
+## Relationship to previous notebooks
+
+
++++ {"user_expressions": []}
+
+## Channels and workflow
+
++++ {"user_expressions": []}
+
+These are the channels that contribute to the true-color composite:
+
 
 |        --| Wavelength   | Channel | Description |
 |----------|:------------:|:-------:|:-----------:|
@@ -42,11 +63,23 @@ True color images are an RGB composite of the following three channels:
 | **Green**| 0.86 &#181;m |    3    | Veggie Near-IR|
 | **Blue** | 0.47 &#181;m |    1    | Blue Visible|
 
----
+
+The workflow for the notebook:
+
+0) Download a scene using [goes2go](https://goes2go.readthedocs.io/en/latest/)
+
+1) Read the metadata and channels into xarray datasets using xarray and rioxarray
+
+2) Create a cartopy crs for the scene using the crs and extent of the image
+
+3) Produce a weighted "pseudo-green" image using a weighted combination of the 3 bands
+
+4) Clip the band values to 0-1 and apply a "gamma correction" (an alternative to histogram equalization, we used
+in )
+
+5) Stack the 3 bands in rgb order using 
 
 ```{code-cell} ipython3
-:tags: []
-
 from goes2go.data import goes_nearesttime
 import rioxarray
 import xarray
@@ -59,8 +92,19 @@ import numpy as np
 ```
 
 ```{code-cell} ipython3
-:tags: []
+######################################################################
+# First, import the libraries we will use
+# ---------------------------------------
+#
 
+
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+from pathlib import Path
+```
+
+```{code-cell} ipython3
 g = goes_nearesttime(
     datetime(2020, 6, 25, 18), satellite="goes16",product="ABI-L2-MCMIP", domain='C', 
       return_as="xarray"
@@ -95,16 +139,10 @@ cartopy_crs
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 cartopy_crs.bounds
 ```
 
-+++ {"tags": [], "user_expressions": []}
-
-
-
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 This example uses the **level 2 _multiband_ formatted file for the _CONUS_
 domain** 
@@ -126,39 +164,14 @@ I previously downloaded the following file from Amazon Web Services
     .nc    - NetCDF file extension
 
 ```{code-cell} ipython3
-:tags: []
-
-######################################################################
-# First, import the libraries we will use
-# ---------------------------------------
-#
-
-import numpy as np
-from datetime import datetime, timedelta
-from pyproj import Proj
-import xarray
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import os
-import sys
-import rioxarray
-from pathlib import Path
-```
-
-```{code-cell} ipython3
-:tags: []
-
 goesC["t"]
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 goesC.time_coverage_start
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Date and Time Information
 
@@ -167,8 +180,6 @@ domain. There are several different time stamps in this file, which are also
 found in the file's name.
 
 ```{code-cell} ipython3
-:tags: []
-
 # Scan's start time, converted to datetime object
 scan_start = datetime.strptime(goesC.time_coverage_start, "%Y-%m-%dT%H:%M:%S.%fZ")
 
@@ -190,7 +201,7 @@ print("File Created  : %s" % file_created)
 print("Scan Duration : %.2f minutes" % ((scan_end - scan_start).seconds / 60))
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## True Color Recipe
 
@@ -228,14 +239,10 @@ channels are in the same NetCDF file. Next, we will assign our variables R, G,
 and B as the data for each channel.
 
 ```{code-cell} ipython3
-:tags: []
-
 
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 # Confirm that each band is the wavelength we are interested in
 for band in [2, 3, 1]:
     band_wavelength = f"band_wavelength_C{band:02d}"
@@ -246,8 +253,6 @@ for band in [2, 3, 1]:
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 ######################################################################
 #
 
@@ -318,8 +323,10 @@ plt.subplots_adjust(wspace=0.02)
 ```
 
 ```{code-cell} ipython3
-:tags: []
+RGB.shape
+```
 
+```{code-cell} ipython3
 ######################################################################
 # The addition of the three channels results in a color image. We combine the
 # three channels in a stacked array and display the image with `imshow` again.
@@ -347,20 +354,22 @@ ax2.axis("off")
 ```
 
 ```{code-cell} ipython3
+RGB.dtype
+```
+
+```{code-cell} ipython3
 
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 fig = plt.figure(figsize=(15, 12))
 
 ax = fig.add_subplot(1, 1, 1, projection=cartopy_crs)
 
 ax.imshow(
-    np.flipud(RGB),
-    origin="lower",
-    extent=(rio.x.min(), rio.x.max(), rio.y.min(), rio.y.max()),
+    RGB,
+    origin="upper",
+    extent= extent,
     transform=cartopy_crs,
     interpolation="nearest",
     vmin=162.0,
@@ -374,8 +383,6 @@ plt.title("%s" % scan_start.strftime("%d %B %Y %H:%M UTC "), loc="right");
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 ######################################################################
 # Using other projections
 # ----------------------------------------------
@@ -391,9 +398,9 @@ ax = fig.add_subplot(1, 1, 1, projection=lc)
 ax.set_extent([-135, -60, 10, 65], crs=ccrs.PlateCarree())
 
 ax.imshow(
-    np.flipud(RGB),
-    origin="lower",
-    extent=(rio.x.min(), rio.x.max(), rio.y.min(), rio.y.max()),
+    RGB,
+    origin="upper",
+    extent=extent,
     transform=cartopy_crs,
     interpolation="none",
 )
@@ -405,5 +412,22 @@ plt.title("%s" % scan_start.strftime("%d %B %Y %H:%M UTC "), loc="right");
 ```
 
 ```{code-cell} ipython3
+fig = plt.figure(figsize=(8, 8))
 
+pc = ccrs.PlateCarree()
+
+ax = fig.add_subplot(1, 1, 1, projection=pc)
+ax.set_extent([-114.75, -108.25, 36, 43], crs=pc)
+
+ax.imshow(RGB, 
+          origin='upper',
+          extent=extent,
+          transform=cartopy_crs,
+          interpolation='none')
+
+ax.coastlines(resolution='50m', color='black', linewidth=1)
+ax.add_feature(ccrs.cartopy.feature.STATES)
+
+plt.title('GOES-16 True Color', loc='left', fontweight='bold', fontsize=15)
+plt.title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')), loc='right')
 ```
