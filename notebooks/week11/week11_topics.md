@@ -59,8 +59,15 @@ kernelspec:
 
 - {ref}`assign5` due Saturday, April 1 midnight
 
+## Week 11 topics for Friday
 
-### Radar problems for assignment 6
+- Geosynchronous weather satellites - read [Stull chapter 8 pp. 227-234](https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch08-satellite_radar-v102b.pdf)
+  - Notebook showing how to download and plot a GOES 16 true color image:
+
+  - {ref}`week11:goes_true_color`
+
+
+### Radar problems for assignment 6 -- due 9am Wednesday April 12
 
 Q1: Suppose a Nexrad radar (Stull p.~246)  is
   receiving a signal with returned power Pr = -58 dBm.  Using the radar
@@ -74,6 +81,10 @@ Q2: Now keep everything the same, but make the mistake of guessing that it's a s
 
 Q3: Now assume it's rain, but make the mistake of guessing that there's a factor of La=2
     attenuation between the target and the rainstorm
+ 
+ ### Cloudsat notebook for assignment 6
+ 
+ - Posted tonight
  
 
 ### Reserved hurricanes
