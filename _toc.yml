@@ -88,6 +88,7 @@ parts:
     - file: notebooks/week11/diffuse_flux.md
     - file: notebooks/week11/heating_rate.rst
     - file: notebooks/week11/false_examples.md
+    - file: notebooks/week11/goes_true_color.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md

@@ -33,7 +33,7 @@ You'll need to do `mamba install rioxarray` to bring in the rioxarray extension
 
 +++
 
-## xarray introduction
+{ref}`week7:geotiff_xarray`## xarray introduction
 
 An [xarray](https://foundations.projectpythia.org/core/xarray/xarray-intro.html) is a python container that wraps a numpy array.  It adds some additional features:
 
