@@ -11,4 +11,5 @@
 * {ref}`assign4`
 * {ref}`assign4_solution`
 * {ref}`assign5`
+* {ref}`assign6`
 

@@ -98,6 +98,7 @@ parts:
     - file: notebooks/assignments/assignment3b_solution.md
     - file: notebooks/assignments/assignment4_solution.md
     - file: notebooks/assignments/assign5_handin.md
+    - file: notebooks/assignments/assign6_handin.md
   - caption: Midterm
     chapters:
     - file: notebooks/midterm/a301_mid_2022t2_solutions.md
