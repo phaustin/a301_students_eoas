@@ -89,6 +89,9 @@ parts:
     - file: notebooks/week11/heating_rate.rst
     - file: notebooks/week11/false_examples.md
     - file: notebooks/week11/goes_true_color.md
+  - caption: Week 12
+    chapters:
+    - file: notebooks/week12/week12_topics.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md

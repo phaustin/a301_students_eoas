@@ -13,26 +13,26 @@ kernelspec:
   name: python3
 ---
 
-+++ {"tags": []}
++++ {"tags": [], "user_expressions": []}
 
-(week12:assign6_solution)=
+(assign6)=
 # Assignment 6: Hurricane case study, Due Wednesday, April 12 9am
 
 This notebook consolidates the following plots from the cloudsat notebook series into a case study for a hurricane.
 
-Below, you are asked to recompute the following 6 plots, starting with the hdf files you've downloaded from the CDC:
+Below, you are asked to recompute the following 4 plots, starting with the hdf files you've downloaded from the CDC:
 
 1) hurricane location:  {ref}`week9:cloudsat`
 1) Radar reflectivity with lidar cloudtop height (if the lidar was operating during your hurricane): {ref}`week9:cloudsat`
-1) Surface Rainrate and liquid water precipitation with zero degree isotherm:  {ref}`week10:radar_micro`
-1) Temperature perturbation and horizontal windspeed: {ref}`week10:temperature_perturb`
+1) Temperature perturbation: {ref}`week10:temperature_perturb`
+1) Horizontal windspeed: {ref}`week10:temperature_perturb`
 
 and add the following 2 new plots:
 
 1) ECMWF horizontal wind direction -- using the u and v components from the windspeed plot
-1) ECMWF `Surface_pressure` and `rain_rage
+1) ECMWF `Surface_pressure` and `rain_rate`
 
-For all plots include a title and axis 
+**For all plots include a title and axis labels**
 
 
 I've made a fix in `read_cloudsat_var` to solve the problem of 
