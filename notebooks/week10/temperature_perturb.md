@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.14.0
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -45,6 +45,7 @@ import a301_lib
 from sat_lib.cloudsat import read_cloudsat_var
 import seaborn as sns
 import xarray as xr
+from sat_lib.cloudsat import add_storm_distance
 ```
 
 ```{code-cell} ipython3

@@ -196,9 +196,21 @@ def get_geo(hdfname):
         height = height_array[0,:]
         var_dict['full_heights'] = (['time','height'],height_array)
         #
-        # y axis is first height column
+        # y axis is first non-nan height column
         #
-        coord_dict['height'] = height_array[0,:]
+        ntimes, nrows = height_array.shape
+        #
+        # find a height at level 100 that's not nan
+        #
+        no_time = True
+        for the_time in range(ntimes):
+            if not np.isnan(height_array[the_time,100]):
+                no_time = False
+                break
+        if no_time:
+            raise ValueError(f"no heights available in {hdfname=}")
+        print(f"using timestep {the_time} to set heights")
+        coord_dict['height'] = height_array[the_time,:]
         coord_dict['full_heights'] = height_array[:,:]
         variable_dict['dem_elevation'] = (['time'], var_dict['dem_elevation'])
         hdf_SD.end()
