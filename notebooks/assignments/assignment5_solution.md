@@ -236,7 +236,7 @@ annual variablity?
 +++ {"tags": [], "user_expressions": []}
 
 ### Question 2 answer
-mall
+
 No evidents of a longterm trend. The seasonal variablily is evident, but there are some larger fluctuations in 2014, 2022.
 In most years the ndvi increases in the spring, summer and even the fall, with winter minimum values as expected, with
 the exception of 2019. There are two outliers in the summer of 2015 and the winter of 2023 that look like data problems
@@ -291,7 +291,7 @@ plt.title('december 2022')
 
 +++ {"tags": [], "user_expressions": []}
 
-What's the problem with 2015-07-07?  Compare July 2015 with May 2015 -- it looks like cirrus cloud went undetected by the
+What's the problem with 2015-07-07?  Compare July 2015 with May 2015 -- it looks like either a cirrus cloud or a cloud shadow went undetected by the
 cloud cover algorithm and shaded the scene
 
 ```{code-cell} ipython3
