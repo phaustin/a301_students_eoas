@@ -92,6 +92,7 @@ parts:
   - caption: Week 12
     chapters:
     - file: notebooks/week12/week12_topics.md
+    - file: notebooks/week12/final_guide.md
   - caption: Assignments
     chapters:
     - file: notebooks/assignments/assign1_handin_solution.md
@@ -101,6 +102,7 @@ parts:
     - file: notebooks/assignments/assignment3b_solution.md
     - file: notebooks/assignments/assignment4_solution.md
     - file: notebooks/assignments/assign5_handin.md
+    - file: notebooks/assignments/assignment5_solution.md
     - file: notebooks/assignments/assign6_handin.md
   - caption: Midterm
     chapters:

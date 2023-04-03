@@ -45,14 +45,19 @@ import datetime
 
 +++ {"tags": [], "user_expressions": []}
 
-## Preliminaries
+# Preliminaries
+
+There are two Landsat questions below with cells to place your code and comments.  Before you do that, you'll need to run the {ref}`week10:write_geotiff` notebook
+to download your windowed landsat scenes into a folder.
+
+There is a third question that can be uploaded as a handwritten pdf, with a cell to do the numerical integration## Preliminaries
 
 There are two questions below with cells to place your code and comments.  Before you do that, you'll need to run the write_geotiffs.md notebook
 to download your windowed landsat scenes into a folder.
 
 +++ {"tags": [], "user_expressions": []}
 
-## Use this function to add masked ndvi to the dataset
+## Headstart: use this function to add masked ndvi to the dataset
 
 Since I had some issues writing a robust ndvi function,
 I've provided a working version in the cell below, with comments explaining the 
@@ -129,7 +134,7 @@ files in `output_dir` -- just delete the folder and rerun
 ### For Vancouver:
 
 Adding some print stastements to the `calc_ndvi` loop shows that there are some problems for the Vancouver scene -- scenes
-25, 27, 37 and 39 are all uncalibrated, with reflectivities that haven't been scaled to 0-> 1.
+23, 31, 34 and 36 are all uncalibrated, with reflectivities that haven't been scaled to 0-> 1.
 This shouldn't matter for the ndvi since the constant calibration constant is the same
 for both Band 4 and Band 5 it will divide out.  
 
@@ -145,11 +150,12 @@ out_dir = a301_lib.data_share / "pha/landsat/ndvi_geotiffs_outdir"
 in_dir.mkdir(exist_ok = True, parents=True)
 out_dir.mkdir(exist_ok = True, parents=True)
 
-write_it = True
+write_it = False
 if write_it:
     in_files = list(in_dir.glob("*nc"))
     for count,the_file in enumerate(in_files):
         the_ds = rioxarray.open_rasterio(the_file,mode = 'r',mask_and_scale = True)
+        print(f"Scene {count}, Date: {the_ds.day}, maximum B05 {np.nanmax(the_ds['B05']):.2f}, cloud cover: {the_ds.cloud_cover}")
         #
         # Give the file the same name, but put it in the new folder
         #
@@ -210,6 +216,12 @@ for a_file in ndvi_files:
                 
 ```
 
+```{code-cell} ipython3
+:tags: []
+
+len(ndvi_files)
+```
+
 +++ {"tags": [], "user_expressions": []}
 
 ## Question 2: Plot the ndvi time series
@@ -224,10 +236,10 @@ annual variablity?
 +++ {"tags": [], "user_expressions": []}
 
 ### Question 2 answer
-
-No evidents of a longterm trend. The seasonal variablily is smaller than the larger fluctuations, especially between 2014-2016.
-In most years the ndvi increases in the spring, summer and even the fall, with winter minimum values as expected.
-There are two outliers in the summer of 2015 and the winter of 2023.
+mall
+No evidents of a longterm trend. The seasonal variablily is evident, but there are some larger fluctuations in 2014, 2022.
+In most years the ndvi increases in the spring, summer and even the fall, with winter minimum values as expected, with
+the exception of 2019. There are two outliers in the summer of 2015 and the winter of 2023 that look like data problems
 
 ```{code-cell} ipython3
 #
@@ -258,18 +270,47 @@ ax.grid(True)
 
 ### The two problem datapoints
 
-Here's the image for the 
+Look at the ndvi images for winter 2023 and summer 2015 a
+
+```{code-cell} ipython3
+:tags: []
+
+sorted_dates[-1]
+```
 
 ```{code-cell} ipython3
 :tags: []
 
 last_scene = sorted_dates[-1]
-last_ds = scene_dict[last_scene].squeeze()
+dec_2022 = datetime.datetime(2022, 12, 1, 0, 0)
+last_ds = scene_dict[dec_2022].squeeze()
 print(f"{last_ds.cloud_cover=}")
 last_ds['ndvi'].plot.imshow()
+plt.title('december 2022')
 ```
 
-What's the problem with 2015-07-07?  July of 2015
++++ {"tags": [], "user_expressions": []}
+
+What's the problem with 2015-07-07?  Compare July 2015 with May 2015 -- it looks like cirrus cloud went undetected by the
+cloud cover algorithm and shaded the scene
+
+```{code-cell} ipython3
+:tags: []
+
+date = datetime.datetime(2015, 7, 7, 0, 0)
+july_2015_ds = scene_dict[date].squeeze()
+july_2015_ds['ndvi'].plot.imshow()
+plt.title('july 2015');
+```
+
+```{code-cell} ipython3
+:tags: []
+
+date = datetime.datetime(2015, 5, 20, 0, 0)
+may_2015_ds = scene_dict[date].squeeze()
+may_2015_ds['ndvi'].plot.imshow()
+plt.title('may 2015');
+```
 
 +++ {"tags": [], "user_expressions": []}
 

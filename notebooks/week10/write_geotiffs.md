@@ -195,7 +195,7 @@ new_df.to_csv(csv_filename,index=False)
 We don't have a huge number of scenes, so accept any that have less than 50% cloud cover and hope that UBC isn't under a cloud
 
 ```{code-cell} ipython3
-clear_df = the_df[the_df['cloud_cover'] < 50]
+clear_df = new_df[new_df['cloud_cover'] < 50]
 len(clear_df)
 ```
 
@@ -207,7 +207,7 @@ Below we use the pandas groupby operator [https://realpython.com/pandas-groupby/
 to produce a new set of dataframes that all have the same season
 
 ```{code-cell} ipython3
-season_df = new_df.groupby(['season_year','season'])
+season_df = clear_df.groupby(['season_year','season'])
 season_dict = dict(list(season_df))
 ```
 
@@ -277,12 +277,11 @@ Change the `ate, lon, lat and window` for your case and turn
 `do_write` to `True`
 
 ```{code-cell} ipython3
-do_write=False
+do_write=True
 if do_write:
-    date = "2015-06-14"
     lon, lat  = -123.2460, 49.2606
     the_window = Window(col_off=2671, row_off=1352, width=234, height=301)
-    for row_num in np.arange(0,5):
+    for row_num in np.arange(5,len(new_frame)):
         row = new_frame.iloc[row_num]
         year,month,day = row['year'],row['month'],row['day']
         the_date = f"{year:02d}-{month:02d}-{day:02d}"

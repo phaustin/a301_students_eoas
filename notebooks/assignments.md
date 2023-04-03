@@ -10,6 +10,6 @@
 * {ref}`assign3b_solution`
 * {ref}`assign4`
 * {ref}`assign4_solution`
-* {ref}`assign5`
+* {ref}`assign5_solution`
 * {ref}`assign6`
 
