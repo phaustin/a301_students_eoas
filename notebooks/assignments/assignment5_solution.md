@@ -19,7 +19,7 @@ toc-showmarkdowntxt: false
 +++ {"tags": [], "user_expressions": []}
 
 (assign5_solution)=
-# Assignment 5 Landsat: Solution
+# Assignment 5 Landsat + Marshall Palmer: Solution
 
 ```{code-cell} ipython3
 import numpy
