@@ -249,12 +249,6 @@ space on the left and right.
 slice_utm16N.rio.transform()
 ```
 
-```{code-cell} ipython3
-:tags: []
-
-slice_utm16N.dims
-```
-
 +++ {"tags": [], "user_expressions": []}
 
 ### Mapping with the new projection
