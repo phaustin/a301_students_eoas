@@ -88,7 +88,7 @@ The 8 variables and their files:
 - U_velocity   (from ECMWF-AUX)
 - V_velocity   (from ECMWF-AUX)
 - Surface_pressure (from ECMWF-AUX)
-- Sea_surface_temperature (from ECMWF-AUX)
+- rain_rate (from ECMWF-AUX)
 
 **Note: `read_cloudsat_var` returns a dataset, not a dataArray.  To get the dataArray, you need to index by the 
 variable name like this:**
@@ -253,7 +253,7 @@ The table below shows how this works for the 4 principal compass points
 
 ### Question 8: Plot the Surface_pressure and rain_rate
 
-Make a 2-row plot of the Surface_pressure and Sea_surface temperature variables, i.e. create subplots that look like
+Make a 2-row plot of the Surface_pressure and rain_rate variables, i.e. create subplots that look like
 
 ```python
 fig6, (ax6,ax7) = plt.subplots(2,1,figsize=(14,4))
