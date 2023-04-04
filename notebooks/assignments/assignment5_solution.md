@@ -136,7 +136,7 @@ files in `output_dir` -- just delete the folder and rerun
 Adding some print stastements to the `calc_ndvi` loop shows that there are some problems for the Vancouver scene -- scenes
 23, 31, 34 and 36 are all uncalibrated, with reflectivities that haven't been scaled to 0-> 1.
 This shouldn't matter for the ndvi since the constant calibration constant is the same
-for both Band 4 and Band 5 it will divide out.  
+for both Band 4 and Band 5 it will divide out.
 
 ```{code-cell} ipython3
 #

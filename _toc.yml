@@ -92,6 +92,7 @@ parts:
   - caption: Week 12
     chapters:
     - file: notebooks/week12/week12_topics.md
+    - file: notebooks/week12/goes_michael.md
     - file: notebooks/week12/final_guide.md
   - caption: Assignments
     chapters:

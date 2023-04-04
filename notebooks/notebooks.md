@@ -86,3 +86,7 @@ kernelspec:
 * {ref}`week11:diffuse_flux`
 * {ref}`week11:false_color_examples`
 * {ref}`week11:goes_true_color`
+
+## Week 12
+
+* {ref}`week12:goes_review`
