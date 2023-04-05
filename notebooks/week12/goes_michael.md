@@ -300,12 +300,6 @@ y = out[:,1]
 ```{code-cell} ipython3
 :tags: []
 
-help(cartopy.crs.PlateCarree)
-```
-
-```{code-cell} ipython3
-:tags: []
-
 #
 # make a blue line and redisplay
 #
