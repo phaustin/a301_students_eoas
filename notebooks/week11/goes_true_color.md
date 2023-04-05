@@ -545,4 +545,4 @@ box and save it to disk as a netcdf file with the correct affine transform and c
 
 ### Practice question 3
 
-Change the map projection in some of the lambert to azimuthal equal area -- does it look less weird?
+Change the map projection in from lambert to azimuthal equal area -- does it look less weird?
