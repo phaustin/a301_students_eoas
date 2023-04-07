@@ -38,7 +38,7 @@ By the end of this course you should have a good understanding of
 
 - a reminder about the [UBC code of conduct](http://science.ubc.ca/students/new/conduct)
 
-## Rerferences/Texts (all available for free)
+## References/Texts (all available for free)
 
 - Stull, [Practical Meteorology] chapters 2, 3, 6 and 8 plus handouts
 - Kazarinoff: Problem Solving with Python
