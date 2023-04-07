@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -16,7 +16,7 @@ toc-autonumbering: false
 toc-showmarkdowntxt: false
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (assign5_solution)=
 # Assignment 5 Landsat + Marshall Palmer: Solution
@@ -43,7 +43,7 @@ import xarray
 import datetime
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 # Preliminaries
 
@@ -55,7 +55,7 @@ There is a third question that can be uploaded as a handwritten pdf, with a cell
 There are two questions below with cells to place your code and comments.  Before you do that, you'll need to run the write_geotiffs.md notebook
 to download your windowed landsat scenes into a folder.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Headstart: use this function to add masked ndvi to the dataset
 
@@ -108,7 +108,7 @@ def calc_ndvi(the_ds):
     return ndvi_dataset
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Make paths for input and output directories
 
@@ -127,7 +127,7 @@ added by calc_ndvi
 Note that sometimes you'll get permission and dimension errors when you try to overwrite
 files in `output_dir` -- just delete the folder and rerun
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Write out the ndvi files into a new folder
 
@@ -164,7 +164,7 @@ if write_it:
         new_ds.to_netcdf(out_file)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Question 1: Calculate the average ndvi
 
@@ -189,7 +189,7 @@ values with np.nan for missing pixels
 the_ds = rioxarray.open_rasterio(a_file,'r',mask_and_scale = True)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Question 1 answer
 
@@ -217,12 +217,10 @@ for a_file in ndvi_files:
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 len(ndvi_files)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Question 2: Plot the ndvi time series
 
@@ -233,7 +231,7 @@ Plot the ndvi values as a function of date, and comment on what you see:  is the
 and troughs occur when you would expect them to?  Is the seasonal variablity smaller or larger than the
 annual variablity?
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Question 2 answer
 
@@ -266,21 +264,17 @@ ax.plot(sorted_dates,the_ndvi,'ro')
 ax.grid(True)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### The two problem datapoints
 
 Look at the ndvi images for winter 2023 and summer 2015 a
 
 ```{code-cell} ipython3
-:tags: []
-
 sorted_dates[-1]
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 last_scene = sorted_dates[-1]
 dec_2022 = datetime.datetime(2022, 12, 1, 0, 0)
 last_ds = scene_dict[dec_2022].squeeze()
@@ -289,14 +283,12 @@ last_ds['ndvi'].plot.imshow()
 plt.title('december 2022')
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 What's the problem with 2015-07-07?  Compare July 2015 with May 2015 -- it looks like either a cirrus cloud or a cloud shadow went undetected by the
 cloud cover algorithm and shaded the scene
 
 ```{code-cell} ipython3
-:tags: []
-
 date = datetime.datetime(2015, 7, 7, 0, 0)
 july_2015_ds = scene_dict[date].squeeze()
 july_2015_ds['ndvi'].plot.imshow()
@@ -304,19 +296,17 @@ plt.title('july 2015');
 ```
 
 ```{code-cell} ipython3
-:tags: []
-
 date = datetime.datetime(2015, 5, 20, 0, 0)
 may_2015_ds = scene_dict[date].squeeze()
 may_2015_ds['ndvi'].plot.imshow()
 plt.title('may 2015');
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Question 3
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
  Integrate $Z=\int D^6 n(D) dD$ on paper, assuming a Marshall Palmer size distribution and show that it integrates to:
 
@@ -330,7 +320,7 @@ $$
 \int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
 $$
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Question 3 answer
 
@@ -369,13 +359,11 @@ $$
 Z=296 RR^{1.47}
 $$
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Numerical approximation
 
 ```{code-cell} ipython3
-:tags: []
-
 #
 # Marshall Palmer distribution
 #

@@ -5,14 +5,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week11:goes_true_color)=
 # GOES-16: True Color Images from GOES ABI
@@ -44,7 +44,7 @@ which expands to "Advanced Baseline Imager level 2 Cloud Moisture Imagery Produc
 Continental US".  It's  about 68 Mbytes, compared to the full disk file (`ABI-L2-MCMIPC`) which
 is about 305 Mbytes.  A folder called `~/data` will be created to hold the download.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Relationship to previous notebooks
 
@@ -64,7 +64,7 @@ is about 305 Mbytes.  A folder called `~/data` will be created to hold the downl
 
 ## Channels and workflow
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 These are the channels that contribute to the true-color composite:
 
@@ -112,7 +112,7 @@ import cartopy.feature as cfeature
 from pathlib import Path
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Read in the data
 
@@ -127,7 +127,7 @@ g = goes_nearesttime(
 )
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 By default the files are written into a folder called `~/data`
 
@@ -136,7 +136,7 @@ full_path = Path.home() / "data" / g.path[0]
 full_path
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 This example uses the **level 2 _multiband_ formatted file for the continental US (C)
 domain** 
@@ -157,7 +157,7 @@ Here's the naming scheme for files
     c##### - File Creation  
     .nc    - NetCDF file extension
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Note that goesC has the `rio` has the `goes_imager_projection` variable, while
 `goesC` has many more variables.
@@ -190,7 +190,7 @@ rioC.rio.crs
 rioC['CMI_C01'].shape
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Get the extent and the crs, and create a cartopy crs
 
@@ -214,7 +214,7 @@ cartopy_crs.bounds
 goesC.time_coverage_start
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Get Date and Time Information
 
@@ -249,7 +249,7 @@ print(f"File Created  :  {file_created}")
 print(f"Scan midpoint :  {midpoint}")
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## True Color Recipe
 
@@ -282,7 +282,7 @@ Most displays have a decoding gamma of 2.2.  See
 [wikipedia](https://en.wikipedia.org/wiki/Gamma_correction), and this
 [tutorial](https://www.cambridgeincolour.com/tutorials/gamma-correction.htm) if you'd like to know more.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Natural vs. veggie green
 
@@ -307,7 +307,7 @@ The multiband formatted file we loaded is convenient because all the GOES
 channels are in the same NetCDF file. Next, we will assign our variables R, G,
 and B as the data for each channel.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Check the band wavelengths
 
@@ -321,7 +321,7 @@ for band in [2, 3, 1]:
     print(f"{long_name} is {wavelength:.2f} {units}")
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Clip the bands and apply the gamma correction
 
@@ -354,7 +354,7 @@ B = np.power(B, 1 / gamma)
 ######################################################################
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Make "true" green from the three bands
 
@@ -365,7 +365,7 @@ G_true = np.maximum(G_true, 0)
 G_true = np.minimum(G_true, 1)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Plot the raw images
 
@@ -397,7 +397,7 @@ ax4.axis("off")
 plt.subplots_adjust(wspace=0.02)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Stack the tree images using dstack
 
@@ -430,7 +430,7 @@ ax2.set_title("%s" % scan_start.strftime("%d %B %Y %H:%M UTC "), loc="right")
 ax2.axis("off");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Plot the mapped image using cartopy
 
@@ -455,7 +455,7 @@ plt.title("GOES-16 True Color", loc="left", fontweight="semibold", fontsize=15)
 plt.title("%s" % scan_start.strftime("%d %B %Y %H:%M UTC "), loc="right");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Changing the map projection and plot extent
 
@@ -489,7 +489,7 @@ plt.title("GOES-16 True Color", loc="left", fontweight="semibold", fontsize=15)
 plt.title("%s" % scan_start.strftime("%d %B %Y %H:%M UTC "), loc="right");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Change the axis extent (not the original image extent)
 
@@ -528,20 +528,20 @@ plt.title('{}'.format(scan_start.strftime('%d %B %Y %H:%M UTC ')), loc='right');
 
 ## Practice questions (takehome)
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Practice question 1
 
 Use a seaborn jointplot to compare the channel 1 (blue) histogram before and after the gamma correction
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Practice question 2
 
 Use xarray.isel to clip just the portion of the abi scene that's in the [-114.75, -108.25, 36, 43] lon/lat bounding
 box and save it to disk as a netcdf file with the correct affine transform and crs
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Practice question 3
 

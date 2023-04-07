@@ -4,23 +4,22 @@ channels:
   - conda-forge
 dependencies:
   # NOTE: pip required for running tests in this repo
-  - python
+  - python=3.11
   - pyhdf
   - numpy
   - pip
-  - jupytext
   - cartopy>0.21
   - pyresample
   - netcdf4
   - jupyterlab
-  - dask
+  - jupytext
   - pythia-datasets
   - pytest
   - rasterio
-  - fiona
   - rioxarray
   - pystac-client
   - shapely
   - seaborn
   - scikit-image
+  - goes2go
 # conda-lock --kind explicit -f environment_trun.yml -p linux-64

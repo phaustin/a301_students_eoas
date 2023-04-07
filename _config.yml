@@ -8,7 +8,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   Website for EOAS ATSC 301
 
 execute:
-  execute_notebooks: 'force'
+  nb_execution_mode: cache
+  nb_execution_cache_path: ".jupyter_cache"
 
 parse:
   myst_enable_extensions:  # default extensions to enable in the myst parser. See https://myst-parser.readthedocs.io/en/latest/using/syntax-optional.html
@@ -18,7 +19,9 @@ parse:
     - html_admonition
     - html_image
 
-exclude_patterns: ["*ipynb"]
+nb_execution_excludepatterns: ["*ipynb"]
+
+only_build_toc_files: true
 
 repository:
   url: https://github.com/phaustin/a301_2020

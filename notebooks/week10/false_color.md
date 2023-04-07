@@ -5,19 +5,19 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week10:false_color)=
 # Making color composite ("false color") images
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Definitions: "24 bit color", "true color", "false color"
 
@@ -28,7 +28,7 @@ The finished images that we will create towards the end of this notebook will in
 $3 \times 8$ = 24 bits per pixel, or "24 bit color". When the red, green and blue bands are mapped to red, green and blue levels, the image is
 called "true color".  When other bands are mapped to display red, green and blue levels the image is called "false color"
 
-+++ {"tags": [], "jp-MarkdownHeadingCollapsed": true, "user_expressions": []}
++++ {"jp-MarkdownHeadingCollapsed": true, "user_expressions": []}
 
 ## Introduction
 
@@ -55,7 +55,7 @@ the data values significantly, for the images below the reflectivities in bands 
 just converted them to 0-255 we'd only be using 20% of the 255 levels.  Fixing this problem by redistributing the data is called "stretching".
 Below we'll show how to do a "histogram stretch".  Since the underlying data is changed in the image, false color composites are a qualitative, rather than a quantitative tool.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Read in the clipped image
 
@@ -85,11 +85,11 @@ else:
 bands_543
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Here is the code that fetched the original dataset from NASA
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ```python
 import os
@@ -109,7 +109,7 @@ bands_543 = bands_543.squeeze()
 bands_543.to_netcdf(infile, mode= 'w')
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Note the low reflectivity in band 3
 
@@ -119,7 +119,7 @@ bands_543['B03'].plot.imshow(ax=ax);
 ax.set(title="band3 (green, 0.55 um)");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Apply the Fmask
 
@@ -137,7 +137,7 @@ masked_b4 = b4*Fmask.data
 masked_b5 = b5*Fmask.data
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Create a boolean mask
 
@@ -167,11 +167,11 @@ bool_mask[good_mask] = 1
 bool_mask
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Plotting joint histograms
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Below we plot some joint histograms of using [seaborn.jointplot](https://seaborn.pydata.org/generated/seaborn.jointplot.html).  This is
 a very powerful way to look for correlations between datasets, showing the both the 2-dimensional histogram (darker colors mean more pixels
@@ -213,7 +213,7 @@ axes[0].set(xlabel = "band 4 reflectivity",
             ylabel = "band 5 reflectivity");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Histogram equalization
 
@@ -247,14 +247,14 @@ ax.set(title="gaussian pdf n(l) and cumulative distribution N(l)",
        ylabel = "n(l) (#pixels/(bin width)) and N(l) (#pixels with level < l)");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 For this fake image, almost all the values are between -2 and 2, but the whole data range goes between -4 - 4.
 If we use the blue curve to map xaxis values between -2 and 2 to y axis values between 0.1-0.99, we are "stretching" the
 data to fill a range that is proportial to how many of these values actually occur in the image.  Values between -4 and -4 
 are still represented, but they only get levels between about 1% of the levels after the stetch, instead of 25%.
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Here's the cumulative distribution for band 5
 
@@ -272,7 +272,7 @@ plt.plot(img_cdf)
 plt.grid(True);
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Stretching step 1: stretch the data in each band and save to a dictionary with the band name as key
 
@@ -291,7 +291,7 @@ for key, image in zip(keys,images):
     # stretched_dict[key] = exposure.equalize_hist(image.data)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Before and after stretching
 
@@ -303,7 +303,7 @@ ax1.imshow(masked_b3);
 ax2.imshow(stretched_dict['b3']);
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Stretching step 2: check the stretched histograms
 
@@ -342,7 +342,7 @@ axes[0].set(xlabel = "stretched band 4 reflectivity",
             ylabel = "stretched band 5 reflectivity");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 one byte## Write the false color image into 3-dimensional array called "band_values"
 
@@ -362,7 +362,7 @@ for index, key in enumerate(['b5', 'b4', 'b3']):
     band_values[index, :, :] = img_as_ubyte(stretched)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Note that we've lost our missing values
 
@@ -374,7 +374,7 @@ figt, ax = plt.subplots(1,1,figsize=(12,8))
 ax.imshow(band_values[0, :, :]);
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Create the dataArray
 
@@ -391,7 +391,7 @@ coords={'band':('band',[5,4,3]),
         'y': ('y',b3.y.data)}
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Add attributes
 
@@ -407,7 +407,7 @@ attr_dict['history']="written by false_color.md"
 attr_dict["landsat_rgb_bands"] = band_names
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Create the falsecolor dataArray
 
@@ -425,7 +425,7 @@ false_color.rio.write_transform(b3.rio.transform(), inplace=True);
 false_color
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 The final image -- the imshow function interprets any array with shape [3, nrows, ncols] as
 a false color image and presents it with rgb colors.  One striking thing about the image
@@ -437,7 +437,7 @@ Question -- would it be useful to provide a mask for this image?
 false_color.plot.imshow(figsize=(6,9));
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Save as a png file
 
@@ -448,7 +448,7 @@ png_filename = file_path / "vancouver_543.png"
 false_color.rio.to_raster(png_filename)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ### Read it back in to check
 
@@ -458,7 +458,7 @@ Here's the finished image -- read back in from the png file
 Image(filename=png_filename)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Repeat with the raw reflectivities
 

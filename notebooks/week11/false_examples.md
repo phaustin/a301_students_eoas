@@ -5,14 +5,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 (week11:false_color_examples)=
 # Landsat 8 false color examples
@@ -39,7 +39,7 @@ from sat_lib.false_color import make_false_color
 help(make_false_color)
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Understanding Landsat band location
 
@@ -48,7 +48,7 @@ reflectance values with the landsat band locations in microns
 
 1) coastal aerosol: 0.44, 2)  blue: 0.47, 3) green: 0.55, 4) red:  0.65, 5) near-ir:  0.86, 6) swir1  1.6, 7) swir2: 2.2
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ```{figure} figures/hou_reflectance.png
 :name: fig:reflectance_spectra
@@ -57,11 +57,11 @@ reflectance values with the landsat band locations in microns
 Reflectance spectra
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Landsat bands by surface type
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ```{figure} figures/landsat8_bands.png
 :name: landsat_8_bands![landsat8_bands.png](attachment:9454ecea-8cba-488a-87ec-110fb2b5d57f.png)
@@ -70,11 +70,11 @@ Reflectance spectra
 Landsat 8 band wavelengths
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Landsat false color combinations
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ```{figure} figures/arc_gis_bands.png
 :width: 80%
@@ -83,12 +83,11 @@ Landsat 8 band wavelengths
 
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Show some of these below
 
 ```{code-cell} ipython3
-:tags: []
 :user_expressions: []
 
 write_it = False
@@ -117,11 +116,11 @@ if not write_it:
 six_bands
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 Here is the code that fetched the original dataset from NASA
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## True color (red, green, blue)
 
@@ -132,7 +131,7 @@ true_color.plot.imshow(ax=ax1);
 ax1.set(title="True color 432");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Color infrared: near-ir, red, green
 
@@ -145,7 +144,7 @@ color_ir.plot.imshow(ax=ax2);
 ax2.set(title="color ir 543");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Vegetation swir-1, near-ir, red
 
@@ -158,7 +157,7 @@ veg_ir.plot.imshow(ax=ax3);
 ax3.set(title="veg ir 654");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Agriculture swir-1, near-ir, blue
 
@@ -171,7 +170,7 @@ agri.plot.imshow(ax=ax4);
 ax4.set(title="Agri 652");
 ```
 
-+++ {"tags": [], "user_expressions": []}
++++ {"user_expressions": []}
 
 ## Urban swir-2, swir-1, red
 
