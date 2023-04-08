@@ -277,7 +277,7 @@ Change the `ate, lon, lat and window` for your case and turn
 `do_write` to `True`
 
 ```{code-cell} ipython3
-do_write=True
+do_write=False
 if do_write:
     lon, lat  = -123.2460, 49.2606
     the_window = Window(col_off=2671, row_off=1352, width=234, height=301)

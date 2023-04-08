@@ -7,9 +7,17 @@ email: paustin@eoas.ubc.ca
 description: >- # this means to ignore newlines until "baseurl:"
   Website for EOAS ATSC 301
 
+only_build_toc_files: true
+
+exclude_patterns: [.jupyter_cache/*]
+
 execute:
-  nb_execution_mode: cache
-  nb_execution_cache_path: .jupyter_cache
+  execute_notebooks: cache
+  cache: .jupyter_cache
+  allow_errors: true
+  timeout: 120
+  exclude_patterns:
+    - '*.jupyter_cache*'
 
 parse:
   myst_enable_extensions:  # default extensions to enable in the myst parser. See https://myst-parser.readthedocs.io/en/latest/using/syntax-optional.html
@@ -18,10 +26,6 @@ parse:
     - dollarmath
     - html_admonition
     - html_image
-
-nb_execution_excludepatterns: ["*ipynb"]
-
-only_build_toc_files: true
 
 repository:
   url: https://github.com/phaustin/a301_2020

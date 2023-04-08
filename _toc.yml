@@ -31,7 +31,7 @@ parts:
     - file: notebooks/week4/week4_topics.md
     - file: notebooks/week4/using_libraries.md
     - file: notebooks/week3/mapping.md
-    - file: notebooks/week3/cartopy.md
+    - file: notebooks/week3/cartopy_maps.md
     - file: notebooks/week4/catropy_mapping_vancouver.md
     - file: notebooks/week4/schwartz.rst
     - file: notebooks/week4/assignment2.md
