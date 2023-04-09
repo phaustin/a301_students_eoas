@@ -1,4 +1,3 @@
-.. include:: coursebuild/index_notebooks.txt
 .. default-role:: math
 
 .. _mid_review2_sols:
@@ -12,11 +11,11 @@ Schwartzchild with changing temperature
 From :ref:`schwartz`
 
 
-#. Equation :eq:`vary` allows you to find the radiance at
+#. Equation :eq:`vary2` allows you to find the radiance at
    height `z_T` if given enough information about the atmosphere.
 
    .. math::
-      :label: vary
+      :label: vary2
 
       L^\uparrow (\tau_T) = L^\uparrow (0) \, t_{tot} + \int_0^{z_T} t(\tau_T, \tau^\prime) B(T^\prime)\, d\tau^\prime
 
@@ -36,7 +35,7 @@ From :ref:`schwartz`
       `t(\tau_T, \tau^\prime)` to prove that
 
       .. math::
-         :label: eq_orig
+         :label: eq_orig2
 
          \int_0^{z_T} t(\tau_T,\tau^\prime) B(\tau^\prime)\, d\tau^\prime = \int_0^{z_T} B(t^\prime)\, dt^\prime
 
@@ -78,7 +77,7 @@ From :ref:`schwartz`
         changes.
 
         If we substitute :eq:`eq_diff2` into the right hand side
-        of :eq:`eq_orig` we get the left hand side.
+        of :eq:`eq_orig2` we get the left hand side.
 
 
 Beer's law

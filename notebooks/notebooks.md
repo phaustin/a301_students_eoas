@@ -36,6 +36,7 @@ kernelspec:
 
 * {ref}`week4:coords`
 * {ref}`using_libraries`
+* {ref}`cartopy`
 
 ## Week 5
 

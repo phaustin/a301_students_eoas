@@ -33,7 +33,7 @@ Where does :eq:`stull1` come from?  To derive this from the Beer's law we need t
 Our previous form of Beer's law looks like this `(see beers) <../week2/beers_law.html#diffbeers>`_:
 
 .. math:: \frac{dE^\prime}{E^\prime} = \frac{dL^\prime \Delta \omega}{L^\prime \Delta \omega} = d \ln L^\prime = -d (n\,b\,s) = -d \tau^\prime
-  :label: diffbeers
+  :label: diffbeers2
 
 where `s\ (m)` is the distance travelled (the path length),
 `n\ (\#/m^3)` is the number denstiy of reflecting/absorbing

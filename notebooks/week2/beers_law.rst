@@ -80,8 +80,8 @@ By taking the limit as :math:`\Delta T` approaches 0 we've turned a
 solve in python) into a *differential equation* for the differential
 :math:`dE` (which we can integrate using calculus).
 
-
 .. _beers_law_diff:
+
 Beers law -- using differentials
 ================================
 

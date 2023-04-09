@@ -1,5 +1,3 @@
-.. include:: refs.txt
-
 .. _week9:radar:
 
 Notes on the radar equation

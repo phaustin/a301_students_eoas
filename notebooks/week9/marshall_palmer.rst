@@ -1,5 +1,3 @@
-.. include:: ../refs.txt
-
 .. _week9:marshall:
 
 Notes on the Marshall-Palmer distribution and the Z-RR relation

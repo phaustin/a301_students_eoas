@@ -5,25 +5,26 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-<img src="../../images/cartopy_logo.png" width=600 />
++++ {"user_expressions": []}
 
-+++ {"tags": []}
+```{figure} images/cartopy_logo.png
+:name: label
+:width: 40%
+```
+
++++ {"user_expressions": []}
 
 (cartopy)=
 # Introduction to Cartopy
 
-+++
-
-___
-
-+++
++++ {"user_expressions": []}
 
 ## Overview
 
@@ -35,7 +36,7 @@ This tutorial will lead you through some basics of creating maps with specified 
 
 Later tutorials will focus on how to plot data on map projections.
 
-+++
++++ {"user_expressions": []}
 
 ## Prerequisites
 
@@ -45,11 +46,11 @@ Later tutorials will focus on how to plot data on map projections.
 
 - **Time to learn**: 30 minutes
 
-+++
++++ {"user_expressions": []}
 
 ___
 
-+++
++++ {"user_expressions": []}
 
 ## Imports
 
@@ -64,23 +65,25 @@ from cartopy import crs as ccrs, feature as cfeature
 warnings.filterwarnings('ignore')
 ```
 
++++ {"user_expressions": []}
+
 ___
 
-+++
++++ {"user_expressions": []}
 
 ## Basic concepts: map projections and `GeoAxes`
 
-+++
++++ {"user_expressions": []}
 
 ### Extend Matplotlib's `axes` into georeferenced `GeoAxes`
 
-+++
++++ {"user_expressions": []}
 
 Recall that in Matplotlib, what we might tradtionally term a *figure* consists of two key components: a `figure` and an associated subplot `axes` instance.
 
 By virtue of importing Cartopy, we can now convert the `axes` into a `GeoAxes` by specifying a projection that we have imported from *Cartopy's Coordinate Reference System* class as `ccrs`. This will effectively *georeference* the subplot.
 
-+++
++++ {"user_expressions": []}
 
 ### Create a map with a specified projection
 
@@ -92,11 +95,15 @@ ax = plt.subplot(1, 1, 1, projection=ccrs.PlateCarree(central_longitude=-75))
 ax.set_title("A Geo-referenced subplot, Plate Carree projection");
 ```
 
++++ {"user_expressions": []}
+
 Although the figure seems empty, it has in fact been georeferenced, using one of Cartopy's map projections that is provided by Cartopy's `crs` (coordinate reference system) class. We can now add in cartographic features, in the form of *shapefiles*, to our subplot. One of them is `coastlines`, which is a callable `GeoAxes` method that can be plotted directly on our subplot.
 
 ```{code-cell} ipython3
 ax.coastlines()
 ```
+
++++ {"user_expressions": []}
 
 <div class="admonition alert alert-info">
     <p class="admonition-title" style="font-weight:bold">Info</p>
@@ -107,13 +114,15 @@ ax.coastlines()
 fig
 ```
 
++++ {"user_expressions": []}
+
 ### Add cartographic features to the map
 
-+++
++++ {"user_expressions": []}
 
 Cartopy provides other cartographic features via its `features` class, which we've imported as `cfeature`. These are also shapefiles, downloaded on initial request from https://www.naturalearthdata.com/. Once downloaded, they "live" in your `~/.local/share/cartopy` directory (note the `~` represents your <i>home</i> directory).
 
-+++
++++ {"user_expressions": []}
 
 We add them to our subplot via the `add_feature` method. We can define attributes for them in a manner similar to Matplotlib's `plot` method. A list of the various Natural Earth shapefiles appears in https://scitools.org.uk/cartopy/docs/latest/matplotlib/feature_interface.html .
 
@@ -122,22 +131,26 @@ ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
 ax.add_feature(cfeature.STATES, linewidth=0.3, edgecolor='brown')
 ```
 
++++ {"user_expressions": []}
+
 Once again, referencing the `Figure` object will re-render the figure in the notebook, now including the two features.
 
 ```{code-cell} ipython3
 fig
 ```
 
++++ {"user_expressions": []}
+
 ## Explore some of Cartopy's map projections
 
-+++
++++ {"user_expressions": []}
 
 <div class="admonition alert alert-info">
     <p class="admonition-title" style="font-weight:bold">Info</p>
     You can find a list of supported projections in Cartopy, with examples, at <a href="https://scitools.org.uk/cartopy/docs/latest/reference/crs.html">https://scitools.org.uk/cartopy/docs/latest/reference/crs.html</a>
 </div>
 
-+++
++++ {"user_expressions": []}
 
 ### Mollweide Projection (often used with global satellite mosaics)
 
@@ -150,6 +163,8 @@ ax = plt.subplot(1, 1, 1, projection=projMoll)
 ax.set_title("Mollweide Projection")
 ```
 
++++ {"user_expressions": []}
+
 #### Add in the cartographic shapefiles
 
 ```{code-cell} ipython3
@@ -158,12 +173,16 @@ ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue')
 fig
 ```
 
++++ {"user_expressions": []}
+
 #### Add a fancy background image to the map.
 
 ```{code-cell} ipython3
 ax.stock_img()
 fig
 ```
+
++++ {"user_expressions": []}
 
 ### Lambert Azimuthal Equal Area Projection
 
@@ -176,15 +195,17 @@ ax.coastlines()
 ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue');
 ```
 
++++ {"user_expressions": []}
+
 ## Create regional maps
 
-+++
++++ {"user_expressions": []}
 
 ### Cartopy's `set_extent` method
 
 Now, let's go back to PlateCarree, but let's use Cartopy's `set_extent` method to restrict the map coverage to a North American view. Let's also choose a lower resolution for coastlines, just to illustrate how one can specify that. Plot lat/lon lines as well.
 
-+++
++++ {"user_expressions": []}
 
 Reference for Natural Earth's three resolutions (10m, 50m, 110m; higher is coarser): https://www.naturalearthdata.com/downloads/
 
@@ -212,12 +233,14 @@ ax.add_feature(cfeature.STATES, linewidth=0.3, edgecolor='brown')
 ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue');
 ```
 
++++ {"user_expressions": []}
+
 <div class="admonition alert alert-info">
     <p class="admonition-title" style="font-weight:bold">Info</p>
     Note the in the `set_extent` call, we specified <strong>PlateCarree</strong>. This ensures that the values we passed into `set_extent` will be <i>transformed</i> from degrees into the values appropriate for the projection we use for the map.
 </div>
 
-+++
++++ {"user_expressions": []}
 
 The PlateCarree projection exaggerates the spatial extent of regions closer to the poles. Let's try a couple different projections.
 
@@ -250,20 +273,22 @@ ax.add_feature(cfeature.STATES, linewidth=0.3, edgecolor='brown')
 ax.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='blue');
 ```
 
++++ {"user_expressions": []}
+
 <div class="admonition alert alert-info">
     <p class="admonition-title" style="font-weight:bold">Info</p>
     Lat/lon labeling for projections other than Mercator and PlateCarree is a recent addition to Cartopy. As you can see, work still needs to be done to improve the placement of labels.
 </div>
 
-+++
++++ {"user_expressions": []}
 
 ### Create a regional map centered over New York State
 
-+++
++++ {"user_expressions": []}
 
 Set the domain for defining the plot region. We will use this in the `set_extent` line below. Since these coordinates are expressed in degrees, they correspond to the PlateCarree projection.
 
-+++
++++ {"user_expressions": []}
 
 <div class="admonition alert alert-warning">
     <p class="admonition-title" style="font-weight:bold">Warning</p>
@@ -279,6 +304,8 @@ cLat = (latN + latS) / 2
 cLon = (lonW + lonE) / 2
 projLccNY = ccrs.LambertConformal(central_longitude=cLon, central_latitude=cLat)
 ```
+
++++ {"user_expressions": []}
 
 ### Add some pre-defined Features
 
@@ -298,12 +325,14 @@ ax.add_feature(cfeature.RIVERS)
 ax.set_title('New York and Vicinity');
 ```
 
++++ {"user_expressions": []}
+
 <div class="admonition alert alert-info">
     <p class="admonition-title" style="font-weight:bold">Note:</p>
     For high-resolution Natural Earth shapefiles such as this, while we could add Cartopy's <code>OCEAN</code> feature, it currently takes <i>much longer</i> to render on the plot (try it yourself to see!). Instead, we take the strategy of first setting the facecolor of the entire <code>Axes</code> to match that of water bodies in Cartopy. When we then layer on the <code>LAND</code> feature, pixels that are not part of the <code>LAND</code> shapefile remain in the <code>water</code> facecolor, which is the same color as the <code>OCEAN</code> .
 </div>
 
-+++
++++ {"user_expressions": []}
 
 ### Use lower resolution shapefiles from Natural Earth
 
@@ -357,6 +386,8 @@ ax.add_feature(state_borders, linestyle='solid', edgecolor='black')
 ax.set_title('New York and Vicinity; lower resolution');
 ```
 
++++ {"user_expressions": []}
+
 ### A figure with two different regional maps
 
 Finally, let's create a figure with two subplots. On one, we'll repeat our hi-res NYS map; on the second, we'll plot over a different part of the world.
@@ -400,6 +431,8 @@ ax2.add_feature(cfeature.STATES)
 ax2.set_title('Europe');
 ```
 
++++ {"user_expressions": []}
+
 ## An example of plotting data
 
 First, we'll create a lat-lon grid and define some data on it.
@@ -410,6 +443,8 @@ data = 2 * np.sin(3 * np.deg2rad(lon)) + 3 * np.cos(4 * np.deg2rad(lat))
 plt.contourf(lon, lat, data)
 plt.colorbar();
 ```
+
++++ {"user_expressions": []}
 
 Plotting data on a Cartesian grid is equivalent to plotting data in the Plate Carree projection, where meridians and parallels are all straight lines with constant spacing. As a result of this simplicity, the global datasets we use often begin in the Plate Carree projection.
 
@@ -423,31 +458,33 @@ dataplot = ax.contourf(lon, lat, data, transform=ccrs.PlateCarree())
 plt.colorbar(dataplot, orientation='horizontal');
 ```
 
++++ {"user_expressions": []}
+
 ___
 
-+++
++++ {"user_expressions": []}
 
 ## Summary
 
-+++
++++ {"user_expressions": []}
 
 - Cartopy allows for georeferencing Matplotlib `axes` objects.
 - Cartopy's `crs` class supports a variety of map projections.
 - Cartopy's `feature` class allows for a variety of cartographic features to be overlaid on the figure.
 
-+++
++++ {"user_expressions": []}
 
 ___
 
-+++
++++ {"user_expressions": []}
 
 ## What's Next?
 
-+++
++++ {"user_expressions": []}
 
 In the next notebook, we will delve further into how one can transform data that is defined in one coordinate reference system (`crs`) so it displays properly on a map that uses a different `crs`.
 
-+++
++++ {"user_expressions": []}
 
 ## Resources and References
 

@@ -1,4 +1,3 @@
-.. include:: coursebuild/index_notebooks.txt
 .. default-role:: math
                   
 .. _mid_review2:

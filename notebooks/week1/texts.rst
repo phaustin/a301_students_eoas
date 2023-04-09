@@ -36,8 +36,6 @@ Additional Resources
 
 * Vanderplas, `Python Data Science Handbook`_ 
 
-* D J Pine: `Introduction to Python for Science`_
-
 Moving from matlab to python
 ============================
   
@@ -48,5 +46,5 @@ Moving from matlab to python
 Mapping
 =======
 
-* `Understanding map projections <https://clouds.eos.ubc.ca/~phil/courses/eosc582/downloads/understanding_map_projections.pdf>`_
+* `Understanding map projections <https://drive.google.com/file/d/1araPnZwMui9tBTPyLO_UHVC2DDEIdZ0p/view?usp=sharing)>`_
 

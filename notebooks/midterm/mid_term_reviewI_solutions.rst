@@ -3,7 +3,7 @@
 .. _mid_review1_sol:
 
 Solutions: sample questions I
-============================
+=============================
 
 Beers law
 ---------
