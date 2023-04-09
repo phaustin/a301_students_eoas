@@ -21,6 +21,7 @@ kernelspec:
 * {ref}`sec:planck`
 * {ref}`modis_level1b`
 * {ref}`sec:debugging`
+* {ref}`week2_beerslaw`
 
 ## Week 3
 

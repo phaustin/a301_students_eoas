@@ -128,7 +128,7 @@ This is called the "diffusivity approximation":  replace the vertical optical th
 Integrating over `\mu=\cos \theta`
 ----------------------------------
   
-* In the :ref:`flux_from_radiance` notes we turned blackbody isotropic radiance
+* In the :ref:`week2_flux_from_radiance` notes we turned blackbody isotropic radiance
   into a flux by taking the normal component and integrating over the hemisphere, in :eq:`flux_final`:
   
   .. math::

@@ -84,7 +84,7 @@ From :ref:`schwartz`
 Beer's law
 ----------
 
-From :ref:`beers_law` and :ref:`flux_from_radiance`
+From :ref:`week2_beerslaw` and :ref:`week2_flux_from_radiance`
 
 #. A 5 km thick ozone layer absorbs 30% of the ultraviolet sunlight that
    passes through it when the sun is directly overhead.
@@ -132,7 +132,7 @@ From :ref:`beers_law` and :ref:`flux_from_radiance`
 Hydrostatic equation
 --------------------
 
-   From :ref:`hydro` and the :ref:`weighting_funs` notebook.
+   From :ref:`hydro` and the :ref:`week6:weighting_funs` notebook.
 
    #. A 10 km thick layer of an an atmosphere has constant temperature
       `T_{atm}`\ =280 K, a pressure/density scale height of

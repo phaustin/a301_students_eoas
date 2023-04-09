@@ -46,7 +46,7 @@ kernelspec:
 - Heating rate calculation notes
 
   - {ref}`week11:cloudsat_heat`
-  - {ref}`week11_flux_from_radianceII`
+  - {ref}`week2_flux_from_radianceII`
   - {ref}`week11_flux_schwartzchild`
   - {ref}`week11:diffuse_flux`
   - {ref}`week11_heating_rate`

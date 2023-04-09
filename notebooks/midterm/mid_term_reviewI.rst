@@ -8,7 +8,7 @@ Sample mid-term questions I
 Beers law
 ---------
 
-Stull page 2.43 and the :ref:`beerslaw` reading:
+Stull page 2.43 and the :ref:`week2_beerslaw` reading:
 
 #. Prove that for a thin  non-reflecting layer the change in emissivity
    =  change in optical thickness, i.e. prove that:

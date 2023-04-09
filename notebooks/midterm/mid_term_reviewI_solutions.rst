@@ -8,7 +8,7 @@ Solutions: sample questions I
 Beers law
 ---------
 
-Stull page 2.43 and the :ref:`beers_law` reading:
+Stull page 2.43 and the :ref:`week2_beerslaw` reading:
 
 #. Prove that for a thin  non-reflecting layer the change in emissivity
    =  change in optical thickness, i.e. prove that:
@@ -207,7 +207,7 @@ From :ref:`radiance` reading:
 Flux from radiance
 ------------------
 
-From :ref:`flux_from_radiance`:
+From :ref:`week2_flux_from_radiance`:
    
 
 #. Calculate the flux arriving at a sensor assuming a constant radiance and a field of view
@@ -239,7 +239,7 @@ From :ref:`flux_from_radiance`:
    **Answer**:
 
 
-   See the section at the end of the :ref:`flux_from_radiance` notes.
+   See the section at the end of the :ref:`week2_flux_from_radiance` notes.
       
 #. Suppose that a satellite's orbit changes from a height of 800 km to a height of 600 km
    above the surface.  If the telescope field of view stays the same, prove that

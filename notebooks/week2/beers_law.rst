@@ -1,4 +1,4 @@
-.. _beerslaw:
+.. _week2_beerslaw:
 
 Beers and inverse squared laws
 ++++++++++++++++++++++++++++++

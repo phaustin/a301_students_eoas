@@ -1,6 +1,6 @@
 .. default-role:: math
 
-.. _week11_flux_from_radianceII:
+.. _week2_flux_from_radianceII:
 
 Flux and radiance review
 ++++++++++++++++++++++++
@@ -54,7 +54,7 @@ Relationship between flux and radiance
 Exact equation -- always correct
 --------------------------------
 
-To get the flux `E` from the radiance `L` in any situation, it always works to integrate :eq:`fluxrel` from the :ref:`flux_from_radiance` notes:
+To get the flux `E` from the radiance `L` in any situation, it always works to integrate :eq:`fluxrel` from the :ref:`week2_flux_from_radiance` notes:
 
 .. math::
    :label: flux_revB
@@ -128,7 +128,7 @@ Narrow beam approximation -- sun at zenith angle `\theta_{0}`
 -------------------------------------------------------------
 
 If it isn't noon, the sun isn't directly overhead and the solar zenith angle `\theta_0 \ne 0`, so we've got the
-situation discussed in the :ref:`flux_from_radiance` notes :eq:`cosflux`:
+situation discussed in the :ref:`week2_flux_from_radiance` notes :eq:`cosflux`:
 
 .. math::
    :label: cosflux2
@@ -166,7 +166,7 @@ L varying over a range of angles
 The atmosphere introduces an absorbing emitting layers that changes the value of L
 with changing zenith angle.  How do we solve  to solve :eq:`flux_revB` when
 `L` an't come out of the integral?  There is a simple approximation
-for that situation as well, discussed in :ref:`flux_schwartzchild`
+for that situation as well, discussed in :ref:`week11_flux_schwartzchild`
 
 ..
   # radius of sun 695508 km = 700000e.3 = 7.e8

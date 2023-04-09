@@ -10,7 +10,7 @@
 
   * Read Stull Chapter 2 through page 38
   
-    - Main conceptual topic:  the definiton of radiative flux (section 2.2 plus {ref}`beerslaw`)
+    - Main conceptual topic:  the definiton of radiative flux (section 2.2 plus {ref}`week2_beerslaw`)
 
   * Intro to Jupyter
 

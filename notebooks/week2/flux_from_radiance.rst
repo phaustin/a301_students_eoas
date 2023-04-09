@@ -1,6 +1,6 @@
 .. default-role:: math
    
-.. _flux_from_radiance:
+.. _week2_flux_from_radiance:
 
 Finding the flux given the radiance
 ###################################

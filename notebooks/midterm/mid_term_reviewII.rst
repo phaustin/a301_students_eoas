@@ -39,7 +39,7 @@ From :ref:`schwartz`
 Beer's law
 ----------
 
-From :ref:`beerslaw`
+From :ref:`week2_beerslaw`
 
 #. A 5 km thick ozone layer absorbs 30% of the ultraviolet sunlight that
    passes through it when the sun is directly overhead.

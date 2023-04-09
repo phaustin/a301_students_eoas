@@ -37,7 +37,7 @@
 
 ## For Friday's class
 
-* For Friday: Read my {ref}`beerslaw` notes
+* For Friday: Read my {ref}`week2_beerslaw` notes
 
 * Work through Kazarinoff Chapters 6 (Numpy) and 7 (Plotting)
 
