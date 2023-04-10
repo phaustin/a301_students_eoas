@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-(radiance_check)=
+(week3:radiance_check)=
 # Sanity checking radiance vaules
 
 This notebook compares radiances from channel 30 (9.73 $\mu m$) and channel 31 (11.03 $\mu m$)

@@ -25,11 +25,11 @@ toc-autonumbering: true
 This notebook starts with a replay of {ref}`week8:fetch` and extends it by showing how to 
 write the first 5 scenes out as netcdf files that store bands 4,5 and 6 plus the Fmask
 
-Starting in section [](#sec:week10) we demonstrate how to go through a dataframe a row at a time, fetching
+Starting in section {ref}`sec:week10` we demonstrate how to go through a dataframe a row at a time, fetching
 the geotiffs with `get_landsat_datasets` and saving them to disk as netcdf files.  We also show
 how to sort files by date in a list, using a sort key.
 
-Edit the variables in [](#sec:loop) with your landsat specifics and rerun
+Edit the variables in {ref}`sec:loop` with your landsat specifics and rerun
 
 At the end of a full run 10 year run, you should have about (depending on coverage)
 40 separate season files in your folder.  If your window is about 230 x 300 pixels each file

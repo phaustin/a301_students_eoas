@@ -51,7 +51,7 @@
   - {ref}`assign2b_solution`
  
 - Introduce:
-  - {ref}`assign3a`
+  - {ref}`assign3a_solution`
   
 ## Friday
 

@@ -23,11 +23,11 @@ to see if we can spot the effect of the storm.
 
 To run this notebook you'll first need to rerun {ref}`week9:cloudsat_ecmwf` to write out netcdf files to save your clipped hurricane.
 
-In section [](#sec:perturb) we remove the horizontal mean temperature profile and look at the temperature fluctuations in the model field.
+In section {ref}`sec:perturb` we remove the horizontal mean temperature profile and look at the temperature fluctuations in the model field.
 This section shows how to add a new horizontal coordinate (`storm_distance`) to the dataset so we can simplify plotting
 distance-height cross sections for the storm.
 
-In section [](#sec:wind) we bring in the horizontal wind components, clip to the storm times, and plot a windspeed cross section for the storm.
+In section {ref}`sec:wind` we bring in the horizontal wind components, clip to the storm times, and plot a windspeed cross section for the storm.
 
 +++ {"user_expressions": []}
 

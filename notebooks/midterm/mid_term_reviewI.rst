@@ -70,7 +70,7 @@ From :ref:`radiance` reading:
 Schwartzchild equation
 ----------------------
 
-From Stull p. 224 and the :ref:`schwartz` reading:
+From Stull p. 224 and the :ref:`week4_schwartz` reading:
 
 #.  Show that `e_\lambda` = `a_\lambda` for a gas that absorbs and transmits but doesn't reflect.
     (hint:  put the gas between two black plates, assume that the gas and the plates are at the
@@ -99,7 +99,7 @@ From Stull p. 224 and the :ref:`schwartz` reading:
 
    **Hint:**
 
-   See the section "Adding emission to Beers law" in the :ref:`schwartz` notes.
+   See the section "Adding emission to Beers law" in the :ref:`week4_schwartz` notes.
 
 
 From assignment 3a

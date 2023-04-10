@@ -25,8 +25,10 @@ kernelspec:
 
 ## Week 3
 
-* {ref}`cartopy`
-* {ref}`radiance_check`
+* {ref}`week3:basic_coords`
+* {ref}`week3:cartopy`
+* {ref}`week3:coords`
+* {ref}`week3:radiance_check`
 * {ref}`week3:files_paths`
 * {ref}`week3:modis_geom`
 
@@ -34,9 +36,7 @@ kernelspec:
 
 +++
 
-* {ref}`week4:coords`
-* {ref}`using_libraries`
-* {ref}`cartopy`
+* {ref}`week4:using_libraries`
 
 ## Week 5
 

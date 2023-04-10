@@ -8,7 +8,7 @@ Midterm review questions II
 Schwartzchild with changing temperature
 ---------------------------------------
 
-From :ref:`schwartz`
+From :ref:`week4_schwartz`
 
 
 #. Equation :eq:`vary` allows you to find the radiance at

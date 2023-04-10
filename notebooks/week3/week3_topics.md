@@ -9,7 +9,7 @@
 
 ## Week 3 topics for Monday
 
-* Get through question 2 in {ref}`assign1`
+* Get through question 2 in {ref}`assign1_solution`
 
 * Download the lat/lon of your pixels at full resolution by doing the following
   search on https://ladsweb.modaps.eosdis.nasa.gov/
@@ -27,7 +27,7 @@
 
 ## Week 3 topics for Wednesday
 
-- Finish up {ref}`assign1`
+- Finish up {ref}`assign1_solution`
 
   - Troubleshooting 1:  note that when you do 
   
@@ -42,20 +42,20 @@
     to `planck_invert.py`, you won't see these changes when you rerun the
     cell, unless you restart the kernel and rerun
 
-- Reading the geometry data:  {ref}`modis_geom`
+- Reading the geometry data:  {ref}`week3:modis_geom`
 
-- Making a map with {ref}`cartopy`
+- Making a map with {ref}`week3:cartopy`
 
 - [What is your map projection?](https://xkcd.com/977/)
 
 
 ## Week 3 topics for Friday
 
-- Finish up {ref}`assign1`
+- Finish up {ref}`assign1_solution`
 
-- Sanity check your radiances using my {ref}`radiance_check` notebook
+- Sanity check your radiances using my {ref}`week3:radiance_check` notebook
 
-- Continue on making a map with {ref}`cartopy`
+- Continue on making a map with {ref}`week3:cartopy`
 
 ## For Monday
 

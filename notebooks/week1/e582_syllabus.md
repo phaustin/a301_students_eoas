@@ -1,4 +1,4 @@
-(syllabus)=
+(e582_syllabus)=
 
 # ATSC 301: syllabus
 

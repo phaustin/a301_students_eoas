@@ -14,7 +14,7 @@ Stull page 2.43 and the :ref:`week2_beerslaw` reading:
    =  change in optical thickness, i.e. prove that:
 
    .. math::
-      :label: thin
+      :label: thin1
               
          \Delta e_\lambda \approx  \Delta \tau_\lambda
 
@@ -41,7 +41,7 @@ Stull page 2.43 and the :ref:`week2_beerslaw` reading:
 
 
 #. Repeat the problem above, but for a layer with an optical depth of `\tau_\lambda=1`.
-   How does that change :eq:`thin` ?
+   How does that change :eq:`thin1` ?
 
    **Answer:**
 
@@ -270,7 +270,7 @@ From :ref:`week2_flux_from_radiance`:
 Schwartzchild equation
 ----------------------
 
-From Stull p. 224 and the :ref:`schwartz` reading:
+From Stull p. 224 and the :ref:`week4_schwartz` reading:
 
 #.  Show that `e_\lambda` = `a_\lambda` for a gas that absorbs and transmits but doesn't reflect.
     (hint:  put the gas between two black plates, assume that the gas and the plates are at the
@@ -314,4 +314,4 @@ From Stull p. 224 and the :ref:`schwartz` reading:
 
    **Answer:**
 
-   See the section "Adding emission to Beers law" in the :ref:`schwartz` notes.
+   See the section "Adding emission to Beers law" in the :ref:`week4_schwartz` notes.

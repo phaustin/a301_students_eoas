@@ -237,7 +237,7 @@ as an equation.
 
 +++ {"tags": [], "user_expressions": []}
 
-#### Q1b solution -- equations
+### Q1b solution -- equations
 
 Integrate {eq}`eq:schwartz` and get:
 
@@ -259,7 +259,7 @@ $$
 & \text{therefore} \\
 & B_0=B_{3.5 \mathrm{~km}}-t_{3.5} \Gamma_t
 \end{aligned}
-$$ (eq:deriv)
+$$ (eq:deriv2)
 
 +++ {"user_expressions": []}
 
@@ -268,7 +268,7 @@ How much do they vary, in percent, from each other?
 
 +++ {"tags": [], "user_expressions": []}
 
-#### Q1b calculate $t_{3.5km}$ and $B(270 K)$
+### Q1b calculate $t_{3.5km}$ and $B(270 K)$
 
 To get numbers for {eq}`eq:solution`, I need to find $B_{3.5km}$ and $t_{3.5km}$
 

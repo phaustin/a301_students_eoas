@@ -59,7 +59,7 @@ kernelspec:
 ## Week 8 topics for Wednesday
 
 * Midterm handback/midterm takehome problem
-* {ref}`assign4`
+* {ref}`assign4_solution`
 * fetching a windowed landsat scene with {ref}`week8:windowed`
 * test the library code with {ref}`week8:test_landsat`
 

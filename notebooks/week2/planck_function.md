@@ -88,7 +88,7 @@ ax.set(
 
 ## Convert flux to radiance
 
-This uses the reading {ref}`flux_from_radiance`
+This uses the reading {ref}`week2_flux_from_radiance`
 
 ```{code-cell} ipython3
 Lstar = Estar / np.pi

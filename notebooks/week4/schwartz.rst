@@ -1,6 +1,6 @@
 .. default-role:: math
 
-.. _schwartz:
+.. _week4_schwartz:
 
 The Schwartzchild Equation
 ++++++++++++++++++++++++++

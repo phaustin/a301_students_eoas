@@ -22,19 +22,17 @@ parts:
   - caption: Week 3
     chapters:
     - file: notebooks/week3/week3_topics.md
-    - file: notebooks/week2/assignment1.md
     - file: notebooks/week3/files_and_paths.md
     - file: notebooks/week3/modis_geom_read.md
     - file: notebooks/week3/radiance_values.md
+    - file: notebooks/week3/mapping.md
+    - file: notebooks/week3/cartopy_maps.md
+    - file: notebooks/week3/cartopy_mapping_vancouver.md
   - caption: Week 4
     chapters:
     - file: notebooks/week4/week4_topics.md
     - file: notebooks/week4/using_libraries.md
-    - file: notebooks/week4/mapping.md
-    - file: notebooks/week4/cartopy_maps.md
-    - file: notebooks/week4/catropy_mapping_vancouver.md
     - file: notebooks/week4/schwartz.rst
-    - file: notebooks/week4/assignment2.md
   - caption: Week 5
     chapters:
     - file: notebooks/week5/week5_topics.md
@@ -68,7 +66,7 @@ parts:
     - file: notebooks/week9/week9_topics.md
     - file: notebooks/week9/xarray_datasets.md
     - file: notebooks/week9/radar.rst
-    - file: notebooks/week9/marshall_palmer.rst
+    - file: notebooks/week9/marshall_palmer.md
     - file: notebooks/week9/readcloudsat.md
     - file: notebooks/week9/test_landsat_dataset.md
     - file: notebooks/week9/cloudsat_ecmwf.md

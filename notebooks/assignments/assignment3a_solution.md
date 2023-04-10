@@ -18,11 +18,11 @@ Do these questions on paper and scan for upload a pdf created using one of these
 
 +++
 
-#
+
 
 +++ {"tags": []}
 
-# Q1: Flux from radiance  (8 points)
+## Q1: Flux from radiance  (8 points)
 
 Suppose a satellite is looking at the surface with the following field of view:
 
@@ -30,7 +30,7 @@ Suppose a satellite is looking at the surface with the following field of view:
 
 Where h = 800 km and r = 5 km
 
-We know from  {ref}`flux_from_radiance` eq. 5 that the flux is given by:
+We know from  {ref}`week2_flux_from_radiance` eq. 5 that the flux is given by:
 
 $$
 dE^\prime = L \cos \theta^\prime d \omega^\prime = L \cos \theta^\prime \sin \theta^\prime d \theta^\prime d\phi^\prime
@@ -44,13 +44,13 @@ $$
 
 +++
 
-### Q1a (2 points)
+## Q1a (2 points)
 
 Use the change of variables $\mu^\prime = \cos \theta^\prime$ to change this integral into a integral with respect to $d\mu^\prime$ and $d\phi^\prime$
 
 +++
 
-Q1a Answer
+### Q1a Answer
 
 $$
 \mu = \cos \theta \\
@@ -62,7 +62,7 @@ assuming that $L$ is constant over the limits of the integral
 
 +++
 
-### Q1b (2 points)
+## Q1b (2 points)
 
 Evaluate this intergral for the limit $\theta$ appropriate for the h=800 km and r=5 km case mentioned above.
 
@@ -80,7 +80,7 @@ del_omega = 2*np.pi*(1 - (the_mu**2.))/2.
 print(f"Q1b answer: {theta=:5.3f} rad, {the_mu=:9.6f}, {del_omega=:6.4g} sr")
 ```
 
-### Q1c (2 points)
+## Q1c (2 points)
 
 Compare the answer you get from Q2a with the following simple approximation for the flux:
 
@@ -108,14 +108,14 @@ accuracy = 100*(del_omega - del_omega_approx)/del_omega
 print(f"Q1c answer: {accuracy=:6.4f} in percent")
 ```
 
-### Q1d (2 points)
+## Q1d (2 points)
 
 Suppose $L = L_\lambda \Delta \lambda$  where $L_\lambda$ is the monochromatic planck blockbody radiance at a wavelength of 10 $\mu m$ and a temperature of 300 K.  If the filter width
 $\Delta \lambda$ = 2 $\mu m$, what is the flux $E$ reaching the satellite for this problem?
 
 +++
 
-Q1d Answer:
+### Q1d Answer:
 
 We want to find $E=L_\lambda \Delta \omega \Delta \lambda$
 
@@ -132,7 +132,7 @@ print(f"At the satellite {the_E=:8.4f} W/m^2")
 
 ## Q2 (3 points)  Kirchoff's law for a gas
 
-In {ref}`schwartz` we used the 2nd law to prove by contradiction for that
+In {ref}`week4_schwartz` we used the 2nd law to prove by contradiction for that
 absorptivity = emissivity for using two
 surfaces at the same temperature.   Make the same argument for a gas between
 two black plates -- i.e. show that if the emissivity and absorptivity of the
@@ -140,7 +140,7 @@ gas are not equal you violate the second law of thermodynamics.
 
 +++
 
-Q2 answer:
+### Q2 answer:
 
 Suppose the gas is emtting with greybody emissivity $\epsilon$ and absorbing with some different absorptivity $abs$. If the walls and the gas are at the same temperature, then the gas  is emitting $\epsilon \sigma T^4$ to both the right and left walls, and absorbing $abs \; \sigma T^4$ from both the left and the right wall.  Thus energy balance for the gas requires that
 $2 \epsilon \sigma T^4$ = $2 \; abs\; \sigma T^4$.  If $epsilon \neq abs$ then the gas would be either heating or cooling.  That would violate the second law of thermodynamics, which

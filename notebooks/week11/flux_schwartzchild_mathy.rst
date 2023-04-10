@@ -10,7 +10,7 @@ From the :ref:`heating` notes we have the heating rate equation :eq:`temprate` u
       \frac{dT}{dt} = \frac{1}{\rho c_p} \frac{dE_{net}}{dz}
 
 But how do we get `E_{net}` if the satellites only measure radiance `L`?  Graphically, this is the
-situation we know how to solve, from :ref:`schwartz` notes:
+situation we know how to solve, from :ref:`week4_schwartz` notes:
 
 .. figure::  figures/schwartzchild.png
    :scale: 35

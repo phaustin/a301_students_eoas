@@ -64,7 +64,7 @@ turn photon counts into radiance with units of $W\,m^{-2}\,\mu m^{-1}\,sr^{-1}$
 
 - Finish the discussion of the {ref}`modis_level1b` notebook. By the end of class everyone should have this working on their own image.
 
-- Read for Friday:  {ref}`flux_from_radiance`
+- Read for Friday:  {ref}`week2_flux_from_radiance`
 
 - Do for Friday {ref}`sec:planck`
 

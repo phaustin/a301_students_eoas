@@ -6,7 +6,7 @@ The Schwartzchild equation for flux
 +++++++++++++++++++++++++++++++++++
 
 How do we get `E_{net}` if the satellites only measure radiance `L`?  Graphically, this is the
-situation we know how to solve, from :ref:`schwartz` notes:
+situation we know how to solve, from :ref:`week4_schwartz` notes:
 
 .. figure::  ./figures/schwartzchild.png
    :scale: 35

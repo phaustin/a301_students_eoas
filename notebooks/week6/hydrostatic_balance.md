@@ -56,14 +56,14 @@ for item in sounding_files:
     sound_dict[item.stem]=pd.read_csv(item)
 ```
 
-# Use pd.DataFrame.head to see first 5 lines
+### Use pd.DataFrame.head to see first 5 lines
 
 ```{code-cell} ipython3
 for key,value in sound_dict.items():
     print(f"sounding: {key}\n{sound_dict[key].head()}")
 ```
 
-g
+
 We use these keys to get a dataframe with 6 columns, and 33 levels.  Here's an example for the midsummer sounding
 
 ```{code-cell} ipython3
@@ -276,7 +276,7 @@ theAx.legend(loc='best');
 
 <a name="oct7assign"></a>
 
-### Assignment4 -- (preview)
+## Assignment4 -- (preview)
 
 Add cells to this notebook to:
 

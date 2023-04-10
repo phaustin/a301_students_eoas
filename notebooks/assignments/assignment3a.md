@@ -30,7 +30,7 @@ Suppose a satellite is looking at the surface with the following field of view:
 
 Where h = 800 km and r = 5 km
 
-We know from  {ref}`flux_from_radiance` eq. 5 that the flux is given by:
+We know from  {ref}`week2_flux_from_radiance` eq. 5 that the flux is given by:
 
 $$
 dE^\prime = L \cos \theta^\prime d \omega^\prime = L \cos \theta^\prime \sin \theta^\prime d \theta^\prime d\phi^\prime
@@ -91,7 +91,7 @@ $\Delta \lambda$ = 2 $\mu m$, what is the flux $E$ reaching the satellite for th
 
 ## Q2 (3 points)  Kirchoff's law for a gas
 
-In {ref}`schwartz` we used the 2nd law to prove by contradiction for that
+In {ref}`week4_schwartz` we used the 2nd law to prove by contradiction for that
 absorptivity = emissivity for using two
 surfaces at the same temperature.   Make the same argument for a gas between
 two black plates -- i.e. show that if the emissivity and absorptivity of the

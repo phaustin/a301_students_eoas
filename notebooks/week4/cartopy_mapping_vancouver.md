@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-(week4:coords)=
+(week3:coords)=
 # Geographic coordinate systems
 
 The pamphlet:

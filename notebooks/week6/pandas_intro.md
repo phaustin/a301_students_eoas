@@ -30,8 +30,8 @@ The notebook is copied from [Project Pythia](https://foundations.projectpythia.o
 
 | Concepts | Importance | Notes |
 | --- | --- | --- |
-| [Python Quickstart](../../foundations/quickstart) | Necessary | Intro to `dict` |
-| [Numpy Basics](../numpy/numpy-basics) | Necessary | |
+| [Python Quickstart](https://foundations.projectpythia.org/foundations/quickstart.html) | Necessary | Intro to `dict` |
+| [Numpy Basics](https://foundations.projectpythia.org/core/numpy/numpy-basics.html) | Necessary | |
 
 * **Time to learn**: 60 minutes
 
@@ -195,7 +195,7 @@ That's right, label-based slicing! Pandas will do the work under the hood for yo
 
 +++
 
-If you are familiar with [xarray](../xarray), you might also already have a comfort with creating your own `slice` objects by hand, and that works here!
+If you are familiar with [xarray](https://foundations.projectpythia.org/core/xarray/xarray-intro.html), you might also already have a comfort with creating your own `slice` objects by hand, and that works here!
 
 ```{code-cell} ipython3
 nino34_series[slice("1982-01-01", "1982-12-01")]

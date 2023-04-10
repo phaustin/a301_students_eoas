@@ -14,6 +14,7 @@ kernelspec:
 ---
 
 (assign2a_solution)=
+
 # Assignment 2a - solutions
 
 Chapter 2: A23, A24, A25, A26(i)
@@ -157,7 +158,7 @@ The cities are:  Vancouver, Reading and Norman, assuming 20% coverage of cumulus
 
 +++
 
-#### the formulas
+### the formulas
 
 find the flux at the surface given Stull 2.35
 
