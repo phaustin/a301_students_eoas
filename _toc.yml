@@ -84,7 +84,7 @@ parts:
     - file: notebooks/week11/flux_from_radiance_rev.rst
     - file: notebooks/week11/flux_schwartzchild.rst
     - file: notebooks/week11/diffuse_flux.md
-    - file: notebooks/week11/heating_rate.rst
+    - file: notebooks/week11/cloudsat_heating_rate.rst
     - file: notebooks/week11/false_examples.md
     - file: notebooks/week11/goes_true_color.md
   - caption: Week 12
