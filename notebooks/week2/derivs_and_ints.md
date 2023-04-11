@@ -16,7 +16,8 @@ kernelspec:
 
 This notebook demonstrates how to use differences and sums to calculate derivatives and integrals and make some simple plots using the matplotlib module.
 
-Coverage:  [Kazrinoff Chapter 6](https://atsc_web.eoas.ubc.ca/NumPy-and-Arrays/Introduction.html#)
+Coverage:  [Kazrinoff Chapter 6](
+https://phaustin.github.io/Problem-Solving-with-Python/)
 
 ```{code-cell} ipython3
 import numpy as np
