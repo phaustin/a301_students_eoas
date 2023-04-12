@@ -13,6 +13,8 @@ kernelspec:
   name: python3
 ---
 
++++ {"user_expressions": []}
+
 (week12:assign6_solution)=
 # Assignment 6: Hurricane case study solution
 This notebook consolidates the following plots from the cloudsat notebook series into a case study for a hurricane.
@@ -43,7 +45,7 @@ to pick up this change.  You see a version greater than 0.6.0 when you do
 hdf4_inspect --version
 ```
 
-+++
++++ {"user_expressions": []}
 
 Your're asked to provide a brief discussion of the features as part of each plotting question.
 
@@ -62,6 +64,8 @@ from sat_lib.cloudsat import add_storm_distance
 from sat_lib.cloudsat import read_cloudsat_var
 from sat_lib.utils.plotting import make_cmap
 ```
+
++++ {"user_expressions": []}
 
 ## Read and process the data to be used in the plots
 
@@ -104,7 +108,7 @@ day = the_var.day
 granule_id = the_var.granule_id
 ```
 
-+++
++++ {"user_expressions": []}
 
 ### Question 1 answer
 
@@ -137,6 +141,8 @@ granule_id = the_var.granule_id
 radar_file
 ```
 
++++ {"user_expressions": []}
+
 ### Question 2: clip to the storm times and add the storm distance coordinate
 
 In the cell below, find the `time_hit` logical vector that is true only for the times between the start
@@ -145,7 +151,7 @@ and end time of your hurricane.  Using that vector, loop over your variable dict
 cooridinate (see {ref}`week11:cloudsat_heat` for an example).  You can use the `.time` coordinate
 from any of your variables to get the  all the timepoints for the orbit.
 
-+++
++++ {"user_expressions": []}
 
 ### Question 2 Answer
 
@@ -178,9 +184,11 @@ for key, the_ds in var_dict.items():
     var_dict[key] = clipped_ds
 ```
 
++++ {"user_expressions": []}
+
 ## Plots
 
-+++
++++ {"user_expressions": []}
 
 ### Question 3: Huricane location, granule_id and date
 
@@ -207,6 +215,8 @@ ax.plot(longitude[0],latitude[0],'go',markersize=10, transform=transform)
 ax.plot(longitude[-1],latitude[-1],'ro',markersize=10, transform=transform)
 ax.set_title(f"Hurricane Michael on {day}, granule_id={granule_id}");
 ```
+
++++ {"user_expressions": []}
 
 ### Question 4: Plot `Radar_Reflectivity` and `LayerTop` (if available)
 
@@ -259,6 +269,8 @@ maxz = np.max(radar_z.data[hit])
 print(f"max radar reflectivity: {maxz} dbZ")
 ```
 
++++ {"user_expressions": []}
+
 ### Question 5 -- Plot the temperture perturbation
 
 Use the `cm.coolwarm` colormap to plot the temperture perturbation from the ECMWF-AUX model data.
@@ -266,7 +278,16 @@ Use the `cm.coolwarm` colormap to plot the temperture perturbation from the ECMW
 **Add a brief discussion:  Does the hurricane appear to affect the model temperture profile?  Does the location
 of the minimum and maximum perturbation correspond to features in the radar reflectivity or the idealized picture of a hurricane?***
 
++++ {"user_expressions": []}
+
+### Question 5 answer
+
+There is a large positive temperature perturbation in the eyewall at 610 km due to condensation heating.  In the anvil, there's a 
+
 ```{code-cell} ipython3
+#
+# Question 5 code here
+#
 temperature = var_dict['Temperature']
 temperature = temperature - 273.15
 temp_profile=temperature.mean(dim='time')
@@ -274,7 +295,7 @@ temp_perturb = temperature - temp_profile
 ```
 
 ```{code-cell} ipython3
-vmin=-2
+vmin=-4
 vmax=4
 the_norm, cmap = make_cmap(vmin,vmax, cmap= cm.coolwarm)
 fig2, ax2 = plt.subplots(1,1,figsize=(14,4))
@@ -282,6 +303,8 @@ col = temp_perturb.T.plot.pcolormesh(x='storm_distance',y='height_km',ax=ax2, cm
 ax2.set(ylim = [0,20], xlabel = "distance (km)", ylabel = "height (km)",
          title = f"temperature perturbation (K) on {day}, granule {granule_id}");
 ```
+
++++ {"user_expressions": []}
 
 ### Question 6: Plot the windspeed with title
 
@@ -304,6 +327,8 @@ ax3.set(ylim=[0,17],
        xlabel='distance (km)',ylabel='height (km)',
        title=f"ECMWF wind speed (m/s) for granule {granule_id} on {day}");
 ```
+
++++ {"user_expressions": []}
 
 ### Question 7: Plot the horizontal wind direction (degrees)
 
@@ -333,7 +358,7 @@ with the additional step that you also need to subtract 360 degrees from all $wi
 
 The table below shows how this works for the 4 principal compass points
 
-+++
++++ {"user_expressions": []}
 
 ##### Wind direction table examples
 
@@ -365,6 +390,8 @@ ax4.set(ylim=[0,17],
        xlabel='distance (km)',ylabel='height (km)',
        title=f"ECMWF wind direction (arctan2 degrees) for granule {granule_id} on {day}");
 ```
+
++++ {"user_expressions": []}
 
 ### Question 8: Plot the Surface_pressure and Sea_surface_temperature
 

@@ -13,18 +13,6 @@ kernelspec:
   name: python3
 ---
 
-
-
-+++
-
-
-
-+++
-
-
-
-+++
-
 (week12:final-guide)=
 # Study guide for final exam -- 
 
@@ -97,10 +85,6 @@ kernelspec:
      - creating false color composites
      - clipping an xarray dataset
      - changing the crs and affine transform for an image to a new projection and clipped size
-
-+++
-
-
 
 +++
 
@@ -182,9 +166,51 @@ $$
 E_{cld} = \sigma 275^4
 $$
 
+### Radiance looking up
+
+```{figure} figures/two_layers_2016.png
+:width: 30%
+:name: two_layer
+
+Two layer atmosphere at night
+```
+
+* For the figure in above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
+the mass absorption coefficient is again $\kappa = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
+and  the telescope's field of view is 0.01 sr find:
+
+  * The radiance observed by the telescope
+
+  * The flux observed by the telescope
+
+  * The brightness temperature observed by the telescope
+
+  * Suppose you put this instrument into orbit 800 km above the ocean.  
+    Approximately what is the area of pixel you see at nadir (i.e. directly below) with this field of view? 
+    Roughly how big is the pixel looking 60 degrees off nadir?
+    
+  * (Hint -- remember from the hydrostatic equation that $\Delta p = -\rho g \Delta z$ if $\rho$ is approximately constant.)
 
 
 
+### Short answer
+
+*  Starting with the fact that radiance is conserved in a vacuum, show that over a uniform
+   black surface emitting radiance $L_s$ that extends infinitely in the horizontal, the flux at
+   any height above the surface is given by:
+
+$$
+  E = \pi L_s
+$$
+
+* How would you do the following integral using numpy?
+
+$$
+  \int_2^5 \exp(-x^2) dx
+$$
+
+
+* The Landsat geotiffs we worked with stored pieces of metadata called a crs (a coordinated reference system) and an ``affine transform''.  Explain briefly what these are and how they are used in mapping a satellite image.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -192,6 +218,22 @@ np.exp(-1.66*0.6)
 ```
 
 ### Radar
+
+
+*  What is the bright band?   Why is it bright?
+
+
+* The radar equation says that:
+
+    $$
+      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{r^2}
+    $$
+
+  * Define each of the terms in this equation and explain qualitatively why we expect this
+    dependence on $Z$ and $r$.
+
+  * Explain how you can use this equation to find the rain rate in mm/hour 50 km
+    from the radar
 
 #### From {ref}`week9:radar`
 
