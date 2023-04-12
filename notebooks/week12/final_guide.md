@@ -13,6 +13,18 @@ kernelspec:
   name: python3
 ---
 
+
+
++++
+
+
+
++++
+
+
+
++++
+
 (week12:final-guide)=
 # Study guide for final exam -- 
 
@@ -85,6 +97,13 @@ kernelspec:
      - creating false color composites
      - clipping an xarray dataset
      - changing the crs and affine transform for an image to a new projection and clipped size
+
++++
+
+
+
++++
+
      
 ## Study questions
 
@@ -95,6 +114,8 @@ kernelspec:
 ### Heating rate
 
 1) Derive the heating rate equation 
+
+see [the heating rate notes](https://eoasubc.xyz/a301_2022/notebooks/week11/heating_rate.html#temperature-change)
 
 2) A 150 m thick nocturnal cloud layer with a temperature of 275 K floats
 over a 300 K surface.
@@ -107,17 +128,68 @@ is $k=0.004\ $m^2/kg$
 (ii) $\rho_{air}$ = 1 $kg/m^3$
 
 (ii) downward longwave flux density from the
-air above the cloud of $E_\downarrow(z_T)$=75 \wm. (where $z_T=150$ m is the height of 
+air above the cloud of $E_\downarrow(z_T)$=75 $W\,m^{-2}$. (where $z_T=150$ m is the height of 
 cloud top above cloud base) 
 
 (iii)  No atmospheric absorption
 
 - Find the total vertical optical depth of the cloud
+
+
+For constant density, this is 
+
+$$\tau = \rho_{air} k \Delta z = 0.004*150 = 0.6$$
+
+
 -  Write down expressions for the flux transmission $\hat{t}_f$
    between $z$ and $z_T$ and between 0 and $z$ as functions
    of $z,\,z_T,\,k$ assuming  $z$  is inside the cloud, i.e.~$0 < z < z_T$.
+   
+Since $t_{f} = \exp(-1.66 \tau)$, the transmission from 0 to z is $t_{f}(z) = \exp(-1.66 \rho\,k\,z)$ and the
+transmission from z to $z_T$ is 
+
+$$t_f(z) = \exp(-1.66 \rho\,k\,(z_T - z))$$
 
 - Find the heating rate of the cloud $dT/dt$ in K/hour
+
+
+The total transmission is 
+
+$$t_{ftot} = \exp(-1.66*\tau_{ftot}) = \exp(-1.66*0.6)= 0.37$$
+
+Upwelling flux passing through the top of the cloud is 
+
+$$
+E_\uparrow(z_{top}) = E_{sfc} t_{ftot} + E_{cld} (1 - t_{ftot})
+$$
+
+Downwelling flux passing through the bottom of the cloud is
+
+$$
+E_\downarrow(0) = E_{top} t_{ftot} + E_{cld} (1 - t_{ftot})
+$$
+
+
+To get the heating rate, we need use the equations from the heating rate notes with 
+
+$$
+E_{sfc} = \sigma 300^4
+$$
+
+and 
+
+$$
+E_{cld} = \sigma 275^4
+$$
+
+
+
+
+
+```{code-cell} ipython3
+import numpy as np
+np.exp(-1.66*0.6)
+```
 
 ### Radar
 
