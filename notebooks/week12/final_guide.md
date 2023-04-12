@@ -176,7 +176,7 @@ Two layer atmosphere at night
 ```
 
 * For the figure in above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
-the mass absorption coefficient is again $\kappa = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
+the mass absorption coefficient is $\kappa = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
 and  the telescope's field of view is 0.01 sr find:
 
   * The radiance observed by the telescope
