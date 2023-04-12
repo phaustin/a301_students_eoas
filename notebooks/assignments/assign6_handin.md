@@ -16,7 +16,7 @@ kernelspec:
 +++ {"tags": [], "user_expressions": []}
 
 (assign6)=
-# Assignment 6: Hurricane case study, Due Wednesday, April 12 9am
+# Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm
 
 This notebook consolidates the following plots from the cloudsat notebook series into a case study for a hurricane.
 
