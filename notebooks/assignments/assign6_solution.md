@@ -111,7 +111,6 @@ granule_id = the_var.granule_id
 The for loop zips together the variables and their files, and then fills a dictionary
 with the xarray for each varable.  The Calypso lidar wasn't working for Hurricane Michael
 
-
 ```{code-cell} ipython3
 #
 #Question 1 code here
@@ -138,8 +137,6 @@ granule_id = the_var.granule_id
 radar_file
 ```
 
-+++ {"user_expressions": []}
-
 ### Question 2: clip to the storm times and add the storm distance coordinate
 
 In the cell below, find the `time_hit` logical vector that is true only for the times between the start
@@ -148,7 +145,7 @@ and end time of your hurricane.  Using that vector, loop over your variable dict
 cooridinate (see {ref}`week11:cloudsat_heat` for an example).  You can use the `.time` coordinate
 from any of your variables to get the  all the timepoints for the orbit.
 
-+++ {"user_expressions": []}
++++
 
 ### Question 2 Answer
 
@@ -220,8 +217,46 @@ Hint: I used `make_cmap` in my pcolormesh plots to save some lines of code setti
 **Add a brief discussion: what is the maximum radar reflectivity according to cloudsat?  How does the structure you see compare to the
 idealized tropical cyclone structure of Stull Figure  16.5?  Is the radar missing significant cloud amounts that the lidar sees?**
 
-```{code-cell} ipython3
 
++++ {"user_expressions": []}
+
+### Q4 Answer
+
+The part of the hurricane imaged by cloudsat is about 900 km long (including the anvil), with one convective overshooting plume and several high reflectivity bands of about 20-30 km width.  This
+is similar to the idealized picture in Stull Figure 16.5, with cloudsat passing to one side of the eyewall. The histogram below shows reflectivities greater than 150 dbZ, but that looks like noise, since here is a large gap between 50 dbZ and 150 dbZ.  Excluding those values  in the cell below I get a maximum reflectivity of about 53 dBz.
+
++++ {"user_expressions": []}
+
+```{figure} figures/stull_hurricane.png
+:width: 50%
+:name: Stull Chapter 16 hurricane
+
+Idealized hurricane structure (Stull Figure 16.5)
+```
+
+```{code-cell} ipython3
+#
+# Question 4 code here
+#
+vmin=-5
+vmax= 25
+fig1, ax1 = plt.subplots(1,1,figsize=(14,4))
+radar_z = var_dict['Radar_Reflectivity']
+the_norm, cmap = make_cmap(vmin,vmax,missing='0.7')
+radar_z.T.plot.pcolormesh(x='storm_distance',y='height_km',
+                   ax=ax1,cmap = cmap, norm=the_norm)
+ax1.set(ylim=[0,17],xlabel = "distance (km)",ylabel="height (km)",
+       title = f"radar reflectivity (dbZ) on {day}, granule {granule_id}");
+```
+
+```{code-cell} ipython3
+plt.hist(radar_z.data.ravel());
+```
+
+```{code-cell} ipython3
+hit = radar_z.data < 100
+maxz = np.max(radar_z.data[hit])
+print(f"max radar reflectivity: {maxz} dbZ")
 ```
 
 ### Question 5 -- Plot the temperture perturbation
