@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>how to debug &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week2/debugging_intro';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week2/debugging_intro.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="working with numpy arrays" href="derivs_and_ints.html" />
+    <link rel="prev" title="Integrating the Planck function with python" href="planck_function.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week2/debugging_intro.md&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week2/debugging_intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week2/debugging_intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>how to debug</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-readable-code">Writing Readable Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-in-the-ipython-notebook">Debugging in the IPython Notebook</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-traceback">Check the traceback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-local-variables">Inspect the local variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-docs">Check the Docs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hail-mary">Hail Mary</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-debug">
+<span id="sec-debugging"></span><h1>how to debug<a class="headerlink" href="#how-to-debug" title="Permalink to this heading">#</a></h1>
+<p>A significant portion of the time you spend on the problem sets in ATSC 301 will be spent debugging. In this notebook we discuss simple strategies to minimize hair loss and maximize coding pleasure. This problem is not worth any points, but we <strong>strongly</strong> encourage you to still go through it – it will save you a ton of time in the future!</p>
+<section id="writing-readable-code">
+<h2>Writing Readable Code<a class="headerlink" href="#writing-readable-code" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.</p>
+<p><strong>Brian Kernighan</strong></p>
+</div></blockquote>
+<p>The number one key to easy debugging is writing readable code. A few helpful tips:</p>
+<ol class="arabic simple">
+<li><p>Write short notes to yourself in the comments. These will help you to quickly orient yourself.</p></li>
+<li><p>Use descriptive variable names. Avoid naming variables things like <code class="docutils literal notranslate"><span class="pre">a</span></code> or <code class="docutils literal notranslate"><span class="pre">foo</span></code>, as you will easily forget what they were used for.</p>
+<ol class="arabic simple">
+<li><p>An exception to this rule is when using temporary variables (e.g., counts), which can be as short as a single character.</p></li>
+</ol>
+</li>
+<li><p>Try to write your code in a consistent style to ensure that it is predictable across problem sets. You’ll thank yourself for this later!</p></li>
+<li><p>Don’t reinvent the wheel. Check the docs to see if a particular function exists before you spend hours trying to implement it on your own. You’d be surprised at how often this happens.</p></li>
+</ol>
+<p>Although these tips won’t save you from having to debug your code, they <em>will</em> make the time you spend debugging much more productive.</p>
+</section>
+<section id="debugging-in-the-ipython-notebook">
+<h2>Debugging in the IPython Notebook<a class="headerlink" href="#debugging-in-the-ipython-notebook" title="Permalink to this heading">#</a></h2>
+<p>Imagine that a friend wrote you a function <code class="docutils literal notranslate"><span class="pre">plot_log</span></code> for plotting the function <span class="math notranslate nohighlight">\(\log(x)\)</span> over the interval <span class="math notranslate nohighlight">\([1,2]\)</span>. How sweet! Their code is below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">plot_log</span><span class="p">():</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># axis.plot(x, np.log(x))  # wrong!</span>
+    <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># right!</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_log</span><span class="p">()</span>  <span class="c1"># Call the function, generate plot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/561d0922866b11c195feee087dc969d03bef6dfa4a00395f57366a00ef40d8da.png" src="../../_images/561d0922866b11c195feee087dc969d03bef6dfa4a00395f57366a00ef40d8da.png" />
+</div>
+</div>
+<p>Unfortunately, when you go to execute the code block with the line marked “wrong” uncommented,
+Python throws an error.  How can we fix the code so that it runs correctly?</p>
+<section id="check-the-traceback">
+<h3>Check the traceback<a class="headerlink" href="#check-the-traceback" title="Permalink to this heading">#</a></h3>
+<p>The presence of a <strong>traceback</strong> (the multicolored text that appears when we try to run the preceding code block) is the first indication that your code isn’t behaving correctly. In the current example the traceback suggests that an error is occurring at the method call <code class="docutils literal notranslate"><span class="pre">axis.plot(x,</span> <span class="pre">np.log(x))</span></code> on line 10. This is helpful, although somewhat baffling – we used the same <code class="docutils literal notranslate"><span class="pre">axis.plot()</span></code> syntax in Notebook 4, and it ran fine! What’s going on?</p>
+</section>
+<section id="inspect-the-local-variables">
+<h3>Inspect the local variables<a class="headerlink" href="#inspect-the-local-variables" title="Permalink to this heading">#</a></h3>
+<p>Inspecting the traceback gives us a general idea of where our issue is, but its output can often be fairly cryptic. A good next step is to inspect the local variables and objects defined during the execution of your code: if there’s a mismatch between what the code <em>should</em> be generating on each line and what it actually generates, you can trace it back until you’ve found the line containing the bug.</p>
+<p>In the current example, we might first try inspecting the variables and objects present on the line where the traceback indicates our error is occurring. These include the <code class="docutils literal notranslate"><span class="pre">axis</span></code> object, the local variable <code class="docutils literal notranslate"><span class="pre">x</span></code>, and the method call <code class="docutils literal notranslate"><span class="pre">np.log(x)</span></code>. We can do this with IPython’s <code class="docutils literal notranslate"><span class="pre">debug</span></code> magic function, or by using <code class="docutils literal notranslate"><span class="pre">print</span></code> statements. Both methods are outlined below.</p>
+<p><strong>Using the Interactive Debugger</strong></p>
+<p>The IPython magic function <code class="docutils literal notranslate"><span class="pre">%debug</span></code> pauses code execution upon encountering an error and drops us into an interactive debugging console. In the current example, this means that the code execution will pause just before running line 7. Once the debugger opens, we can inspect the local variables in the interactive debugger to see whether they match what we’d expect.</p>
+<p>To invoke the debugger, just type the magic command <code class="docutils literal notranslate"><span class="pre">%debug</span></code> in a new code cell immediately after encountering the error. When you run this new cell, it will drop you into a debugger where you can investigate what went wrong:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the following line and run the cell to debug the previous function:</span>
+<span class="c1"># %debug</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="alert alert-danger">
+Warning: make sure you remove or comment out any <code>%debug</code> statements from your code before turning in your problem set. If you do not, then they will cause the grading scripts to break and you may not receive full credit. Always make sure you run the <code>nbgrader validate</code> commands in <a href="Submit.ipynb">Submit.ipynb</a> and ensure that they complete properly before submitting your assignment!
+</div><p>If you run the above code block, you should see something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> 
+      <span class="mi">4</span>     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="o">----&gt;</span> <span class="mi">5</span>     <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+      <span class="mi">6</span>     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">ipdb</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The presence of the <code class="docutils literal notranslate"><span class="pre">ipdb&gt;</span></code> prompt at the bottom indicates that we have entered the IPython debugger. Any command you enter here will be evaluated and its output will be returned in the console. To see the stock commands available within the debugger, type <code class="docutils literal notranslate"><span class="pre">h</span></code> (short for “help”) at the prompt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ipdb</span><span class="o">&gt;</span> <span class="n">h</span>
+<span class="n">Documented</span> <span class="n">commands</span> <span class="p">(</span><span class="nb">type</span> <span class="n">help</span> <span class="o">&lt;</span><span class="n">topic</span><span class="o">&gt;</span><span class="p">):</span>
+<span class="o">========================================</span>
+<span class="n">EOF</span>    <span class="n">bt</span>         <span class="n">cont</span>      <span class="n">enable</span>  <span class="n">jump</span>  <span class="n">pdef</span>   <span class="n">r</span>        <span class="n">tbreak</span>   <span class="n">w</span>
+<span class="n">a</span>      <span class="n">c</span>          <span class="k">continue</span>  <span class="n">exit</span>    <span class="n">l</span>     <span class="n">pdoc</span>   <span class="n">restart</span>  <span class="n">u</span>        <span class="n">whatis</span>
+<span class="n">alias</span>  <span class="n">cl</span>         <span class="n">d</span>         <span class="n">h</span>       <span class="nb">list</span>  <span class="n">pinfo</span>  <span class="k">return</span>   <span class="n">unalias</span>  <span class="n">where</span>
+<span class="n">args</span>   <span class="n">clear</span>      <span class="n">debug</span>     <span class="n">help</span>    <span class="n">n</span>     <span class="n">pp</span>     <span class="n">run</span>      <span class="n">unt</span>
+<span class="n">b</span>      <span class="n">commands</span>   <span class="n">disable</span>   <span class="n">ignore</span>  <span class="nb">next</span>  <span class="n">q</span>      <span class="n">s</span>        <span class="n">until</span>
+<span class="k">break</span>  <span class="n">condition</span>  <span class="n">down</span>      <span class="n">j</span>       <span class="n">p</span>     <span class="n">quit</span>   <span class="n">step</span>     <span class="n">up</span>
+
+<span class="n">Miscellaneous</span> <span class="n">help</span> <span class="n">topics</span><span class="p">:</span>
+<span class="o">==========================</span>
+<span class="n">exec</span>  <span class="n">pdb</span>
+
+<span class="n">Undocumented</span> <span class="n">commands</span><span class="p">:</span>
+<span class="o">======================</span>
+<span class="n">retval</span>  <span class="n">rv</span>
+</pre></div>
+</div>
+<p>For information on a particular command, you can type <code class="docutils literal notranslate"><span class="pre">h</span></code> followed by the command. For example, to see what the <code class="docutils literal notranslate"><span class="pre">c</span></code> command does, type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ipdb</span><span class="o">&gt;</span> <span class="n">h</span> <span class="n">c</span>
+<span class="n">c</span><span class="p">(</span><span class="n">ont</span><span class="p">(</span><span class="n">inue</span><span class="p">))</span>
+<span class="n">Continue</span> <span class="n">execution</span><span class="p">,</span> <span class="n">only</span> <span class="n">stop</span> <span class="n">when</span> <span class="n">a</span> <span class="nb">breakpoint</span> <span class="ow">is</span> <span class="n">encountered</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>We can use the debugger to inspect the contents of the variables and objects defined so far in our code. For example, we can inspect the contents of our <code class="docutils literal notranslate"><span class="pre">axis</span></code> object by typing <code class="docutils literal notranslate"><span class="pre">axis</span></code> at the <code class="docutils literal notranslate"><span class="pre">ipdb&gt;</span></code> prompt:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ipdb</span><span class="o">&gt;</span> <span class="n">axis</span>
+<span class="n">array</span><span class="p">([</span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10a5e8950</span><span class="o">&gt;</span><span class="p">,</span>
+       <span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x108dcf790</span><span class="o">&gt;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Aha! Instead of a single instance of the <code class="docutils literal notranslate"><span class="pre">matplotlib.axes</span></code> class (as we might expect), it appears that <code class="docutils literal notranslate"><span class="pre">axis</span></code> is actually an <em>array</em> containing two separate <code class="docutils literal notranslate"><span class="pre">matplotlib.axes</span></code> instances. Why might this be? Tracing the <code class="docutils literal notranslate"><span class="pre">axis</span></code> object back to its definition on line 3, we  see that the <code class="docutils literal notranslate"><span class="pre">subplots</span></code> method is the culprit. Looking up <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots"><code class="docutils literal notranslate"><span class="pre">subplots</span></code></a> in the matplotlib documentation, we see that this method returns as many axis objects as there are cells in a subplot grid. In our case, since we specified a grid of size <span class="math notranslate nohighlight">\(2 \times 1\)</span>, it returned two separate axis objects inside a single array. When we asked Python to access the <code class="docutils literal notranslate"><span class="pre">plot</span></code> method of our array on line 7, it understandably got confused – arrays don’t have a <code class="docutils literal notranslate"><span class="pre">plot</span></code> method! With this in mind, we can adjust our code to resolve the issue. One solution would be ignore the second subplot entirely:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_log</span><span class="p">():</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plot_log</span><span class="p">()</span>  <span class="c1"># Call the function, generate plot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d308e70d8e69a661bd60589035e71531a3f04dc9a8f4436f36030f77a3b5c7a2.png" src="../../_images/d308e70d8e69a661bd60589035e71531a3f04dc9a8f4436f36030f77a3b5c7a2.png" />
+</div>
+</div>
+<p><strong>Using <code class="docutils literal notranslate"><span class="pre">print</span></code> Statements</strong></p>
+<p>An alternative technique for inspecting the behavior of your code is to check the values of local variables using <code class="docutils literal notranslate"><span class="pre">print</span></code> statements. The <a class="reference external" href="https://docs.python.org/3/library/functions.html?highlight=print#print"><code class="docutils literal notranslate"><span class="pre">print</span></code></a> command evaluates its argument and writes the result to the standard output. We could use a <code class="docutils literal notranslate"><span class="pre">print</span></code> statement to inspect the <code class="docutils literal notranslate"><span class="pre">axis</span></code> object in our <code class="docutils literal notranslate"><span class="pre">plot_log</span></code> function as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_log</span><span class="p">():</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plot_log</span><span class="p">()</span>  <span class="c1"># Call the function, generate plot</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Axes: &gt; &lt;Axes: &gt;]
+</pre></div>
+</div>
+<img alt="../../_images/561d0922866b11c195feee087dc969d03bef6dfa4a00395f57366a00ef40d8da.png" src="../../_images/561d0922866b11c195feee087dc969d03bef6dfa4a00395f57366a00ef40d8da.png" />
+</div>
+</div>
+<p>Because we placed the <code class="docutils literal notranslate"><span class="pre">print</span></code> statement in our code immediately before the error occurred, we see that IPython also printed the contents of the <code class="docutils literal notranslate"><span class="pre">axis</span></code> object above the traceback. Thus, <code class="docutils literal notranslate"><span class="pre">print</span></code> statements are an alternative means of checking the values of local variables without using the IPython debugger. Just remember to remove the <code class="docutils literal notranslate"><span class="pre">print</span></code> statements before validating your code!</p>
+</section>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this heading">#</a></h2>
+<section id="check-the-docs">
+<h3>Check the Docs<a class="headerlink" href="#check-the-docs" title="Permalink to this heading">#</a></h3>
+<p>Although we will try to make this course as self-contained as possible, you may still need to refer to external sources while solving the homework problems. You can look up the documentation for a particular function within the IPython notebook by creating a new code block and typing the name of the function either preceded or succeeded by a <code class="docutils literal notranslate"><span class="pre">?</span></code>. For example, if you wanted to see the documentation for the matplotlib method <code class="docutils literal notranslate"><span class="pre">subplots</span></code>, you could write <code class="docutils literal notranslate"><span class="pre">?plt.subplots</span></code> (or <code class="docutils literal notranslate"><span class="pre">plt.sublots?</span></code>), which will open a pager displaying the docstring for <code class="docutils literal notranslate"><span class="pre">plt.subplots</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>plt.subplots
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you’d prefer to look at the available functions in your web browser, links to the NumPy, Matplotlib, Python, and IPython Notebook online docs are below:</p>
+<ul class="simple">
+<li><p>Python 3: https://docs.python.org/3/genindex.html</p></li>
+<li><p>NumPy: http://docs.scipy.org/doc/numpy/genindex.html</p></li>
+<li><p>pyplot (matplotlib): http://matplotlib.org/api/pyplot_summary.html</p></li>
+<li><p>IPython Notebook: http://ipython.org/ipython-doc/2/notebook/index.html</p></li>
+</ul>
+</section>
+<section id="hail-mary">
+<h3>Hail Mary<a class="headerlink" href="#hail-mary" title="Permalink to this heading">#</a></h3>
+<p>If these techniques fail and you’re still having trouble, the following suggestions may be of use:</p>
+<ol class="arabic simple">
+<li><p>Copy and paste your error message into Google to see if anyone else has experienced similar problems. You’d be surprised how often this works!</p></li>
+<li><p>Search <a class="reference external" href="https://stackoverflow.com/questions/tagged/python">StackOverflow</a></p></li>
+<li><p>Consult fellow classmates on piazza/ask in class</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="planck_function.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Integrating the Planck function with python</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="derivs_and_ints.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">working with numpy arrays</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-readable-code">Writing Readable Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-in-the-ipython-notebook">Debugging in the IPython Notebook</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-traceback">Check the traceback</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-the-local-variables">Inspect the local variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-docs">Check the Docs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hail-mary">Hail Mary</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,949 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Assignment 2b solutions: Drawing your satellite swath &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/assignments/assign2b_solution';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/assignments/assign2b_solution.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 3a – Solution" href="assignment3a_solution.html" />
+    <link rel="prev" title="Assignment 2a - solutions" href="assign2a_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/assignments/assign2b_solution.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assign2b_solution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assign2b_solution.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 2b solutions: Drawing your satellite swath</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edit-this-cell-to-fetch-your-granual">Edit this cell to fetch your granual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1a-project-your-lon-list-and-lat-list-corners">Problem 1a – project your <code class="docutils literal notranslate"><span class="pre">lon_list</span></code> and <code class="docutils literal notranslate"><span class="pre">lat_list</span></code> corners</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-vector-version-projection-transform-points">Bonus Vector version: projection.transform_points</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1b-find-your-ll-x-ll-y-ur-x-and-ur-y">Problem 1b – find your ll_x, ll_y, ur_x and ur_y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-make-the-map">Problem 2 – make the map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-problem">Bonus problem</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="assignment-2b-solutions-drawing-your-satellite-swath">
+<span id="assign2b-solution"></span><h1>Assignment 2b solutions: Drawing your satellite swath<a class="headerlink" href="#assignment-2b-solutions-drawing-your-satellite-swath" title="Permalink to this heading">#</a></h1>
+<p>Adapt the code in the week4/cartopy_mapping_vancouver.md notebook to show the boundary of your Modis
+swath on a Lambert Azimuthal Equal Area map.</p>
+<section id="edit-this-cell-to-fetch-your-granual">
+<h2>Edit this cell to fetch your granual<a class="headerlink" href="#edit-this-cell-to-fetch-your-granual" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">hdf4_dir</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">sat_data</span> <span class="o">/</span> <span class="s2">&quot;pha&quot;</span>
+<span class="n">granules</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">hdf4_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;MYD02*2105*hdf&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">granules</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+/home/phil/sat_data/pha/MYD021KM.A2013222.2105.061.2018047235850.hdf
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sat_lib.modismeta_read</span> <span class="kn">import</span> <span class="n">parseMeta</span>
+<span class="n">granules</span> <span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">hdf4_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;MYD02*2105*hdf&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">granules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
+<span class="n">meta_dict</span> <span class="o">=</span> <span class="n">parseMeta</span><span class="p">(</span><span class="n">granules</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">meta_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in sat_lib init
+True
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;orbit&#39;: 59949,
+ &#39;daynight&#39;: &#39;Day&#39;,
+ &#39;filename&#39;: &#39;MYD021KM.A2013222.2105.061.2018047235850.hdf&#39;,
+ &#39;stopdate&#39;: &#39;2013-08-10&#39;,
+ &#39;startdate&#39;: &#39;2013-08-10&#39;,
+ &#39;starttime&#39;: &#39;21:05:00.000000&#39;,
+ &#39;stoptime&#39;: &#39;21:10:00.000000&#39;,
+ &#39;equatortime&#39;: &#39;21:45:48.364762&#39;,
+ &#39;equatordate&#39;: &#39;2013-08-10&#39;,
+ &#39;nasaProductionDate&#39;: &#39;2018-02-16T23:58:50.000Z&#39;,
+ &#39;type&#39;: {&#39;SHORTNAME&#39;: {&#39;VALUE&#39;: &#39;MYD021KM&#39;}, &#39;VERSIONID&#39;: {&#39;VALUE&#39;: 61}},
+ &#39;sensor&#39;: {&#39;ASSOCIATEDSENSORSHORTNAME&#39;: {&#39;VALUE&#39;: &#39;MODIS&#39;},
+  &#39;ASSOCIATEDPLATFORMSHORTNAME&#39;: {&#39;VALUE&#39;: &#39;Aqua&#39;},
+  &#39;ASSOCIATEDINSTRUMENTSHORTNAME&#39;: {&#39;VALUE&#39;: &#39;MODIS&#39;}},
+ &#39;lon_list&#39;: [-104.770893902908,
+  -129.005397891393,
+  -138.038848796623,
+  -107.001718605882],
+ &#39;lat_list&#39;: [32.1364520798063,
+  28.6873746349622,
+  45.7334698608189,
+  50.5108274923951],
+ &#39;min_lat&#39;: 28.6873746349622,
+ &#39;max_lat&#39;: 50.5108274923951,
+ &#39;min_lon&#39;: -138.038848796623,
+ &#39;max_lon&#39;: -104.770893902908,
+ &#39;lon_0&#39;: -121.4048713497655,
+ &#39;lat_0&#39;: 39.59910106367865}
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>What’s in the file?</p></li>
+</ul>
+<p><strong>This cell sets up the datum and the LAEA projection, with the tangent point at the center of your swath</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1">#</span>
+<span class="c1"># Datum: radius of the earth in meters</span>
+<span class="c1">#</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">6_371_228</span>
+
+<span class="c1">#</span>
+<span class="c1"># vancouver longitude, latitude indegrees</span>
+<span class="c1">#</span>
+<span class="n">van_lon</span><span class="p">,</span> <span class="n">van_lat</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">123.1207</span><span class="p">,</span> <span class="mf">49.2827</span><span class="p">]</span>
+<span class="c1">#</span>
+<span class="c1"># use a simple sphere as the datum</span>
+<span class="c1">#</span>
+<span class="n">globe</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Globe</span><span class="p">(</span><span class="n">ellipse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">semimajor_axis</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">semiminor_axis</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+<span class="n">geodetic</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">()</span>
+<span class="c1">#</span>
+<span class="c1"># set up</span>
+<span class="c1">#</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertAzimuthalEqualArea</span><span class="p">(</span>
+    <span class="n">central_latitude</span><span class="o">=</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lat_0&#39;</span><span class="p">],</span> <span class="n">central_longitude</span><span class="o">=</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lon_0&#39;</span><span class="p">],</span> <span class="n">globe</span><span class="o">=</span><span class="n">globe</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pro4 program params: </span><span class="si">{</span><span class="n">projection</span><span class="o">.</span><span class="n">proj4_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pro4 program params: {&#39;a&#39;: 6371228, &#39;b&#39;: 6371228, &#39;proj&#39;: &#39;laea&#39;, &#39;lon_0&#39;: -121.4048713497655, &#39;lat_0&#39;: 39.59910106367865, &#39;x_0&#39;: 0.0, &#39;y_0&#39;: 0.0}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-1a-project-your-lon-list-and-lat-list-corners">
+<h2>Problem 1a – project your <code class="docutils literal notranslate"><span class="pre">lon_list</span></code> and <code class="docutils literal notranslate"><span class="pre">lat_list</span></code> corners<a class="headerlink" href="#problem-1a-project-your-lon-list-and-lat-list-corners" title="Permalink to this heading">#</a></h2>
+<p>In the cell below, get two new lists – a list of x coordinates and a list of y coordinates
+that contain the projected coordinates of your swath corners from <code class="docutils literal notranslate"><span class="pre">meta_dict['lon_list']</span></code>
+and <code class="docutils literal notranslate"><span class="pre">meta_dict['lat_list']</span></code></p>
+<p>I used a loop and projection.transform_point to transform from geodetic to the projection coordinates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### BEGIN SOLUTION</span>
+<span class="n">out_x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">out_y</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lon_list&#39;</span><span class="p">],</span> <span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lat_list&#39;</span><span class="p">]):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">geodetic</span><span class="p">)</span>
+    <span class="n">out_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">out_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">out_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">out_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1">### END SOLUTION</span>
+
+<span class="n">out_x</span><span class="p">,</span> <span class="n">out_y</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>([1558369.4782929125,
+  -743734.0166314542,
+  -1282092.66690057,
+  1016368.5195165693,
+  1558369.4782929125],
+ [-689784.5794633579,
+  -1181868.858729571,
+  805156.6303537257,
+  1298134.0921786525,
+  -689784.5794633579])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="bonus-vector-version-projection-transform-points">
+<h3>Bonus Vector version: projection.transform_points<a class="headerlink" href="#bonus-vector-version-projection-transform-points" title="Permalink to this heading">#</a></h3>
+<p>Here’s a way to tranform arrays of points instead of looping over individual points.  It takes a crs,
+an np.array of lons, an np array of lats, and optionally an np.array of heights and returns a 2d numpy
+array with the xcoord,ycoord,zcoord for each point</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">transform_points</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on method transform_points in module cartopy.crs:
+
+transform_points(src_crs, x, y, z=None, trap=False) method of cartopy.crs.LambertAzimuthalEqualArea instance
+    transform_points(src_crs, x, y[, z])
+    
+    Transform the given coordinates, in the given source
+    coordinate system (``src_crs``), to this coordinate system.
+    
+    Parameters
+    ----------
+    src_crs
+        instance of :class:`CRS` that represents the
+        coordinate system of ``x``, ``y`` and ``z``.
+    x
+        the x coordinates (array), in ``src_crs`` coordinates,
+        to transform.  May be 1 or 2 dimensional.
+    y
+        the y coordinates (array), in ``src_crs`` coordinates,
+        to transform.  Its shape must match that of x.
+    z: optional
+        the z coordinates (array), in ``src_crs`` coordinates, to
+        transform.  Defaults to None.
+        If supplied, its shape must match that of x.
+    trap
+        Whether proj errors for &quot;latitude or longitude exceeded limits&quot; and
+        &quot;tolerance condition error&quot; should be trapped.
+    
+    Returns
+    -------
+        Array of shape ``x.shape + (3, )`` in this coordinate system.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note you get the same answer as with <code class="docutils literal notranslate"><span class="pre">projection.transform_point</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lon_list&#39;</span><span class="p">])</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;lat_list&#39;</span><span class="p">])</span>
+<span class="n">projection</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">geodetic</span><span class="p">,</span><span class="n">lons</span><span class="p">,</span><span class="n">lats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1558369.47829291,  -689784.57946336,        0.        ],
+       [ -743734.01663145, -1181868.85872957,        0.        ],
+       [-1282092.66690057,   805156.63035373,        0.        ],
+       [ 1016368.51951657,  1298134.09217865,        0.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="problem-1b-find-your-ll-x-ll-y-ur-x-and-ur-y">
+<h2>Problem 1b – find your ll_x, ll_y, ur_x and ur_y<a class="headerlink" href="#problem-1b-find-your-ll-x-ll-y-ur-x-and-ur-y" title="Permalink to this heading">#</a></h2>
+<p>Find the lower left and upper right corners of your extent by finding the maximum and minimum y values.
+Save these in the variables ll_x, ll_y, ur_x, ur_y</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### BEGΙΝ SOLUTION</span>
+<span class="n">ll_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">out_x</span><span class="p">)</span>
+<span class="n">ll_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">out_y</span><span class="p">)</span>
+<span class="n">ur_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">out_x</span><span class="p">)</span>
+<span class="n">ur_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">out_y</span><span class="p">)</span>
+<span class="c1">### END SOLUTION</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-2-make-the-map">
+<h2>Problem 2 – make the map<a class="headerlink" href="#problem-2-make-the-map" title="Permalink to this heading">#</a></h2>
+<p>Following the cartopy plotting examples, set your map extent in the projected coordinates
+with <code class="docutils literal notranslate"><span class="pre">ax.set_extent</span></code> and make a map showing your swath outline as a red rectangle</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### BEGIN SOLUTION</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="p">})</span>
+<span class="c1">#</span>
+<span class="c1"># clip with 0,0 in the center:  [xleft, xright, ybot, ytop]</span>
+<span class="c1">#</span>
+<span class="n">new_extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">ll_x</span><span class="p">,</span> <span class="n">ur_x</span><span class="p">,</span> <span class="n">ll_y</span><span class="p">,</span> <span class="n">ur_y</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">new_extent</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># the simple lon,lat projection is called &quot;geodetic&quot;</span>
+<span class="c1">#</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">GSHHSFeature</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ll_x</span><span class="p">,</span><span class="n">ll_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ur_x</span><span class="p">,</span> <span class="n">ur_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">out_x</span><span class="p">,</span><span class="n">out_y</span><span class="p">,</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="c1">### END SOLUTION</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f0447635610&gt;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<img alt="../../_images/baaa6feb52510a53f677d6c92d8a90dd023b1b7fb4b87f1c9eec520db96ce2d2.png" src="../../_images/baaa6feb52510a53f677d6c92d8a90dd023b1b7fb4b87f1c9eec520db96ce2d2.png" />
+</div>
+</div>
+</section>
+<section id="bonus-problem">
+<h2>Bonus problem<a class="headerlink" href="#bonus-problem" title="Permalink to this heading">#</a></h2>
+<p>Put the location of <code class="docutils literal notranslate"><span class="pre">(min_lon,min_lat)</span></code> and <code class="docutils literal notranslate"><span class="pre">(max_lon,</span> <span class="pre">max_lat)</span></code> on the map as blue dots, with the corners
+of the extent we used above as red dots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ll_corner</span> <span class="o">=</span> <span class="p">(</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;min_lon&#39;</span><span class="p">],</span> <span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;min_lat&#39;</span><span class="p">])</span>
+<span class="n">ur_corner</span> <span class="o">=</span> <span class="p">(</span><span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;max_lon&#39;</span><span class="p">],</span> <span class="n">meta_dict</span><span class="p">[</span><span class="s1">&#39;max_lat&#39;</span><span class="p">])</span>
+<span class="n">newll_x</span><span class="p">,</span> <span class="n">newll_y</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span><span class="n">ll_corner</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ll_corner</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geodetic</span><span class="p">)</span>
+<span class="n">newur_x</span><span class="p">,</span> <span class="n">newur_y</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span><span class="n">ur_corner</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ur_corner</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geodetic</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">projection</span><span class="p">})</span>
+<span class="c1">#</span>
+<span class="c1"># enlarge the extent to show the max,min lat, lon points on the map</span>
+<span class="c1">#</span>
+<span class="n">new_extent</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.4</span><span class="o">*</span><span class="n">ll_x</span><span class="p">,</span> <span class="mf">1.2</span><span class="o">*</span><span class="n">ur_x</span><span class="p">,</span> <span class="mf">1.4</span><span class="o">*</span><span class="n">ll_y</span><span class="p">,</span> <span class="mf">1.1</span><span class="o">*</span><span class="n">ur_y</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">new_extent</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># the simple lon,lat projection is called &quot;geodetic&quot;</span>
+<span class="c1">#</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">GSHHSFeature</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ll_x</span><span class="p">,</span><span class="n">ll_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ur_x</span><span class="p">,</span> <span class="n">ur_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ll_x</span><span class="p">,</span><span class="n">ur_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ur_x</span><span class="p">,</span> <span class="n">ll_y</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">out_x</span><span class="p">,</span><span class="n">out_y</span><span class="p">,</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># now plot blue dots for the min,max lon/lats</span>
+<span class="c1">#</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newll_x</span><span class="p">,</span><span class="n">newll_y</span><span class="p">,</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newur_x</span><span class="p">,</span><span class="n">newur_y</span><span class="p">,</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newll_x</span><span class="p">,</span><span class="n">newur_y</span><span class="p">,</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">newur_x</span><span class="p">,</span><span class="n">newll_y</span><span class="p">,</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e3b165795c3f10302057eff984c16d89634951c1ba1edf10339995698b6e49c1.png" src="../../_images/e3b165795c3f10302057eff984c16d89634951c1ba1edf10339995698b6e49c1.png" />
+</div>
+</div>
+<p>The combination of the skewed swath and the curved longitude and latitude lines means that you get the wrong extent
+if you use min,max lon/lat to set your corners – it will clip your swath at the bottom and the right side.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="assign2a_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Assignment 2a - solutions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="assignment3a_solution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Assignment 3a – Solution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edit-this-cell-to-fetch-your-granual">Edit this cell to fetch your granual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1a-project-your-lon-list-and-lat-list-corners">Problem 1a – project your <code class="docutils literal notranslate"><span class="pre">lon_list</span></code> and <code class="docutils literal notranslate"><span class="pre">lat_list</span></code> corners</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-vector-version-projection-transform-points">Bonus Vector version: projection.transform_points</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-1b-find-your-ll-x-ll-y-ur-x-and-ur-y">Problem 1b – find your ll_x, ll_y, ur_x and ur_y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-2-make-the-map">Problem 2 – make the map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bonus-problem">Bonus problem</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

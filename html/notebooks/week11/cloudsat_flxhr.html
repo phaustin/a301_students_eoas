@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Cloudsat heating rate &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week11/cloudsat_flxhr';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week11/cloudsat_flxhr.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Flux and radiance review" href="flux_from_radiance_rev.html" />
+    <link rel="prev" title="Week 11" href="week11_topics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week11_topics.html">Week 11</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week11/cloudsat_flxhr.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week11/cloudsat_flxhr.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week11/cloudsat_flxhr.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cloudsat heating rate</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-to-the-storm">Clip to the storm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-storm-distance">Add storm distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-the-colormap">Set up the colormap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-longwave-heating-rate">Plot the longwave heating rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-shortwave-heating-rate">Plot the shortwave heating rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-net-heating-rate">Plot the net heating rate</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cloudsat-heating-rate">
+<span id="week11-cloudsat-heat"></span><h1>Cloudsat heating rate<a class="headerlink" href="#cloudsat-heating-rate" title="Permalink to this heading">#</a></h1>
+<p>Cloudsat uses radiation models plus the radar and Modis data to estimate the long and shortwave fluxes at each
+radar height level.  The the datasets are called <a class="reference external" href="https://www.cloudsat.cira.colostate.edu/data-products/2b-flxhr">2B-FLXHR</a>
+and <a class="reference external" href="https://www.cloudsat.cira.colostate.edu/data-products/2b-flxhr-lidar">2B-FLXHR-LIDAR</a> and the heating rate
+variable <code class="docutils literal notranslate"><span class="pre">QR</span></code> (K/day) is returned as a 3 dimensional array of shape <code class="docutils literal notranslate"><span class="pre">[2,time,height]</span></code>, with <code class="docutils literal notranslate"><span class="pre">[0,time,height]</span></code> holding
+the longwave heating rates and <code class="docutils literal notranslate"><span class="pre">[1,time,height]</span></code> holding the sortwave heating rates.</p>
+<p>In this notebook we look at the longwave, shortwave and net=longwave + shortwave heating rates for the Texas storm.
+The figures show that during the day, there is large cooling at cloudtop, with strong shortwave heating just below the
+cooling layer and smaller warming through most of the atmosphere.</p>
+<p>Note that climate models need to estimate the heating rate with many fewer vertical levels (45 instead of 125) and much
+coarser horizontal resolution (100 km/gridcell instead of 1 km/pixel)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">from</span> <span class="nn">sat_lib.cloudsat</span> <span class="kn">import</span> <span class="n">read_cloudsat_var</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">xarray</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sat_lib.cloudsat</span> <span class="kn">import</span> <span class="n">add_storm_distance</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">Normalize</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+in sat_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cloudsat_dir</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/cloudsat&quot;</span>
+<span class="n">flxhr_file</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cloudsat_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*2008*FLXHR*hdf&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">flxhr_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phil/shared_files/pha/cloudsat/2008082060027_10105_CS_2B-FLXHR-LIDAR_GRANULE_P2_R05_E02_F00.hdf
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qr_ds</span> <span class="o">=</span> <span class="n">read_cloudsat_var</span><span class="p">(</span><span class="s1">&#39;QR&#39;</span><span class="p">,</span><span class="n">flxhr_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>using timestep 0 to set heights
+in read_cloudsat_var: reading varname=&#39;QR&#39;
+var_vals.shape=(2, 37082, 125)
+replacing missing_value=-9999 with np.nan
+</pre></div>
+</div>
+</div>
+</div>
+<section id="clip-to-the-storm">
+<h2>Clip to the storm<a class="headerlink" href="#clip-to-the-storm" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_hour</span><span class="o">=</span><span class="mi">6</span>
+<span class="n">start_minute</span><span class="o">=</span><span class="mi">45</span>
+<span class="n">all_times</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">qr_ds</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+<span class="n">first_time</span> <span class="o">=</span> <span class="n">all_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">storm_start</span><span class="o">=</span><span class="n">starttime</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">first_time</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">first_time</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">first_time</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                                        <span class="n">start_hour</span><span class="p">,</span><span class="n">start_minute</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">storm_stop</span><span class="o">=</span><span class="n">storm_start</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">storm_start</span><span class="p">,</span> <span class="n">storm_stop</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(datetime.datetime(2008, 3, 22, 6, 45), datetime.datetime(2008, 3, 22, 6, 48))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_hit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">all_times</span> <span class="o">&gt;=</span> <span class="n">storm_start</span><span class="p">,</span> <span class="n">all_times</span> <span class="o">&lt;=</span> <span class="n">storm_stop</span><span class="p">)</span>
+<span class="n">qr_slice</span> <span class="o">=</span> <span class="n">qr_ds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">indexers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span><span class="n">time_hit</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="add-storm-distance">
+<h2>Add storm distance<a class="headerlink" href="#add-storm-distance" title="Permalink to this heading">#</a></h2>
+<p>using the function we wrote last week</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qr_slice</span> <span class="o">=</span> <span class="n">add_storm_distance</span><span class="p">(</span><span class="n">qr_slice</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="set-up-the-colormap">
+<h2>Set up the colormap<a class="headerlink" href="#set-up-the-colormap" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_cmap</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">,</span>
+              <span class="n">over</span> <span class="o">=</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">under</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">missing</span><span class="o">=</span><span class="s1">&#39;0.4&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    return Normalization and colormap</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    vmin, vmax: float</span>
+<span class="sd">       colormap max and min values</span>
+<span class="sd">    cmap: cm.colormap</span>
+<span class="sd">       optional, default - cm.viridis</span>
+<span class="sd">    over,under,missing: str</span>
+<span class="sd">       colors for data large, small, missing data</span>
+<span class="sd">       defaults: over = &#39;w&#39;,under=&#39;k&#39;,missing=&#39;0.4&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    the_norm:  Normalization for vmin and vmax</span>
+<span class="sd">    cmap: colormap with over, under and missing </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">the_norm</span><span class="o">=</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span><span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="n">over</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="n">under</span><span class="p">)</span>
+    <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span> <span class="c1"># grey</span>
+    <span class="k">return</span> <span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-longwave-heating-rate">
+<h2>Plot the longwave heating rate<a class="headerlink" href="#plot-the-longwave-heating-rate" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lw_heating</span> <span class="o">=</span> <span class="n">qr_slice</span><span class="p">[</span><span class="s1">&#39;QR&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:,:]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span>  <span class="o">=</span> <span class="n">make_cmap</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span><span class="n">under</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="n">missing</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">lw_heating</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;storm_distance&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;height_km&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">the_norm</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">17</span><span class="p">),</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;longwave heating rate (K/day)&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/903abb1070bbe615aa39155201b37e7d7251c93435ee19507007d27f5567bb78.png" src="../../_images/903abb1070bbe615aa39155201b37e7d7251c93435ee19507007d27f5567bb78.png" />
+</div>
+</div>
+</section>
+<section id="plot-the-shortwave-heating-rate">
+<h2>Plot the shortwave heating rate<a class="headerlink" href="#plot-the-shortwave-heating-rate" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sw_heating</span> <span class="o">=</span> <span class="n">qr_slice</span><span class="p">[</span><span class="s1">&#39;QR&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,:,:]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span>  <span class="o">=</span> <span class="n">make_cmap</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span><span class="n">under</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="n">missing</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">sw_heating</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;storm_distance&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;height_km&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">the_norm</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">17</span><span class="p">),</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;shortwave heating rate (K/day)&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/968276ef21c6489f5518af75285a28fea735c5a5bd463efbd3ede09520bd35f7.png" src="../../_images/968276ef21c6489f5518af75285a28fea735c5a5bd463efbd3ede09520bd35f7.png" />
+</div>
+</div>
+</section>
+<section id="plot-the-net-heating-rate">
+<h2>Plot the net heating rate<a class="headerlink" href="#plot-the-net-heating-rate" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">net_heating</span> <span class="o">=</span> <span class="n">qr_slice</span><span class="p">[</span><span class="s1">&#39;QR&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,:,:]</span> <span class="o">+</span> <span class="n">qr_slice</span><span class="p">[</span><span class="s1">&#39;QR&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">,:,:]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span>  <span class="o">=</span> <span class="n">make_cmap</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span><span class="n">under</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="n">missing</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">net_heating</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;storm_distance&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;height_km&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">the_norm</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">17</span><span class="p">),</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;net heating rate (K/day)&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/00debda637bd81a41a0d48fb5f5af7be01c012cd5b298f803f671c6424f88f37.png" src="../../_images/00debda637bd81a41a0d48fb5f5af7be01c012cd5b298f803f671c6424f88f37.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week11"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="week11_topics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 11</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="flux_from_radiance_rev.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Flux and radiance review</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-to-the-storm">Clip to the storm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-storm-distance">Add storm distance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-the-colormap">Set up the colormap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-longwave-heating-rate">Plot the longwave heating rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-shortwave-heating-rate">Plot the shortwave heating rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-net-heating-rate">Plot the net heating rate</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

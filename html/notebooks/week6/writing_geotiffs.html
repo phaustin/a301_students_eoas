@@ -1,0 +1,1150 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Writing the 5km water vapor image to a geotiff file &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week6/writing_geotiffs';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week6/writing_geotiffs.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Week 7" href="../week7/week7_topics.html" />
+    <link rel="prev" title="Weighting functions for temperature retrieval" href="weighting_functions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week6/writing_geotiffs.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week6/writing_geotiffs.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week6/writing_geotiffs.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Writing the 5km water vapor image to a geotiff file</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-area-def-and-raster-written-by-wv-resample-md">Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> and raster written by <code class="docutils literal notranslate"><span class="pre">wv_resample.md</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-area-def">Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-more-regular-area-def-for-sharing">create a more regular <code class="docutils literal notranslate"><span class="pre">area_def</span></code> for sharing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regrid-onto-the-new-area-def">regrid onto the new <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-lons-and-lats-to-make-the-swathdefinition">get lons and lats to make the SwathDefinition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-from-the-old-raster-onto-the-new-more-uniform-raster">resample from the old raster onto the new more uniform raster</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-the-palette-and-plot-the-new-raster">set up the palette and plot the new raster</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-this-out-as-a-geotiff-using-rasterio-and-read-it-back-in-to-check">Write this out as a geotiff using rasterio and read it back in to check</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-the-affine-transform">The role of the affine transform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-affine-transform">Defining the affine transform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-the-values-from-area-def-to-create-an-affine-instance">Pull the values from <code class="docutils literal notranslate"><span class="pre">area_def</span></code> to create an Affine instance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-geotiff">Write out the geotiff</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-geotiff-back-in-using-rasterio">Read the geotiff back in using rasterio</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-pyresample-area-def-from-the-geotiff">Get the pyresample <code class="docutils literal notranslate"><span class="pre">area_def</span></code> from the geotiff</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-using-rasterio">Plot the image using rasterio</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="writing-the-5km-water-vapor-image-to-a-geotiff-file">
+<span id="week6-geotiffs"></span><h1>Writing the 5km water vapor image to a geotiff file<a class="headerlink" href="#writing-the-5km-water-vapor-image-to-a-geotiff-file" title="Permalink to this heading">#</a></h1>
+<p>The most common data format for satellite data is called geotiff, which is a contraction of “georeferenced tagged image file format”.</p>
+<p>The details are outlined in this <a class="reference external" href="https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/fundamentals-raster-data/intro-to-the-geotiff-file-format/">geotiff explainer</a>.</p>
+<p>Briefly – the file format allows us to save the raster images for multiple bands, the crs used by the raster to
+get back lats/lons for the grid, the extent and grid size of the raster, and possibly a palette to use to present
+the plotted image in a geographic information system.</p>
+<p>In this notebook we’ll read in the image produced by the <a class="reference internal" href="../week5/wv_resample.html#week5-wv-resample"><span class="std std-ref">Resampling the water vapor</span></a> notebook, resample it once more
+onto a grid with a uniform pixel size of 5500 x 5500 meters and a grid of 510 rows and 500 columns,
+and write this out as geotiff.</p>
+<section id="read-in-the-area-def-and-raster-written-by-wv-resample-md">
+<h2>Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> and raster written by <code class="docutils literal notranslate"><span class="pre">wv_resample.md</span></code><a class="headerlink" href="#read-in-the-area-def-and-raster-written-by-wv-resample-md" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy</span>
+
+<span class="kn">from</span> <span class="nn">pyresample</span> <span class="kn">import</span> <span class="n">kd_tree</span><span class="p">,</span> <span class="n">SwathDefinition</span>
+
+<span class="kn">from</span> <span class="nn">sat_lib.mapping</span> <span class="kn">import</span> <span class="n">area_def_from_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in sat_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infile</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_5km_resampled.npz&quot;</span>
+<span class="n">wv_raster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;npz array names&quot;</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="n">wv_raster</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="n">wv_raster</span> <span class="o">=</span> <span class="n">wv_raster</span><span class="p">[</span><span class="s1">&#39;arr_0&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wv_raster</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>npz array names [&#39;arr_0&#39;]
+wv_raster.shape=(448, 499)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-in-the-area-def">
+<h2>Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code><a class="headerlink" href="#read-in-the-area-def" title="Permalink to this heading">#</a></h2>
+<p>Our <code class="docutils literal notranslate"><span class="pre">area_def</span></code> was calculated “on the fly” by pyresample, and it gave us some pretty
+ragged extents and pixel sizes.  Humans do better when the work with round numbers,
+so we want to regrid to clean up these decimals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">infile</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/area_dict.json&quot;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">the_in</span><span class="p">:</span>
+    <span class="n">old_area_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">the_in</span><span class="p">)</span>
+<span class="n">old_area_def</span> <span class="o">=</span> <span class="n">area_def_from_dict</span><span class="p">(</span><span class="n">old_area_dict</span><span class="p">)</span>
+<span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">old_area_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{   &#39;area_extent&#39;: [   -1238434.252747718,
+                       -1155685.636833424,
+                       1529176.4655438077,
+                       1278445.1434170557],
+    &#39;area_id&#39;: &#39;laea_otf&#39;,
+    &#39;name&#39;: &#39;On-the-fly laea area&#39;,
+    &#39;pixel_size_x&#39;: 5546.3140647124765,
+    &#39;pixel_size_y&#39;: 5433.327634487678,
+    &#39;proj_dict&#39;: {   &#39;datum&#39;: &#39;WGS84&#39;,
+                     &#39;lat_0&#39;: 39.4580671712606,
+                     &#39;lon_0&#39;: -121.464976619873,
+                     &#39;no_defs&#39;: None,
+                     &#39;proj&#39;: &#39;laea&#39;,
+                     &#39;type&#39;: &#39;crs&#39;,
+                     &#39;units&#39;: &#39;m&#39;,
+                     &#39;x_0&#39;: 0,
+                     &#39;y_0&#39;: 0},
+    &#39;proj_id&#39;: &#39;laea_otf&#39;,
+    &#39;x_size&#39;: 499,
+    &#39;y_size&#39;: 448}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-a-more-regular-area-def-for-sharing">
+<h2>create a more regular <code class="docutils literal notranslate"><span class="pre">area_def</span></code> for sharing<a class="headerlink" href="#create-a-more-regular-area-def-for-sharing" title="Permalink to this heading">#</a></h2>
+<p>Here’s a close approximation to the old <code class="docutils literal notranslate"><span class="pre">area_def</span></code>, produced by a new <code class="docutils literal notranslate"><span class="pre">sat_lib.mapping</span></code> function
+called <code class="docutils literal notranslate"><span class="pre">sat_lib.mapping.make_areadef</span></code></p>
+<p>We’ll give the new raster more easily used/uniform coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sat_lib.mapping</span> <span class="kn">import</span> <span class="n">make_areadef_dict</span>
+<span class="n">lat_0</span> <span class="o">=</span> <span class="mf">39.5</span>
+<span class="n">lon_0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">121.5</span>
+<span class="n">ll_x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1238500</span>
+<span class="n">ll_y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1155500</span>
+<span class="n">pixel_size_x</span> <span class="o">=</span> <span class="mi">5500</span>
+<span class="n">pixel_size_y</span> <span class="o">=</span> <span class="mi">5500</span>
+<span class="n">x_size</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">y_size</span> <span class="o">=</span> <span class="mi">510</span>
+<span class="n">area_dict</span> <span class="o">=</span> <span class="n">make_areadef_dict</span><span class="p">(</span><span class="n">lat_0</span><span class="p">,</span><span class="n">lon_0</span><span class="p">,</span><span class="n">ll_x</span><span class="p">,</span> <span class="n">ll_y</span><span class="p">,</span><span class="n">pixel_size_x</span><span class="p">,</span><span class="n">pixel_size_y</span><span class="p">,</span>
+                        <span class="n">x_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">)</span>
+<span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">area_dict</span><span class="p">)</span>
+<span class="n">new_area_def</span> <span class="o">=</span> <span class="n">area_def_from_dict</span><span class="p">(</span><span class="n">area_dict</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="si">{</span><span class="n">new_area_def</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{   &#39;area_extent&#39;: [-1238500, -1155500, 1511500, 1649500],
+    &#39;area_id&#39;: &#39;laea_a301&#39;,
+    &#39;name&#39;: &#39;human readable area def&#39;,
+    &#39;proj_dict&#39;: {   &#39;datum&#39;: &#39;WGS84&#39;,
+                     &#39;lat_0&#39;: 39.5,
+                     &#39;lon_0&#39;: -121.5,
+                     &#39;no_defs&#39;: None,
+                     &#39;proj&#39;: &#39;laea&#39;,
+                     &#39;type&#39;: &#39;crs&#39;,
+                     &#39;units&#39;: &#39;m&#39;,
+                     &#39;x_0&#39;: 0,
+                     &#39;y_0&#39;: 0},
+    &#39;proj_id&#39;: &#39;laea_a301&#39;,
+    &#39;x_size&#39;: 500,
+    &#39;y_size&#39;: 510}
+
+
+new_area_def=Area ID: laea_a301
+Description: laea_a301
+Projection ID: human readable area def
+Projection: {&#39;datum&#39;: &#39;WGS84&#39;, &#39;lat_0&#39;: &#39;39.5&#39;, &#39;lon_0&#39;: &#39;-121.5&#39;, &#39;no_defs&#39;: &#39;None&#39;, &#39;proj&#39;: &#39;laea&#39;, &#39;type&#39;: &#39;crs&#39;, &#39;units&#39;: &#39;m&#39;, &#39;x_0&#39;: &#39;0&#39;, &#39;y_0&#39;: &#39;0&#39;}
+Number of columns: 500
+Number of rows: 510
+Area extent: (-1238500, -1155500, 1511500, 1649500)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phil/mini39/envs/new301/lib/python3.11/site-packages/pyproj/crs/crs.py:1286: UserWarning: You will likely lose important projection information when converting to a PROJ string from another format. See: https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems
+  proj = self._crs.to_proj4(version=version)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="regrid-onto-the-new-area-def">
+<h2>regrid onto the new <code class="docutils literal notranslate"><span class="pre">area_def</span></code><a class="headerlink" href="#regrid-onto-the-new-area-def" title="Permalink to this heading">#</a></h2>
+<p>We need to redo the resample with the SwathDefiniton set to the lons
+and lats taken from the old grid using the <code class="docutils literal notranslate"><span class="pre">get_lonlats</span></code> method.</p>
+<section id="get-lons-and-lats-to-make-the-swathdefinition">
+<h3>get lons and lats to make the SwathDefinition<a class="headerlink" href="#get-lons-and-lats-to-make-the-swathdefinition" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span><span class="n">old_area_def</span><span class="o">.</span><span class="n">get_lonlats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lons</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">lats</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">old_swath</span> <span class="o">=</span> <span class="n">SwathDefinition</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lons.shape=(448, 499), lats.shape=(448, 499)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resample-from-the-old-raster-onto-the-new-more-uniform-raster">
+<h3>resample from the old raster onto the new more uniform raster<a class="headerlink" href="#resample-from-the-old-raster-onto-the-new-more-uniform-raster" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fill_value</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9999.0</span>
+<span class="n">new_wv_raster</span> <span class="o">=</span> <span class="n">kd_tree</span><span class="o">.</span><span class="n">resample_nearest</span><span class="p">(</span>
+    <span class="n">old_swath</span><span class="p">,</span>
+    <span class="n">wv_raster</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">new_area_def</span><span class="p">,</span>
+    <span class="n">radius_of_influence</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">nprocs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">new_wv_raster</span><span class="p">[</span><span class="n">new_wv_raster</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">9000</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_wv_raster</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>new_wv_raster.shape=(510, 500)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="set-up-the-palette-and-plot-the-new-raster">
+<h3>set up the palette and plot the new raster<a class="headerlink" href="#set-up-the-palette-and-plot-the-new-raster" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pal</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;plasma&quot;</span><span class="p">))</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;0.75&quot;</span><span class="p">)</span>  <span class="c1"># 75% grey for out-of-map cells</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># color cells &gt; vmax red</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># color cells &lt; vmin black</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1">#anything under this is colored black</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mf">4.0</span>  <span class="c1">#anything over this is colored red</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">Normalize</span>
+<span class="n">the_norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crs</span> <span class="o">=</span> <span class="n">new_area_def</span><span class="o">.</span><span class="n">to_cartopy_crs</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">crs</span><span class="p">})</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">GSHHSFeature</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">crs</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">new_wv_raster</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="n">crs</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">,</span>
+    <span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;wv ir 5km resolution for 2013.222.2105&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<img alt="../../_images/31555df4ef9d8566ddfe29c9d84593b1e1c58a349b99d127ac0d2aa739623902.png" src="../../_images/31555df4ef9d8566ddfe29c9d84593b1e1c58a349b99d127ac0d2aa739623902.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="write-this-out-as-a-geotiff-using-rasterio-and-read-it-back-in-to-check">
+<h2>Write this out as a geotiff using rasterio and read it back in to check<a class="headerlink" href="#write-this-out-as-a-geotiff-using-rasterio-and-read-it-back-in-to-check" title="Permalink to this heading">#</a></h2>
+<p>We need to use a python module called <a class="reference external" href="https://rasterio.readthedocs.io/en/latest/">rasterio</a> to write this image out as
+a geotiff.  We’ll do this in three steps:</p>
+<ol class="arabic simple">
+<li><p>Define the <a class="reference external" href="http://www.perrygeo.com/python-affine-transforms.html">affine transform</a></p></li>
+<li><p>Write out the new_wv_raster</p></li>
+<li><p>Read it back in and plot using rasterio</p></li>
+</ol>
+<section id="the-role-of-the-affine-transform">
+<h3>The role of the affine transform<a class="headerlink" href="#the-role-of-the-affine-transform" title="Permalink to this heading">#</a></h3>
+<p>We can move back and forth from geodetic lons/lats to mapx/mapy using <a class="reference external" href="https://eoasubc.xyz/a301_2022/notebooks/assignments/assign2b_solution.html">cartopy’s transform_point</a>.  The affine transform does the next step,
+which is to move back and forth from mapx/mapy to row/column on the raster.  We need to specify both the crs and the
+affine transform when we write our raster out as a geotiff.</p>
+</section>
+<section id="defining-the-affine-transform">
+<h3>Defining the affine transform<a class="headerlink" href="#defining-the-affine-transform" title="Permalink to this heading">#</a></h3>
+<p>The affine transform requires the following information:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>a = width of a pixel
+b = row rotation (typically zero)
+c = x-coordinate of the upper-left corner of the upper-left pixel
+d = column rotation (typically zero)
+e = height of a pixel (typically negative)
+f = y-coordinate of the of the upper-left corner of the upper-left pixel
+</pre></div>
+</div>
+<p>Looking at help(new_area_def) shows that these are available as attributes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> |  width : int
+ |      x dimension in number of pixels, aka number of grid columns
+ |  height : int
+ |      y dimension in number of pixels, aka number of grid rows
+ |  rotation: float
+ |      rotation in degrees (negative is cw)
+ |  size : int
+ |      Number of points in grid
+ |  area_extent_ll : tuple
+ |      Area extent in lons lats as a tuple (lower_left_lon, lower_left_lat, upper_right_lon, upper_right_lat)
+ |  pixel_size_x : float
+ |      Pixel width in projection units
+ |      Pixel height in projection units
+ |  pixel_upper_left : tuple
+ |      Coordinates (x, y) of center of upper left pixel in projection units
+</pre></div>
+</div>
+</section>
+<section id="pull-the-values-from-area-def-to-create-an-affine-instance">
+<h3>Pull the values from <code class="docutils literal notranslate"><span class="pre">area_def</span></code> to create an Affine instance<a class="headerlink" href="#pull-the-values-from-area-def-to-create-an-affine-instance" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">affine</span> <span class="kn">import</span> <span class="n">Affine</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">new_area_def</span><span class="o">.</span><span class="n">pixel_size_x</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">new_area_def</span><span class="o">.</span><span class="n">pixel_upper_left</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#</span>
+<span class="c1"># pixel height is negative, because we are</span>
+<span class="c1"># starting in the ul corner and going down</span>
+<span class="c1">#</span>
+<span class="n">e</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">new_area_def</span><span class="o">.</span><span class="n">pixel_size_y</span>
+<span class="n">the_transform</span> <span class="o">=</span> <span class="n">Affine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">the_transform</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>the_transform=Affine(5500.0, 0.0, -1235750.0,
+       0.0, -5500.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="write-out-the-geotiff">
+<h3>Write out the geotiff<a class="headerlink" href="#write-out-the-geotiff" title="Permalink to this heading">#</a></h3>
+<p>In addition to the raster, the crs, and the affine transform, you can also
+add comments/history etc. as arbitrary tags using update_tags.  This allows us to
+write arbitrary metadata (dates, titles, units etc.) into the geotiff file</p>
+<p>See <a class="reference external" href="https://rasterio.readthedocs.io/en/latest/topics/tags.html">rasterio tagging</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_wv_raster</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dtype(&#39;float64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rasterio</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="n">tif_filename</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_ir_5km.tif&quot;</span>
+<span class="n">num_chans</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
+    <span class="n">tif_filename</span><span class="p">,</span>
+    <span class="s2">&quot;w&quot;</span><span class="p">,</span>
+    <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;GTiff&quot;</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="n">new_area_def</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="n">new_area_def</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+    <span class="n">count</span><span class="o">=</span><span class="n">num_chans</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">new_wv_raster</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+    <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">the_transform</span><span class="p">,</span>
+    <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">outtif</span><span class="p">:</span>
+    <span class="n">outtif</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_wv_raster</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">outtif</span><span class="o">.</span><span class="n">update_tags</span><span class="p">(</span>
+        <span class="n">title</span> <span class="o">=</span><span class="s2">&quot;5 km ir water vapor, Modis Aqua&quot;</span><span class="p">,</span>
+        <span class="n">history</span><span class="o">=</span><span class="s2">&quot;written by week6/writing_geotiffs.md&quot;</span><span class="p">,</span>
+        <span class="n">written_on</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()),</span>
+    <span class="p">)</span>
+    <span class="n">band_tag</span> <span class="o">=</span> <span class="s2">&quot;ir_wv (cm/m^2)&quot;</span>
+    <span class="n">outtif</span><span class="o">.</span><span class="n">update_tags</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">label</span><span class="o">=</span> <span class="n">band_tag</span><span class="p">)</span>
+    
+    
+    
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="read-the-geotiff-back-in-using-rasterio">
+<h2>Read the geotiff back in using rasterio<a class="headerlink" href="#read-the-geotiff-back-in-using-rasterio" title="Permalink to this heading">#</a></h2>
+<p>In addition to the raster, the crs, and the affine transform, you can also
+add comments/history etc. as arbitrary tags</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tif_filename</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_ir_5km.tif&quot;</span>
+
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_filename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wv_tif</span><span class="p">:</span>
+    <span class="c1">#</span>
+    <span class="c1"># get tags for entire file</span>
+    <span class="c1">#</span>
+    <span class="n">file_tags</span> <span class="o">=</span> <span class="n">wv_tif</span><span class="o">.</span><span class="n">tags</span><span class="p">()</span>
+    <span class="c1">#</span>
+    <span class="c1"># get raster and tags for band 1</span>
+    <span class="c1">#</span>
+    <span class="n">wv_raster</span> <span class="o">=</span> <span class="n">wv_tif</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">band_tags</span> <span class="o">=</span> <span class="n">wv_tif</span><span class="o">.</span><span class="n">tags</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># get the laea crs</span>
+    <span class="c1">#</span>
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">wv_tif</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span>
+    <span class="c1">#</span>
+    <span class="c1"># get the affine transform</span>
+    <span class="c1">#</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">wv_tif</span><span class="o">.</span><span class="n">profile</span><span class="p">[</span><span class="s2">&quot;transform&quot;</span><span class="p">]</span>
+    
+<span class="nb">print</span><span class="p">((</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">file_tags</span><span class="si">=}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">band_tags</span><span class="si">=}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">crs</span><span class="si">=}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">transform</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">))</span>
+            
+        
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>file_tags={&#39;AREA_OR_POINT&#39;: &#39;Area&#39;, &#39;history&#39;: &#39;written by week6/writing_geotiffs.md&#39;, &#39;title&#39;: &#39;5 km ir water vapor, Modis Aqua&#39;, &#39;written_on&#39;: &#39;2023-04-08&#39;}
+
+band_tags={&#39;label&#39;: &#39;ir_wv (cm/m^2)&#39;}
+
+crs=CRS.from_wkt(&#39;PROJCS[&quot;unknown&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],PROJECTION[&quot;Lambert_Azimuthal_Equal_Area&quot;],PARAMETER[&quot;latitude_of_center&quot;,39.5],PARAMETER[&quot;longitude_of_center&quot;,-121.5],PARAMETER[&quot;false_easting&quot;,0],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]]&#39;)
+
+transform=Affine(5500.0, 0.0, -1235750.0,
+       0.0, -5500.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="get-the-pyresample-area-def-from-the-geotiff">
+<h3>Get the pyresample <code class="docutils literal notranslate"><span class="pre">area_def</span></code> from the geotiff<a class="headerlink" href="#get-the-pyresample-area-def-from-the-geotiff" title="Permalink to this heading">#</a></h3>
+<p>We don’t need my <code class="docutils literal notranslate"><span class="pre">area_def_from_dict</span></code> function when working with geotiffs, pyresample has
+a utility for getting the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> from the file in case you want to resample other rasters
+to the same grid</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyresample</span>
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">wv_tif</span><span class="p">:</span>
+    <span class="n">area_def</span> <span class="o">=</span> <span class="n">pyresample</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">rasterio</span><span class="o">.</span><span class="n">get_area_def_from_raster</span><span class="p">(</span><span class="n">wv_tif</span><span class="p">)</span>
+<span class="n">area_def</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phil/mini39/envs/new301/lib/python3.11/site-packages/pyproj/crs/crs.py:1286: UserWarning: You will likely lose important projection information when converting to a PROJ string from another format. See: https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems
+  proj = self._crs.to_proj4(version=version)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Area ID: None
+Description: None
+Projection ID: unknown
+Projection: {&#39;datum&#39;: &#39;WGS84&#39;, &#39;lat_0&#39;: &#39;39.5&#39;, &#39;lon_0&#39;: &#39;-121.5&#39;, &#39;no_defs&#39;: &#39;None&#39;, &#39;proj&#39;: &#39;laea&#39;, &#39;type&#39;: &#39;crs&#39;, &#39;units&#39;: &#39;m&#39;, &#39;x_0&#39;: &#39;0&#39;, &#39;y_0&#39;: &#39;0&#39;}
+Number of columns: 500
+Number of rows: 510
+Area extent: (-1235750.0, -1158250.0, 1514250.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-image-using-rasterio">
+<h3>Plot the image using rasterio<a class="headerlink" href="#plot-the-image-using-rasterio" title="Permalink to this heading">#</a></h3>
+<p>Rasterio works with matplotlib axes – you can pass an axis to rasterio’s <code class="docutils literal notranslate"><span class="pre">show_hist</span></code> or <code class="docutils literal notranslate"><span class="pre">show</span></code>
+commands and it will plot into that axis.</p>
+<p>Below we use the tags we retrieved from the geotiff to set the title and legend label</p>
+<p>See <a class="reference external" href="https://rasterio.readthedocs.io/en/latest/topics/plotting.html">rasterio plotting</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rasterio.plot</span> <span class="kn">import</span> <span class="n">show_hist</span><span class="p">,</span> <span class="n">show</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+    <span class="n">show_hist</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">file_tags</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+              <span class="n">label</span><span class="o">=</span><span class="n">band_tags</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span>
+
+    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/97bfa7cc491f58f38638ece010d373dfb74f331e51d2eec65b777239594e4f36.png" src="../../_images/97bfa7cc491f58f38638ece010d373dfb74f331e51d2eec65b777239594e4f36.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/973dd1602d6ab49079914f18c4c6aa8b6a0383f21ece0eb7a9017b4bdf7686c6.png" src="../../_images/973dd1602d6ab49079914f18c4c6aa8b6a0383f21ece0eb7a9017b4bdf7686c6.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week6"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="weighting_functions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Weighting functions for temperature retrieval</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../week7/week7_topics.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Week 7</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-area-def-and-raster-written-by-wv-resample-md">Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> and raster written by <code class="docutils literal notranslate"><span class="pre">wv_resample.md</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-area-def">Read in the <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-more-regular-area-def-for-sharing">create a more regular <code class="docutils literal notranslate"><span class="pre">area_def</span></code> for sharing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regrid-onto-the-new-area-def">regrid onto the new <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-lons-and-lats-to-make-the-swathdefinition">get lons and lats to make the SwathDefinition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-from-the-old-raster-onto-the-new-more-uniform-raster">resample from the old raster onto the new more uniform raster</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-the-palette-and-plot-the-new-raster">set up the palette and plot the new raster</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-this-out-as-a-geotiff-using-rasterio-and-read-it-back-in-to-check">Write this out as a geotiff using rasterio and read it back in to check</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-the-affine-transform">The role of the affine transform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-affine-transform">Defining the affine transform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-the-values-from-area-def-to-create-an-affine-instance">Pull the values from <code class="docutils literal notranslate"><span class="pre">area_def</span></code> to create an Affine instance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-geotiff">Write out the geotiff</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-geotiff-back-in-using-rasterio">Read the geotiff back in using rasterio</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-pyresample-area-def-from-the-geotiff">Get the pyresample <code class="docutils literal notranslate"><span class="pre">area_def</span></code> from the geotiff</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-using-rasterio">Plot the image using rasterio</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

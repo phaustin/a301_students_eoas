@@ -1,0 +1,3154 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Using xarray to work with geotiffs &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week7/writing_geotiffs_with_rioxarray';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week7/writing_geotiffs_with_rioxarray.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dowloading Landsat and Sentinel data from NASA" href="get_landsat_bands.html" />
+    <link rel="prev" title="Week 7" href="week7_topics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week7_topics.html">Week 7</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week7/writing_geotiffs_with_rioxarray.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week7/writing_geotiffs_with_rioxarray.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week7/writing_geotiffs_with_rioxarray.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Using xarray to work with geotiffs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rioxarray">rioxarray</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-rioxarray">Anatomy of a rioxarray</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-raster-data">The raster data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-named-dimensions">The named dimensions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pixel-center-coordinates">The pixel center coordinates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-geotiff-tags">The geotiff tags</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rasterio-specific-metadata">Rasterio specific metadata</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-coordinate-reference-system">The coordinate reference system</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-affine-transform">The affine transform</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-raster-bounds-or-extent">The raster bounds (or extent)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#image-width-height">Image width, height</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x-and-y-dimension-names">x and y dimension names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-raster">Reading the raster</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-image-extent-for-cartopy">calculating the image extent for cartopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hard-way">The hard way</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-easy-way">The easy way</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-a-cartopy-map">Making a cartopy map</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-the-rasterio-crs-to-a-cartopy-crs">Convert the rasterio crs to a cartopy crs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-code-from-week6-wv-resample-md">Copy code from <code class="docutils literal notranslate"><span class="pre">week6/wv_resample.md</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-plots-with-xarray-test">Quick plots with xarray – test</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-the-geotiff">Writing the geotiff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-a-quick-look-png">Writing a quick-look png</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-geotif-back-in-to-check">Read the geotif back in to check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="using-xarray-to-work-with-geotiffs">
+<span id="week7-geotiff-xarray"></span><h1>Using xarray to work with geotiffs<a class="headerlink" href="#using-xarray-to-work-with-geotiffs" title="Permalink to this heading">#</a></h1>
+<p>In the week6 <a class="reference internal" href="../week6/writing_geotiffs.html#week6-geotiffs"><span class="std std-ref">Writing the 5km water vapor image to a geotiff file</span></a> notebook we wrote a geotiff file for the 5km water vapor data resampled at 5500 x 5500 m on a Lambert aziumthal crs.  Suppose we want to
+crop that dataset, or use it in a machine learning pipeline, or combine it with other data?  How do we work with the raster in python without losing all of the
+extra information about the affine transform, crs, etc?  The most useful tool for this is an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray">xarray DataArray</a>, which extends numpy arrays by adding coordinates, named dimensions and attributes.
+In this notebook, we’ll first create an xarray using the <code class="docutils literal notranslate"><span class="pre">wv_ir_5km.tif</span></code> and use it to show a slice of the data.  Then we’ll create an xarray from scratch given
+the numpy array, affine transform, and crs.</p>
+<p>The module that we’ll use for this is called <a class="reference external" href="https://corteva.github.io/rioxarray/html/readme.html">the rasterio xarray extension</a> or rioxarray.  It provides a natural
+way to read and write geotiffs, and to clip, merge and reproject rasters.  Using rioxarray, we can eliminate about 80% of the boilerplate of working with raster data.</p>
+<p>In this notebook we:</p>
+<ol class="arabic simple">
+<li><p>Go over the components of an xarray container (a DataArray)</p></li>
+<li><p>Read in a water vapor geotiff and plot it with cartopy</p></li>
+<li><p>Write the DataArray back out as a geotiff</p></li>
+</ol>
+<p>You’ll need to do <code class="docutils literal notranslate"><span class="pre">mamba</span> <span class="pre">install</span> <span class="pre">rioxarray</span></code> to bring in the rioxarray extension</p>
+<p><a class="reference internal" href="#week7-geotiff-xarray"><span class="std std-ref">Using xarray to work with geotiffs</span></a>## xarray introduction</p>
+<p>An <a class="reference external" href="https://foundations.projectpythia.org/core/xarray/xarray-intro.html">xarray</a> is a python container that wraps a numpy array.  It adds some additional features:</p>
+<ul class="simple">
+<li><p>the_array.data:  the original numpy array (in our case, the raster)</p></li>
+<li><p>the_array.dims:  named dimensions for the array, for example a 3 dimensional remote sensing DataArray might have dimensions named [“channel”,”lons”,”lats”] or [“band”,”y”,”x”]</p></li>
+<li><p>the_array.coords: the coordinates for each dimension.  In our case the lons and lats coordinates of the center of each pixel, and the band numbers.</p></li>
+<li><p>the_array.attrs:  a dictionary of keys and values for metadata – in our case this would be all the geotiff tags</p></li>
+</ul>
+<section id="rioxarray">
+<h2>rioxarray<a class="headerlink" href="#rioxarray" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference external" href="https://corteva.github.io/rioxarray/stable/getting_started/getting_started.html">rioxarray</a> library is an xarray plugin that
+uses rasterio to handle the gis attributes like the map projection and affine_transform and passes data back and forth
+between rasterio and xarray.  In the cells below we open the geotiff we wrote in <a class="reference internal" href="../week6/writing_geotiffs.html#week6-geotiffs"><span class="std std-ref">Writing the 5km water vapor image to a geotiff file</span></a> and read it in as an
+xarray.DataArray using rasterio.  We’ll print out data, dims, coords, and attrs and gis attributes like the crs and the affine_transform</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span>
+<span class="kn">import</span> <span class="nn">cartopy</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">pyresample</span>
+
+
+<span class="n">the_tif</span>  <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_ir_5km.tif&quot;</span>
+<span class="n">band_xarray</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">the_tif</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="anatomy-of-a-rioxarray">
+<h2>Anatomy of a rioxarray<a class="headerlink" href="#anatomy-of-a-rioxarray" title="Permalink to this heading">#</a></h2>
+<p>Here are some of the import attributes of a rioxarray</p>
+<section id="the-raster-data">
+<h3>The raster data<a class="headerlink" href="#the-raster-data" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">band_xarray</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((1, 510, 500), dtype(&#39;float64&#39;), numpy.ndarray)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-named-dimensions">
+<h3>The named dimensions<a class="headerlink" href="#the-named-dimensions" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">dims</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;band&#39;, &#39;y&#39;, &#39;x&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-pixel-center-coordinates">
+<h3>The pixel center coordinates<a class="headerlink" href="#the-pixel-center-coordinates" title="Permalink to this heading">#</a></h3>
+<p>These pixel centers are given in the map projection coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">coords</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coordinates:
+  * band         (band) int64 1
+  * x            (x) float64 -1.233e+06 -1.228e+06 ... 1.506e+06 1.512e+06
+  * y            (y) float64 1.644e+06 1.638e+06 ... -1.15e+06 -1.156e+06
+    spatial_ref  int64 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-geotiff-tags">
+<h3>The geotiff tags<a class="headerlink" href="#the-geotiff-tags" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">band_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span><span class="si">=}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">band_xarray</span><span class="o">.</span><span class="n">attrs</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type(band_xarray.attrs)=&lt;class &#39;dict&#39;&gt;
+
+band_xarray.attrs={&#39;AREA_OR_POINT&#39;: &#39;Area&#39;, &#39;history&#39;: &#39;written by week6/writing_geotiffs.md&#39;, &#39;title&#39;: &#39;5 km ir water vapor, Modis Aqua&#39;, &#39;written_on&#39;: &#39;2023-04-08&#39;, &#39;label&#39;: &#39;ir_wv (cm/m^2)&#39;, &#39;_FillValue&#39;: nan, &#39;scale_factor&#39;: 1.0, &#39;add_offset&#39;: 0.0}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="rasterio-specific-metadata">
+<h3>Rasterio specific metadata<a class="headerlink" href="#rasterio-specific-metadata" title="Permalink to this heading">#</a></h3>
+<p>There are also rasterio specific attributes that can be obtained using <code class="docutils literal notranslate"><span class="pre">band_xarray.rio</span></code></p>
+<section id="the-coordinate-reference-system">
+<h4>The coordinate reference system<a class="headerlink" href="#the-coordinate-reference-system" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS.from_wkt(&#39;PROJCS[&quot;unknown&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],PROJECTION[&quot;Lambert_Azimuthal_Equal_Area&quot;],PARAMETER[&quot;latitude_of_center&quot;,39.5],PARAMETER[&quot;longitude_of_center&quot;,-121.5],PARAMETER[&quot;false_easting&quot;,0],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]]&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-affine-transform">
+<h4>The affine transform<a class="headerlink" href="#the-affine-transform" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Affine(5500.0, 0.0, -1235750.0,
+       0.0, -5500.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span>
+<span class="n">out</span><span class="o">.</span><span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1646750.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-raster-bounds-or-extent">
+<h4>The raster bounds (or extent)<a class="headerlink" href="#the-raster-bounds-or-extent" title="Permalink to this heading">#</a></h4>
+<p>This is ll_x, ur_x, ll_y, ur_y in map coordinates</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">bounds</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1235750.0, -1158250.0, 1514250.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="image-width-height">
+<h4>Image width, height<a class="headerlink" href="#image-width-height" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">height</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(500, 510)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="x-and-y-dimension-names">
+<h4>x and y dimension names<a class="headerlink" href="#x-and-y-dimension-names" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">y_dim</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;x&#39;, &#39;y&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="reading-the-raster">
+<h2>Reading the raster<a class="headerlink" href="#reading-the-raster" title="Permalink to this heading">#</a></h2>
+<p>Since we only have one channel, it’s simpler to just convert the raster to 2 dimensions using numpy’s <code class="docutils literal notranslate"><span class="pre">squeeze</span></code> method</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wv_raster</span> <span class="o">=</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">data</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wv_raster</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># squeeze out the unneeded dimension</span>
+<span class="c1">#</span>
+<span class="n">wv_raster</span> <span class="o">=</span> <span class="n">wv_raster</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wv_raster</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wv_raster.shape=(1, 510, 500)
+wv_raster.shape=(510, 500)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="calculating-the-image-extent-for-cartopy">
+<h3>calculating the image extent for cartopy<a class="headerlink" href="#calculating-the-image-extent-for-cartopy" title="Permalink to this heading">#</a></h3>
+<p>Recall that cartopy needs the extent of the image, defined as <code class="docutils literal notranslate"><span class="pre">[ll_x,ur_x,ll_y,ur_y]</span></code>.  Here are two ways to get the extent.</p>
+<section id="the-hard-way">
+<h4>The hard way<a class="headerlink" href="#the-hard-way" title="Permalink to this heading">#</a></h4>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">affine_transform</span></code> by putting in
+the (column,row) of (column 0, row 0) and (column ncols+1, row nrows+1) for the ll and ur corners.   We need to add one cell to the nrows and ncols because
+we want the left, bottom, top and right edges of the cells,
+to get the distance from the ll_x, ll_y edges to the ur_x, ur_y edges.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">=</span> <span class="n">wv_raster</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">ll_x</span><span class="p">,</span> <span class="n">ll_y</span> <span class="o">=</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nrows</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ur_x</span><span class="p">,</span> <span class="n">ur_y</span> <span class="o">=</span> <span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">ncols</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">ll_x</span><span class="p">,</span><span class="n">ur_x</span><span class="p">,</span> <span class="n">ll_y</span><span class="p">,</span> <span class="n">ur_y</span><span class="p">)</span>
+<span class="n">extent</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1235750.0, 1519750.0, -1163750.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-easy-way">
+<h4>The easy way<a class="headerlink" href="#the-easy-way" title="Permalink to this heading">#</a></h4>
+<p>This same information is also available from rasterio via the <code class="docutils literal notranslate"><span class="pre">bounds()</span></code> method</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">bounds</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1235750.0, -1158250.0, 1514250.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="making-a-cartopy-map">
+<h2>Making a cartopy map<a class="headerlink" href="#making-a-cartopy-map" title="Permalink to this heading">#</a></h2>
+<section id="convert-the-rasterio-crs-to-a-cartopy-crs">
+<h3>Convert the rasterio crs to a cartopy crs<a class="headerlink" href="#convert-the-rasterio-crs-to-a-cartopy-crs" title="Permalink to this heading">#</a></h3>
+<p>One friction point is that cartopy has a slightly different form of the crs than rasterio.  Cartopy requires that the
+bounds (i.e. full raster extent in map coordinates) be included in the crs. In the cell below we use a  pyresample  utility <code class="docutils literal notranslate"><span class="pre">pyresample.utils.cartopy.Projection</span></code> to create
+the cartopy crs with bounds included.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyresample.utils.cartopy</span> <span class="kn">import</span> <span class="n">Projection</span>
+<span class="n">cartopy_crs</span> <span class="o">=</span> <span class="n">Projection</span><span class="p">(</span><span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+<span class="n">cartopy_crs</span><span class="o">.</span><span class="n">bounds</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-1235750.0, 1519750.0, -1163750.0, 1646750.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cartopy_crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="177.465205pt" height="180.72pt" viewBox="0 0 177.465205 180.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2023-04-08T09:53:25.821699</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.7.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180.72 
+L 177.465205 180.72 
+L 177.465205 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 170.265205 7.2 
+L 170.265205 173.52 
+L 7.2 173.52 
+" style="fill: #ffffff"/>
+   </g>
+   <g id="PathCollection_1">
+    <path d="M 51.04377 17.431243 
+L 51.085296 17.713154 
+L 51.085036 18.293885 
+L 51.033357 19.020492 
+L 51.20115 19.474697 
+L 51.454583 19.165849 
+L 51.714639 18.452033 
+L 52.025274 18.038949 
+L 52.101574 17.374266 
+L 52.115117 15.27883 
+L 51.903921 14.125883 
+L 51.518561 13.656856 
+L 51.085648 13.292531 
+L 50.670402 12.954792 
+L 50.424768 12.896223 
+L 50.291309 13.1426 
+L 50.129733 13.791547 
+L 49.989676 14.101193 
+L 49.675928 14.551027 
+L 49.631058 14.726104 
+L 49.647069 14.8968 
+L 49.920926 15.40241 
+L 49.915119 15.858182 
+L 50.118276 16.313796 
+L 50.557241 16.892817 
+L 50.835489 16.884438 
+L 51.128587 16.433824 
+L 51.229566 16.362617 
+L 51.04377 17.431243 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 38.866062 7.2 
+L 38.87033 7.554425 
+L 38.819134 7.813074 
+L 38.62032 8.13901 
+L 38.449767 8.778959 
+L 38.369333 8.914178 
+L 37.257927 8.977833 
+L 36.982554 8.952089 
+L 36.868081 8.855818 
+L 36.852122 8.778116 
+L 36.900105 8.703434 
+L 38.385812 8.05759 
+L 38.569098 7.871093 
+L 38.673824 7.695128 
+L 38.705374 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 35.059072 7.2 
+L 35.051656 7.46314 
+L 35.096735 7.859331 
+L 35.484723 8.898927 
+L 35.514442 9.060745 
+L 35.477381 9.338181 
+L 35.628771 9.722836 
+L 36.263356 10.133761 
+L 37.093291 10.959375 
+L 37.105175 11.050071 
+L 36.959267 11.024778 
+L 36.651146 10.842611 
+L 36.236592 10.712748 
+L 36.085779 10.710291 
+L 35.813375 11.053333 
+L 36.052013 11.3986 
+L 36.591324 11.927913 
+L 37.268685 12.048675 
+L 38.662944 11.724814 
+L 38.915304 11.469021 
+L 39.095738 11.02573 
+L 39.311132 9.673949 
+L 39.557012 8.871902 
+L 39.939154 8.077171 
+L 40.527634 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 41.305106 18.952088 
+L 41.258981 18.471302 
+L 40.790102 18.413595 
+L 40.555348 18.31077 
+L 40.539062 18.213411 
+L 40.870872 17.773284 
+L 40.893942 17.605085 
+L 40.846537 17.534118 
+L 40.398758 17.548418 
+L 40.215749 17.48456 
+L 40.187041 17.275069 
+L 39.709196 16.392887 
+L 39.820109 16.108172 
+L 40.35833 15.654866 
+L 39.777272 15.297899 
+L 39.322446 15.16878 
+L 39.049348 14.723568 
+L 38.718222 14.36536 
+L 38.462765 14.246658 
+L 38.709601 14.083843 
+L 38.860121 14.066095 
+L 39.168248 14.299719 
+L 39.839048 14.136469 
+L 39.975931 13.506404 
+L 39.930664 12.953313 
+L 39.613868 12.303128 
+L 39.251803 12.032654 
+L 39.097185 12.002151 
+L 38.69023 12.146139 
+L 38.486031 12.271132 
+L 38.003465 12.333186 
+L 37.225139 12.394386 
+L 36.528724 12.244653 
+L 36.432582 12.281044 
+L 36.548628 12.632393 
+L 36.676878 12.747491 
+L 37.892234 13.384681 
+L 37.848367 13.655781 
+L 37.504367 13.673777 
+L 37.377769 13.751472 
+L 37.344942 13.925191 
+L 37.391771 14.197002 
+L 37.605125 14.776527 
+L 37.866418 15.01154 
+L 38.800311 16.523603 
+L 39.457828 17.24944 
+L 39.666191 17.565521 
+L 39.802505 18.096376 
+L 40.088661 18.685824 
+L 40.82459 19.329153 
+L 41.305106 18.952088 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 71.957491 44.145802 
+L 71.767986 44.297555 
+L 71.581856 44.899101 
+L 71.057512 43.29915 
+L 70.533448 42.451316 
+L 70.122255 41.338346 
+L 69.531861 40.633943 
+L 68.727137 40.107387 
+L 66.788134 39.201237 
+L 66.008252 38.506323 
+L 65.611504 37.569479 
+L 65.734833 37.476673 
+L 65.619646 37.168334 
+L 64.430938 35.277522 
+L 63.263189 33.057192 
+L 62.926931 32.935724 
+L 61.989344 32.743162 
+L 60.479315 32.18363 
+L 58.412541 31.658615 
+L 56.385721 30.708736 
+L 54.319462 29.378621 
+L 53.485277 29.054994 
+L 52.719344 29.014617 
+L 52.117391 29.161981 
+L 51.850213 29.364582 
+L 51.632159 29.675395 
+L 51.58808 29.985409 
+L 51.882538 30.583424 
+L 52.384609 31.206677 
+L 52.69686 31.376069 
+L 53.510853 31.435284 
+L 54.091778 31.235832 
+L 54.044743 30.761385 
+L 55.230164 31.005999 
+L 54.941487 31.290267 
+L 55.052097 32.017416 
+L 55.052425 32.166703 
+L 54.697838 31.745147 
+L 54.439044 31.633484 
+L 53.452657 31.660539 
+L 53.308516 31.773042 
+L 53.071366 32.537847 
+L 53.468827 32.649914 
+L 53.506984 32.78764 
+L 53.50929 33.325759 
+L 53.312906 33.861655 
+L 53.705144 33.934062 
+L 54.132237 33.68775 
+L 55.011498 33.74968 
+L 55.454484 34.513262 
+L 55.806346 34.250554 
+L 55.91921 33.979242 
+L 56.144265 34.244678 
+L 56.17644 34.572915 
+L 56.027798 34.943358 
+L 56.166839 35.491545 
+L 56.370237 35.706864 
+L 56.645679 35.778772 
+L 57.089409 35.60256 
+L 57.298423 35.343384 
+L 57.518302 35.497441 
+L 57.956194 35.642011 
+L 58.205695 35.844276 
+L 58.676494 36.812478 
+L 58.811692 36.911234 
+L 59.07895 36.922658 
+L 59.547309 37.339566 
+L 60.46573 37.315041 
+L 60.355427 37.45466 
+L 59.122389 37.588266 
+L 58.613702 37.825816 
+L 58.571806 38.055639 
+L 58.584053 38.87329 
+L 58.785409 39.00991 
+L 59.155298 38.708857 
+L 59.618708 39.175303 
+L 59.729775 39.114782 
+L 59.905029 38.792817 
+L 60.215647 38.990463 
+L 60.617366 39.054135 
+L 60.836759 39.333583 
+L 61.214949 39.133636 
+L 61.196972 39.2751 
+L 60.963625 39.866567 
+L 61.08752 40.134739 
+L 61.231825 40.132573 
+L 61.599653 39.973014 
+L 61.762269 40.089266 
+L 62.180937 40.568548 
+L 62.39316 40.608994 
+L 62.125739 40.901928 
+L 61.562411 41.185045 
+L 62.268206 41.631709 
+L 62.978119 42.29166 
+L 63.107188 42.249846 
+L 63.549529 41.894487 
+L 64.391623 41.978817 
+L 65.548193 41.763845 
+L 65.863592 41.066925 
+L 65.99695 40.589116 
+L 66.030875 41.057042 
+L 65.785119 41.791099 
+L 65.395164 42.247861 
+L 64.455518 43.218421 
+L 64.528177 43.496256 
+L 65.598932 44.243425 
+L 67.716416 45.228563 
+L 69.703799 46.134019 
+L 71.203814 46.591531 
+L 71.368932 46.449987 
+L 71.780666 45.919594 
+L 72.372294 46.038839 
+L 72.496834 45.751808 
+L 71.957491 44.145802 
+L 71.957491 44.145802 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 86.600128 140.323089 
+L 86.520406 140.240806 
+L 86.274421 140.355175 
+L 86.119588 140.510343 
+L 86.568051 140.574857 
+L 86.858483 140.554247 
+L 86.600128 140.323089 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 91.229766 145.350916 
+L 90.954037 145.380996 
+L 91.134991 145.729389 
+L 91.473804 145.783016 
+L 91.71922 145.765499 
+L 91.695058 145.666148 
+L 91.486462 145.394093 
+L 91.229766 145.350916 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 74.248327 53.989981 
+L 74.203349 54.118451 
+L 74.139816 54.110397 
+L 74.004163 53.845709 
+L 73.989656 53.66021 
+L 74.112314 53.528528 
+L 74.267156 53.914309 
+L 74.248327 53.989981 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 60.426611 39.331306 
+L 60.030833 39.212919 
+L 59.916035 39.47414 
+L 59.906552 39.75881 
+L 60.084297 39.883731 
+L 60.608486 40.007258 
+L 60.522232 39.40893 
+L 60.426611 39.331306 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 75.822164 52.5874 
+L 75.803125 53.00508 
+L 75.991026 52.795707 
+L 76.037067 52.823138 
+L 76.040433 52.999116 
+L 76.129144 53.029888 
+L 76.302457 52.915389 
+L 76.324688 52.766279 
+L 76.113876 52.430122 
+L 75.99873 52.141079 
+L 75.918735 52.148189 
+L 75.822164 52.5874 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 75.798075 50.822388 
+L 75.654383 50.732875 
+L 75.607746 50.773003 
+L 75.544345 50.975059 
+L 75.530363 51.285715 
+L 75.609314 51.425762 
+L 75.853613 51.578635 
+L 75.879156 51.453314 
+L 75.839177 50.874778 
+L 75.798075 50.822388 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 74.132422 44.130203 
+L 73.872753 44.308415 
+L 73.754957 44.48319 
+L 73.82698 44.651643 
+L 74.230734 44.869789 
+L 74.256955 44.753297 
+L 74.192974 44.408573 
+L 74.279628 44.436558 
+L 74.474855 44.66321 
+L 74.600435 44.643677 
+L 74.778315 44.507647 
+L 74.72254 44.364291 
+L 74.221572 44.109558 
+L 74.132422 44.130203 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 74.328995 45.17214 
+L 74.256577 45.151444 
+L 74.137923 45.23889 
+L 74.043607 45.586496 
+L 74.087025 45.769807 
+L 74.223153 45.918099 
+L 74.456536 46.007957 
+L 74.526475 45.944646 
+L 74.556438 45.807359 
+L 74.354296 45.47941 
+L 74.328995 45.17214 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 73.262777 44.729591 
+L 73.051731 44.770749 
+L 73.016504 44.899165 
+L 73.078967 45.296636 
+L 73.135547 45.418167 
+L 73.332633 45.545837 
+L 73.802423 45.692294 
+L 73.690824 45.474763 
+L 73.647186 45.227335 
+L 73.262777 44.729591 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 75.894461 48.267661 
+L 75.796989 48.625021 
+L 75.592062 47.761695 
+L 75.4863 47.473003 
+L 75.369271 47.384041 
+L 75.050489 47.28205 
+L 75.073246 47.200993 
+L 75.737824 46.86233 
+L 75.770483 46.684295 
+L 75.611404 46.430572 
+L 75.476728 46.290813 
+L 75.366712 46.265687 
+L 75.185945 46.481109 
+L 74.934574 46.937643 
+L 74.823547 47.210921 
+L 74.853995 47.301382 
+L 75.074367 47.641829 
+L 75.218833 47.757842 
+L 75.371226 47.79317 
+L 75.441368 47.944007 
+L 75.448462 48.426584 
+L 75.498448 48.593818 
+L 75.644972 48.839452 
+L 75.932997 48.916233 
+L 76.067473 49.031168 
+L 76.171408 49.246649 
+L 76.28644 49.337267 
+L 76.412238 49.302688 
+L 76.486769 49.200917 
+L 76.489458 48.894978 
+L 75.894461 48.267661 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 67.489744 37.659431 
+L 67.638817 37.882748 
+L 68.034817 38.198251 
+L 68.972793 38.738903 
+L 68.917818 38.60076 
+L 68.281869 37.687522 
+L 67.815219 37.275072 
+L 67.286744 37.012911 
+L 66.963803 36.934654 
+L 66.845741 37.040207 
+L 66.92058 37.191587 
+L 67.392213 37.532364 
+L 67.489744 37.659431 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 72.119346 42.988173 
+L 72.175282 42.917643 
+L 72.154521 42.772091 
+L 71.707894 42.457464 
+L 70.833926 41.515065 
+L 71.01304 41.89018 
+L 71.451209 42.508801 
+L 72.119346 42.988173 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 71.756364 43.031304 
+L 71.387648 42.663927 
+L 71.268057 42.636708 
+L 71.520323 43.794974 
+L 71.595547 43.914617 
+L 71.692636 43.939282 
+L 71.879526 43.775023 
+L 72.004677 43.767242 
+L 71.940975 43.521091 
+L 71.667058 43.171478 
+L 71.756364 43.031304 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 65.523157 35.209503 
+L 65.829993 34.948284 
+L 65.83782 34.865311 
+L 65.813657 34.552354 
+L 65.7327 34.323607 
+L 65.523148 33.979103 
+L 65.532972 34.119162 
+L 65.490184 34.252911 
+L 65.349237 34.516842 
+L 65.419161 35.263244 
+L 65.523157 35.209503 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 57.956654 36.044707 
+L 57.594676 35.833676 
+L 57.153739 36.033468 
+L 57.252138 36.400086 
+L 57.20876 36.529567 
+L 57.05299 36.600567 
+L 56.998207 36.694325 
+L 57.044515 36.810566 
+L 57.54172 37.343741 
+L 57.832118 37.549701 
+L 58.096617 37.645383 
+L 58.266537 37.626424 
+L 58.341728 37.49296 
+L 58.352422 37.175951 
+L 58.290219 36.707946 
+L 58.111692 36.28518 
+L 57.956654 36.044707 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 64.980144 33.279973 
+L 64.93104 33.150396 
+L 64.708003 32.812485 
+L 64.44278 32.616713 
+L 64.271762 32.633804 
+L 64.065753 33.018934 
+L 63.996295 33.294204 
+L 64.356382 34.501127 
+L 64.603072 35.074172 
+L 64.666309 34.73056 
+L 64.988902 34.308948 
+L 65.171598 33.941509 
+L 65.112346 33.629907 
+L 64.980144 33.279973 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 96.907689 147.31233 
+L 96.61904 146.84437 
+L 96.439948 146.990861 
+L 96.793692 147.475419 
+L 97.121296 148.098907 
+L 97.483599 148.220916 
+L 97.804548 148.150671 
+L 97.618158 148.013454 
+L 96.907689 147.31233 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 99.191045 173.52 
+L 99.146573 172.886546 
+L 99.033141 172.608807 
+L 98.755704 172.329825 
+L 98.744208 171.987945 
+L 98.422751 171.967598 
+L 98.233724 172.136264 
+L 98.250503 172.465512 
+L 98.80302 173.52 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 87.158565 140.622364 
+L 87.630802 141.244088 
+L 87.923539 141.326275 
+L 88.307654 141.228835 
+L 88.628733 140.86634 
+L 88.570382 140.791391 
+L 88.142608 140.525286 
+L 87.158565 140.622364 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 90.291902 140.474981 
+L 89.173229 140.15968 
+L 88.979358 140.240834 
+L 89.123315 140.472154 
+L 89.165229 140.715779 
+L 89.583751 140.886411 
+L 90.93273 140.60553 
+L 91.000726 140.462547 
+L 90.888854 140.302175 
+L 90.291902 140.474981 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 97.040232 144.702847 
+L 97.175261 144.961087 
+L 97.593866 144.920012 
+L 97.996895 144.966252 
+L 97.703299 144.493207 
+L 97.456289 144.308976 
+L 96.545832 143.931697 
+L 96.467971 144.019026 
+L 96.506793 144.19557 
+L 96.529283 144.228172 
+L 96.81715 144.251698 
+L 96.904117 144.342111 
+L 97.040232 144.702847 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 49.381932 15.931992 
+L 49.26346 15.87259 
+L 49.186104 15.934187 
+L 49.149721 16.11777 
+L 49.184639 16.451209 
+L 49.504294 17.249152 
+L 49.679039 17.468635 
+L 50.143793 18.234491 
+L 50.301803 17.947573 
+L 50.34704 17.35494 
+L 50.171698 16.938308 
+L 49.488724 16.024644 
+L 49.381932 15.931992 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 41.272405 19.493168 
+L 41.201375 19.719749 
+L 41.184766 20.293345 
+L 41.249671 20.521595 
+L 41.36731 20.671663 
+L 41.441785 20.667532 
+L 41.628095 19.806325 
+L 41.320674 19.405836 
+L 41.272405 19.493168 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 45.236153 7.2 
+L 44.629205 7.637704 
+L 44.407086 7.876699 
+L 44.337682 8.065266 
+L 44.329633 8.257074 
+L 44.382831 8.452419 
+L 44.447193 8.564371 
+L 44.522112 8.592539 
+L 44.557339 8.494429 
+L 44.552379 8.269683 
+L 44.591746 8.095479 
+L 44.675239 7.971143 
+L 44.809427 7.993201 
+L 44.994795 8.16097 
+L 45.211413 8.553856 
+L 45.451935 8.620788 
+L 45.532356 8.705566 
+L 45.731805 8.579819 
+L 46.049687 8.242389 
+L 46.198113 8.021394 
+L 46.016864 7.494818 
+L 45.958303 7.41438 
+L 45.744187 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 46.616616 11.207521 
+L 46.042161 10.696988 
+L 45.31422 10.154442 
+L 45.098868 10.060679 
+L 44.772593 10.598128 
+L 45.149401 10.990449 
+L 45.496983 11.576925 
+L 46.056846 12.041482 
+L 46.786472 13.228943 
+L 47.038034 13.33421 
+L 47.119636 13.319851 
+L 47.471068 13.029784 
+L 47.546952 12.856348 
+L 46.939573 11.534716 
+L 46.616616 11.207521 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 53.838152 24.184703 
+L 53.653444 23.722935 
+L 53.621819 23.521863 
+L 53.488942 23.481464 
+L 53.092096 23.72406 
+L 52.999958 23.849722 
+L 52.962263 23.977404 
+L 53.130173 24.750326 
+L 53.30365 25.007732 
+L 53.554843 25.137461 
+L 53.719575 25.150346 
+L 53.797255 25.046483 
+L 53.849587 24.837994 
+L 53.893408 24.320468 
+L 53.838152 24.184703 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 52.895376 17.91551 
+L 53.209695 16.673024 
+L 53.239997 16.391909 
+L 52.767682 16.370051 
+L 52.415753 16.902941 
+L 52.348406 17.791332 
+L 52.352303 18.170304 
+L 52.38965 18.369761 
+L 52.340707 18.574331 
+L 52.205149 18.915549 
+L 52.522652 18.853642 
+L 52.639431 18.697565 
+L 52.738866 18.489362 
+L 52.895376 17.91551 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 48.624091 13.367057 
+L 48.510466 13.321218 
+L 48.449997 13.374226 
+L 48.472146 13.708503 
+L 48.538884 13.919813 
+L 48.757341 14.427489 
+L 48.89702 14.612475 
+L 49.052105 14.714991 
+L 49.117235 14.668707 
+L 49.040652 14.262973 
+L 48.70026 13.428896 
+L 48.624091 13.367057 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 49.783172 13.903553 
+L 49.842196 12.980118 
+L 49.793353 12.751549 
+L 49.648766 12.49584 
+L 49.588293 12.578222 
+L 49.559363 12.78071 
+L 49.266552 13.234849 
+L 49.173137 13.478224 
+L 49.180349 13.688285 
+L 49.237902 13.831742 
+L 49.345381 13.908845 
+L 49.756447 13.947987 
+L 49.783172 13.903553 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 128.135173 169.439571 
+L 127.131112 169.282827 
+L 127.08086 168.771146 
+L 126.817268 168.343999 
+L 126.253675 167.905813 
+L 125.793393 167.858068 
+L 125.805406 168.581713 
+L 125.908182 168.897948 
+L 126.442998 169.546679 
+L 127.877971 170.809083 
+L 128.495777 171.162248 
+L 128.528304 171.044604 
+L 128.359816 170.536006 
+L 128.135173 169.439571 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 117.995224 154.178322 
+L 118.362018 154.454562 
+L 118.545646 154.413389 
+L 118.572328 154.289213 
+L 118.439807 154.08415 
+L 118.076677 153.865781 
+L 118.003089 153.899278 
+L 117.995224 154.178322 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 134.034241 170.842925 
+L 133.704279 170.081739 
+L 133.574709 169.562943 
+L 133.431775 169.355581 
+L 132.65729 169.671835 
+L 132.411141 169.931525 
+L 132.207743 171.749895 
+L 132.330409 172.043165 
+L 133.28641 172.441593 
+L 133.731717 172.423724 
+L 134.034241 170.842925 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 46.967604 7.200001 
+L 46.795774 7.970013 
+L 46.140463 8.615133 
+L 45.628797 9.506123 
+L 45.855665 9.989482 
+L 46.535381 10.576923 
+L 47.15469 10.799569 
+L 47.406036 11.736992 
+L 48.3074 12.886397 
+L 48.775075 12.305429 
+L 49.631453 11.916349 
+L 49.980552 10.47842 
+L 51.088868 9.265614 
+L 51.351417 9.365594 
+L 52.132907 8.850465 
+L 52.34331 8.866928 
+L 52.768433 9.301802 
+L 52.6496 9.377387 
+L 52.024226 9.554234 
+L 51.792117 9.948804 
+L 51.787093 10.513484 
+L 52.014534 11.230988 
+L 52.279703 11.572057 
+L 52.772638 11.844654 
+L 53.180577 11.750402 
+L 53.814311 11.848851 
+L 54.155441 12.120515 
+L 54.740452 12.928207 
+L 54.796983 13.294365 
+L 54.069523 12.298668 
+L 53.205652 11.953157 
+L 52.699734 12.236538 
+L 52.455506 12.148127 
+L 51.391774 11.211043 
+L 51.112995 11.121381 
+L 51.408491 10.193373 
+L 51.098148 10.09601 
+L 50.746528 10.216007 
+L 50.347531 10.515235 
+L 50.0502 11.194791 
+L 50.294926 12.310298 
+L 51.107629 12.640165 
+L 51.908786 13.263302 
+L 52.350237 13.978418 
+L 52.47719 15.723824 
+L 52.793604 16.083775 
+L 54.089496 15.629459 
+L 53.712439 16.288684 
+L 52.892578 19.132579 
+L 53.019169 19.108072 
+L 54.324532 18.011485 
+L 54.333967 18.048764 
+L 53.833119 18.61342 
+L 53.78306 18.778885 
+L 53.812513 19.499695 
+L 52.42257 20.436 
+L 52.99455 21.53747 
+L 53.245883 22.936589 
+L 53.774472 21.912176 
+L 54.597225 20.000905 
+L 54.790251 19.763277 
+L 55.123978 19.596571 
+L 55.931111 19.387379 
+L 58.04685 17.416208 
+L 58.196484 16.948141 
+L 58.187257 16.371059 
+L 58.231682 16.373327 
+L 58.415532 16.985766 
+L 58.401453 17.180214 
+L 58.194651 17.582187 
+L 57.36331 18.315741 
+L 57.258369 18.567537 
+L 57.399325 19.25536 
+L 57.523146 19.420647 
+L 58.257454 19.877914 
+L 59.052999 21.554531 
+L 58.954695 21.520584 
+L 58.355393 20.673285 
+L 57.966184 19.976615 
+L 57.298399 19.773777 
+L 57.069443 19.231468 
+L 56.25826 19.431075 
+L 55.250615 20.036497 
+L 54.722139 20.404086 
+L 54.469759 21.071891 
+L 54.353533 21.695074 
+L 54.88952 21.715746 
+L 54.24163 22.80018 
+L 54.19227 23.095805 
+L 54.303815 24.230041 
+L 54.952253 25.101998 
+L 55.888352 23.85174 
+L 56.329538 23.695802 
+L 57.583672 23.718791 
+L 58.983387 23.894588 
+L 58.798112 23.954005 
+L 55.94654 24.321481 
+L 54.975204 25.439889 
+L 54.553582 26.451684 
+L 54.51637 27.221074 
+L 56.227769 28.886687 
+L 57.261336 29.278913 
+L 57.498011 29.117465 
+L 58.879082 29.062696 
+L 59.188483 28.750719 
+L 59.417822 28.164568 
+L 59.512659 28.802565 
+L 59.316999 29.411019 
+L 59.446971 29.577668 
+L 59.742961 29.54008 
+L 59.919824 29.634558 
+L 59.813004 29.827163 
+L 59.274635 30.338232 
+L 59.354334 30.686607 
+L 59.866572 30.751529 
+L 61.837217 30.608165 
+L 61.856708 30.744074 
+L 61.137248 30.837935 
+L 60.400426 31.063405 
+L 59.509487 31.249674 
+L 59.482925 31.497893 
+L 59.665768 31.638633 
+L 60.369548 31.721708 
+L 61.498573 32.018533 
+L 62.317598 31.923645 
+L 62.617158 32.224985 
+L 62.854838 32.225706 
+L 62.993104 32.102306 
+L 63.347719 31.049837 
+L 63.434279 31.983927 
+L 63.560822 32.056164 
+L 64.67686 32.243214 
+L 65.325156 32.024524 
+L 65.859644 31.050841 
+L 65.923336 30.707591 
+L 65.860609 30.401518 
+L 65.939822 30.103746 
+L 66.266411 29.711445 
+L 66.187711 30.01504 
+L 66.186996 31.24994 
+L 65.845922 31.89151 
+L 65.305079 32.648226 
+L 65.34372 33.00984 
+L 65.586415 33.073316 
+L 65.79034 33.460153 
+L 65.77517 33.7209 
+L 66.358259 34.959022 
+L 66.351666 35.30438 
+L 67.571088 36.739125 
+L 67.86567 36.946563 
+L 68.42604 37.004576 
+L 69.028038 36.888798 
+L 69.395392 36.499979 
+L 69.773635 36.259405 
+L 69.857363 35.601272 
+L 70.281467 34.893186 
+L 69.946186 34.350416 
+L 69.999301 34.32344 
+L 70.449516 34.624719 
+L 70.611753 34.997876 
+L 70.436502 35.283521 
+L 70.170946 35.451019 
+L 70.081501 35.683837 
+L 70.045538 36.900501 
+L 70.159464 37.288249 
+L 70.622825 37.814402 
+L 70.855802 37.830722 
+L 71.399735 37.684872 
+L 71.265731 37.836886 
+L 70.71189 38.242629 
+L 70.375066 38.279477 
+L 69.948543 37.408834 
+L 69.653206 37.278039 
+L 69.375189 37.758227 
+L 69.470649 38.146968 
+L 70.175147 38.954237 
+L 71.670869 39.519722 
+L 71.985926 39.206418 
+L 72.148014 39.271839 
+L 72.423472 39.164478 
+L 72.487549 38.388749 
+L 73.092887 37.728171 
+L 73.125838 37.773318 
+L 72.602709 39.822123 
+L 72.659794 39.925137 
+L 73.10272 39.906175 
+L 74.005883 40.046268 
+L 74.382459 39.596248 
+L 74.074008 40.284043 
+L 73.051018 40.367229 
+L 72.851854 40.476312 
+L 73.011939 40.748168 
+L 73.038938 41.339216 
+L 73.175319 41.39726 
+L 73.48264 41.340263 
+L 73.490752 41.420792 
+L 73.307503 41.8241 
+L 73.533075 42.343882 
+L 73.982177 41.716406 
+L 74.149336 41.718891 
+L 74.728005 42.263442 
+L 75.155184 43.572995 
+L 75.295826 43.774429 
+L 75.766733 43.790683 
+L 75.900204 44.401423 
+L 75.956422 45.476963 
+L 75.753553 45.589876 
+L 75.250867 45.570335 
+L 75.223726 45.856015 
+L 75.330991 45.94329 
+L 75.751379 46.095304 
+L 75.982265 46.338259 
+L 76.348446 47.031938 
+L 76.067022 47.099046 
+L 75.829752 47.289165 
+L 75.838543 47.744812 
+L 75.937472 47.937539 
+L 76.409081 48.208569 
+L 76.287108 47.590611 
+L 76.405635 47.707174 
+L 76.714115 48.275647 
+L 77.04368 48.734177 
+L 76.644872 49.466146 
+L 76.319182 50.213269 
+L 76.395014 50.659109 
+L 76.270669 51.07662 
+L 76.455019 51.398306 
+L 76.418872 51.893668 
+L 76.50366 52.923509 
+L 76.000185 53.415618 
+L 75.792659 53.418385 
+L 75.651452 53.544271 
+L 75.258471 54.401526 
+L 74.792594 54.608036 
+L 74.426782 54.378314 
+L 73.965375 54.466275 
+L 73.455929 54.408928 
+L 73.639708 54.191261 
+L 73.959558 53.427982 
+L 74.443782 53.177588 
+L 74.633067 53.90636 
+L 74.912578 53.266762 
+L 75.374359 53.547257 
+L 75.492804 53.426956 
+L 75.599328 52.31235 
+L 75.478032 51.88271 
+L 75.085641 51.326726 
+L 75.135984 51.29536 
+L 75.361891 51.308903 
+L 75.349486 50.671062 
+L 75.774918 50.305266 
+L 75.837201 50.001601 
+L 75.7482 49.318086 
+L 75.482392 49.336609 
+L 75.406341 49.866561 
+L 74.911601 50.341517 
+L 74.730607 50.743008 
+L 74.026167 51.343595 
+L 73.709953 51.653346 
+L 73.349594 52.340903 
+L 73.312953 52.69473 
+L 73.986279 52.586116 
+L 73.961473 52.653336 
+L 73.468697 52.956489 
+L 72.995754 52.976706 
+L 73.030335 52.439518 
+L 73.404693 51.696721 
+L 74.454539 50.131019 
+L 74.524712 50.194569 
+L 74.5356 50.51165 
+L 74.639791 50.493014 
+L 75.195313 49.564213 
+L 74.681061 47.87425 
+L 74.098572 48.263444 
+L 73.589182 48.224045 
+L 72.99064 47.734322 
+L 72.400139 47.952258 
+L 69.400439 47.557045 
+L 68.8645 47.334252 
+L 68.535646 47.045674 
+L 67.432666 46.626827 
+L 66.55621 46.108456 
+L 66.217789 46.061073 
+L 66.324566 46.685397 
+L 66.193534 47.561947 
+L 66.317298 48.732373 
+L 66.485175 49.197975 
+L 67.169809 50.009558 
+L 67.513471 50.845852 
+L 67.752167 52.522099 
+L 68.203121 53.823949 
+L 68.416 55.497802 
+L 68.557392 54.973232 
+L 68.869305 55.01872 
+L 69.113393 55.322734 
+L 69.755001 55.480368 
+L 68.51695 56.105077 
+L 68.677015 56.884391 
+L 69.185996 57.136109 
+L 69.487278 57.464246 
+L 69.183731 58.949778 
+L 68.881785 58.357745 
+L 68.772025 57.804802 
+L 68.57525 59.938187 
+L 69.095488 59.813336 
+L 69.38159 60.037811 
+L 70.334382 59.852113 
+L 70.502485 60.06733 
+L 71.350517 60.065197 
+L 71.617435 60.400155 
+L 72.450112 60.860003 
+L 71.986388 60.913776 
+L 71.618481 60.833772 
+L 71.333824 60.469874 
+L 71.083183 60.377235 
+L 70.381165 60.623362 
+L 69.29201 60.597644 
+L 69.066041 60.30713 
+L 68.944291 60.343452 
+L 69.121632 60.866203 
+L 68.998174 62.817993 
+L 69.093198 64.568503 
+L 68.917369 65.226454 
+L 68.969848 65.722358 
+L 68.330494 69.798999 
+L 68.373156 70.651337 
+L 68.249107 71.490196 
+L 68.314747 72.113773 
+L 68.052259 72.708858 
+L 67.507019 77.177386 
+L 66.960047 78.750518 
+L 67.228516 78.583604 
+L 67.399383 78.674558 
+L 67.010871 79.030456 
+L 66.794654 79.018167 
+L 66.664218 79.188645 
+L 65.614126 82.630749 
+L 66.20907 84.15787 
+L 66.128338 85.992183 
+L 66.355952 87.192715 
+L 67.029995 88.12304 
+L 67.024668 88.754413 
+L 66.827596 89.410116 
+L 67.213989 89.875157 
+L 67.419057 90.52076 
+L 67.615599 92.088361 
+L 67.216517 93.577659 
+L 67.214348 94.801443 
+L 66.729762 96.067347 
+L 66.890255 96.094017 
+L 66.575038 96.530417 
+L 66.621167 96.374186 
+L 66.565883 96.290945 
+L 66.41094 96.481696 
+L 65.924515 97.908639 
+L 66.113552 99.487855 
+L 67.16782 100.554688 
+L 68.256869 102.121481 
+L 68.503276 102.688669 
+L 68.727531 103.725024 
+L 68.739315 104.407354 
+L 68.498235 105.364403 
+L 68.970522 107.06823 
+L 69.0323 108.408601 
+L 70.418052 109.962384 
+L 71.095409 110.89483 
+L 71.955102 111.479787 
+L 72.326273 112.433599 
+L 72.632104 112.622512 
+L 73.029762 113.157812 
+L 73.185058 113.641352 
+L 72.673119 112.950066 
+L 72.708307 113.806805 
+L 72.537851 114.516149 
+L 72.891864 114.082706 
+L 73.195568 114.280482 
+L 74.183954 115.10711 
+L 74.68418 115.299027 
+L 75.007916 115.615793 
+L 75.29237 115.541598 
+L 75.154517 114.782234 
+L 75.222775 113.76302 
+L 75.694895 113.531494 
+L 75.986155 113.592957 
+L 76.934124 114.062892 
+L 77.571274 113.68601 
+L 77.770308 113.70958 
+L 78.352135 114.008721 
+L 79.676502 113.953709 
+L 80.197688 114.138234 
+L 79.950139 114.161192 
+L 79.612139 114.10243 
+L 79.202667 114.280272 
+L 76.604222 114.223983 
+L 76.097261 114.438462 
+L 75.724324 114.741924 
+L 76.179916 115.864474 
+L 76.561523 116.250571 
+L 77.342747 117.922711 
+L 76.843879 117.765734 
+L 76.519242 117.354386 
+L 76.160321 117.167954 
+L 75.787311 116.744116 
+L 75.720643 115.872113 
+L 75.400575 115.806685 
+L 75.041145 115.973769 
+L 75.103105 117.480819 
+L 75.566999 118.598761 
+L 75.627488 119.687059 
+L 76.829525 121.119334 
+L 78.322154 121.469619 
+L 78.706461 122.04687 
+L 78.796079 122.828129 
+L 78.555535 123.318444 
+L 78.11117 123.875382 
+L 78.15222 124.791093 
+L 78.323468 125.460488 
+L 79.453754 126.625726 
+L 81.165057 129.000634 
+L 81.487948 129.760752 
+L 82.271672 130.212371 
+L 82.893191 131.038835 
+L 83.557675 131.400247 
+L 83.771621 131.790364 
+L 83.643239 132.384952 
+L 83.794179 132.812296 
+L 84.607548 133.147205 
+L 84.868241 133.376224 
+L 85.008503 133.676412 
+L 84.856685 134.512371 
+L 85.071054 135.411214 
+L 85.005897 135.822492 
+L 85.069659 136.349466 
+L 84.977229 136.933927 
+L 85.440638 137.166149 
+L 85.872924 137.635626 
+L 86.334757 137.709463 
+L 88.203027 137.62008 
+L 89.295596 137.977946 
+L 90.059995 138.044548 
+L 90.640969 137.912595 
+L 91.699242 138.41114 
+L 92.506758 138.92481 
+L 92.694443 139.532456 
+L 93.205386 139.861574 
+L 94.923727 140.389591 
+L 96.19683 140.282307 
+L 96.706706 140.381828 
+L 97.358571 141.404354 
+L 97.286158 142.157107 
+L 97.9306 142.342956 
+L 98.084159 142.033917 
+L 98.647978 142.065941 
+L 99.100829 142.236652 
+L 99.829316 142.882329 
+L 100.747543 143.379162 
+L 102.576851 144.897836 
+L 103.449261 146.142263 
+L 103.860401 147.611183 
+L 103.796075 148.054649 
+L 103.986342 148.979305 
+L 104.311248 148.807779 
+L 104.579389 149.04943 
+L 104.662816 149.80548 
+L 105.248421 151.275867 
+L 105.954848 151.940479 
+L 106.381308 153.239251 
+L 107.697682 154.132232 
+L 107.709343 154.742147 
+L 107.556511 154.865987 
+L 107.16575 154.923752 
+L 107.477561 155.143568 
+L 107.553974 156.016846 
+L 107.869938 156.432234 
+L 108.763641 157.290831 
+L 109.5195 158.28754 
+L 109.678293 158.77359 
+L 109.805059 159.79512 
+L 111.185908 160.808343 
+L 111.37144 161.444771 
+L 111.458267 162.370164 
+L 111.695338 163.334125 
+L 112.497301 163.645216 
+L 112.759446 163.998043 
+L 112.985294 165.423056 
+L 112.921645 166.239512 
+L 113.271119 166.378819 
+L 113.763176 167.524358 
+L 114.412687 167.984739 
+L 116.796844 169.488054 
+L 117.806934 169.700714 
+L 118.143035 169.892783 
+L 118.523925 170.323565 
+L 119.82048 171.460063 
+L 121.85483 173.52 
+L 121.85483 173.52 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+    <path d="M 128.713875 173.519999 
+L 128.367269 172.722967 
+L 128.049575 172.618748 
+L 127.695623 172.686707 
+L 127.600335 172.52467 
+L 127.618869 172.299992 
+L 127.277591 171.845762 
+L 126.607727 172.033462 
+L 126.337808 171.421467 
+L 126.260578 170.91028 
+L 124.926407 169.279138 
+L 124.470939 168.843574 
+L 123.05714 167.839546 
+L 122.329411 167.076877 
+L 121.180831 166.534819 
+L 120.975852 166.115315 
+L 120.081853 165.355978 
+L 119.571792 164.513494 
+L 119.42422 163.987074 
+L 119.40361 162.224465 
+L 119.059136 161.498938 
+L 118.896531 160.565241 
+L 118.488501 159.323549 
+L 117.965136 158.561338 
+L 117.723622 158.079731 
+L 117.753638 155.571669 
+L 118.034161 154.834493 
+L 117.691919 153.863993 
+L 117.358996 153.545177 
+L 117.122514 153.232597 
+L 118.238036 153.772706 
+L 118.495152 153.945066 
+L 118.998933 154.008157 
+L 119.348084 154.171132 
+L 121.023757 155.221883 
+L 121.689227 155.479702 
+L 122.07166 155.430097 
+L 122.503484 155.298582 
+L 122.612585 154.845522 
+L 122.761697 154.592752 
+L 123.851763 154.974834 
+L 124.20213 155.172287 
+L 124.605222 155.505154 
+L 124.71923 156.29626 
+L 125.547152 156.570301 
+L 126.968036 156.695005 
+L 127.232882 156.802753 
+L 127.824586 156.940049 
+L 128.047001 157.103915 
+L 128.117458 157.704562 
+L 127.963036 157.8903 
+L 127.756389 157.8008 
+L 127.711811 157.996891 
+L 127.799558 158.12658 
+L 127.947789 158.699656 
+L 127.891565 159.657099 
+L 128.264639 160.559779 
+L 128.938738 161.426716 
+L 129.770766 162.731349 
+L 130.237218 163.835948 
+L 130.431435 164.740313 
+L 130.703274 165.16629 
+L 130.979711 165.448182 
+L 131.519479 166.387599 
+L 132.525303 167.496328 
+L 132.715691 167.979995 
+L 132.71205 168.245902 
+L 132.837818 168.707448 
+L 133.291931 168.826786 
+L 133.76875 169.13174 
+L 134.034443 170.102185 
+L 134.264192 170.731155 
+L 135.006384 171.466698 
+L 135.647149 171.880847 
+L 135.789679 172.032863 
+L 135.882491 172.322156 
+L 136.372988 172.958793 
+L 136.913694 173.457318 
+L 136.962396 173.52 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #000000"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 7.2 7.675518 
+L 7.320793 7.200001 
+L 7.320793 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 31.034597 173.519999 
+L 31.048213 173.345506 
+L 31.184683 171.601725 
+L 31.321898 169.857561 
+L 31.459855 168.113021 
+L 31.598556 166.368117 
+L 31.737998 164.622857 
+L 31.87818 162.877249 
+L 32.019102 161.131304 
+L 32.160763 159.38503 
+L 32.303162 157.638437 
+L 32.446298 155.891533 
+L 32.59017 154.144328 
+L 32.734776 152.396832 
+L 32.880117 150.649052 
+L 33.026191 148.901 
+L 33.172998 147.152683 
+L 33.320536 145.404111 
+L 33.468804 143.655294 
+L 33.617802 141.90624 
+L 33.767529 140.156959 
+L 33.917983 138.40746 
+L 34.069165 136.657752 
+L 34.221072 134.907846 
+L 34.373705 133.157749 
+L 34.527062 131.407472 
+L 34.681142 129.657023 
+L 34.835946 127.906413 
+L 34.99147 126.15565 
+L 35.147716 124.404743 
+L 35.304681 122.653703 
+L 35.462366 120.902539 
+L 35.620769 119.151259 
+L 35.779889 117.399873 
+L 35.939726 115.648391 
+L 36.100279 113.896823 
+L 36.261546 112.145176 
+L 36.423528 110.393462 
+L 36.586223 108.641689 
+L 36.74963 106.889867 
+L 36.913748 105.138006 
+L 37.078578 103.386114 
+L 37.244117 101.634201 
+L 37.410366 99.882277 
+L 37.577322 98.130351 
+L 37.744986 96.378434 
+L 37.913357 94.626533 
+L 38.082434 92.874659 
+L 38.252216 91.122822 
+L 38.422702 89.37103 
+L 38.593891 87.619294 
+L 38.765783 85.867622 
+L 38.938377 84.116026 
+L 39.111672 82.364513 
+L 39.285667 80.613094 
+L 39.460362 78.861778 
+L 39.635756 77.110576 
+L 39.811847 75.359496 
+L 39.988636 73.608547 
+L 40.166121 71.857741 
+L 40.344302 70.107086 
+L 40.523178 68.356592 
+L 40.702748 66.606269 
+L 40.883011 64.856126 
+L 41.063967 63.106173 
+L 41.245615 61.35642 
+L 41.427954 59.606876 
+L 41.610983 57.857551 
+L 41.794702 56.108455 
+L 41.97911 54.359598 
+L 42.164206 52.610989 
+L 42.34999 50.862637 
+L 42.53646 49.114553 
+L 42.723617 47.366747 
+L 42.911458 45.619228 
+L 43.099984 43.872006 
+L 43.289194 42.12509 
+L 43.479088 40.378491 
+L 43.669663 38.632218 
+L 43.86092 36.886281 
+L 44.052859 35.14069 
+L 44.245477 33.395455 
+L 44.438776 31.650585 
+L 44.632753 29.90609 
+L 44.827408 28.16198 
+L 45.022742 26.418265 
+L 45.218751 24.674955 
+L 45.415438 22.932059 
+L 45.612799 21.189588 
+L 45.810836 19.447551 
+L 46.009546 17.705958 
+L 46.20893 15.964819 
+L 46.408987 14.224144 
+L 46.609717 12.483943 
+L 46.811117 10.744226 
+L 47.013189 9.005002 
+L 47.215931 7.266281 
+L 47.223674 7.200001 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 89.014239 173.519999 
+L 88.99276 171.970565 
+L 88.96842 170.223268 
+L 88.943948 168.475553 
+L 88.919345 166.727432 
+L 88.89461 164.978911 
+L 88.869745 163.230002 
+L 88.844749 161.480712 
+L 88.819623 159.731051 
+L 88.794366 157.981029 
+L 88.768979 156.230653 
+L 88.743461 154.479934 
+L 88.717814 152.72888 
+L 88.692037 150.977501 
+L 88.66613 149.225806 
+L 88.640094 147.473804 
+L 88.613929 145.721504 
+L 88.587634 143.968915 
+L 88.561211 142.216047 
+L 88.534658 140.462909 
+L 88.507977 138.70951 
+L 88.481167 136.955859 
+L 88.454229 135.201966 
+L 88.427163 133.44784 
+L 88.399969 131.69349 
+L 88.372646 129.938925 
+L 88.345196 128.184155 
+L 88.317619 126.429189 
+L 88.289913 124.674036 
+L 88.262081 122.918705 
+L 88.234121 121.163207 
+L 88.206034 119.40755 
+L 88.17782 117.651743 
+L 88.14948 115.895796 
+L 88.121013 114.139718 
+L 88.092419 112.383519 
+L 88.0637 110.627208 
+L 88.034854 108.870795 
+L 88.005882 107.114288 
+L 87.976784 105.357697 
+L 87.94756 103.601032 
+L 87.918211 101.844302 
+L 87.888736 100.087516 
+L 87.859136 98.330684 
+L 87.829411 96.573815 
+L 87.79956 94.816919 
+L 87.769585 93.060005 
+L 87.739485 91.303083 
+L 87.709261 89.546162 
+L 87.678912 87.789252 
+L 87.648438 86.032361 
+L 87.61784 84.275501 
+L 87.587119 82.518679 
+L 87.556273 80.761906 
+L 87.525303 79.005192 
+L 87.49421 77.248544 
+L 87.462993 75.491975 
+L 87.431653 73.735492 
+L 87.40019 71.979105 
+L 87.368603 70.222824 
+L 87.336893 68.466659 
+L 87.305061 66.710618 
+L 87.273105 64.954713 
+L 87.241027 63.198951 
+L 87.208827 61.443344 
+L 87.176504 59.6879 
+L 87.144059 57.932629 
+L 87.111492 56.17754 
+L 87.078802 54.422644 
+L 87.045991 52.66795 
+L 87.013058 50.913468 
+L 86.980004 49.159207 
+L 86.946828 47.405176 
+L 86.91353 45.651387 
+L 86.880112 43.897848 
+L 86.846572 42.144568 
+L 86.812911 40.391559 
+L 86.779129 38.638828 
+L 86.745227 36.886387 
+L 86.711204 35.134245 
+L 86.67706 33.382411 
+L 86.642796 31.630895 
+L 86.608412 29.879707 
+L 86.573907 28.128857 
+L 86.539282 26.378354 
+L 86.504538 24.628209 
+L 86.469673 22.87843 
+L 86.434689 21.129028 
+L 86.399586 19.380013 
+L 86.364362 17.631394 
+L 86.32902 15.883181 
+L 86.293558 14.135383 
+L 86.257977 12.388012 
+L 86.222277 10.641075 
+L 86.186458 8.894584 
+L 86.151581 7.200001 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 147.114498 173.519999 
+L 147.088304 173.270931 
+L 146.904637 171.529789 
+L 146.719964 169.788297 
+L 146.534287 168.046466 
+L 146.347606 166.304304 
+L 146.159923 164.561822 
+L 145.971239 162.819027 
+L 145.781556 161.075929 
+L 145.590874 159.332538 
+L 145.399195 157.588862 
+L 145.20652 155.844911 
+L 145.012851 154.100695 
+L 144.818189 152.356221 
+L 144.622535 150.6115 
+L 144.42589 148.866541 
+L 144.228255 147.121354 
+L 144.029633 145.375946 
+L 143.830023 143.630328 
+L 143.629428 141.88451 
+L 143.427848 140.138499 
+L 143.225285 138.392307 
+L 143.02174 136.645941 
+L 142.817215 134.899412 
+L 142.611709 133.152728 
+L 142.405225 131.405899 
+L 142.197764 129.658935 
+L 141.989328 127.911845 
+L 141.779916 126.164638 
+L 141.56953 124.417324 
+L 141.358173 122.669911 
+L 141.145844 120.92241 
+L 140.932545 119.17483 
+L 140.718277 117.427181 
+L 140.503041 115.679471 
+L 140.286839 113.93171 
+L 140.069672 112.183908 
+L 139.85154 110.436075 
+L 139.632445 108.688219 
+L 139.412388 106.94035 
+L 139.191371 105.192478 
+L 138.969394 103.444612 
+L 138.746458 101.696762 
+L 138.522565 99.948937 
+L 138.297716 98.201147 
+L 138.071911 96.453402 
+L 137.845153 94.70571 
+L 137.617441 92.958082 
+L 137.388778 91.210527 
+L 137.159165 89.463055 
+L 136.928601 87.715675 
+L 136.697089 85.968397 
+L 136.46463 84.22123 
+L 136.231225 82.474185 
+L 135.996874 80.727271 
+L 135.761579 78.980497 
+L 135.525341 77.233873 
+L 135.288161 75.487409 
+L 135.05004 73.741114 
+L 134.810979 71.994999 
+L 134.57098 70.249072 
+L 134.330043 68.503344 
+L 134.088169 66.757824 
+L 133.845359 65.012522 
+L 133.601615 63.267448 
+L 133.356937 61.522611 
+L 133.111327 59.778022 
+L 132.864785 58.033689 
+L 132.617313 56.289623 
+L 132.368911 54.545834 
+L 132.119581 52.80233 
+L 131.869324 51.059123 
+L 131.61814 49.316222 
+L 131.366031 47.573636 
+L 131.112997 45.831376 
+L 130.85904 44.089451 
+L 130.604161 42.347871 
+L 130.34836 40.606646 
+L 130.091639 38.865785 
+L 129.833998 37.1253 
+L 129.575439 35.385199 
+L 129.315963 33.645492 
+L 129.05557 31.906189 
+L 128.794261 30.167301 
+L 128.532038 28.428836 
+L 128.268902 26.690806 
+L 128.004852 24.953219 
+L 127.739891 23.216086 
+L 127.474019 21.479417 
+L 127.207237 19.743221 
+L 126.939547 18.007509 
+L 126.670948 16.27229 
+L 126.401443 14.537575 
+L 126.131031 12.803373 
+L 125.859714 11.069694 
+L 125.587493 9.336549 
+L 125.314368 7.603947 
+L 125.250548 7.200001 
+L 125.250548 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 170.265205 23.022634 
+L 169.98149 22.028283 
+L 169.493506 20.323192 
+L 169.003855 18.618803 
+L 168.51254 16.915125 
+L 168.019561 15.212169 
+L 167.524923 13.509944 
+L 167.028625 11.808462 
+L 166.530671 10.107733 
+L 166.031062 8.407766 
+L 165.674965 7.2 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="LineCollection_2">
+    <path d="M 7.200002 162.012827 
+L 7.79882 162.094069 
+L 10.150829 162.406495 
+L 12.504675 162.708544 
+L 14.860296 163.000215 
+L 17.217628 163.281508 
+L 19.576609 163.552422 
+L 21.937178 163.812958 
+L 24.29927 164.063114 
+L 26.662826 164.302892 
+L 29.027781 164.53229 
+L 31.394074 164.751308 
+L 33.761642 164.959947 
+L 36.130424 165.158206 
+L 38.500357 165.346085 
+L 40.87138 165.523584 
+L 43.24343 165.690702 
+L 45.616445 165.84744 
+L 47.990363 165.993797 
+L 50.365123 166.129774 
+L 52.740661 166.25537 
+L 55.116917 166.370585 
+L 57.493829 166.475418 
+L 59.871334 166.569871 
+L 62.249371 166.653943 
+L 64.627877 166.727633 
+L 67.006791 166.790942 
+L 69.386052 166.84387 
+L 71.765597 166.886416 
+L 74.145364 166.918581 
+L 76.525292 166.940364 
+L 78.905318 166.951766 
+L 81.285382 166.952787 
+L 83.66542 166.943426 
+L 86.045372 166.923684 
+L 88.425176 166.89356 
+L 90.804769 166.853054 
+L 93.184091 166.802168 
+L 95.563078 166.7409 
+L 97.941669 166.66925 
+L 100.319803 166.58722 
+L 102.697418 166.494808 
+L 105.074451 166.392015 
+L 107.450841 166.278841 
+L 109.826525 166.155287 
+L 112.201443 166.021351 
+L 114.575531 165.877035 
+L 116.948729 165.722337 
+L 119.320973 165.55726 
+L 121.692203 165.381802 
+L 124.062355 165.195964 
+L 126.431369 164.999746 
+L 128.799181 164.793148 
+L 131.165729 164.57617 
+L 133.530952 164.348812 
+L 135.894787 164.111075 
+L 138.257173 163.862959 
+L 140.618046 163.604464 
+L 142.977344 163.335591 
+L 145.335005 163.056338 
+L 147.690967 162.766708 
+L 150.045167 162.466699 
+L 152.397543 162.156313 
+L 154.748031 161.835549 
+L 157.096571 161.504408 
+L 159.443098 161.162889 
+L 161.78755 160.810995 
+L 164.129864 160.448723 
+L 166.469978 160.076076 
+L 168.807828 159.693053 
+L 170.265204 159.448836 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 128.810078 
+L 7.469174 128.850065 
+L 9.683301 129.173177 
+L 11.899391 129.486234 
+L 14.11738 129.789234 
+L 16.337206 130.082177 
+L 18.558807 130.36506 
+L 20.78212 130.637884 
+L 23.007084 130.900648 
+L 25.233634 131.15335 
+L 27.46171 131.395989 
+L 29.691249 131.628566 
+L 31.922188 131.851079 
+L 34.154466 132.063528 
+L 36.38802 132.265912 
+L 38.622787 132.458229 
+L 40.858707 132.640481 
+L 43.095717 132.812666 
+L 45.333754 132.974783 
+L 47.572757 133.126832 
+L 49.812663 133.268812 
+L 52.053412 133.400724 
+L 54.29494 133.522567 
+L 56.537185 133.634339 
+L 58.780087 133.736042 
+L 61.023582 133.827675 
+L 63.267609 133.909236 
+L 65.512106 133.980727 
+L 67.757012 134.042147 
+L 70.002263 134.093495 
+L 72.247799 134.134772 
+L 74.493558 134.165978 
+L 76.739477 134.187111 
+L 78.985496 134.198173 
+L 81.231551 134.199163 
+L 83.477581 134.190081 
+L 85.723525 134.170928 
+L 87.96932 134.141703 
+L 90.214905 134.102406 
+L 92.460217 134.053038 
+L 94.705195 133.993598 
+L 96.949778 133.924087 
+L 99.193902 133.844505 
+L 101.437507 133.754853 
+L 103.68053 133.65513 
+L 105.92291 133.545337 
+L 108.164583 133.425474 
+L 110.40549 133.295542 
+L 112.645567 133.155541 
+L 114.884752 133.005471 
+L 117.122984 132.845334 
+L 119.360201 132.675128 
+L 121.59634 132.494856 
+L 123.831339 132.304517 
+L 126.065136 132.104113 
+L 128.29767 131.893643 
+L 130.528877 131.673108 
+L 132.758696 131.44251 
+L 134.987064 131.201848 
+L 137.21392 130.951125 
+L 139.4392 130.690339 
+L 141.662843 130.419493 
+L 143.884785 130.138587 
+L 146.104966 129.847623 
+L 148.323321 129.5466 
+L 150.539789 129.23552 
+L 152.754306 128.914384 
+L 154.966811 128.583193 
+L 157.177241 128.241949 
+L 159.385532 127.890652 
+L 161.591623 127.529303 
+L 163.79545 127.157903 
+L 165.99695 126.776455 
+L 168.196061 126.384959 
+L 170.265205 126.007012 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200002 95.432774 
+L 8.109048 95.581028 
+L 10.172979 95.910438 
+L 12.238977 96.230208 
+L 14.306981 96.540336 
+L 16.376928 96.840821 
+L 18.448757 97.131661 
+L 20.522406 97.412855 
+L 22.597813 97.6844 
+L 24.674915 97.946295 
+L 26.753652 98.198538 
+L 28.833962 98.441128 
+L 30.915782 98.674064 
+L 32.999051 98.897344 
+L 35.083708 99.110966 
+L 37.16969 99.314931 
+L 39.256937 99.509235 
+L 41.345387 99.693879 
+L 43.434977 99.868861 
+L 45.525648 100.034181 
+L 47.617336 100.189836 
+L 49.709982 100.335827 
+L 51.803523 100.472152 
+L 53.897897 100.598811 
+L 55.993044 100.715803 
+L 58.088902 100.823127 
+L 60.18541 100.920783 
+L 62.282506 101.00877 
+L 64.38013 101.087087 
+L 66.478219 101.155735 
+L 68.576712 101.214712 
+L 70.675549 101.264019 
+L 72.774667 101.303655 
+L 74.874006 101.33362 
+L 76.973504 101.353913 
+L 79.0731 101.364536 
+L 81.172733 101.365486 
+L 83.272341 101.356766 
+L 85.371864 101.338374 
+L 87.471239 101.31031 
+L 89.570405 101.272576 
+L 91.669302 101.22517 
+L 93.767868 101.168094 
+L 95.866041 101.101347 
+L 97.963761 101.024931 
+L 100.060966 100.938845 
+L 102.157594 100.84309 
+L 104.253585 100.737667 
+L 106.348877 100.622576 
+L 108.443408 100.497817 
+L 110.537117 100.363392 
+L 112.629944 100.219302 
+L 114.721825 100.065546 
+L 116.812701 99.902127 
+L 118.902509 99.729045 
+L 120.991187 99.5463 
+L 123.078675 99.353895 
+L 125.164912 99.15183 
+L 127.249834 98.940106 
+L 129.333381 98.718724 
+L 131.415491 98.487687 
+L 133.496102 98.246995 
+L 135.575153 97.996649 
+L 137.652582 97.736652 
+L 139.728326 97.467004 
+L 141.802326 97.187707 
+L 143.874517 96.898764 
+L 145.944839 96.600175 
+L 148.01323 96.291942 
+L 150.079628 95.974067 
+L 152.14397 95.646553 
+L 154.206194 95.309401 
+L 156.266239 94.962612 
+L 158.324043 94.60619 
+L 160.379542 94.240137 
+L 162.432675 93.864454 
+L 164.48338 93.479143 
+L 166.531593 93.084208 
+L 168.577253 92.679651 
+L 170.265204 92.33819 
+L 170.265205 92.338189 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 61.908817 
+L 7.881167 62.032986 
+L 9.780826 62.372797 
+L 11.682691 62.703484 
+L 13.586701 63.025044 
+L 15.492797 63.337474 
+L 17.400916 63.640772 
+L 19.311 63.934934 
+L 21.222986 64.219959 
+L 23.136814 64.495843 
+L 25.052425 64.762584 
+L 26.969757 65.02018 
+L 28.888749 65.268628 
+L 30.809342 65.507926 
+L 32.731475 65.738073 
+L 34.655088 65.959066 
+L 36.580119 66.170903 
+L 38.50651 66.373582 
+L 40.434199 66.567101 
+L 42.363126 66.75146 
+L 44.293232 66.926655 
+L 46.224455 67.092686 
+L 48.156735 67.249551 
+L 50.090013 67.397249 
+L 52.024228 67.535779 
+L 53.959321 67.665139 
+L 55.895229 67.785328 
+L 57.831895 67.896345 
+L 59.769257 67.998189 
+L 61.707256 68.09086 
+L 63.645831 68.174356 
+L 65.584923 68.248677 
+L 67.524471 68.313822 
+L 69.464414 68.36979 
+L 71.404694 68.416582 
+L 73.345251 68.454196 
+L 75.286023 68.482632 
+L 77.226951 68.501891 
+L 79.167975 68.511971 
+L 81.109035 68.512873 
+L 83.050071 68.504598 
+L 84.991022 68.487143 
+L 86.93183 68.460511 
+L 88.872433 68.424702 
+L 90.812772 68.379714 
+L 92.752787 68.32555 
+L 94.692417 68.262209 
+L 96.631603 68.189693 
+L 98.570285 68.108 
+L 100.508402 68.017133 
+L 102.445894 67.917093 
+L 104.382701 67.807879 
+L 106.318764 67.689493 
+L 108.254021 67.561936 
+L 110.188413 67.425209 
+L 112.12188 67.279314 
+L 114.054362 67.12425 
+L 115.985798 66.960021 
+L 117.916128 66.786627 
+L 119.845291 66.60407 
+L 121.773229 66.412352 
+L 123.699879 66.211474 
+L 125.625183 66.001437 
+L 127.549079 65.782244 
+L 129.471508 65.553897 
+L 131.392408 65.316398 
+L 133.31172 65.069748 
+L 135.229383 64.813951 
+L 137.145337 64.549007 
+L 139.05952 64.274921 
+L 140.971874 63.991693 
+L 142.882336 63.699327 
+L 144.790846 63.397825 
+L 146.697345 63.08719 
+L 148.60177 62.767425 
+L 150.504061 62.438532 
+L 152.404158 62.100515 
+L 154.302 61.753376 
+L 156.197526 61.39712 
+L 158.090674 61.031748 
+L 159.981385 60.657265 
+L 161.869596 60.273673 
+L 163.755248 59.880977 
+L 165.638278 59.479179 
+L 167.518627 59.068284 
+L 169.396231 58.648296 
+L 170.265205 58.450627 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 28.249453 
+L 7.373013 28.285309 
+L 9.094492 28.637125 
+L 10.818335 28.980437 
+L 12.544485 29.315242 
+L 14.272883 29.641535 
+L 16.003469 29.959312 
+L 17.736186 30.268569 
+L 19.470975 30.569302 
+L 21.207778 30.861509 
+L 22.946535 31.145184 
+L 24.687189 31.420324 
+L 26.42968 31.686927 
+L 28.173951 31.944989 
+L 29.919943 32.194507 
+L 31.667597 32.435477 
+L 33.416856 32.667898 
+L 35.167661 32.891765 
+L 36.919954 33.107076 
+L 38.673676 33.31383 
+L 40.428769 33.512022 
+L 42.185174 33.701651 
+L 43.942835 33.882715 
+L 45.701692 34.055211 
+L 47.461687 34.219137 
+L 49.222762 34.374491 
+L 50.984859 34.521272 
+L 52.74792 34.659477 
+L 54.511886 34.789106 
+L 56.2767 34.910155 
+L 58.042303 35.022625 
+L 59.808637 35.126513 
+L 61.575645 35.221819 
+L 63.343267 35.308541 
+L 65.111447 35.386678 
+L 66.880126 35.45623 
+L 68.649245 35.517195 
+L 70.418748 35.569572 
+L 72.188575 35.613362 
+L 73.95867 35.648563 
+L 75.728972 35.675176 
+L 77.499426 35.693199 
+L 79.269973 35.702633 
+L 81.040554 35.703477 
+L 82.811112 35.695732 
+L 84.581588 35.679398 
+L 86.351926 35.654474 
+L 88.122065 35.620961 
+L 89.89195 35.57886 
+L 91.661521 35.528171 
+L 93.43072 35.468894 
+L 95.19949 35.401031 
+L 96.967773 35.324581 
+L 98.73551 35.239547 
+L 100.502643 35.145929 
+L 102.269114 35.043728 
+L 104.034865 34.932945 
+L 105.799839 34.813582 
+L 107.563976 34.68564 
+L 109.32722 34.549121 
+L 111.089511 34.404026 
+L 112.850791 34.250357 
+L 114.611003 34.088116 
+L 116.370089 33.917305 
+L 118.127989 33.737926 
+L 119.884646 33.54998 
+L 121.640002 33.353471 
+L 123.393998 33.148401 
+L 125.146576 32.934772 
+L 126.897678 32.712587 
+L 128.647245 32.481848 
+L 130.39522 32.242558 
+L 132.141543 31.99472 
+L 133.886157 31.738338 
+L 135.629003 31.473414 
+L 137.370023 31.199952 
+L 139.109157 30.917954 
+L 140.846349 30.627425 
+L 142.581538 30.328368 
+L 144.314667 30.020786 
+L 146.045677 29.704684 
+L 147.77451 29.380065 
+L 149.501106 29.046933 
+L 151.225408 28.705293 
+L 152.947356 28.355149 
+L 154.666891 27.996505 
+L 156.383956 27.629365 
+L 158.098491 27.253734 
+L 159.810437 26.869618 
+L 161.519736 26.47702 
+L 163.226328 26.075946 
+L 164.930154 25.6664 
+L 166.631156 25.248389 
+L 168.329275 24.821916 
+L 170.024451 24.386989 
+L 170.265204 24.324471 
+L 170.265205 24.324471 
+" clip-path="url(#p8705b6cbc3)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 170.265205 7.2 
+L 170.265205 173.52 
+L 7.2 173.52 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p8705b6cbc3">
+   <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 170.265205 7.2 
+L 170.265205 173.52 
+L 7.2 173.52 
+"/>
+  </clipPath>
+ </defs>
+</svg>
+<pre>&lt;pyresample.utils.cartopy.Projection object at 0x7fc71496a050&gt;</pre></div></div>
+</div>
+</section>
+<section id="copy-code-from-week6-wv-resample-md">
+<h3>Copy code from <code class="docutils literal notranslate"><span class="pre">week6/wv_resample.md</span></code><a class="headerlink" href="#copy-code-from-week6-wv-resample-md" title="Permalink to this heading">#</a></h3>
+<p>Below is a straight copy of last week’s plotting code.  Note that if we wanted to plot only a part of the scene,
+we could change the extent argument to imshow to crop the image.  In the next notebook we’ll go over the
+standard way to crop/clip a raster.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pal</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;plasma&quot;</span><span class="p">))</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;0.75&quot;</span><span class="p">)</span>  <span class="c1"># 75% grey for out-of-map cells</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># color cells &gt; vmax red</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># color cells &lt; vmin black</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1">#anything under this is colored black</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mf">4.0</span>  <span class="c1">#anything over this is colored red</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">Normalize</span>
+<span class="n">the_norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">cartopy_crs</span><span class="p">})</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">GSHHSFeature</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="n">cartopy_crs</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">wv_raster</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">cartopy_crs</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">,</span>
+    <span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;wv ir 5km using cartopy&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<img alt="../../_images/75f48ede2529c40e3fb44d88a1a56542be2d04068a3ca5ef12434ded418ef5b0.png" src="../../_images/75f48ede2529c40e3fb44d88a1a56542be2d04068a3ca5ef12434ded418ef5b0.png" />
+</div>
+</div>
+</section>
+<section id="quick-plots-with-xarray-test">
+<h3>Quick plots with xarray – test<a class="headerlink" href="#quick-plots-with-xarray-test" title="Permalink to this heading">#</a></h3>
+<p>If you don’t need the cartopy map, then xarray can handle the plot setup for you using the <code class="docutils literal notranslate"><span class="pre">plot</span></code> wrapper that calls matplotlib to do the plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">band_xarray</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;wv ir 5km using rioxarray&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4f19b233ec117c112e5915b61d6c8202f251152f456f5a7956edb9a742ec7e26.png" src="../../_images/4f19b233ec117c112e5915b61d6c8202f251152f456f5a7956edb9a742ec7e26.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="writing-the-geotiff">
+<h2>Writing the geotiff<a class="headerlink" href="#writing-the-geotiff" title="Permalink to this heading">#</a></h2>
+<p>Using rasterio to write the geotiff is just a one-liner, because all of the GIS metadata is available in the <code class="docutils literal notranslate"><span class="pre">band_xarray</span></code> variable. Any new or modified tags we want to add
+to the file can be included in a dictionary.  All the old tags will remain if not modified.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">the_tif</span>  <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_ir_5km_rioxarray.tif&quot;</span>
+<span class="n">tags</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;ir_wv -- rioxarray (cm/m^2)&quot;</span><span class="p">)</span>
+<span class="n">band_xarray</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">to_raster</span><span class="p">(</span><span class="n">the_tif</span><span class="p">,</span><span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="writing-a-quick-look-png">
+<h2>Writing a quick-look png<a class="headerlink" href="#writing-a-quick-look-png" title="Permalink to this heading">#</a></h2>
+<p>You can also use matplotlib to save the image as a png file for browsing</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">png_file</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/wv_ir_5km_rioxarray.png&quot;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">png_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">png_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="read-the-geotif-back-in-to-check">
+<h3>Read the geotif back in to check<a class="headerlink" href="#read-the-geotif-back-in-to-check" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clipped_xarray</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">the_tif</span><span class="p">)</span>
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">clipped_xarray</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;wv ir 5km using rioxarray&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4f19b233ec117c112e5915b61d6c8202f251152f456f5a7956edb9a742ec7e26.png" src="../../_images/4f19b233ec117c112e5915b61d6c8202f251152f456f5a7956edb9a742ec7e26.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<p>rioxarray provides a well-designed container that can hold a raster image along with all of the gis attributes and geotiff tags.  It has become
+a standard way of working with geotiffs, and we’ll use it extensively going forward.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week7"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="week7_topics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 7</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="get_landsat_bands.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Dowloading Landsat and Sentinel data from NASA</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rioxarray">rioxarray</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-rioxarray">Anatomy of a rioxarray</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-raster-data">The raster data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-named-dimensions">The named dimensions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pixel-center-coordinates">The pixel center coordinates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-geotiff-tags">The geotiff tags</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rasterio-specific-metadata">Rasterio specific metadata</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-coordinate-reference-system">The coordinate reference system</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-affine-transform">The affine transform</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-raster-bounds-or-extent">The raster bounds (or extent)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#image-width-height">Image width, height</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x-and-y-dimension-names">x and y dimension names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-raster">Reading the raster</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-image-extent-for-cartopy">calculating the image extent for cartopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hard-way">The hard way</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-easy-way">The easy way</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-a-cartopy-map">Making a cartopy map</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-the-rasterio-crs-to-a-cartopy-crs">Convert the rasterio crs to a cartopy crs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-code-from-week6-wv-resample-md">Copy code from <code class="docutils literal notranslate"><span class="pre">week6/wv_resample.md</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-plots-with-xarray-test">Quick plots with xarray – test</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-the-geotiff">Writing the geotiff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-a-quick-look-png">Writing a quick-look png</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-geotif-back-in-to-check">Read the geotif back in to check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

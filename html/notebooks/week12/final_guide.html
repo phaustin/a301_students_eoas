@@ -1,0 +1,916 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Study guide for final exam – &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week12/final_guide';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week12/final_guide.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 1 solution– brightness temperatures" href="../assignments/assign1_handin_solution.html" />
+    <link rel="prev" title="GIS image processing review" href="goes_michael.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week12/final_guide.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week12/final_guide.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week12/final_guide.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Study guide for final exam –</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#format">Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-focus">Topic focus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#study-questions">Study questions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#midterm-questions">Midterm questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heating-rate">Heating rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-looking-up">Radiance looking up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-answer">Short answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radar">Radar</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week9-radar">From <span class="xref std std-ref">week9:radar</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#more-radar">More radar</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-question">Take home question</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week11-goes-true-color">from <span class="xref std std-ref">week11:goes_true_color</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week12-goes-review">from <span class="xref std std-ref">week12:goes_review</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="study-guide-for-final-exam">
+<span id="week12-final-guide"></span><h1>Study guide for final exam –<a class="headerlink" href="#study-guide-for-final-exam" title="Permalink to this heading">#</a></h1>
+<section id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>2 hours in-class + 30 minute group with 1 question take home</p></li>
+<li><p>Take-home question: 3 day window, should take 1-2 hours</p></li>
+<li><p>Equation sheet provided (will post)</p></li>
+</ul>
+</section>
+<section id="topic-focus">
+<h2>Topic focus<a class="headerlink" href="#topic-focus" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Calculating radiative fluxes from atmospheric conditions:</p>
+<ol class="arabic simple">
+<li><p>Find optical depth and transmisson profiles given a hydrostatic atmosphere with
+a specified scale height</p></li>
+<li><p>Calculate broadband ($sigma T^4/pi$) and monochromatic radiances and fluxes</p></li>
+<li><p>Calculate the flux observed by a satellite through an atmosphere of known properties</p></li>
+<li><p>Convert between radiance and brightness temperature</p></li>
+<li><p>Calculate heating/cooling rates given atmospheric fluxes</p></li>
+<li><p>Explain how weighting functions are used for temperature retrieval</p></li>
+</ol>
+</li>
+<li><p>Calcuate atmospheric/solar properties from radiation measurements</p>
+<ol class="arabic simple">
+<li><p>Use Beer’s law to estimate the solar flux as a function of optical depth</p></li>
+<li><p>Use brightness temperature differences and/or
+weighting functions/transmissions at multiple wavelengths to show how
+column water vapor amounts can be inferred from satellite data</p></li>
+</ol>
+</li>
+<li><p>Radar:</p>
+<ol class="arabic simple">
+<li><p>Find the rain rate from a Z-R relationship</p></li>
+<li><p>Find Z from a cloud droplet size distribution</p></li>
+<li><p>Explain the terms in the radar equation</p></li>
+</ol>
+</li>
+<li><p>Derivations/equations</p>
+<ol class="arabic simple">
+<li><p>Integrate the hydrostatic equation to find the pressure as a function of height</p></li>
+<li><p>Integrate the Schwartzchild equation with a constant temperature profile to find the
+radiance or the flux for a  layer</p></li>
+<li><p>Derive the heating rate equation</p></li>
+<li><p>Use change of variables to solve an integral</p></li>
+<li><p>Estimate the heating rate in a layer given fluxes</p></li>
+</ol>
+</li>
+<li><p>Definitions, paragraph answers/pseudo code</p>
+<ul class="simple">
+<li><p>Trace a pixel from its photon count at the satellite to a physical property on a map (ndvi, temperature)  – what’s the workflow from data download to presentation at a meeting?  What routines do you need to call, and what do they do?</p></li>
+<li><p>WGS94, UTM, Lambert azimuthal projection  – definition, when to use and for what</p></li>
+<li><p>Affine transform, crs, how are they used to zoom an image to a specific lon/lat box?</p></li>
+<li><p>tradeoffs – choices about pixel size, orbit altitude, etc. depending on the target and technology – i.e. what a real sensor is capable of measuring.   I give you the sensor limitations (how many photons it needs per second to make a reliable observation), you give me a combination of target, orbit, pixel size that would be possible with that sensor.</p></li>
+</ul>
+</li>
+</ol>
+<ol class="arabic simple" start="5">
+<li><p>Python programming</p>
+<ul class="simple">
+<li><p>Be able to explain and use the following functions or a program that includes them (i.e. relate the code to equations and/or explain the programming logic).</p>
+<ul>
+<li><p>imshow</p></li>
+<li><p>pcolormesh</p></li>
+<li><p>hist</p></li>
+<li><p>np.sum, np.diff</p></li>
+<li><p>pyresample</p></li>
+<li><p>cartopy coordinate transforms</p></li>
+<li><p>rasterio.windows.Window</p></li>
+<li><p>cartopy mapping</p></li>
+<li><p>pandas  (indexing and searching rows, using groupby)</p></li>
+<li><p>finding and replacing values using logical indexing (i.e. chan1[hit]=np.nan)</p></li>
+<li><p>loop comprehensions (i.e. newlist=[f(item) for item in list]</p></li>
+<li><p>iterating over keys and values in a dictionary</p></li>
+<li><p>finding files with Path().glob()</p></li>
+<li><p>reading and writing netcdf and geotiff</p></li>
+<li><p>histogram equalization using scikit image</p></li>
+<li><p>creating false color composites</p></li>
+<li><p>clipping an xarray dataset</p></li>
+<li><p>changing the crs and affine transform for an image to a new projection and clipped size</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="study-questions">
+<h2>Study questions<a class="headerlink" href="#study-questions" title="Permalink to this heading">#</a></h2>
+<section id="midterm-questions">
+<h3>Midterm questions<a class="headerlink" href="#midterm-questions" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>the final is comprehensive so be sure you understand the midterm solutions</p></li>
+</ul>
+</section>
+<section id="heating-rate">
+<h3>Heating rate<a class="headerlink" href="#heating-rate" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Derive the heating rate equation</p></li>
+</ol>
+<p>see <a class="reference external" href="https://eoasubc.xyz/a301_2022/notebooks/week11/heating_rate.html#temperature-change">the heating rate notes</a></p>
+<ol class="arabic simple" start="2">
+<li><p>A 150 m thick nocturnal cloud layer with a temperature of 275 K floats
+over a 300 K surface.</p></li>
+</ol>
+<p>Given:</p>
+<p>(i) mass absorption coefficient of the cloud liquid water
+is <span class="math notranslate nohighlight">\(k=0.004\ \)</span>m^2/kg$</p>
+<p>(ii) <span class="math notranslate nohighlight">\(\rho_{air}\)</span> = 1 <span class="math notranslate nohighlight">\(kg/m^3\)</span></p>
+<p>(ii) downward longwave flux density from the
+air above the cloud of <span class="math notranslate nohighlight">\(E_\downarrow(z_T)\)</span>=75 <span class="math notranslate nohighlight">\(W\,m^{-2}\)</span>. (where <span class="math notranslate nohighlight">\(z_T=150\)</span> m is the height of
+cloud top above cloud base)</p>
+<p>(iii)  No atmospheric absorption</p>
+<ul class="simple">
+<li><p>Find the total vertical optical depth of the cloud</p></li>
+</ul>
+<p>For constant density, this is</p>
+<div class="math notranslate nohighlight">
+\[\tau = \rho_{air} k \Delta z = 0.004*150 = 0.6\]</div>
+<ul class="simple">
+<li><p>Write down expressions for the flux transmission <span class="math notranslate nohighlight">\(\hat{t}_f\)</span>
+between <span class="math notranslate nohighlight">\(z\)</span> and <span class="math notranslate nohighlight">\(z_T\)</span> and between 0 and <span class="math notranslate nohighlight">\(z\)</span> as functions
+of <span class="math notranslate nohighlight">\(z,\,z_T,\,k\)</span> assuming  <span class="math notranslate nohighlight">\(z\)</span>  is inside the cloud, i.e.~<span class="math notranslate nohighlight">\(0 &lt; z &lt; z_T\)</span>.</p></li>
+</ul>
+<p>Since <span class="math notranslate nohighlight">\(t_{f} = \exp(-1.66 \tau)\)</span>, the transmission from 0 to z is <span class="math notranslate nohighlight">\(t_{f}(z) = \exp(-1.66 \rho\,k\,z)\)</span> and the
+transmission from z to <span class="math notranslate nohighlight">\(z_T\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[t_f(z) = \exp(-1.66 \rho\,k\,(z_T - z))\]</div>
+<ul class="simple">
+<li><p>Find the heating rate of the cloud <span class="math notranslate nohighlight">\(dT/dt\)</span> in K/hour</p></li>
+</ul>
+<p>The total transmission is</p>
+<div class="math notranslate nohighlight">
+\[t_{ftot} = \exp(-1.66*\tau_{ftot}) = \exp(-1.66*0.6)= 0.37\]</div>
+<p>Upwelling flux passing through the top of the cloud is</p>
+<div class="math notranslate nohighlight">
+\[
+E_\uparrow(z_{top}) = E_{sfc} t_{ftot} + E_{cld} (1 - t_{ftot})
+\]</div>
+<p>Downwelling flux passing through the bottom of the cloud is</p>
+<div class="math notranslate nohighlight">
+\[
+E_\downarrow(0) = E_{top} t_{ftot} + E_{cld} (1 - t_{ftot})
+\]</div>
+<p>To get the heating rate, we need use the equations from the heating rate notes with</p>
+<div class="math notranslate nohighlight">
+\[
+E_{sfc} = \sigma 300^4
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+E_{cld} = \sigma 275^4
+\]</div>
+</section>
+<section id="radiance-looking-up">
+<h3>Radiance looking up<a class="headerlink" href="#radiance-looking-up" title="Permalink to this heading">#</a></h3>
+<figure class="align-default" id="two-layer">
+<a class="reference internal image-reference" href="../../_images/two_layers_2016.png"><img alt="../../_images/two_layers_2016.png" src="../../_images/two_layers_2016.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Two layer atmosphere at night</span><a class="headerlink" href="#two-layer" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>For the figure in above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
+the mass absorption coefficient is <span class="math notranslate nohighlight">\(\kappa = 0.001\ m^{2}/kg\)</span> for longwave photons, the telescope measures all wavelengths of interest
+and  the telescope’s field of view is 0.01 sr find:</p>
+<ul>
+<li><p>The radiance observed by the telescope</p></li>
+<li><p>The flux observed by the telescope</p></li>
+<li><p>The brightness temperature observed by the telescope</p></li>
+<li><p>Suppose you put this instrument into orbit 800 km above the ocean.<br />
+Approximately what is the area of pixel you see at nadir (i.e. directly below) with this field of view?
+Roughly how big is the pixel looking 60 degrees off nadir?</p></li>
+<li><p>(Hint – remember from the hydrostatic equation that <span class="math notranslate nohighlight">\(\Delta p = -\rho g \Delta z\)</span> if <span class="math notranslate nohighlight">\(\rho\)</span> is approximately constant.)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="short-answer">
+<h3>Short answer<a class="headerlink" href="#short-answer" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Starting with the fact that radiance is conserved in a vacuum, show that over a uniform
+black surface emitting radiance <span class="math notranslate nohighlight">\(L_s\)</span> that extends infinitely in the horizontal, the flux at
+any height above the surface is given by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  E = \pi L_s
+\]</div>
+<ul class="simple">
+<li><p>How would you do the following integral using numpy?</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  \int_2^5 \exp(-x^2) dx
+\]</div>
+<ul class="simple">
+<li><p>The Landsat geotiffs we worked with stored pieces of metadata called a crs (a coordinated reference system) and an ``affine transform’’.  Explain briefly what these are and how they are used in mapping a satellite image.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.66</span><span class="o">*</span><span class="mf">0.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3693539058996321
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="radar">
+<h3>Radar<a class="headerlink" href="#radar" title="Permalink to this heading">#</a></h3>
+<ul>
+<li><p>What is the bright band?   Why is it bright?</p></li>
+<li><p>The radar equation says that:</p>
+<div class="math notranslate nohighlight">
+\[
+      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{r^2}
+    \]</div>
+<ul class="simple">
+<li><p>Define each of the terms in this equation and explain qualitatively why we expect this
+dependence on <span class="math notranslate nohighlight">\(Z\)</span> and <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p>Explain how you can use this equation to find the rain rate in mm/hour 50 km
+from the radar</p></li>
+</ul>
+</li>
+</ul>
+<section id="from-week9-radar">
+<h4>From <a class="reference internal" href="../week9/radar.html#week9-radar"><span class="std std-ref">Notes on the radar equation</span></a><a class="headerlink" href="#from-week9-radar" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Why does the returned power decrease as <span class="math notranslate nohighlight">\(1/R^2\)</span>` and not the roundtrip spreading of <span class="math notranslate nohighlight">\(1/R^4\)</span> ?</p></li>
+<li><p>Suppose you are given <span class="math notranslate nohighlight">\(Z_1\)</span> in <span class="math notranslate nohighlight">\(mm^6\,m^{-3}\)</span>, c in m/s,<span class="math notranslate nohighlight">\(\Delta t\)</span> in s and <span class="math notranslate nohighlight">\(\lambda\)</span> in cm.  How do you convert <span class="math notranslate nohighlight">\(Z_1 c  \Delta t/\lambda^2\)</span>` to <span class="math notranslate nohighlight">\(km^2\)</span>?</p></li>
+<li><p>The reflectivity goes down as b and K increase and goes up as <span class="math notranslate nohighlight">\(L_a\)</span> and R increase – explain.</p></li>
+<li><p>Why is the width of the radar sample volume proportional to <span class="math notranslate nohighlight">\(\Delta t/2\)</span> instead of <span class="math notranslate nohighlight">\(\Delta t\)</span> ?</p></li>
+</ol>
+</section>
+<section id="more-radar">
+<h4>More radar<a class="headerlink" href="#more-radar" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>What is the maximum unambiguous range for cloudsat?</p></li>
+</ol>
+</section>
+</section>
+<section id="take-home-question">
+<h3>Take home question<a class="headerlink" href="#take-home-question" title="Permalink to this heading">#</a></h3>
+<section id="from-week11-goes-true-color">
+<h4>from <a class="reference internal" href="../week11/goes_true_color.html#week11-goes-true-color"><span class="std std-ref">GOES-16: True Color Images from GOES ABI</span></a><a class="headerlink" href="#from-week11-goes-true-color" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Use a seaborn jointplot to compare the channel 1 (blue) histogram before and after the gamma correction</p></li>
+<li><p>Use xarray.isel to clip just the portion of the abi scene that’s in the [-114.75, -108.25, 36, 43] lon/lat bounding
+box and save it to disk as a netcdf file with the correct affine transform and crs</p></li>
+<li><p>Change the map projection from lambert to azimuthal equal area – does it look less weird?</p></li>
+</ol>
+</section>
+<section id="from-week12-goes-review">
+<h4>from <a class="reference internal" href="goes_michael.html#week12-goes-review"><span class="std std-ref">GIS image processing review</span></a><a class="headerlink" href="#from-week12-goes-review" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Use the affine transform to find the point at which cloudsat first enters the image, and denote it by a green dot</p></li>
+<li><p>Find the  GOES band01 reflectance (or cloudtop temperature, etc.) directly below the cloudsat track</p></li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="goes_michael.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GIS image processing review</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../assignments/assign1_handin_solution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Assignment 1 solution– brightness temperatures</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#format">Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-focus">Topic focus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#study-questions">Study questions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#midterm-questions">Midterm questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heating-rate">Heating rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-looking-up">Radiance looking up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-answer">Short answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radar">Radar</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week9-radar">From <span class="xref std std-ref">week9:radar</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#more-radar">More radar</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-question">Take home question</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week11-goes-true-color">from <span class="xref std std-ref">week11:goes_true_color</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week12-goes-review">from <span class="xref std std-ref">week12:goes_review</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

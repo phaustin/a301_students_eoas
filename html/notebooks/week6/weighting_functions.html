@@ -1,0 +1,1050 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Weighting functions for temperature retrieval &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week6/weighting_functions';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week6/weighting_functions.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Writing the 5km water vapor image to a geotiff file" href="writing_geotiffs.html" />
+    <link rel="prev" title="Scale heights for typical atmospheric soundings" href="hydrostatic_balance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week6/weighting_functions.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week6/weighting_functions.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week6/weighting_functions.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Weighting functions for temperature retrieval</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#satellite-radiance-measured-in-the-co2-absorption-band">Satellite radiance measured in the CO2 absorption band</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transmittance-stull-figure-8-4c">Transmittance – Stull Figure 8.4c</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-and-brightness-temperature">Radiance and brightness temperature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weighting-functions-from-stull">Weighting functions from Stull</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-weighting-functions-in-the-co-2-15-mu-m-absorption-band">Calculating the weighting functions in the <span class="math notranslate nohighlight">\(CO_2\)</span> 15 <span class="math notranslate nohighlight">\(\mu m\)</span> absorption band</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-get-the-optical-depth-from-a-sounding">First get the optical depth from a sounding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-k-lambda-and-tau-lambda-for-co-2">Defining <span class="math notranslate nohighlight">\(k_\lambda\)</span> and <span class="math notranslate nohighlight">\(\tau_\lambda\)</span> for <span class="math notranslate nohighlight">\(CO_2\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-optical-depth">Plotting the optical depth</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-weighting-functions">Plotting the weighting functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrating-the-schwartzchild-equation">Integrating the Schwartzchild equation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="weighting-functions-for-temperature-retrieval">
+<span id="week6-weighting-funs"></span><h1>Weighting functions for temperature retrieval<a class="headerlink" href="#weighting-functions-for-temperature-retrieval" title="Permalink to this heading">#</a></h1>
+<p>Recall <a class="reference external" href="https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch08-satellite_radar-v102b.pdf">Stull Chapter 8</a> Figure 8.4c (shown below).  As Stull explains a bunch of satellites use the 15 <span class="math notranslate nohighlight">\(\mu m\)</span> CO2 absorption band
+to look at the temperature at different heights in the atmosphere.  The key idea is that the changing density of
+the atmosphere means that at any particular wavelength there is some level where most of the emittied atmospheric
+photons originate from. If we know the vertical profile of dry air density and CO2 concentration, and the surface
+temperature, we can measure those photons and back out an estimate of the air temperature for the emitting layer.</p>
+<p>Key ideas:</p>
+<ol class="arabic simple">
+<li><p>The Schwartzchild equation allows us to calculate the photon flux for a particular atmosphere and surface.  This
+is called the “forward model”.</p></li>
+<li><p>CO2 is the ideal absorbing gas for this calculation, because its concentration is very well known, and it
+does not vary much with geographical location (because it takes so long to remove CO2 from the atmosphere, it
+is “well mixed”</p></li>
+<li><p>In theory, if we make 15 different radiance measurements at 15 different wavelengths in the CO2 absorption band,
+we should be able to invert the Schwartzchild equation for the temperature at 15 different heights.  In reality
+this is not possible, because the weighting functions for each wavelength overlap with height.</p></li>
+</ol>
+<section id="satellite-radiance-measured-in-the-co2-absorption-band">
+<h2>Satellite radiance measured in the CO2 absorption band<a class="headerlink" href="#satellite-radiance-measured-in-the-co2-absorption-band" title="Permalink to this heading">#</a></h2>
+<section id="transmittance-stull-figure-8-4c">
+<h3>Transmittance – Stull Figure 8.4c<a class="headerlink" href="#transmittance-stull-figure-8-4c" title="Permalink to this heading">#</a></h3>
+<a class="reference internal image-reference" href="../../_images/stull_8_4c.png"><img alt="../../_images/stull_8_4c.png" src="../../_images/stull_8_4c.png" style="width: 700px;" /></a>
+<p>It’s a little hard to see in the figure, but there are 8 channels crunched between 13-15 microns, along the “shoulder” of the the main CO2 absorption band.</p>
+</section>
+<section id="radiance-and-brightness-temperature">
+<h3>Radiance and brightness temperature<a class="headerlink" href="#radiance-and-brightness-temperature" title="Permalink to this heading">#</a></h3>
+<p>The figure below is similar to Figure 8.4c, with the following differences:</p>
+<ol class="arabic simple">
+<li><p>The channel numbers are for an instrument called the VTPR (vertical temperature profiling radiometer), which has six channels indicated in the figure.</p></li>
+<li><p>The horizontal axis is wavenumber = 1/wavelength.  That means that the plot goes from 500 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> (wavelength= 20 <span class="math notranslate nohighlight">\(\mu m\)</span>) on the left to 850 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> (wavelength = 12 <span class="math notranslate nohighlight">\(\mu m\)</span>) on the right, with the center at the center of the absorption band at wavenumber 666 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> (wavelength = 15 <span class="math notranslate nohighlight">\(\mu m\)</span>).</p></li>
+<li><p>The y axis is the radiance (which they call intensity) reaching the satellite, also plotted as brightness temperature on the right axis.  While the transmission at 15 <span class="math notranslate nohighlight">\(\mu m\)</span> (channel 1) is zero (black atmosphere) the emission is high in channel 1 because the emissivity is 1, and the stratosphere is hot.
+That is, Channel 1 is at the center of the band – it has the lowest transmissivity and is measuring photons coming from 45 km at the top of the stratosphere (See <a class="reference external" href="https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet101/Ch01-Atmos-v101.pdf">Stull Chapter 1, Figure 1.10</a>).</p></li>
+</ol>
+<p>As the channel number increases from 2-6 the transmissivity also increases, and the photons originate from increasingly lower levels of the atmosphere with increasing kinetic temperatures.  Note the different heights for the peaks in each of the weighting functions.</p>
+<a class="reference internal image-reference" href="../../_images/wallace4_33.png"><img alt="../../_images/wallace4_33.png" src="../../_images/wallace4_33.png" style="width: 500px;" /></a>
+</section>
+<section id="weighting-functions-from-stull">
+<h3>Weighting functions from Stull<a class="headerlink" href="#weighting-functions-from-stull" title="Permalink to this heading">#</a></h3>
+<a class="reference internal image-reference" href="../../_images/stull_8_9.png"><img alt="../../_images/stull_8_9.png" src="../../_images/stull_8_9.png" style="width: 800px;" /></a>
+</section>
+</section>
+<section id="calculating-the-weighting-functions-in-the-co-2-15-mu-m-absorption-band">
+<h2>Calculating the weighting functions in the <span class="math notranslate nohighlight">\(CO_2\)</span> 15 <span class="math notranslate nohighlight">\(\mu m\)</span> absorption band<a class="headerlink" href="#calculating-the-weighting-functions-in-the-co-2-15-mu-m-absorption-band" title="Permalink to this heading">#</a></h2>
+<p>Recall that we’ve got two versions of the Schwartzchild equation in Schwartzchild notes:</p>
+<p>Stull 8.4:</p>
+<div class="math notranslate nohighlight">
+\[
+         \begin{gathered}
+           L_\lambda = B_\lambda(T_{skin}) \hat{t}_{\lambda,tot} + \sum_{j=1}^n
+           B_\lambda(T_j) \Delta \hat{t}_{\lambda,j}
+         \end{gathered}
+\]</div>
+<p>The calculus version derived in the notes:</p>
+<div class="math notranslate nohighlight">
+\[
+    L_\lambda(\tau_T)= B_\lambda(T_{skin}) \exp(-\tau_T) +    \int_0^{\tau_T} B_\lambda(T)\, d\hat{t}
+\]</div>
+<p>In either case, the crucial term is the differential transmissivity, <span class="math notranslate nohighlight">\(\Delta \hat{t}\)</span> or <span class="math notranslate nohighlight">\(d \hat{t}\)</span>  which “weights”
+the blackbody emission <span class="math notranslate nohighlight">\(B_\lambda(T)\)</span> at a particular height.  The bigger the value of <span class="math notranslate nohighlight">\(d \hat{t}\)</span>, the bigger
+the fraction of <span class="math notranslate nohighlight">\(B_\lambda(T)\)</span> that is going to reach the satellite.</p>
+<p>Below I show how to calculate the weight function in python.</p>
+<section id="first-get-the-optical-depth-from-a-sounding">
+<h3>First get the optical depth from a sounding<a class="headerlink" href="#first-get-the-optical-depth-from-a-sounding" title="Permalink to this heading">#</a></h3>
+<p>This notebook uses the five standard atmospheres from  <a class="reference external" href="http://clouds.eos.ubc.ca/~phil/courses/atsc301/html/hydrostatic_balance.html">hydrostatic_balance.ipynb</a> to show how to use Stull eq. 8.4 to calculate radiance at the top of the atmosphere for wavelengths similar to the 6 sounder channels shown in the above figure.  I define a new function <strong>find_tau</strong> to calculate the optical thickness for a <span class="math notranslate nohighlight">\(CO_2\)</span>-like absorbing gas, and get the weighting functions at 7 wavelengths from the transmission.   I then  plot the brightness temperatures at each wavelength for each of the five standard atmospheres.</p>
+<p>We’re going to need the air density as a function of height, so we’ll require the <strong>calcDensHeight</strong>
+function from the hydrostatic balance notebook, which I’ve moved to the a301.thermo library:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">ticks</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1">#</span>
+<span class="c1"># from the hydrostatic_balance notebook</span>
+<span class="c1">#</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">from</span> <span class="nn">sat_lib.thermo</span> <span class="kn">import</span> <span class="n">calcDensHeight</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+in sat_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">soundings_folder</span><span class="o">=</span>  <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;./soundings&#39;</span><span class="p">)</span>
+<span class="n">sounding_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">soundings_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*csv&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sounding_files</span><span class="p">)</span>
+
+<span class="n">name_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+<span class="n">sound_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sounding_files</span><span class="p">:</span>
+    <span class="n">name_dict</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">stem</span><span class="p">]</span><span class="o">=</span><span class="n">item</span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">name_dict</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sounding_files</span><span class="p">:</span>
+    <span class="n">sound_dict</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">stem</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[PosixPath(&#39;soundings/subsummer.csv&#39;), PosixPath(&#39;soundings/tropics.csv&#39;), PosixPath(&#39;soundings/midsummer.csv&#39;), PosixPath(&#39;soundings/midwinter.csv&#39;), PosixPath(&#39;soundings/subwinter.csv&#39;)]
+{&#39;midsummer&#39;: PosixPath(&#39;soundings/midsummer.csv&#39;),
+ &#39;midwinter&#39;: PosixPath(&#39;soundings/midwinter.csv&#39;),
+ &#39;subsummer&#39;: PosixPath(&#39;soundings/subsummer.csv&#39;),
+ &#39;subwinter&#39;: PosixPath(&#39;soundings/subwinter.csv&#39;),
+ &#39;tropics&#39;: PosixPath(&#39;soundings/tropics.csv&#39;)}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-k-lambda-and-tau-lambda-for-co-2">
+<h3>Defining <span class="math notranslate nohighlight">\(k_\lambda\)</span> and <span class="math notranslate nohighlight">\(\tau_\lambda\)</span> for <span class="math notranslate nohighlight">\(CO_2\)</span><a class="headerlink" href="#defining-k-lambda-and-tau-lambda-for-co-2" title="Permalink to this heading">#</a></h3>
+<p>I need values for the <strong>mass absorption coefficient</strong> <span class="math notranslate nohighlight">\(k_\lambda\)</span> (<span class="math notranslate nohighlight">\(m^2/kg\ CO2\)</span>) defined in <a class="reference external" href="https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet102/Ch02-radiation-v102b.pdf">Stull Chaper 2</a> equation 2.31b.</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{t} = \frac{E_{transmitted}}{E_{incident}} = -k_\lambda \rho_{co2} \Delta s
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho_{co2}\)</span> is the density of CO2 and <span class="math notranslate nohighlight">\(\Delta s\)</span> “slant path” i.e the distance the photons travel in the layer.  We can also
+define the <strong>mixing ratio</strong> for CO2, which relates the CO2 density and the air density:</p>
+<div class="math notranslate nohighlight">
+\[
+r_{co2} = \frac{\rho_{co2}}{\rho_{air}}
+\]</div>
+<p>So that the transmissivity <span class="math notranslate nohighlight">\(\hat{t}\)</span> can then be written:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{t} = \frac{E_{transmitted}}{E_{incident}} = -k_\lambda \rho_{co2} \Delta s = -k_\lambda r_{co2} \rho_{air} \Delta s
+\]</div>
+<p>Why is this a win?  Because for CO2 <span class="math notranslate nohighlight">\(r_{co2}\)</span> is roughly constant with height – the CO2 mixing ratio is about
+<span class="math notranslate nohighlight">\(400 \times 10^{-6}\)</span> CO2 molecules/air molecules almost everywhere.  That means that we just need to know
+the air density <span class="math notranslate nohighlight">\(\rho_{air}\)</span>, which we can figure out from the ideal gas law as long as we have the pressure and temperature.</p>
+<p>The  vertical optical depth is a special case where, instead of the <strong>slant path</strong> s through the atmosphere
+we head straight up or down in the z direction.</p>
+<p>In this case  <span class="math notranslate nohighlight">\(\tau\)</span> is then defined by  (see the Beer’s law notes):</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{dE}{E} = -k_\lambda r_{co2} \rho_{air} dz = -d \tau_\lambda
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\int_{E_{in}}^{E} \frac{dE^\prime}{E^\prime} = \int_0^z -k_\lambda r_{co2} \rho_{air} dz^\prime = \int_0^{\tau_\lambda} -d \tau_\lambda^\prime
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\ln \frac{E}{E_{in}} = \int_0^z -k_\lambda r_{co2} \rho_{air} dz = - \tau_\lambda
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+E = E_{in} \exp( -\tau )
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\tau_\lambda = \int_0^z  r_{co2}\, \rho_{air}\, k_\lambda dz\]</div>
+<p>Why is this an improvement?  We now have an absorption coefficient <span class="math notranslate nohighlight">\(k_\lambda\)</span> and mixing ratio <span class="math notranslate nohighlight">\(r_{co2}\)</span> that are roughly constant with height and can be taken out of the integral.  Everything is tied up neatly in the optical
+depth <span class="math notranslate nohighlight">\(\tau_\lambda\)</span>, which is a kind of universal measure for the effect of absorption/scattering on the
+incident radiation.  A pair of atmospheres can have completely different profiles of  density and mixing
+ratio, but if those things integrate to the same optical depth, the effect on the absorption of radiation
+will be the same.</p>
+<p>To keep things simple I’m going to make up a set of 7 absorption coefficients and a mixing ratio that will give weighting functions that look something like the VPTR.  The next cell shows how to calculate the optical depth
+given a mixing ratio, absorption coefficient and a standard sounding:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Rd</span> <span class="o">=</span> <span class="mf">287.0</span>
+
+
+<span class="k">def</span> <span class="nf">find_tau</span><span class="p">(</span><span class="n">r_gas</span><span class="p">,</span> <span class="n">k_lambda</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    given a data frame df with a standard sounding, return the optical depth assuming an</span>
+<span class="sd">    absorbing gas with a constant mixing ration r_gas and absorption coefficient k_lambda</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    r_gas: float</span>
+<span class="sd">       absorber mixing ratio, kg/kg</span>
+<span class="sd">       </span>
+<span class="sd">    k_lambda: float</span>
+<span class="sd">       mass absorption coefficient, m^2/kg</span>
+<span class="sd">       </span>
+<span class="sd">    df:  dataframe</span>
+<span class="sd">       sounding with height levels as rows, columns &#39;temp&#39;: temperature in K</span>
+<span class="sd">       &#39;press&#39;: pressure in Pa</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tau: vector (float)</span>
+<span class="sd">      optical depth measured from the surface at each height in df</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1"># density scale height</span>
+    <span class="c1">#</span>
+    <span class="n">T</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">Hdens</span> <span class="o">=</span> <span class="n">calcDensHeight</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># surface density</span>
+    <span class="c1">#</span>
+    <span class="n">rho0</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;press&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;temp&quot;</span><span class="p">])</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">rho0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">Hdens</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">rho</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># start from the surface and integrate upward</span>
+    <span class="c1">#</span>
+    <span class="n">tau</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_levels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rho</span><span class="p">)</span>
+    <span class="n">num_layers</span> <span class="o">=</span> <span class="n">num_levels</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+        <span class="n">delta_z</span> <span class="o">=</span> <span class="n">height</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">height</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">delta_tau</span> <span class="o">=</span> <span class="n">r_gas</span> <span class="o">*</span> <span class="n">rho</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">k_lambda</span> <span class="o">*</span> <span class="n">delta_z</span>
+        <span class="n">tau</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tau</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta_tau</span>
+    <span class="k">return</span> <span class="n">tau</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-the-optical-depth">
+<h3>Plotting the optical depth<a class="headerlink" href="#plotting-the-optical-depth" title="Permalink to this heading">#</a></h3>
+<p>This cell calls find_tau and plots <span class="math notranslate nohighlight">\(\tau_\lambda\)</span> for one wavelength as a function
+of height and pressure in a tropical atmosphere.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+<span class="n">r_gas</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># kg/kg</span>
+<span class="n">k_lambda</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># m^2/kg</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">sound_dict</span><span class="p">[</span><span class="s2">&quot;tropics&quot;</span><span class="p">]</span>
+<span class="n">top</span> <span class="o">=</span> <span class="mf">20.0e3</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">top</span><span class="p">]</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+<span class="n">press</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;press&quot;</span><span class="p">]</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">find_tau</span><span class="p">(</span><span class="n">r_gas</span><span class="p">,</span> <span class="n">k_lambda</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="p">(</span><span class="n">axis1</span><span class="p">,</span> <span class="n">axis2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">1.0e-3</span><span class="p">)</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;vertical optical depth vs. height&quot;</span><span class="p">)</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;height (km)&quot;</span><span class="p">)</span>
+<span class="n">axis1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;optical depth (no units)&quot;</span><span class="p">)</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">press</span> <span class="o">*</span> <span class="mf">1.0e-3</span><span class="p">)</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;vertical optical depth vs. pressure&quot;</span><span class="p">)</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;pressure (kPa)&quot;</span><span class="p">)</span>
+<span class="n">axis2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;optical depth (no units)&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/06f4ddfb28fc0426574a3f013f2d3fc20e86e360ce7539ce3bcc3e4f226c0a7d.png" src="../../_images/06f4ddfb28fc0426574a3f013f2d3fc20e86e360ce7539ce3bcc3e4f226c0a7d.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="plotting-the-weighting-functions">
+<h2>Plotting the weighting functions<a class="headerlink" href="#plotting-the-weighting-functions" title="Permalink to this heading">#</a></h2>
+<p>Now we’re ready to calculate the weighting functions <span class="math notranslate nohighlight">\(\Delta \hat{t}\)</span> for different values of <span class="math notranslate nohighlight">\(k_\lambda\)</span></p>
+<p>This cell defines 7 wavenumbers (<span class="math notranslate nohighlight">\(1/\lambda\)</span>) in the CO2 absorption band between 666 and 766 <span class="math notranslate nohighlight">\(cm^{-1}\)</span>
+It makes a list of both the wavenumbers and the <span class="math notranslate nohighlight">\(k_\lambda\)</span> for each wavenumber, as well
+as legend labels to use in plotting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_gas</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># kg/kg</span>
+<span class="c1">#</span>
+<span class="c1"># assign the 7 k_lambdas to 7 CO2 absorption band wavelengths</span>
+<span class="c1"># (see Wallace and Hobbs figure 4.33)</span>
+<span class="c1">#</span>
+<span class="n">wavenums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">666</span><span class="p">,</span> <span class="mi">766</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>  <span class="c1"># wavenumbers in cm^{-1}</span>
+<span class="n">wavelengths</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wavenums</span> <span class="o">*</span> <span class="mf">1.0e-2</span>  <span class="c1"># wavelength in m</span>
+<span class="n">wavelengths_um</span> <span class="o">=</span> <span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1.0e6</span>  <span class="c1"># in microns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;channel wavelengths (microns) &quot;</span><span class="p">,</span> <span class="n">wavelengths_um</span><span class="p">)</span>  <span class="c1"># microns</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">sound_dict</span><span class="p">[</span><span class="s2">&quot;tropics&quot;</span><span class="p">]</span>
+<span class="n">top</span> <span class="o">=</span> <span class="mf">20.0e3</span>  <span class="c1"># stop at 20 km</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">top</span><span class="p">]</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">mid_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">height</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+<span class="c1">#</span>
+<span class="c1"># here are the mass absorption coefficients for each of the 7 wavelengths</span>
+<span class="c1"># in m^2/kg</span>
+<span class="c1">#</span>
+<span class="n">k_lambda_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.175</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.075</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
+<span class="n">legend_string</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="si">:</span><span class="s2">5.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">k_lambda_list</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>channel wavelengths (microns)  [15.01501502 14.6484375  14.2993327  13.96648045 13.64877161 13.34519573
+ 13.05483029]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>The next cell finds the transmissivity <span class="math notranslate nohighlight">\(\hat{t}\)</span> from <span class="math notranslate nohighlight">\(\tau\)</span> (line 28) and calculates the
+weighting function <span class="math notranslate nohighlight">\(\Delta \hat{t}\)</span> using np.diff (line 30)</strong></p>
+<p>Note that on line 28 we are defining the transmittance from the satellite to the surface, that is,
+the transmittance = 1 at the top of the atmosphere where tau=tau_tot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># make a list of tuples of k_lambda and its label</span>
+<span class="c1"># using zip</span>
+<span class="c1">#</span>
+<span class="n">k_vals</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">k_lambda_list</span><span class="p">,</span> <span class="n">legend_string</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1">#  find the height at mid-layer</span>
+<span class="c1">#</span>
+<span class="n">mid_height</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">height</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">axis_list</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="c1">#</span>
+<span class="c1"># turn axis_list from 2 x 2 to 4 x 1</span>
+<span class="c1">#</span>
+<span class="n">axis_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">axis_list</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="c1">#</span>
+<span class="c1"># throw away the 4th plot using delaxes -- only plotting 3 graphs</span>
+<span class="c1">#</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">axis_list</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">axis_list</span> <span class="o">=</span> <span class="n">axis_list</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">the_ax</span> <span class="ow">in</span> <span class="n">axis_list</span><span class="p">:</span>
+    <span class="n">the_ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">heightkm</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">1.0e-3</span>
+<span class="n">mid_heightkm</span> <span class="o">=</span> <span class="n">mid_height</span> <span class="o">*</span> <span class="mf">1.0e-3</span>
+<span class="k">for</span> <span class="n">k_lambda</span><span class="p">,</span> <span class="n">k_label</span> <span class="ow">in</span> <span class="n">k_vals</span><span class="p">:</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">find_tau</span><span class="p">(</span><span class="n">r_gas</span><span class="p">,</span> <span class="n">k_lambda</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+    <span class="n">tau_tot</span> <span class="o">=</span> <span class="n">tau</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">axis_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tau</span><span class="p">,</span> <span class="n">heightkm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">k_label</span><span class="p">)</span>
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">tau_tot</span> <span class="o">-</span> <span class="n">tau</span><span class="p">))</span>
+    <span class="n">axis_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">heightkm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">k_label</span><span class="p">)</span>
+    <span class="n">del_trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+    <span class="n">axis_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">del_trans</span><span class="p">,</span> <span class="n">mid_heightkm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">k_label</span><span class="p">)</span>
+
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s2">&quot;optical depth $\tau_{\lambda}$ for 7 values of $k_\lambda$&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transmittance $\hat{t_\lambda}$ for 7 values of $k_\lambda$&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;weighting function $\Delta \hat{t_\lambda}$ for 7 values of $k_\lambda$&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">xlabels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;optical depth&quot;</span><span class="p">,</span> <span class="s2">&quot;transmittance&quot;</span><span class="p">,</span> <span class="s2">&quot;weighting function&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axis_list</span><span class="p">,</span> <span class="n">titles</span><span class="p">,</span> <span class="n">xlabels</span><span class="p">):</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">)</span>
+<span class="p">[</span><span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;height (km)&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axis_list</span><span class="p">]</span>
+<span class="p">[</span><span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axis_list</span><span class="p">]</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;trans_plots.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/5f74445ed65ceccab2d9f447abda4c27fded183593030357b07a77a56eb126a3.png" src="../../_images/5f74445ed65ceccab2d9f447abda4c27fded183593030357b07a77a56eb126a3.png" />
+</div>
+</div>
+</section>
+<section id="integrating-the-schwartzchild-equation">
+<h2>Integrating the Schwartzchild equation<a class="headerlink" href="#integrating-the-schwartzchild-equation" title="Permalink to this heading">#</a></h2>
+<p>This final cell uses the weighting functions to integrate the Schwartchild equation (Stull 8.4)</p>
+<p>The weighting function is calculated at line 14, and the integral is done at line 15</p>
+<p>For plotting the radiances are turned into brightness temperatures at line 17</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">sat_lib.radiation</span> <span class="kn">import</span> <span class="n">calc_radiance</span><span class="p">,</span> <span class="n">planck_invert</span>
+
+<span class="n">Tbright</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">the_sound</span><span class="p">,</span> <span class="n">the_df</span> <span class="ow">in</span> <span class="n">sound_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">the_wave_m</span><span class="p">,</span> <span class="n">the_k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">k_lambda_list</span><span class="p">):</span>
+        <span class="c1">#pdb.set_trace()</span>
+        <span class="n">tau</span> <span class="o">=</span> <span class="n">find_tau</span><span class="p">(</span><span class="n">r_gas</span><span class="p">,</span> <span class="n">the_k</span><span class="p">,</span> <span class="n">the_df</span><span class="p">)</span>
+        <span class="n">tau_tot</span> <span class="o">=</span> <span class="n">tau</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">temps</span> <span class="o">=</span> <span class="n">the_df</span><span class="p">[</span><span class="s2">&quot;temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">Bsfc</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">the_wave_m</span><span class="p">,</span> <span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">sfc_contrib</span> <span class="o">=</span> <span class="n">Bsfc</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">tau_tot</span><span class="p">)</span>
+        <span class="n">mid_temps</span> <span class="o">=</span> <span class="p">(</span><span class="n">temps</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">temps</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">Batm</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">the_wave_m</span><span class="p">,</span> <span class="n">mid_temps</span><span class="p">)</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">tau_tot</span> <span class="o">-</span> <span class="n">tau</span><span class="p">))</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+        <span class="n">atm_contrib</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Batm</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="n">Lsat</span> <span class="o">=</span> <span class="n">sfc_contrib</span> <span class="o">+</span> <span class="n">atm_contrib</span>
+        <span class="n">the_temp</span> <span class="o">=</span> <span class="n">planck_invert</span><span class="p">(</span><span class="n">the_wave_m</span><span class="p">,</span> <span class="n">Lsat</span><span class="p">)</span>
+        <span class="n">Tbright</span><span class="p">[</span><span class="n">the_sound</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">the_temp</span><span class="p">)</span>
+    <span class="n">Tbright</span><span class="p">[</span><span class="n">the_sound</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Tbright</span><span class="p">[</span><span class="n">the_sound</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">the_wave_um</span> <span class="o">=</span> <span class="n">wavelengths</span> <span class="o">*</span> <span class="mf">1.0e6</span>
+<span class="k">for</span> <span class="n">the_sound</span><span class="p">,</span> <span class="n">the_temps</span> <span class="ow">in</span> <span class="n">Tbright</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">the_wave_um</span><span class="p">,</span> <span class="n">the_temps</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">the_sound</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Tbright (K)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;wavelength (microns)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">the_wave_um</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">sat_lib.radiation</span> <span class="kn">import</span> <span class="n">calc_radiance</span><span class="p">,</span> <span class="n">planck_invert</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">Tbright</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="k">for</span> <span class="n">the_sound</span><span class="p">,</span> <span class="n">the_df</span> <span class="ow">in</span> <span class="n">sound_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;sat_lib.radiation&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week6"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hydrostatic_balance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Scale heights for typical atmospheric soundings</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="writing_geotiffs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Writing the 5km water vapor image to a geotiff file</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#satellite-radiance-measured-in-the-co2-absorption-band">Satellite radiance measured in the CO2 absorption band</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transmittance-stull-figure-8-4c">Transmittance – Stull Figure 8.4c</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-and-brightness-temperature">Radiance and brightness temperature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weighting-functions-from-stull">Weighting functions from Stull</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-the-weighting-functions-in-the-co-2-15-mu-m-absorption-band">Calculating the weighting functions in the <span class="math notranslate nohighlight">\(CO_2\)</span> 15 <span class="math notranslate nohighlight">\(\mu m\)</span> absorption band</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-get-the-optical-depth-from-a-sounding">First get the optical depth from a sounding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-k-lambda-and-tau-lambda-for-co-2">Defining <span class="math notranslate nohighlight">\(k_\lambda\)</span> and <span class="math notranslate nohighlight">\(\tau_\lambda\)</span> for <span class="math notranslate nohighlight">\(CO_2\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-optical-depth">Plotting the optical depth</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-weighting-functions">Plotting the weighting functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrating-the-schwartzchild-equation">Integrating the Schwartzchild equation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

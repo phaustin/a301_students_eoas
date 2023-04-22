@@ -1,0 +1,1672 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Adding data to an image with xarray datasets &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week9/test_landsat_dataset';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week9/test_landsat_dataset.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Working with cloudsat data" href="cloudsat_ecmwf.html" />
+    <link rel="prev" title="Reading cloudsat data" href="readcloudsat.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week9/test_landsat_dataset.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week9/test_landsat_dataset.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week9/test_landsat_dataset.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Adding data to an image with xarray datasets</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-three-bands-plus-fmask-and-return-as-an-xarray-dataset">get three bands plus FMask and return as an xarray dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#give-the-plotting-routine-the-projection-so-we-can-add-extra-information-in-lon-lat-coords">Give the plotting routine the projection so we can add extra information in lon/lat coords</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-map-projection-using-the-epsg-code-for-utm-zone-10">Find the map projection using the epsg code for UTM Zone 10</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-plot-axis-with-the-projection-and-add-a-point-for-the-eoas-building">Create a plot axis with the projection and add a point for the EOAS building</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="adding-data-to-an-image-with-xarray-datasets">
+<span id="week9-test-dataset"></span><h1>Adding data to an image with xarray datasets<a class="headerlink" href="#adding-data-to-an-image-with-xarray-datasets" title="Permalink to this heading">#</a></h1>
+<p>This is a copy of <a class="reference internal" href="../week8/test_landsat_read.html#week8-test-landsat"><span class="std std-ref">simple test of get_landsat_scene</span></a> that uses <a class="reference external" href="https://phaustin.github.io/a301_web/full_listing.html#sat_lib.landsat_read.get_landsat_dataset">get_landsat_dataset</a> and saves the scene to
+a netcdf file for safekeeping.</p>
+<p>We change the plot to band5, and set up the axis so we can add a point to the plot to make sure we know where we are</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sat_lib.landsat_read</span> <span class="kn">import</span> <span class="n">get_landsat_dataset</span>
+<span class="kn">from</span> <span class="nn">rasterio.windows</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span>
+<span class="kn">import</span> <span class="nn">xarray</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in sat_lib init
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GDAL_HTTP_COOKIEFILE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./cookies.txt&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GDAL_HTTP_COOKIEJAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./cookies.txt&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="get-three-bands-plus-fmask-and-return-as-an-xarray-dataset">
+<h2>get three bands plus FMask and return as an xarray dataset<a class="headerlink" href="#get-three-bands-plus-fmask-and-return-as-an-xarray-dataset" title="Permalink to this heading">#</a></h2>
+<p>To fetch a new image that hasn’t been saved and write it to disk,
+set <code class="docutils literal notranslate"><span class="pre">doread=True</span></code>. Otherwise read the dataset from the netcdf file</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="s2">&quot;2015-06-14&quot;</span>
+<span class="n">lon</span><span class="p">,</span> <span class="n">lat</span>  <span class="o">=</span> <span class="o">-</span><span class="mf">123.2460</span><span class="p">,</span> <span class="mf">49.2606</span>
+<span class="n">ncfile</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/cloudsat/vancouver_ptgrey.nc&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># set to True first time through</span>
+<span class="c1">#</span>
+<span class="n">doread</span><span class="o">=</span><span class="kc">False</span>
+<span class="k">if</span> <span class="n">doread</span><span class="p">:</span>
+    <span class="n">the_window</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span><span class="n">col_off</span><span class="o">=</span><span class="mi">2671</span><span class="p">,</span> <span class="n">row_off</span><span class="o">=</span><span class="mi">1352</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">234</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">301</span><span class="p">)</span>
+    <span class="n">scenes_data</span> <span class="o">=</span> <span class="n">get_landsat_dataset</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">the_window</span><span class="p">)</span> 
+    <span class="c1">#</span>
+    <span class="c1"># write out the file for reuse</span>
+    <span class="c1">#</span>
+    <span class="n">scenes_data</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">scenes_data</span> <span class="o">=</span> <span class="n">xarray</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ncfile</span><span class="p">)</span>
+<span class="n">scenes_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
+Dimensions:      (band: 1, x: 234, y: 301)
+Coordinates:
+  * band         (band) int64 1
+  * x            (x) float64 4.801e+05 4.801e+05 ... 4.871e+05 4.871e+05
+  * y            (y) float64 5.459e+06 5.459e+06 5.459e+06 ... 5.45e+06 5.45e+06
+Data variables:
+    spatial_ref  int64 ...
+    B04          (band, y, x) float32 ...
+    B05          (band, y, x) float32 ...
+    B06          (band, y, x) float32 ...
+    Fmask        (band, y, x) float32 ...
+Attributes: (12/38)
+    ACCODE:                    Lasrc; Lasrc
+    AREA_OR_POINT:             Area
+    arop_ave_xshift(meters):   0, 0
+    arop_ave_yshift(meters):   0, 0
+    arop_ncp:                  0, 0
+    arop_rmse(meters):         0, 0
+    ...                        ...
+    USGS_SOFTWARE:             LPGS_15.3.1c
+    date:                      2015-06-14T19:00:19.142Z
+    cloud_cover:               4
+    band_name:                 Fmask
+    cartopy_epsg_code:         32610
+    day:                       2015-06-14</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-0d2a33dc-8ab5-4034-b133-0b1293d3f08c' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-0d2a33dc-8ab5-4034-b133-0b1293d3f08c' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>band</span>: 1</li><li><span class='xr-has-index'>x</span>: 234</li><li><span class='xr-has-index'>y</span>: 301</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-80509007-0740-4773-97e8-6225a06718c0' class='xr-section-summary-in' type='checkbox'  checked><label for='section-80509007-0740-4773-97e8-6225a06718c0' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>band</span></div><div class='xr-var-dims'>(band)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1</div><input id='attrs-0411fadf-cdcf-4a2a-a712-618e873453ab' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-0411fadf-cdcf-4a2a-a712-618e873453ab' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1e75d12a-431b-498d-b191-9c25487e21e1' class='xr-var-data-in' type='checkbox'><label for='data-1e75d12a-431b-498d-b191-9c25487e21e1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([1])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>4.801e+05 4.801e+05 ... 4.871e+05</div><input id='attrs-9aa76cbf-6b55-4aa6-86b4-ae6c5e38d425' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9aa76cbf-6b55-4aa6-86b4-ae6c5e38d425' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5758a3c8-d613-4fc8-a2fc-961195263624' class='xr-var-data-in' type='checkbox'><label for='data-5758a3c8-d613-4fc8-a2fc-961195263624' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([480105., 480135., 480165., ..., 487035., 487065., 487095.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>5.459e+06 5.459e+06 ... 5.45e+06</div><input id='attrs-b61ac9fd-3e04-4e48-985f-ae53b8e75599' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b61ac9fd-3e04-4e48-985f-ae53b8e75599' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5081fcbe-6383-41cc-b5db-5e008908d7b2' class='xr-var-data-in' type='checkbox'><label for='data-5081fcbe-6383-41cc-b5db-5e008908d7b2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([5459445., 5459415., 5459385., ..., 5450505., 5450475., 5450445.])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0d405b2a-3d74-4749-9a80-0eed4f58a46d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-0d405b2a-3d74-4749-9a80-0eed4f58a46d' class='xr-section-summary' >Data variables: <span>(5)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>spatial_ref</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-b05ef9d9-138e-4716-b4ee-dbd91625097b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b05ef9d9-138e-4716-b4ee-dbd91625097b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1611bdb3-61d3-47d4-8df5-513368af01be' class='xr-var-data-in' type='checkbox'><label for='data-1611bdb3-61d3-47d4-8df5-513368af01be' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>crs_wkt :</span></dt><dd>PROJCS[&quot;UTM Zone 10, Northern Hemisphere&quot;,GEOGCS[&quot;Unknown datum based upon the WGS 84 ellipsoid&quot;,DATUM[&quot;Not specified (based on WGS 84 spheroid)&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;latitude_of_origin&quot;,0],PARAMETER[&quot;central_meridian&quot;,-123],PARAMETER[&quot;scale_factor&quot;,0.9996],PARAMETER[&quot;false_easting&quot;,500000],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]]</dd><dt><span>semi_major_axis :</span></dt><dd>6378137.0</dd><dt><span>semi_minor_axis :</span></dt><dd>6356752.314245179</dd><dt><span>inverse_flattening :</span></dt><dd>298.257223563</dd><dt><span>reference_ellipsoid_name :</span></dt><dd>WGS 84</dd><dt><span>longitude_of_prime_meridian :</span></dt><dd>0.0</dd><dt><span>prime_meridian_name :</span></dt><dd>Greenwich</dd><dt><span>geographic_crs_name :</span></dt><dd>Unknown datum based upon the WGS 84 ellipsoid</dd><dt><span>horizontal_datum_name :</span></dt><dd>Not specified (based on WGS 84 spheroid)</dd><dt><span>projected_crs_name :</span></dt><dd>UTM Zone 10, Northern Hemisphere</dd><dt><span>grid_mapping_name :</span></dt><dd>transverse_mercator</dd><dt><span>latitude_of_projection_origin :</span></dt><dd>0.0</dd><dt><span>longitude_of_central_meridian :</span></dt><dd>-123.0</dd><dt><span>false_easting :</span></dt><dd>500000.0</dd><dt><span>false_northing :</span></dt><dd>0.0</dd><dt><span>scale_factor_at_central_meridian :</span></dt><dd>0.9996</dd><dt><span>spatial_ref :</span></dt><dd>PROJCS[&quot;UTM Zone 10, Northern Hemisphere&quot;,GEOGCS[&quot;Unknown datum based upon the WGS 84 ellipsoid&quot;,DATUM[&quot;Not specified (based on WGS 84 spheroid)&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;latitude_of_origin&quot;,0],PARAMETER[&quot;central_meridian&quot;,-123],PARAMETER[&quot;scale_factor&quot;,0.9996],PARAMETER[&quot;false_easting&quot;,500000],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]]</dd><dt><span>GeoTransform :</span></dt><dd>480090.0 30.0 0.0 5459460.0 0.0 -30.0</dd></dl></div><div class='xr-var-data'><pre>[1 values with dtype=int64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>B04</span></div><div class='xr-var-dims'>(band, y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-725ab8bd-b6d3-425f-a52b-50fd0cebe6d3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-725ab8bd-b6d3-425f-a52b-50fd0cebe6d3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e4fc79fe-a357-4f01-9de2-e33cdfc9bc17' class='xr-var-data-in' type='checkbox'><label for='data-e4fc79fe-a357-4f01-9de2-e33cdfc9bc17' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>ACCODE :</span></dt><dd>Lasrc; Lasrc</dd><dt><span>AREA_OR_POINT :</span></dt><dd>Area</dd><dt><span>arop_ave_xshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ave_yshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ncp :</span></dt><dd>0, 0</dd><dt><span>arop_rmse(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_s2_refimg :</span></dt><dd>NONE</dd><dt><span>cloud_coverage :</span></dt><dd>4</dd><dt><span>HLS_PROCESSING_TIME :</span></dt><dd>2022-03-05T21:45:14Z</dd><dt><span>HORIZONTAL_CS_NAME :</span></dt><dd>UTM, WGS84, UTM ZONE 10; UTM, WGS84, UTM ZONE 10</dd><dt><span>L1_PROCESSING_TIME :</span></dt><dd>2020-09-09T04:39:55Z; 2020-09-09T04:39:25Z</dd><dt><span>LANDSAT_PRODUCT_ID :</span></dt><dd>LC08_L1TP_047025_20150614_20200909_02_T1; LC08_L1TP_047026_20150614_20200909_02_T1</dd><dt><span>LANDSAT_SCENE_ID :</span></dt><dd>LC80470252015165LGN02; LC80470262015165LGN02</dd><dt><span>long_name :</span></dt><dd>Red</dd><dt><span>MEAN_SUN_AZIMUTH_ANGLE :</span></dt><dd>144.194636459219</dd><dt><span>MEAN_SUN_ZENITH_ANGLE :</span></dt><dd>29.6215707600637</dd><dt><span>MEAN_VIEW_AZIMUTH_ANGLE :</span></dt><dd>108.351563730551</dd><dt><span>MEAN_VIEW_ZENITH_ANGLE :</span></dt><dd>4.81243847783454</dd><dt><span>NBAR_SOLAR_ZENITH :</span></dt><dd>28.5475827060758</dd><dt><span>NCOLS :</span></dt><dd>3660</dd><dt><span>NROWS :</span></dt><dd>3660</dd><dt><span>OVR_RESAMPLING_ALG :</span></dt><dd>NEAREST</dd><dt><span>PROCESSING_LEVEL :</span></dt><dd>L1TP; L1TP</dd><dt><span>SENSING_TIME :</span></dt><dd>2015-06-14T19:00:19.1429430Z; 2015-06-14T19:00:43.0255080Z</dd><dt><span>SENSOR :</span></dt><dd>OLI_TIRS; OLI_TIRS</dd><dt><span>SENTINEL2_TILEID :</span></dt><dd>10UDV</dd><dt><span>spatial_coverage :</span></dt><dd>77</dd><dt><span>SPATIAL_RESOLUTION :</span></dt><dd>30</dd><dt><span>TIRS_SSM_MODEL :</span></dt><dd>ACTUAL; ACTUAL</dd><dt><span>TIRS_SSM_POSITION_STATUS :</span></dt><dd>NOMINAL; NOMINAL</dd><dt><span>ULX :</span></dt><dd>399960</dd><dt><span>ULY :</span></dt><dd>5500020</dd><dt><span>USGS_SOFTWARE :</span></dt><dd>LPGS_15.3.1c</dd><dt><span>date :</span></dt><dd>2015-06-14T19:00:19.142Z</dd><dt><span>cloud_cover :</span></dt><dd>4</dd><dt><span>band_name :</span></dt><dd>B04</dd><dt><span>cartopy_epsg_code :</span></dt><dd>32610</dd><dt><span>day :</span></dt><dd>2015-06-14</dd><dt><span>grid_mapping :</span></dt><dd>spatial_ref</dd></dl></div><div class='xr-var-data'><pre>[70434 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>B05</span></div><div class='xr-var-dims'>(band, y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-f4aabf40-b3ef-4a4e-bb71-32bcc91d7442' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f4aabf40-b3ef-4a4e-bb71-32bcc91d7442' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1b5f1924-1b8b-4112-a9e8-09f4d5496117' class='xr-var-data-in' type='checkbox'><label for='data-1b5f1924-1b8b-4112-a9e8-09f4d5496117' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>ACCODE :</span></dt><dd>Lasrc; Lasrc</dd><dt><span>AREA_OR_POINT :</span></dt><dd>Area</dd><dt><span>arop_ave_xshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ave_yshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ncp :</span></dt><dd>0, 0</dd><dt><span>arop_rmse(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_s2_refimg :</span></dt><dd>NONE</dd><dt><span>cloud_coverage :</span></dt><dd>4</dd><dt><span>HLS_PROCESSING_TIME :</span></dt><dd>2022-03-05T21:45:14Z</dd><dt><span>HORIZONTAL_CS_NAME :</span></dt><dd>UTM, WGS84, UTM ZONE 10; UTM, WGS84, UTM ZONE 10</dd><dt><span>L1_PROCESSING_TIME :</span></dt><dd>2020-09-09T04:39:55Z; 2020-09-09T04:39:25Z</dd><dt><span>LANDSAT_PRODUCT_ID :</span></dt><dd>LC08_L1TP_047025_20150614_20200909_02_T1; LC08_L1TP_047026_20150614_20200909_02_T1</dd><dt><span>LANDSAT_SCENE_ID :</span></dt><dd>LC80470252015165LGN02; LC80470262015165LGN02</dd><dt><span>long_name :</span></dt><dd>NIR</dd><dt><span>MEAN_SUN_AZIMUTH_ANGLE :</span></dt><dd>144.194636459219</dd><dt><span>MEAN_SUN_ZENITH_ANGLE :</span></dt><dd>29.6215707600637</dd><dt><span>MEAN_VIEW_AZIMUTH_ANGLE :</span></dt><dd>108.351563730551</dd><dt><span>MEAN_VIEW_ZENITH_ANGLE :</span></dt><dd>4.81243847783454</dd><dt><span>NBAR_SOLAR_ZENITH :</span></dt><dd>28.5475827060758</dd><dt><span>NCOLS :</span></dt><dd>3660</dd><dt><span>NROWS :</span></dt><dd>3660</dd><dt><span>OVR_RESAMPLING_ALG :</span></dt><dd>NEAREST</dd><dt><span>PROCESSING_LEVEL :</span></dt><dd>L1TP; L1TP</dd><dt><span>SENSING_TIME :</span></dt><dd>2015-06-14T19:00:19.1429430Z; 2015-06-14T19:00:43.0255080Z</dd><dt><span>SENSOR :</span></dt><dd>OLI_TIRS; OLI_TIRS</dd><dt><span>SENTINEL2_TILEID :</span></dt><dd>10UDV</dd><dt><span>spatial_coverage :</span></dt><dd>77</dd><dt><span>SPATIAL_RESOLUTION :</span></dt><dd>30</dd><dt><span>TIRS_SSM_MODEL :</span></dt><dd>ACTUAL; ACTUAL</dd><dt><span>TIRS_SSM_POSITION_STATUS :</span></dt><dd>NOMINAL; NOMINAL</dd><dt><span>ULX :</span></dt><dd>399960</dd><dt><span>ULY :</span></dt><dd>5500020</dd><dt><span>USGS_SOFTWARE :</span></dt><dd>LPGS_15.3.1c</dd><dt><span>date :</span></dt><dd>2015-06-14T19:00:19.142Z</dd><dt><span>cloud_cover :</span></dt><dd>4</dd><dt><span>band_name :</span></dt><dd>B05</dd><dt><span>cartopy_epsg_code :</span></dt><dd>32610</dd><dt><span>day :</span></dt><dd>2015-06-14</dd><dt><span>grid_mapping :</span></dt><dd>spatial_ref</dd></dl></div><div class='xr-var-data'><pre>[70434 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>B06</span></div><div class='xr-var-dims'>(band, y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-e1cbfb57-04a1-46f8-b5cd-1f233d507ad1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e1cbfb57-04a1-46f8-b5cd-1f233d507ad1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-616a7387-6db2-40f3-9e1a-d976b9efd53a' class='xr-var-data-in' type='checkbox'><label for='data-616a7387-6db2-40f3-9e1a-d976b9efd53a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>ACCODE :</span></dt><dd>Lasrc; Lasrc</dd><dt><span>AREA_OR_POINT :</span></dt><dd>Area</dd><dt><span>arop_ave_xshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ave_yshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ncp :</span></dt><dd>0, 0</dd><dt><span>arop_rmse(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_s2_refimg :</span></dt><dd>NONE</dd><dt><span>cloud_coverage :</span></dt><dd>4</dd><dt><span>HLS_PROCESSING_TIME :</span></dt><dd>2022-03-05T21:45:14Z</dd><dt><span>HORIZONTAL_CS_NAME :</span></dt><dd>UTM, WGS84, UTM ZONE 10; UTM, WGS84, UTM ZONE 10</dd><dt><span>L1_PROCESSING_TIME :</span></dt><dd>2020-09-09T04:39:55Z; 2020-09-09T04:39:25Z</dd><dt><span>LANDSAT_PRODUCT_ID :</span></dt><dd>LC08_L1TP_047025_20150614_20200909_02_T1; LC08_L1TP_047026_20150614_20200909_02_T1</dd><dt><span>LANDSAT_SCENE_ID :</span></dt><dd>LC80470252015165LGN02; LC80470262015165LGN02</dd><dt><span>long_name :</span></dt><dd>SWIR1</dd><dt><span>MEAN_SUN_AZIMUTH_ANGLE :</span></dt><dd>144.194636459219</dd><dt><span>MEAN_SUN_ZENITH_ANGLE :</span></dt><dd>29.6215707600637</dd><dt><span>MEAN_VIEW_AZIMUTH_ANGLE :</span></dt><dd>108.351563730551</dd><dt><span>MEAN_VIEW_ZENITH_ANGLE :</span></dt><dd>4.81243847783454</dd><dt><span>NBAR_SOLAR_ZENITH :</span></dt><dd>28.5475827060758</dd><dt><span>NCOLS :</span></dt><dd>3660</dd><dt><span>NROWS :</span></dt><dd>3660</dd><dt><span>OVR_RESAMPLING_ALG :</span></dt><dd>NEAREST</dd><dt><span>PROCESSING_LEVEL :</span></dt><dd>L1TP; L1TP</dd><dt><span>SENSING_TIME :</span></dt><dd>2015-06-14T19:00:19.1429430Z; 2015-06-14T19:00:43.0255080Z</dd><dt><span>SENSOR :</span></dt><dd>OLI_TIRS; OLI_TIRS</dd><dt><span>SENTINEL2_TILEID :</span></dt><dd>10UDV</dd><dt><span>spatial_coverage :</span></dt><dd>77</dd><dt><span>SPATIAL_RESOLUTION :</span></dt><dd>30</dd><dt><span>TIRS_SSM_MODEL :</span></dt><dd>ACTUAL; ACTUAL</dd><dt><span>TIRS_SSM_POSITION_STATUS :</span></dt><dd>NOMINAL; NOMINAL</dd><dt><span>ULX :</span></dt><dd>399960</dd><dt><span>ULY :</span></dt><dd>5500020</dd><dt><span>USGS_SOFTWARE :</span></dt><dd>LPGS_15.3.1c</dd><dt><span>date :</span></dt><dd>2015-06-14T19:00:19.142Z</dd><dt><span>cloud_cover :</span></dt><dd>4</dd><dt><span>band_name :</span></dt><dd>B06</dd><dt><span>cartopy_epsg_code :</span></dt><dd>32610</dd><dt><span>day :</span></dt><dd>2015-06-14</dd><dt><span>grid_mapping :</span></dt><dd>spatial_ref</dd></dl></div><div class='xr-var-data'><pre>[70434 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Fmask</span></div><div class='xr-var-dims'>(band, y, x)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-71bb9a15-6337-4678-9485-252e56ea63c9' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-71bb9a15-6337-4678-9485-252e56ea63c9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-93547767-4dc0-429f-a7e9-d55e54621849' class='xr-var-data-in' type='checkbox'><label for='data-93547767-4dc0-429f-a7e9-d55e54621849' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>ACCODE :</span></dt><dd>Lasrc; Lasrc</dd><dt><span>AREA_OR_POINT :</span></dt><dd>Area</dd><dt><span>arop_ave_xshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ave_yshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ncp :</span></dt><dd>0, 0</dd><dt><span>arop_rmse(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_s2_refimg :</span></dt><dd>NONE</dd><dt><span>cloud_coverage :</span></dt><dd>4</dd><dt><span>Fmask bit description :</span></dt><dd>Bits are listed from the MSB (bit 7) to the LSB (bit 0): 
+7-6    aerosol:
+       00 - climatology
+       01 - low
+       10 - average
+       11 - high
+5      water
+4      snow/ice
+3      cloud shadow
+2      adjacent to cloud
+1      cloud
+0      cirrus cloud
+</dd><dt><span>HLS_PROCESSING_TIME :</span></dt><dd>2022-03-05T21:45:14Z</dd><dt><span>HORIZONTAL_CS_NAME :</span></dt><dd>UTM, WGS84, UTM ZONE 10; UTM, WGS84, UTM ZONE 10</dd><dt><span>L1_PROCESSING_TIME :</span></dt><dd>2020-09-09T04:39:55Z; 2020-09-09T04:39:25Z</dd><dt><span>LANDSAT_PRODUCT_ID :</span></dt><dd>LC08_L1TP_047025_20150614_20200909_02_T1; LC08_L1TP_047026_20150614_20200909_02_T1</dd><dt><span>LANDSAT_SCENE_ID :</span></dt><dd>LC80470252015165LGN02; LC80470262015165LGN02</dd><dt><span>MEAN_SUN_AZIMUTH_ANGLE :</span></dt><dd>144.194636459219</dd><dt><span>MEAN_SUN_ZENITH_ANGLE :</span></dt><dd>29.6215707600637</dd><dt><span>MEAN_VIEW_AZIMUTH_ANGLE :</span></dt><dd>108.351563730551</dd><dt><span>MEAN_VIEW_ZENITH_ANGLE :</span></dt><dd>4.81243847783454</dd><dt><span>NBAR_SOLAR_ZENITH :</span></dt><dd>28.5475827060758</dd><dt><span>NCOLS :</span></dt><dd>3660</dd><dt><span>NROWS :</span></dt><dd>3660</dd><dt><span>OVR_RESAMPLING_ALG :</span></dt><dd>NEAREST</dd><dt><span>PROCESSING_LEVEL :</span></dt><dd>L1TP; L1TP</dd><dt><span>SENSING_TIME :</span></dt><dd>2015-06-14T19:00:19.1429430Z; 2015-06-14T19:00:43.0255080Z</dd><dt><span>SENSOR :</span></dt><dd>OLI_TIRS; OLI_TIRS</dd><dt><span>SENTINEL2_TILEID :</span></dt><dd>10UDV</dd><dt><span>spatial_coverage :</span></dt><dd>77</dd><dt><span>SPATIAL_RESOLUTION :</span></dt><dd>30</dd><dt><span>TIRS_SSM_MODEL :</span></dt><dd>ACTUAL; ACTUAL</dd><dt><span>TIRS_SSM_POSITION_STATUS :</span></dt><dd>NOMINAL; NOMINAL</dd><dt><span>ULX :</span></dt><dd>399960</dd><dt><span>ULY :</span></dt><dd>5500020</dd><dt><span>USGS_SOFTWARE :</span></dt><dd>LPGS_15.3.1c</dd><dt><span>date :</span></dt><dd>2015-06-14T19:00:19.142Z</dd><dt><span>cloud_cover :</span></dt><dd>4</dd><dt><span>band_name :</span></dt><dd>Fmask</dd><dt><span>cartopy_epsg_code :</span></dt><dd>32610</dd><dt><span>day :</span></dt><dd>2015-06-14</dd><dt><span>grid_mapping :</span></dt><dd>spatial_ref</dd></dl></div><div class='xr-var-data'><pre>[70434 values with dtype=float32]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-bde9256e-519f-48f2-82f5-d257439b5092' class='xr-section-summary-in' type='checkbox'  ><label for='section-bde9256e-519f-48f2-82f5-d257439b5092' class='xr-section-summary' >Indexes: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>band</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-76e9add5-f9e1-4fd8-9e1f-9668acef6daa' class='xr-index-data-in' type='checkbox'/><label for='index-76e9add5-f9e1-4fd8-9e1f-9668acef6daa' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Int64Index([1], dtype=&#x27;int64&#x27;, name=&#x27;band&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>x</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-166a01ca-c1ef-49bc-8437-72c24e734359' class='xr-index-data-in' type='checkbox'/><label for='index-166a01ca-c1ef-49bc-8437-72c24e734359' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Float64Index([480105.0, 480135.0, 480165.0, 480195.0, 480225.0, 480255.0,
+              480285.0, 480315.0, 480345.0, 480375.0,
+              ...
+              486825.0, 486855.0, 486885.0, 486915.0, 486945.0, 486975.0,
+              487005.0, 487035.0, 487065.0, 487095.0],
+             dtype=&#x27;float64&#x27;, name=&#x27;x&#x27;, length=234))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>y</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-17195b13-19eb-4df1-8732-887846ac6f04' class='xr-index-data-in' type='checkbox'/><label for='index-17195b13-19eb-4df1-8732-887846ac6f04' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Float64Index([5459445.0, 5459415.0, 5459385.0, 5459355.0, 5459325.0, 5459295.0,
+              5459265.0, 5459235.0, 5459205.0, 5459175.0,
+              ...
+              5450715.0, 5450685.0, 5450655.0, 5450625.0, 5450595.0, 5450565.0,
+              5450535.0, 5450505.0, 5450475.0, 5450445.0],
+             dtype=&#x27;float64&#x27;, name=&#x27;y&#x27;, length=301))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-ac02afe5-6314-4b33-a7f2-622cbec77160' class='xr-section-summary-in' type='checkbox'  ><label for='section-ac02afe5-6314-4b33-a7f2-622cbec77160' class='xr-section-summary' >Attributes: <span>(38)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>ACCODE :</span></dt><dd>Lasrc; Lasrc</dd><dt><span>AREA_OR_POINT :</span></dt><dd>Area</dd><dt><span>arop_ave_xshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ave_yshift(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_ncp :</span></dt><dd>0, 0</dd><dt><span>arop_rmse(meters) :</span></dt><dd>0, 0</dd><dt><span>arop_s2_refimg :</span></dt><dd>NONE</dd><dt><span>cloud_coverage :</span></dt><dd>4</dd><dt><span>Fmask bit description :</span></dt><dd>Bits are listed from the MSB (bit 7) to the LSB (bit 0): 
+7-6    aerosol:
+       00 - climatology
+       01 - low
+       10 - average
+       11 - high
+5      water
+4      snow/ice
+3      cloud shadow
+2      adjacent to cloud
+1      cloud
+0      cirrus cloud
+</dd><dt><span>HLS_PROCESSING_TIME :</span></dt><dd>2022-03-05T21:45:14Z</dd><dt><span>HORIZONTAL_CS_NAME :</span></dt><dd>UTM, WGS84, UTM ZONE 10; UTM, WGS84, UTM ZONE 10</dd><dt><span>L1_PROCESSING_TIME :</span></dt><dd>2020-09-09T04:39:55Z; 2020-09-09T04:39:25Z</dd><dt><span>LANDSAT_PRODUCT_ID :</span></dt><dd>LC08_L1TP_047025_20150614_20200909_02_T1; LC08_L1TP_047026_20150614_20200909_02_T1</dd><dt><span>LANDSAT_SCENE_ID :</span></dt><dd>LC80470252015165LGN02; LC80470262015165LGN02</dd><dt><span>MEAN_SUN_AZIMUTH_ANGLE :</span></dt><dd>144.194636459219</dd><dt><span>MEAN_SUN_ZENITH_ANGLE :</span></dt><dd>29.6215707600637</dd><dt><span>MEAN_VIEW_AZIMUTH_ANGLE :</span></dt><dd>108.351563730551</dd><dt><span>MEAN_VIEW_ZENITH_ANGLE :</span></dt><dd>4.81243847783454</dd><dt><span>NBAR_SOLAR_ZENITH :</span></dt><dd>28.5475827060758</dd><dt><span>NCOLS :</span></dt><dd>3660</dd><dt><span>NROWS :</span></dt><dd>3660</dd><dt><span>OVR_RESAMPLING_ALG :</span></dt><dd>NEAREST</dd><dt><span>PROCESSING_LEVEL :</span></dt><dd>L1TP; L1TP</dd><dt><span>SENSING_TIME :</span></dt><dd>2015-06-14T19:00:19.1429430Z; 2015-06-14T19:00:43.0255080Z</dd><dt><span>SENSOR :</span></dt><dd>OLI_TIRS; OLI_TIRS</dd><dt><span>SENTINEL2_TILEID :</span></dt><dd>10UDV</dd><dt><span>spatial_coverage :</span></dt><dd>77</dd><dt><span>SPATIAL_RESOLUTION :</span></dt><dd>30</dd><dt><span>TIRS_SSM_MODEL :</span></dt><dd>ACTUAL; ACTUAL</dd><dt><span>TIRS_SSM_POSITION_STATUS :</span></dt><dd>NOMINAL; NOMINAL</dd><dt><span>ULX :</span></dt><dd>399960</dd><dt><span>ULY :</span></dt><dd>5500020</dd><dt><span>USGS_SOFTWARE :</span></dt><dd>LPGS_15.3.1c</dd><dt><span>date :</span></dt><dd>2015-06-14T19:00:19.142Z</dd><dt><span>cloud_cover :</span></dt><dd>4</dd><dt><span>band_name :</span></dt><dd>Fmask</dd><dt><span>cartopy_epsg_code :</span></dt><dd>32610</dd><dt><span>day :</span></dt><dd>2015-06-14</dd></dl></div></li></ul></div></div></div></div>
+</div>
+</section>
+<section id="give-the-plotting-routine-the-projection-so-we-can-add-extra-information-in-lon-lat-coords">
+<h2>Give the plotting routine the projection so we can add extra information in lon/lat coords<a class="headerlink" href="#give-the-plotting-routine-the-projection-so-we-can-add-extra-information-in-lon-lat-coords" title="Permalink to this heading">#</a></h2>
+<p>We want to set up the xarray plot so we can add points like we did in <a class="reference internal" href="readcloudsat.html#week9-cloudsat"><span class="std std-ref">Reading cloudsat data</span></a>.  That means
+creating the plotting axis with the map projection for the scene (which is saved as the xarray
+attribute cartopy_epsg_code), and passing the Geodetic transform to the plot command, so it
+knows that it needs to transform from lon/lat to map x,y</p>
+<section id="find-the-map-projection-using-the-epsg-code-for-utm-zone-10">
+<h3>Find the map projection using the epsg code for UTM Zone 10<a class="headerlink" href="#find-the-map-projection-using-the-epsg-code-for-utm-zone-10" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">band5</span> <span class="o">=</span> <span class="n">scenes_data</span><span class="p">[</span><span class="s1">&#39;B05&#39;</span><span class="p">]</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">band5</span><span class="o">.</span><span class="n">cartopy_epsg_code</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">epsg</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+<span class="n">projection</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="26.308518pt" height="180.72pt" viewBox="0 0 26.308518 180.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2023-04-08T09:54:43.609438</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.7.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180.72 
+L 26.308518 180.72 
+L 26.308518 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 19.108518 7.2 
+L 19.108518 173.52 
+L 7.2 173.52 
+" style="fill: #ffffff"/>
+   </g>
+   <g id="PathCollection_1">
+    <path d="M 17.918638 18.372536 
+L 18.551824 18.555031 
+L 18.546815 19.167284 
+L 17.878077 19.889707 
+L 17.140584 19.366512 
+L 17.367567 18.683999 
+L 17.918638 18.372536 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 17.773801 17.077796 
+L 18.356283 17.362128 
+L 17.968018 17.845868 
+L 17.3153 17.971559 
+L 17.271054 17.690928 
+L 17.552826 17.030375 
+L 17.773801 17.077796 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108517 25.55427 
+L 18.886426 25.763219 
+L 18.09112 25.944339 
+L 17.924247 25.313437 
+L 18.83326 24.262515 
+L 16.58242 24.844576 
+L 15.835993 24.562662 
+L 16.306918 22.561338 
+L 16.67909 21.955082 
+L 18.092171 22.41723 
+L 19.108518 23.359539 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108518 21.917261 
+L 18.951313 21.662653 
+L 19.108518 21.17609 
+L 19.108518 21.17609 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 13.223536 22.903329 
+L 13.987429 21.402304 
+L 14.829733 20.071121 
+L 15.490355 20.04626 
+L 16.044334 19.694236 
+L 16.159406 21.22021 
+L 15.882262 21.944237 
+L 15.459024 22.080972 
+L 14.640891 22.990297 
+L 13.881421 23.324922 
+L 13.223536 22.903329 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 13.934263 26.211037 
+L 14.71575 26.595608 
+L 16.103052 26.609204 
+L 16.689309 27.129948 
+L 17.383085 27.89197 
+L 16.728063 28.472827 
+L 15.412277 29.986002 
+L 14.730785 31.415911 
+L 14.767284 32.28301 
+L 13.094235 33.275191 
+L 12.759543 32.401577 
+L 11.341181 31.308245 
+L 11.641527 30.478533 
+L 12.104272 29.041772 
+L 12.628641 27.745916 
+L 12.12125 26.514707 
+L 13.934263 26.211037 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 7.200001 73.319353 
+L 7.713528 73.522326 
+L 8.47314 73.864723 
+L 9.656023 74.126274 
+L 10.065571 74.825078 
+L 10.67356 75.784275 
+L 11.952817 76.626724 
+L 12.482718 77.726688 
+L 11.816898 77.995871 
+L 9.680163 77.044074 
+L 9.315085 76.326178 
+L 8.187908 75.580394 
+L 7.986118 75.003565 
+L 7.2 74.741166 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108518 105.752472 
+L 18.994685 105.655913 
+L 17.465649 105.507399 
+L 17.040248 105.198438 
+L 16.81722 104.118667 
+L 15.215529 102.160072 
+L 13.866875 99.422502 
+L 13.920357 98.964093 
+L 13.227421 98.312687 
+L 12.030856 96.650519 
+L 11.833152 95.035464 
+L 11.036387 93.944279 
+L 11.390494 92.308777 
+L 11.362206 90.61057 
+L 10.918353 89.085893 
+L 11.513744 87.229084 
+L 11.710715 85.43429 
+L 11.90269 83.638963 
+L 11.687234 80.978808 
+L 11.288148 79.27724 
+L 10.918469 78.349573 
+L 11.086848 77.966008 
+L 12.994793 78.660191 
+L 13.712537 80.529296 
+L 14.042805 80.003919 
+L 13.816882 78.38073 
+L 13.3629 76.757647 
+L 13.187888 76.752831 
+L 10.712828 74.775216 
+L 9.83009 73.891364 
+L 7.586253 72.962023 
+L 7.2 71.773786 
+L 7.2 71.773785 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 7.2 70.258476 
+L 7.263325 69.959465 
+L 7.200001 69.919311 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 7.2 34.918588 
+L 7.417141 34.780835 
+L 8.581494 34.427354 
+L 8.959914 35.296781 
+L 9.511894 34.882071 
+L 9.742341 33.961647 
+L 10.184943 34.20937 
+L 11.232458 36.057322 
+L 12.192063 34.741744 
+L 12.251466 36.251894 
+L 13.111819 35.935303 
+L 13.371144 35.354602 
+L 14.203894 35.456842 
+L 15.295841 36.251321 
+L 16.996488 36.864416 
+L 18.010369 37.103013 
+L 18.693492 36.892664 
+L 19.108517 37.224213 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108518 38.627641 
+L 18.901137 38.879086 
+L 19.108517 38.916466 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108518 36.347359 
+L 18.618354 36.151705 
+L 18.022118 36.447546 
+L 17.008621 34.968432 
+L 17.43836 34.713088 
+L 18.435452 34.254155 
+L 19.108518 34.224774 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+    <path d="M 19.108517 33.520452 
+L 18.854323 33.4682 
+L 17.468687 33.801674 
+L 16.528246 33.851633 
+L 16.124368 33.148234 
+L 17.537354 32.214978 
+L 16.560657 32.342108 
+L 15.417865 31.901512 
+L 15.835472 30.380034 
+L 16.187711 29.557422 
+L 17.605479 28.185645 
+L 18.240786 28.484874 
+L 18.084426 29.450076 
+L 19.108517 28.771455 
+L 19.108518 28.771455 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #000000"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 7.2 14.85402 
+L 7.224864 14.771374 
+L 7.712546 13.15255 
+L 8.201248 11.534309 
+L 8.690877 9.916599 
+L 9.18134 8.299369 
+L 9.515254 7.200001 
+L 9.515254 7.2 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 45.387572 
+L 7.353469 44.008348 
+L 7.541323 42.330505 
+L 7.7304 40.65275 
+L 7.920656 38.975081 
+L 8.112052 37.297496 
+L 8.304545 35.619991 
+L 8.498093 33.942563 
+L 8.692653 32.265211 
+L 8.888185 30.587931 
+L 9.084644 28.91072 
+L 9.281988 27.233575 
+L 9.480175 25.556495 
+L 9.67916 23.879474 
+L 9.878901 22.202511 
+L 10.079353 20.525602 
+L 10.280475 18.848744 
+L 10.482221 17.171933 
+L 10.684547 15.495168 
+L 10.887411 13.818443 
+L 11.090767 12.141757 
+L 11.294571 10.465105 
+L 11.49878 8.788485 
+L 11.69259 7.2 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 19.108518 173.52 
+L 19.107868 171.845538 
+L 19.105919 170.171071 
+L 19.10267 168.496593 
+L 19.098123 166.822099 
+L 19.092279 165.147584 
+L 19.085138 163.473042 
+L 19.076703 161.798469 
+L 19.066974 160.123858 
+L 19.055955 158.449205 
+L 19.043647 156.774504 
+L 19.030053 155.09975 
+L 19.015175 153.424939 
+L 18.999018 151.750065 
+L 18.981584 150.075123 
+L 18.962877 148.400109 
+L 18.942901 146.725016 
+L 18.92166 145.049842 
+L 18.899158 143.37458 
+L 18.875401 141.699226 
+L 18.850393 140.023776 
+L 18.82414 138.348225 
+L 18.796647 136.672568 
+L 18.76792 134.996802 
+L 18.737965 133.320922 
+L 18.706789 131.644924 
+L 18.674397 129.968804 
+L 18.640797 128.292558 
+L 18.605996 126.616182 
+L 18.570002 124.939673 
+L 18.532821 123.263026 
+L 18.494462 121.586239 
+L 18.454933 119.909308 
+L 18.414242 118.23223 
+L 18.372398 116.555002 
+L 18.329411 114.87762 
+L 18.285288 113.200083 
+L 18.240039 111.522386 
+L 18.193675 109.844528 
+L 18.146204 108.166507 
+L 18.097638 106.488319 
+L 18.047986 104.809963 
+L 17.997259 103.131437 
+L 17.945468 101.452739 
+L 17.892624 99.773867 
+L 17.838738 98.09482 
+L 17.783822 96.415596 
+L 17.727888 94.736194 
+L 17.670948 93.056613 
+L 17.613013 91.376852 
+L 17.554097 89.69691 
+L 17.494213 88.016787 
+L 17.433372 86.336482 
+L 17.371588 84.655995 
+L 17.308875 82.975326 
+L 17.245245 81.294475 
+L 17.180714 79.613441 
+L 17.115294 77.932226 
+L 17.049001 76.250829 
+L 16.981848 74.569252 
+L 16.913849 72.887496 
+L 16.845021 71.20556 
+L 16.775377 69.523447 
+L 16.704933 67.841157 
+L 16.633704 66.158693 
+L 16.561706 64.476055 
+L 16.488954 62.793246 
+L 16.415465 61.110267 
+L 16.341254 59.427121 
+L 16.266337 57.743809 
+L 16.190732 56.060335 
+L 16.114454 54.376699 
+L 16.037521 52.692906 
+L 15.959949 51.008958 
+L 15.881755 49.324858 
+L 15.802956 47.640609 
+L 15.72357 45.956213 
+L 15.643615 44.271676 
+L 15.563107 42.586999 
+L 15.482065 40.902186 
+L 15.400506 39.217242 
+L 15.318449 37.532169 
+L 15.235911 35.846973 
+L 15.152911 34.161656 
+L 15.069467 32.476223 
+L 14.985598 30.790679 
+L 14.901322 29.105028 
+L 14.816658 27.419273 
+L 14.731624 25.73342 
+L 14.64624 24.047473 
+L 14.560524 22.361438 
+L 14.474495 20.675318 
+L 14.388173 18.989119 
+L 14.301576 17.302845 
+L 14.214725 15.616502 
+L 14.127637 13.930095 
+L 14.040333 12.243628 
+L 13.952831 10.557107 
+L 13.865152 8.870538 
+L 13.778153 7.2 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 19.108518 21.301449 
+L 18.833352 20.077749 
+L 18.461506 18.428896 
+L 18.088584 16.780445 
+L 17.714664 15.132367 
+L 17.339821 13.484636 
+L 16.964132 11.837223 
+L 16.587674 10.190101 
+L 16.210522 8.543241 
+L 15.902402 7.200001 
+L 15.902402 7.2 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 19.108518 9.342996 
+L 18.465433 7.815738 
+L 18.205839 7.200001 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="LineCollection_2">
+    <path d="M 7.2 134.036361 
+L 7.644021 134.044513 
+L 8.646391 134.060591 
+L 9.648457 134.073447 
+L 10.650284 134.083085 
+L 11.651942 134.089507 
+L 12.653498 134.092718 
+L 13.65502 134.092718 
+L 14.656576 134.089507 
+L 15.658234 134.083085 
+L 16.660062 134.073447 
+L 17.662127 134.060591 
+L 18.664498 134.044513 
+L 19.108518 134.036361 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 94.449987 
+L 7.84151 94.476663 
+L 8.658994 94.506245 
+L 9.47641 94.530888 
+L 10.293768 94.550595 
+L 11.111083 94.565371 
+L 11.928366 94.57522 
+L 12.74563 94.580144 
+L 13.562888 94.580144 
+L 14.380152 94.57522 
+L 15.197435 94.565371 
+L 16.01475 94.550595 
+L 16.832109 94.530888 
+L 17.649524 94.506245 
+L 18.467008 94.476663 
+L 19.108518 94.449987 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 54.666805 
+L 7.551468 54.697808 
+L 8.084321 54.741188 
+L 8.617399 54.780225 
+L 9.150677 54.81492 
+L 9.684132 54.845275 
+L 10.217739 54.871291 
+L 10.751476 54.892969 
+L 11.285318 54.91031 
+L 11.819243 54.923315 
+L 12.353226 54.931985 
+L 12.887244 54.93632 
+L 13.421274 54.93632 
+L 13.955292 54.931985 
+L 14.489275 54.923315 
+L 15.0232 54.91031 
+L 15.557042 54.892969 
+L 16.090779 54.871291 
+L 16.624386 54.845275 
+L 17.157841 54.81492 
+L 17.691119 54.780225 
+L 18.224197 54.741188 
+L 18.75705 54.697808 
+L 19.108518 54.666805 
+L 19.108518 54.666805 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 14.274688 
+L 7.209598 14.277662 
+L 7.387383 14.331809 
+L 7.565648 14.384305 
+L 7.744378 14.435145 
+L 7.923557 14.484325 
+L 8.10317 14.531843 
+L 8.283202 14.577694 
+L 8.463638 14.621876 
+L 8.644464 14.664385 
+L 8.825663 14.705217 
+L 9.007221 14.744371 
+L 9.189123 14.781842 
+L 9.371353 14.817629 
+L 9.553896 14.851729 
+L 9.736738 14.884139 
+L 9.919862 14.914857 
+L 10.103253 14.943881 
+L 10.286897 14.971208 
+L 10.470779 14.996837 
+L 10.654882 15.020765 
+L 10.839191 15.042992 
+L 11.023692 15.063515 
+L 11.208369 15.082333 
+L 11.393207 15.099445 
+L 11.578191 15.114849 
+L 11.763304 15.128544 
+L 11.948532 15.14053 
+L 12.13386 15.150804 
+L 12.319272 15.159368 
+L 12.504753 15.166219 
+L 12.690288 15.171359 
+L 12.875861 15.174785 
+L 13.061457 15.176498 
+L 13.247061 15.176498 
+L 13.432657 15.174785 
+L 13.61823 15.171359 
+L 13.803765 15.166219 
+L 13.989246 15.159368 
+L 14.174658 15.150804 
+L 14.359986 15.14053 
+L 14.545214 15.128544 
+L 14.730328 15.114849 
+L 14.915311 15.099445 
+L 15.100149 15.082333 
+L 15.284826 15.063515 
+L 15.469327 15.042992 
+L 15.653636 15.020765 
+L 15.837739 14.996837 
+L 16.021621 14.971208 
+L 16.205265 14.943881 
+L 16.388656 14.914857 
+L 16.571781 14.884139 
+L 16.754622 14.851729 
+L 16.937165 14.817629 
+L 17.119395 14.781842 
+L 17.301297 14.744371 
+L 17.482855 14.705217 
+L 17.664054 14.664385 
+L 17.84488 14.621876 
+L 18.025316 14.577694 
+L 18.205348 14.531843 
+L 18.384961 14.484325 
+L 18.56414 14.435145 
+L 18.74287 14.384305 
+L 18.921135 14.331809 
+L 19.09892 14.277662 
+L 19.108518 14.274687 
+" clip-path="url(#p6e71c723c5)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 19.108518 7.2 
+L 19.108518 173.52 
+L 7.2 173.52 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6e71c723c5">
+   <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 19.108518 7.2 
+L 19.108518 173.52 
+L 7.2 173.52 
+"/>
+  </clipPath>
+ </defs>
+</svg>
+<pre>&lt;cartopy._epsg._EPSGProjection object at 0x7f68e9fdca50&gt;</pre></div></div>
+</div>
+</section>
+<section id="create-a-plot-axis-with-the-projection-and-add-a-point-for-the-eoas-building">
+<h3>Create a plot axis with the projection and add a point for the EOAS building<a class="headerlink" href="#create-a-plot-axis-with-the-projection-and-add-a-point-for-the-eoas-building" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cartopy</span> <span class="kn">import</span> <span class="n">feature</span> <span class="k">as</span> <span class="n">cfeature</span>
+<span class="n">kw_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># pass the landsat projection to the axis</span>
+<span class="c1">#</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span><span class="n">subplot_kw</span> <span class="o">=</span> <span class="n">kw_dict</span><span class="p">);</span>
+<span class="n">band5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># tell the plot command that the points need to be transformed</span>
+<span class="c1"># from lon/lat</span>
+<span class="c1">#</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;landsat band 5 on </span><span class="si">{</span><span class="n">band5</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phil/mini39/envs/new301/lib/python3.11/site-packages/cartopy/mpl/style.py:76: UserWarning: facecolor will have no effect as it has been defined as &quot;never&quot;.
+  warnings.warn(&#39;facecolor will have no effect as it has been &#39;
+/home/phil/mini39/envs/new301/lib/python3.11/site-packages/cartopy/mpl/style.py:76: UserWarning: facecolor will have no effect as it has been defined as &quot;never&quot;.
+  warnings.warn(&#39;facecolor will have no effect as it has been &#39;
+/home/phil/mini39/envs/new301/lib/python3.11/site-packages/cartopy/mpl/style.py:76: UserWarning: facecolor will have no effect as it has been defined as &quot;never&quot;.
+  warnings.warn(&#39;facecolor will have no effect as it has been &#39;
+</pre></div>
+</div>
+<img alt="../../_images/0baae305a5b8d4dc66640643f17846b4afa2ed5a0c097360ffb85532956fda87.png" src="../../_images/0baae305a5b8d4dc66640643f17846b4afa2ed5a0c097360ffb85532956fda87.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week9"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="readcloudsat.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reading cloudsat data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cloudsat_ecmwf.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Working with cloudsat data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-three-bands-plus-fmask-and-return-as-an-xarray-dataset">get three bands plus FMask and return as an xarray dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#give-the-plotting-routine-the-projection-so-we-can-add-extra-information-in-lon-lat-coords">Give the plotting routine the projection so we can add extra information in lon/lat coords</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-map-projection-using-the-epsg-code-for-utm-zone-10">Find the map projection using the epsg code for UTM Zone 10</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-plot-axis-with-the-projection-and-add-a-point-for-the-eoas-building">Create a plot axis with the projection and add a point for the EOAS building</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

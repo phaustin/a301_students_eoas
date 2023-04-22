@@ -1,0 +1,1980 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting multiple scenes using stac &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week8/fetch_stac_metadata';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week8/fetch_stac_metadata.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Clipping and saving landsat scenes" href="zoom_landsat.html" />
+    <link rel="prev" title="Week 8" href="week8_topics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week8_topics.html">Week 8</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week8/fetch_stac_metadata.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week8/fetch_stac_metadata.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week8/fetch_stac_metadata.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Getting multiple scenes using stac</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-for-all-ubc-scenes-from-2013-to-2022">Ask for all UBC scenes from 2013 to 2022</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-search">Start the search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-metadata-for-search-items">get the metadata for search items</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#put-the-results-into-a-list-of-scenes">Put the results into a list of scenes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-dataframe">Creating the dataframe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-seasons-and-month-columns-to-the-clear-df">Add seasons and month columns to the clear_df</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-low-cloud-scenes">Find the low-cloud scenes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-the-seasons-with-groupby">Separate the seasons with groupby</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-the-dataframe-as-a-csv-file">Storing the dataframe as a csv file</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="getting-multiple-scenes-using-stac">
+<span id="week8-fetch"></span><h1>Getting multiple scenes using stac<a class="headerlink" href="#getting-multiple-scenes-using-stac" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>In this notebook we construct a set of pandas dataframes that contains a list
+of all low-cloudcover satellite scenes for ubc, along with their datetime,
+month, and season (winter, spring, summer, fall).  Before starting on this
+notebook, it would be good to review <a class="reference internal" href="../week6/pandas_intro.html#week6-pandas-intro"><span class="std std-ref">Introduction to Pandas</span></a>.</p>
+<p>March 17, 2023:  introduced “season_year” column to account for the fact that winter begins december but
+continues into the next year.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span>  <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+
+<span class="kn">import</span> <span class="nn">rioxarray</span>
+<span class="kn">from</span> <span class="nn">pystac_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ask-for-all-ubc-scenes-from-2013-to-2022">
+<h2>Ask for all UBC scenes from 2013 to 2022<a class="headerlink" href="#ask-for-all-ubc-scenes-from-2013-to-2022" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">the_lon</span><span class="p">,</span> <span class="n">the_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mf">123.2460</span><span class="p">,</span> <span class="mf">49.2606</span>
+<span class="n">location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">the_lon</span><span class="p">,</span> <span class="n">the_lat</span><span class="p">)</span>
+<span class="n">date_range</span> <span class="o">=</span> <span class="s2">&quot;2013-01-01/2022-12-31&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># filename to save the dataframe for future analysis</span>
+<span class="c1">#</span>
+<span class="n">csv_filename</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/landsat/vancouver_search.csv&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># connect to the STAC endpoint</span>
+<span class="n">cmr_api_url</span> <span class="o">=</span> <span class="s2">&quot;https://cmr.earthdata.nasa.gov/stac/LPCLOUD&quot;</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">cmr_api_url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="start-the-search">
+<h2>Start the search<a class="headerlink" href="#start-the-search" title="Permalink to this heading">#</a></h2>
+<p>The client takes the search parameters as the following keywords:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">collections</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HLSL30.v2.0&quot;</span><span class="p">],</span>
+    <span class="n">intersects</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+    <span class="n">datetime</span><span class="o">=</span> <span class="n">date_range</span>
+<span class="p">)</span> 
+<span class="n">search</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pystac_client.item_search.ItemSearch at 0x7fefaccd9bd0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="get-the-metadata-for-search-items">
+<h3>get the metadata for search items<a class="headerlink" href="#get-the-metadata-for-search-items" title="Permalink to this heading">#</a></h3>
+<p>This search should find 388 scenes that contain UBC</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">items</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">get_all_items</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>388
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="put-the-results-into-a-list-of-scenes">
+<h3>Put the results into a list of scenes<a class="headerlink" href="#put-the-results-into-a-list-of-scenes" title="Permalink to this heading">#</a></h3>
+<p>In this cell, we go over the properties for each scene
+and store them in a dict – converting the datetime
+(which is retrieved as a string of characters) into
+a python datetime object using the <code class="docutils literal notranslate"><span class="pre">str_to_datetime</span></code> function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pystac</span>
+<span class="n">scene_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="n">props</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">properties</span>
+    <span class="n">the_date</span> <span class="o">=</span> <span class="n">pystac</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">str_to_datetime</span><span class="p">(</span><span class="n">props</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">])</span>
+    <span class="n">scene_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">scene</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span>
+                      <span class="n">cloud_cover</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s1">&#39;eo:cloud_cover&#39;</span><span class="p">],</span>
+                      <span class="n">datetime</span> <span class="o">=</span> <span class="n">the_date</span> 
+                       <span class="p">)</span>
+    <span class="n">scene_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scene_dict</span><span class="p">)</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scene_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;scene&#39;: 0,
+ &#39;cloud_cover&#39;: 58,
+ &#39;datetime&#39;: datetime.datetime(2013, 4, 21, 19, 2, 49, 190000, tzinfo=tzutc())}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-the-dataframe">
+<h2>Creating the dataframe<a class="headerlink" href="#creating-the-dataframe" title="Permalink to this heading">#</a></h2>
+<p>We can make a dataframe from a list of dictionaries, using the <code class="docutils literal notranslate"><span class="pre">from_records</span></code> constructor</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">the_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">scene_list</span><span class="p">)</span>
+<span class="n">the_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>scene</th>
+      <th>cloud_cover</th>
+      <th>datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>58</td>
+      <td>2013-04-21 19:02:49.190000+00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>85</td>
+      <td>2013-04-28 19:08:58.812000+00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>95</td>
+      <td>2013-05-14 19:09:10.737000+00:00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>68</td>
+      <td>2013-05-23 19:03:04.711000+00:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>97</td>
+      <td>2013-06-08 19:03:03.638000+00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="add-seasons-and-month-columns-to-the-clear-df">
+<h2>Add seasons and month columns to the clear_df<a class="headerlink" href="#add-seasons-and-month-columns-to-the-clear-df" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">make_seasoncol</span></code> function finds the season for each scene
+by using the month number – January-December are months 1-12</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_seasoncol</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">seasons</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;djf&#39;</span><span class="p">:[</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+               <span class="s1">&#39;mam&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+               <span class="s1">&#39;jja&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+               <span class="s1">&#39;son&#39;</span><span class="p">:[</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]}</span>
+    <span class="k">for</span> <span class="n">season</span><span class="p">,</span><span class="n">months</span> <span class="ow">in</span> <span class="n">seasons</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">month</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span>
+        <span class="k">if</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">months</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># the winter of 2013 begins in</span>
+            <span class="c1"># december 2012.  So the year of the</span>
+            <span class="c1"># scene and the year of the season diverge</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;season_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;season_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;season&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">season</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">year</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">month</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">day</span>
+    <span class="k">return</span> <span class="n">row</span>
+
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">the_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">make_seasoncol</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[[</span><span class="s1">&#39;scene&#39;</span><span class="p">,</span><span class="s1">&#39;cloud_cover&#39;</span><span class="p">,</span><span class="s1">&#39;season&#39;</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;season_year&#39;</span><span class="p">,</span><span class="s1">&#39;month&#39;</span><span class="p">,</span><span class="s1">&#39;day&#39;</span><span class="p">]]</span>
+<span class="n">new_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>scene</th>
+      <th>cloud_cover</th>
+      <th>season</th>
+      <th>year</th>
+      <th>season_year</th>
+      <th>month</th>
+      <th>day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>58</td>
+      <td>mam</td>
+      <td>2013</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>85</td>
+      <td>mam</td>
+      <td>2013</td>
+      <td>2013</td>
+      <td>4</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>95</td>
+      <td>mam</td>
+      <td>2013</td>
+      <td>2013</td>
+      <td>5</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>68</td>
+      <td>mam</td>
+      <td>2013</td>
+      <td>2013</td>
+      <td>5</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>97</td>
+      <td>jja</td>
+      <td>2013</td>
+      <td>2013</td>
+      <td>6</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_filename</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="find-the-low-cloud-scenes">
+<h2>Find the low-cloud scenes<a class="headerlink" href="#find-the-low-cloud-scenes" title="Permalink to this heading">#</a></h2>
+<p>We don’t have a huge number of scenes, so accept any that have less than 50% cloud cover and hope that UBC isn’t under a cloud</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clear_df</span> <span class="o">=</span> <span class="n">the_df</span><span class="p">[</span><span class="n">the_df</span><span class="p">[</span><span class="s1">&#39;cloud_cover&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">]</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">clear_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>142
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="separate-the-seasons-with-groupby">
+<h2>Separate the seasons with groupby<a class="headerlink" href="#separate-the-seasons-with-groupby" title="Permalink to this heading">#</a></h2>
+<p>Below we use the pandas groupby operator https://realpython.com/pandas-groupby/
+to produce a new set of dataframes that all have the same season</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">season_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;season_year&#39;</span><span class="p">,</span><span class="s1">&#39;season&#39;</span><span class="p">])</span>
+<span class="n">season_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">season_df</span><span class="p">))</span>
+<span class="n">season_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{(2013,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 4       4           97    jja  2013         2013      6    8
+ 5       5           58    jja  2013         2013      6   15
+ 6       6           68    jja  2013         2013      7    1
+ 7       7           26    jja  2013         2013      7   10
+ 8       8           35    jja  2013         2013      7   17
+ 9       9            2    jja  2013         2013      7   26
+ 10     10           89    jja  2013         2013      8   11
+ 11     11          100    jja  2013         2013      8   18
+ 12     12          100    jja  2013         2013      8   27,
+ (2013,
+  &#39;mam&#39;):    scene  cloud_cover season  year  season_year  month  day
+ 0      0           58    mam  2013         2013      4   21
+ 1      1           85    mam  2013         2013      4   28
+ 2      2           95    mam  2013         2013      5   14
+ 3      3           68    mam  2013         2013      5   23,
+ (2013,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 13     13           98    son  2013         2013      9    3
+ 14     14            0    son  2013         2013      9   12
+ 15     15           90    son  2013         2013      9   19
+ 16     16           24    son  2013         2013     10   14
+ 17     17           81    son  2013         2013     10   30
+ 18     18          100    son  2013         2013     11    6
+ 19     19           21    son  2013         2013     11   22,
+ (2014,
+  &#39;djf&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 20     20           98    djf  2013         2014     12    1
+ 21     21           44    djf  2013         2014     12    8
+ 22     22           94    djf  2013         2014     12   24
+ 23     23           77    djf  2014         2014      1   18
+ 24     24           36    djf  2014         2014      1   25
+ 25     25            5    djf  2014         2014      2    3
+ 26     26           33    djf  2014         2014      2   19
+ 27     27           94    djf  2014         2014      2   26,
+ (2014,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 38     38            6    jja  2014         2014      6    2
+ 39     39           88    jja  2014         2014      6   11
+ 40     40           99    jja  2014         2014      6   18
+ 41     41          100    jja  2014         2014      7    4
+ 42     42           37    jja  2014         2014      7   13
+ 43     43            0    jja  2014         2014      7   29
+ 44     44           83    jja  2014         2014      8    5
+ 45     45           93    jja  2014         2014      8   14
+ 46     46           33    jja  2014         2014      8   21,
+ (2014,
+  &#39;mam&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 28     28           99    mam  2014         2014      3    7
+ 29     29           82    mam  2014         2014      3   14
+ 30     30           49    mam  2014         2014      3   23
+ 31     31           89    mam  2014         2014      3   30
+ 32     32           98    mam  2014         2014      4    8
+ 33     33           94    mam  2014         2014      4   15
+ 34     34           24    mam  2014         2014      5    1
+ 35     35           97    mam  2014         2014      5   10
+ 36     36           76    mam  2014         2014      5   17
+ 37     37           51    mam  2014         2014      5   26,
+ (2014,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 47     47            0    son  2014         2014      9    6
+ 48     48            0    son  2014         2014      9   15
+ 49     49           91    son  2014         2014      9   22
+ 50     50           93    son  2014         2014     10    1
+ 51     51           99    son  2014         2014     10    8
+ 52     52           89    son  2014         2014     10   24
+ 53     53           94    son  2014         2014     11    9
+ 54     54          100    son  2014         2014     11   18,
+ (2015,
+  &#39;djf&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 55     55           97    djf  2014         2015     12    4
+ 56     56           98    djf  2014         2015     12   27
+ 57     57           88    djf  2015         2015      1   12
+ 58     58          100    djf  2015         2015      1   21
+ 59     59           72    djf  2015         2015      1   28
+ 60     60           99    djf  2015         2015      2   13
+ 61     61           63    djf  2015         2015      2   22,
+ (2015,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 73     73           32    jja  2015         2015      6    5
+ 74     74            4    jja  2015         2015      6   14
+ 75     75           34    jja  2015         2015      6   21
+ 76     76            4    jja  2015         2015      6   30
+ 77     77            0    jja  2015         2015      7    7
+ 78     78           26    jja  2015         2015      7   16
+ 79     79           37    jja  2015         2015      7   23
+ 80     80           82    jja  2015         2015      8    1
+ 81     81           14    jja  2015         2015      8   17
+ 82     82           80    jja  2015         2015      8   24,
+ (2015,
+  &#39;mam&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 62     62          100    mam  2015         2015      3    1
+ 63     63           93    mam  2015         2015      3   10
+ 64     64           95    mam  2015         2015      3   17
+ 65     65          100    mam  2015         2015      3   26
+ 66     66           82    mam  2015         2015      4    2
+ 67     67           74    mam  2015         2015      4   11
+ 68     68           68    mam  2015         2015      4   18
+ 69     69          100    mam  2015         2015      4   27
+ 70     70           68    mam  2015         2015      5    4
+ 71     71            2    mam  2015         2015      5   20
+ 72     72           11    mam  2015         2015      5   29,
+ (2015,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 83     83           92    son  2015         2015      9    2
+ 84     84           48    son  2015         2015      9    9
+ 85     85           99    son  2015         2015      9   25
+ 86     86            0    son  2015         2015     10    4
+ 87     87          100    son  2015         2015     10   11
+ 88     88           79    son  2015         2015     10   20
+ 89     89          100    son  2015         2015     10   27
+ 90     90           80    son  2015         2015     11    5
+ 91     91           33    son  2015         2015     11   21
+ 92     92           33    son  2015         2015     11   28,
+ (2016,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 93      93           45    djf  2015         2016     12   14
+ 94      94           55    djf  2015         2016     12   30
+ 95      95           96    djf  2016         2016      1    8
+ 96      96           97    djf  2016         2016      1   15
+ 97      97           65    djf  2016         2016      1   24
+ 98      98           94    djf  2016         2016      1   31
+ 99      99           42    djf  2016         2016      2    9
+ 100    100           25    djf  2016         2016      2   16
+ 101    101           23    djf  2016         2016      2   25,
+ (2016,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 114    114           55    jja  2016         2016      6    7
+ 115    115           57    jja  2016         2016      6   16
+ 116    116           66    jja  2016         2016      7    2
+ 117    117           96    jja  2016         2016      7    9
+ 118    118           29    jja  2016         2016      7   18
+ 119    119           62    jja  2016         2016      7   25
+ 120    120           86    jja  2016         2016      8    3
+ 121    121           86    jja  2016         2016      8   10
+ 122    122            0    jja  2016         2016      8   19
+ 123    123           56    jja  2016         2016      8   26,
+ (2016,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 102    102           90    mam  2016         2016      3    3
+ 103    103           83    mam  2016         2016      3   12
+ 104    104          100    mam  2016         2016      3   19
+ 105    105           11    mam  2016         2016      3   28
+ 106    106           52    mam  2016         2016      4    4
+ 107    107           79    mam  2016         2016      4   13
+ 108    108            0    mam  2016         2016      4   20
+ 109    109           35    mam  2016         2016      4   29
+ 110    110            0    mam  2016         2016      5    6
+ 111    111          100    mam  2016         2016      5   15
+ 112    112           73    mam  2016         2016      5   22
+ 113    113           51    mam  2016         2016      5   31,
+ (2016,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 124    124           36    son  2016         2016      9    4
+ 125    125           16    son  2016         2016      9   11
+ 126    126           31    son  2016         2016      9   20
+ 127    127           16    son  2016         2016      9   27
+ 128    128           99    son  2016         2016     10   13
+ 129    129          100    son  2016         2016     10   22
+ 130    130           48    son  2016         2016     11   14
+ 131    131          100    son  2016         2016     11   23
+ 132    132          100    son  2016         2016     11   30,
+ (2017,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 133    133           20    djf  2016         2017     12   16
+ 134    134           38    djf  2016         2017     12   25
+ 135    135           54    djf  2017         2017      1   10
+ 136    136          100    djf  2017         2017      1   26
+ 137    137           30    djf  2017         2017      2    2
+ 138    138          100    djf  2017         2017      2   11
+ 139    139          100    djf  2017         2017      2   18,
+ (2017,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 150    150           99    jja  2017         2017      6    3
+ 151    151           92    jja  2017         2017      6   10
+ 152    152          100    jja  2017         2017      6   19
+ 153    153            6    jja  2017         2017      6   26
+ 154    154            0    jja  2017         2017      7    5
+ 155    155           93    jja  2017         2017      7   12
+ 156    156          100    jja  2017         2017      7   21
+ 157    157            9    jja  2017         2017      7   28
+ 158    158            1    jja  2017         2017      8    6
+ 159    159           83    jja  2017         2017      8   13
+ 160    160            0    jja  2017         2017      8   22
+ 161    161            0    jja  2017         2017      8   29,
+ (2017,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 140    140           96    mam  2017         2017      3    6
+ 141    141          100    mam  2017         2017      3   15
+ 142    142           99    mam  2017         2017      3   22
+ 143    143          100    mam  2017         2017      3   31
+ 144    144          100    mam  2017         2017      4   16
+ 145    145          100    mam  2017         2017      4   23
+ 146    146           74    mam  2017         2017      5    2
+ 147    147           96    mam  2017         2017      5    9
+ 148    148           97    mam  2017         2017      5   18
+ 149    149            2    mam  2017         2017      5   25,
+ (2017,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 162    162           95    son  2017         2017      9    7
+ 163    163            0    son  2017         2017      9   14
+ 164    164           71    son  2017         2017      9   23
+ 165    165           60    son  2017         2017     10    9
+ 166    166           18    son  2017         2017     11    1
+ 167    167           77    son  2017         2017     11   10
+ 168    168           82    son  2017         2017     11   17,
+ (2018,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 169    169           77    djf  2017         2018     12    3
+ 170    170           96    djf  2017         2018     12   12
+ 171    171           97    djf  2018         2018      2    5
+ 172    172           59    djf  2018         2018      2   14,
+ (2018,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 184    184           89    jja  2018         2018      6    6
+ 185    185           92    jja  2018         2018      6   13
+ 186    186          100    jja  2018         2018      6   22
+ 187    187           97    jja  2018         2018      7    8
+ 188    188            0    jja  2018         2018      7   15
+ 189    189            4    jja  2018         2018      7   24
+ 190    190            2    jja  2018         2018      7   31
+ 191    191            0    jja  2018         2018      8    9
+ 192    192            1    jja  2018         2018      8   16,
+ (2018,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 173    173           42    mam  2018         2018      3    9
+ 174    174           96    mam  2018         2018      3   18
+ 175    175           72    mam  2018         2018      3   25
+ 176    176          100    mam  2018         2018      4    3
+ 177    177           58    mam  2018         2018      4   10
+ 178    178          100    mam  2018         2018      4   19
+ 179    179            1    mam  2018         2018      4   26
+ 180    180            2    mam  2018         2018      5    5
+ 181    181            0    mam  2018         2018      5   12
+ 182    182           64    mam  2018         2018      5   21
+ 183    183           65    mam  2018         2018      5   28,
+ (2018,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 193    193           58    son  2018         2018      9    1
+ 194    194           96    son  2018         2018      9   10
+ 195    195           66    son  2018         2018      9   17
+ 196    196            3    son  2018         2018      9   26
+ 197    197          100    son  2018         2018     10    3
+ 198    198           54    son  2018         2018     10   12
+ 199    199           10    son  2018         2018     10   19
+ 200    200           81    son  2018         2018     10   28
+ 201    201           54    son  2018         2018     11    4
+ 202    202           99    son  2018         2018     11   13
+ 203    203           99    son  2018         2018     11   20
+ 204    204           87    son  2018         2018     11   29,
+ (2019,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 205    205            9    djf  2018         2019     12    6
+ 206    206          100    djf  2018         2019     12   15
+ 207    207           59    djf  2018         2019     12   31
+ 208    208            8    djf  2019         2019      1    7
+ 209    209           99    djf  2019         2019      1   16
+ 210    210           26    djf  2019         2019      2   17
+ 211    211           56    djf  2019         2019      2   24,
+ (2019,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 221    221          100    jja  2019         2019      6    9
+ 222    222           36    jja  2019         2019      6   16
+ 223    223           37    jja  2019         2019      6   25
+ 224    224           58    jja  2019         2019      7   18
+ 225    225           66    jja  2019         2019      7   27
+ 226    226            8    jja  2019         2019      8    3
+ 227    227           94    jja  2019         2019      8   12
+ 228    228           63    jja  2019         2019      8   19
+ 229    229           12    jja  2019         2019      8   28,
+ (2019,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 212    212           53    mam  2019         2019      3    5
+ 213    213           39    mam  2019         2019      3   12
+ 214    214            8    mam  2019         2019      3   21
+ 215    215           40    mam  2019         2019      3   28
+ 216    216           79    mam  2019         2019      4    6
+ 217    217           22    mam  2019         2019      4   29
+ 218    218            1    mam  2019         2019      5    8
+ 219    219           16    mam  2019         2019      5   15
+ 220    220            1    mam  2019         2019      5   31,
+ (2019,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 230    230           37    son  2019         2019      9    4
+ 231    231           72    son  2019         2019      9   20
+ 232    232           91    son  2019         2019      9   29
+ 233    233           99    son  2019         2019     10    6
+ 234    234          100    son  2019         2019     10   15
+ 235    235           43    son  2019         2019     10   22
+ 236    236           95    son  2019         2019     10   31
+ 237    237          100    son  2019         2019     11    7,
+ (2020,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 238    238          100    djf  2019         2020     12    2
+ 239    239           74    djf  2019         2020     12    9
+ 240    240           88    djf  2019         2020     12   25
+ 241    241           98    djf  2020         2020      1    3
+ 242    242           83    djf  2020         2020      1   26
+ 243    243           74    djf  2020         2020      2   11
+ 244    244            2    djf  2020         2020      2   20
+ 245    245          100    djf  2020         2020      2   27,
+ (2020,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 257    257           98    jja  2020         2020      6   11
+ 258    258           38    jja  2020         2020      6   18
+ 259    259           95    jja  2020         2020      6   27
+ 260    260           77    jja  2020         2020      7    4
+ 261    261           25    jja  2020         2020      7   13
+ 262    262            0    jja  2020         2020      7   20
+ 263    263            0    jja  2020         2020      7   29
+ 264    264            7    jja  2020         2020      8    5
+ 265    265            0    jja  2020         2020      8   14
+ 266    266          100    jja  2020         2020      8   21
+ 267    267           39    jja  2020         2020      8   30,
+ (2020,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 246    246           93    mam  2020         2020      3    7
+ 247    247           18    mam  2020         2020      3   14
+ 248    248           85    mam  2020         2020      3   23
+ 249    249           98    mam  2020         2020      3   30
+ 250    250           73    mam  2020         2020      4    8
+ 251    251            1    mam  2020         2020      4   15
+ 252    252          100    mam  2020         2020      4   24
+ 253    253           90    mam  2020         2020      5    1
+ 254    254           32    mam  2020         2020      5   10
+ 255    255           92    mam  2020         2020      5   17
+ 256    256           28    mam  2020         2020      5   26,
+ (2020,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 268    268           26    son  2020         2020      9    6
+ 269    269           90    son  2020         2020      9   15
+ 270    270           50    son  2020         2020      9   22
+ 271    271           95    son  2020         2020     10    1
+ 272    272           95    son  2020         2020     10    8
+ 273    273            7    son  2020         2020     10   24
+ 274    274           55    son  2020         2020     11   25,
+ (2021,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 275    275            4    djf  2020         2021     12    4
+ 276    276           90    djf  2020         2021     12   11
+ 277    277           95    djf  2020         2021     12   20
+ 278    278           68    djf  2021         2021      1   21
+ 279    279           97    djf  2021         2021      1   28
+ 280    280           93    djf  2021         2021      2    6
+ 281    281           96    djf  2021         2021      2   22,
+ (2021,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 294    294           84    jja  2021         2021      6    5
+ 295    295           76    jja  2021         2021      6   14
+ 296    296            6    jja  2021         2021      6   21
+ 297    297            4    jja  2021         2021      6   30
+ 298    298           75    jja  2021         2021      7    7
+ 299    299           56    jja  2021         2021      7   23
+ 300    300           60    jja  2021         2021      8    1
+ 301    301           60    jja  2021         2021      8    8
+ 302    302           34    jja  2021         2021      8   17
+ 303    303            8    jja  2021         2021      8   24,
+ (2021,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 282    282           92    mam  2021         2021      3    1
+ 283    283           71    mam  2021         2021      3   10
+ 284    284           98    mam  2021         2021      3   17
+ 285    285           48    mam  2021         2021      3   26
+ 286    286           96    mam  2021         2021      4    2
+ 287    287           42    mam  2021         2021      4   11
+ 288    288            0    mam  2021         2021      4   18
+ 289    289          100    mam  2021         2021      4   27
+ 290    290           43    mam  2021         2021      5    4
+ 291    291           18    mam  2021         2021      5   13
+ 292    292           21    mam  2021         2021      5   20
+ 293    293            3    mam  2021         2021      5   29,
+ (2021,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 304    304            1    son  2021         2021      9    2
+ 305    305           85    son  2021         2021      9    9
+ 306    306           75    son  2021         2021      9   18
+ 307    307           11    son  2021         2021      9   25
+ 308    308           72    son  2021         2021     10    4
+ 309    309           46    son  2021         2021     10   11
+ 310    310           99    son  2021         2021     11    5
+ 311    311          100    son  2021         2021     11   12
+ 312    312           97    son  2021         2021     11   21,
+ (2022,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 313    313           70    djf  2021         2022     12   14
+ 314    314           67    djf  2021         2022     12   23
+ 315    315           51    djf  2021         2022     12   30
+ 316    316           19    djf  2021         2022     12   31
+ 317    317           53    djf  2022         2022      1    7
+ 318    318           76    djf  2022         2022      1   15
+ 319    319          100    djf  2022         2022      1   16
+ 320    320           86    djf  2022         2022      1   23
+ 321    321           82    djf  2022         2022      1   24
+ 322    322           24    djf  2022         2022      1   31
+ 323    323           83    djf  2022         2022      2    1
+ 324    324          100    djf  2022         2022      2    9
+ 325    325           44    djf  2022         2022      2   16
+ 326    326           31    djf  2022         2022      2   25,
+ (2022,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 343    343           98    jja  2022         2022      6    1
+ 344    344          100    jja  2022         2022      6    8
+ 345    345           38    jja  2022         2022      6   17
+ 346    346            0    jja  2022         2022      6   24
+ 347    347            3    jja  2022         2022      6   25
+ 348    348           45    jja  2022         2022      7    2
+ 349    349           81    jja  2022         2022      7   10
+ 350    350            0    jja  2022         2022      7   11
+ 351    351           88    jja  2022         2022      7   18
+ 352    352           12    jja  2022         2022      7   19
+ 353    353            0    jja  2022         2022      7   26
+ 354    354            0    jja  2022         2022      7   27
+ 355    355           87    jja  2022         2022      8    3
+ 356    356           90    jja  2022         2022      8    4
+ 357    357           12    jja  2022         2022      8   11
+ 358    358           90    jja  2022         2022      8   12
+ 359    359           88    jja  2022         2022      8   19
+ 360    360           26    jja  2022         2022      8   20
+ 361    361           57    jja  2022         2022      8   27
+ 362    362           20    jja  2022         2022      8   28,
+ (2022,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 327    327           51    mam  2022         2022      3    4
+ 328    328            3    mam  2022         2022      3    5
+ 329    329           93    mam  2022         2022      3   13
+ 330    330           77    mam  2022         2022      3   28
+ 331    331           71    mam  2022         2022      3   29
+ 332    332           68    mam  2022         2022      4    5
+ 333    333           97    mam  2022         2022      4    6
+ 334    334           90    mam  2022         2022      4   13
+ 335    335           59    mam  2022         2022      4   14
+ 336    336           43    mam  2022         2022      4   22
+ 337    337           99    mam  2022         2022      4   29
+ 338    338           82    mam  2022         2022      5    7
+ 339    339           59    mam  2022         2022      5    8
+ 340    340           84    mam  2022         2022      5   16
+ 341    341           88    mam  2022         2022      5   23
+ 342    342           96    mam  2022         2022      5   31,
+ (2022,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 363    363           33    son  2022         2022      9    5
+ 364    364           55    son  2022         2022      9   12
+ 365    365           53    son  2022         2022      9   13
+ 366    366            0    son  2022         2022      9   20
+ 367    367            0    son  2022         2022      9   21
+ 368    368           94    son  2022         2022      9   28
+ 369    369           32    son  2022         2022      9   29
+ 370    370           21    son  2022         2022     10    6
+ 371    371           46    son  2022         2022     10    7
+ 372    372           69    son  2022         2022     10   14
+ 373    373            2    son  2022         2022     10   15
+ 374    374           62    son  2022         2022     10   22
+ 375    375          100    son  2022         2022     10   23
+ 376    376           52    son  2022         2022     10   31
+ 377    377          100    son  2022         2022     11    7
+ 378    378          100    son  2022         2022     11    7
+ 379    379           27    son  2022         2022     11    8
+ 380    380           53    son  2022         2022     11   15
+ 381    381           66    son  2022         2022     11   16
+ 382    382          100    son  2022         2022     11   23
+ 383    383           48    son  2022         2022     11   24,
+ (2023,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 384    384           49    djf  2022         2023     12    1
+ 385    385          100    djf  2022         2023     12    2
+ 386    386           97    djf  2022         2023     12   10
+ 387    387           77    djf  2022         2023     12   26}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="storing-the-dataframe-as-a-csv-file">
+<h2>Storing the dataframe as a csv file<a class="headerlink" href="#storing-the-dataframe-as-a-csv-file" title="Permalink to this heading">#</a></h2>
+<p>Since it takes a while to do this search, we’ll save a copy of the dataframe for future reference</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv_filename</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/landsat/vancouver_search.csv&quot;</span>
+<span class="n">the_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_filename</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">season_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{(2013,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 4       4           97    jja  2013         2013      6    8
+ 5       5           58    jja  2013         2013      6   15
+ 6       6           68    jja  2013         2013      7    1
+ 7       7           26    jja  2013         2013      7   10
+ 8       8           35    jja  2013         2013      7   17
+ 9       9            2    jja  2013         2013      7   26
+ 10     10           89    jja  2013         2013      8   11
+ 11     11          100    jja  2013         2013      8   18
+ 12     12          100    jja  2013         2013      8   27,
+ (2013,
+  &#39;mam&#39;):    scene  cloud_cover season  year  season_year  month  day
+ 0      0           58    mam  2013         2013      4   21
+ 1      1           85    mam  2013         2013      4   28
+ 2      2           95    mam  2013         2013      5   14
+ 3      3           68    mam  2013         2013      5   23,
+ (2013,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 13     13           98    son  2013         2013      9    3
+ 14     14            0    son  2013         2013      9   12
+ 15     15           90    son  2013         2013      9   19
+ 16     16           24    son  2013         2013     10   14
+ 17     17           81    son  2013         2013     10   30
+ 18     18          100    son  2013         2013     11    6
+ 19     19           21    son  2013         2013     11   22,
+ (2014,
+  &#39;djf&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 20     20           98    djf  2013         2014     12    1
+ 21     21           44    djf  2013         2014     12    8
+ 22     22           94    djf  2013         2014     12   24
+ 23     23           77    djf  2014         2014      1   18
+ 24     24           36    djf  2014         2014      1   25
+ 25     25            5    djf  2014         2014      2    3
+ 26     26           33    djf  2014         2014      2   19
+ 27     27           94    djf  2014         2014      2   26,
+ (2014,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 38     38            6    jja  2014         2014      6    2
+ 39     39           88    jja  2014         2014      6   11
+ 40     40           99    jja  2014         2014      6   18
+ 41     41          100    jja  2014         2014      7    4
+ 42     42           37    jja  2014         2014      7   13
+ 43     43            0    jja  2014         2014      7   29
+ 44     44           83    jja  2014         2014      8    5
+ 45     45           93    jja  2014         2014      8   14
+ 46     46           33    jja  2014         2014      8   21,
+ (2014,
+  &#39;mam&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 28     28           99    mam  2014         2014      3    7
+ 29     29           82    mam  2014         2014      3   14
+ 30     30           49    mam  2014         2014      3   23
+ 31     31           89    mam  2014         2014      3   30
+ 32     32           98    mam  2014         2014      4    8
+ 33     33           94    mam  2014         2014      4   15
+ 34     34           24    mam  2014         2014      5    1
+ 35     35           97    mam  2014         2014      5   10
+ 36     36           76    mam  2014         2014      5   17
+ 37     37           51    mam  2014         2014      5   26,
+ (2014,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 47     47            0    son  2014         2014      9    6
+ 48     48            0    son  2014         2014      9   15
+ 49     49           91    son  2014         2014      9   22
+ 50     50           93    son  2014         2014     10    1
+ 51     51           99    son  2014         2014     10    8
+ 52     52           89    son  2014         2014     10   24
+ 53     53           94    son  2014         2014     11    9
+ 54     54          100    son  2014         2014     11   18,
+ (2015,
+  &#39;djf&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 55     55           97    djf  2014         2015     12    4
+ 56     56           98    djf  2014         2015     12   27
+ 57     57           88    djf  2015         2015      1   12
+ 58     58          100    djf  2015         2015      1   21
+ 59     59           72    djf  2015         2015      1   28
+ 60     60           99    djf  2015         2015      2   13
+ 61     61           63    djf  2015         2015      2   22,
+ (2015,
+  &#39;jja&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 73     73           32    jja  2015         2015      6    5
+ 74     74            4    jja  2015         2015      6   14
+ 75     75           34    jja  2015         2015      6   21
+ 76     76            4    jja  2015         2015      6   30
+ 77     77            0    jja  2015         2015      7    7
+ 78     78           26    jja  2015         2015      7   16
+ 79     79           37    jja  2015         2015      7   23
+ 80     80           82    jja  2015         2015      8    1
+ 81     81           14    jja  2015         2015      8   17
+ 82     82           80    jja  2015         2015      8   24,
+ (2015,
+  &#39;mam&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 62     62          100    mam  2015         2015      3    1
+ 63     63           93    mam  2015         2015      3   10
+ 64     64           95    mam  2015         2015      3   17
+ 65     65          100    mam  2015         2015      3   26
+ 66     66           82    mam  2015         2015      4    2
+ 67     67           74    mam  2015         2015      4   11
+ 68     68           68    mam  2015         2015      4   18
+ 69     69          100    mam  2015         2015      4   27
+ 70     70           68    mam  2015         2015      5    4
+ 71     71            2    mam  2015         2015      5   20
+ 72     72           11    mam  2015         2015      5   29,
+ (2015,
+  &#39;son&#39;):     scene  cloud_cover season  year  season_year  month  day
+ 83     83           92    son  2015         2015      9    2
+ 84     84           48    son  2015         2015      9    9
+ 85     85           99    son  2015         2015      9   25
+ 86     86            0    son  2015         2015     10    4
+ 87     87          100    son  2015         2015     10   11
+ 88     88           79    son  2015         2015     10   20
+ 89     89          100    son  2015         2015     10   27
+ 90     90           80    son  2015         2015     11    5
+ 91     91           33    son  2015         2015     11   21
+ 92     92           33    son  2015         2015     11   28,
+ (2016,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 93      93           45    djf  2015         2016     12   14
+ 94      94           55    djf  2015         2016     12   30
+ 95      95           96    djf  2016         2016      1    8
+ 96      96           97    djf  2016         2016      1   15
+ 97      97           65    djf  2016         2016      1   24
+ 98      98           94    djf  2016         2016      1   31
+ 99      99           42    djf  2016         2016      2    9
+ 100    100           25    djf  2016         2016      2   16
+ 101    101           23    djf  2016         2016      2   25,
+ (2016,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 114    114           55    jja  2016         2016      6    7
+ 115    115           57    jja  2016         2016      6   16
+ 116    116           66    jja  2016         2016      7    2
+ 117    117           96    jja  2016         2016      7    9
+ 118    118           29    jja  2016         2016      7   18
+ 119    119           62    jja  2016         2016      7   25
+ 120    120           86    jja  2016         2016      8    3
+ 121    121           86    jja  2016         2016      8   10
+ 122    122            0    jja  2016         2016      8   19
+ 123    123           56    jja  2016         2016      8   26,
+ (2016,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 102    102           90    mam  2016         2016      3    3
+ 103    103           83    mam  2016         2016      3   12
+ 104    104          100    mam  2016         2016      3   19
+ 105    105           11    mam  2016         2016      3   28
+ 106    106           52    mam  2016         2016      4    4
+ 107    107           79    mam  2016         2016      4   13
+ 108    108            0    mam  2016         2016      4   20
+ 109    109           35    mam  2016         2016      4   29
+ 110    110            0    mam  2016         2016      5    6
+ 111    111          100    mam  2016         2016      5   15
+ 112    112           73    mam  2016         2016      5   22
+ 113    113           51    mam  2016         2016      5   31,
+ (2016,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 124    124           36    son  2016         2016      9    4
+ 125    125           16    son  2016         2016      9   11
+ 126    126           31    son  2016         2016      9   20
+ 127    127           16    son  2016         2016      9   27
+ 128    128           99    son  2016         2016     10   13
+ 129    129          100    son  2016         2016     10   22
+ 130    130           48    son  2016         2016     11   14
+ 131    131          100    son  2016         2016     11   23
+ 132    132          100    son  2016         2016     11   30,
+ (2017,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 133    133           20    djf  2016         2017     12   16
+ 134    134           38    djf  2016         2017     12   25
+ 135    135           54    djf  2017         2017      1   10
+ 136    136          100    djf  2017         2017      1   26
+ 137    137           30    djf  2017         2017      2    2
+ 138    138          100    djf  2017         2017      2   11
+ 139    139          100    djf  2017         2017      2   18,
+ (2017,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 150    150           99    jja  2017         2017      6    3
+ 151    151           92    jja  2017         2017      6   10
+ 152    152          100    jja  2017         2017      6   19
+ 153    153            6    jja  2017         2017      6   26
+ 154    154            0    jja  2017         2017      7    5
+ 155    155           93    jja  2017         2017      7   12
+ 156    156          100    jja  2017         2017      7   21
+ 157    157            9    jja  2017         2017      7   28
+ 158    158            1    jja  2017         2017      8    6
+ 159    159           83    jja  2017         2017      8   13
+ 160    160            0    jja  2017         2017      8   22
+ 161    161            0    jja  2017         2017      8   29,
+ (2017,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 140    140           96    mam  2017         2017      3    6
+ 141    141          100    mam  2017         2017      3   15
+ 142    142           99    mam  2017         2017      3   22
+ 143    143          100    mam  2017         2017      3   31
+ 144    144          100    mam  2017         2017      4   16
+ 145    145          100    mam  2017         2017      4   23
+ 146    146           74    mam  2017         2017      5    2
+ 147    147           96    mam  2017         2017      5    9
+ 148    148           97    mam  2017         2017      5   18
+ 149    149            2    mam  2017         2017      5   25,
+ (2017,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 162    162           95    son  2017         2017      9    7
+ 163    163            0    son  2017         2017      9   14
+ 164    164           71    son  2017         2017      9   23
+ 165    165           60    son  2017         2017     10    9
+ 166    166           18    son  2017         2017     11    1
+ 167    167           77    son  2017         2017     11   10
+ 168    168           82    son  2017         2017     11   17,
+ (2018,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 169    169           77    djf  2017         2018     12    3
+ 170    170           96    djf  2017         2018     12   12
+ 171    171           97    djf  2018         2018      2    5
+ 172    172           59    djf  2018         2018      2   14,
+ (2018,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 184    184           89    jja  2018         2018      6    6
+ 185    185           92    jja  2018         2018      6   13
+ 186    186          100    jja  2018         2018      6   22
+ 187    187           97    jja  2018         2018      7    8
+ 188    188            0    jja  2018         2018      7   15
+ 189    189            4    jja  2018         2018      7   24
+ 190    190            2    jja  2018         2018      7   31
+ 191    191            0    jja  2018         2018      8    9
+ 192    192            1    jja  2018         2018      8   16,
+ (2018,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 173    173           42    mam  2018         2018      3    9
+ 174    174           96    mam  2018         2018      3   18
+ 175    175           72    mam  2018         2018      3   25
+ 176    176          100    mam  2018         2018      4    3
+ 177    177           58    mam  2018         2018      4   10
+ 178    178          100    mam  2018         2018      4   19
+ 179    179            1    mam  2018         2018      4   26
+ 180    180            2    mam  2018         2018      5    5
+ 181    181            0    mam  2018         2018      5   12
+ 182    182           64    mam  2018         2018      5   21
+ 183    183           65    mam  2018         2018      5   28,
+ (2018,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 193    193           58    son  2018         2018      9    1
+ 194    194           96    son  2018         2018      9   10
+ 195    195           66    son  2018         2018      9   17
+ 196    196            3    son  2018         2018      9   26
+ 197    197          100    son  2018         2018     10    3
+ 198    198           54    son  2018         2018     10   12
+ 199    199           10    son  2018         2018     10   19
+ 200    200           81    son  2018         2018     10   28
+ 201    201           54    son  2018         2018     11    4
+ 202    202           99    son  2018         2018     11   13
+ 203    203           99    son  2018         2018     11   20
+ 204    204           87    son  2018         2018     11   29,
+ (2019,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 205    205            9    djf  2018         2019     12    6
+ 206    206          100    djf  2018         2019     12   15
+ 207    207           59    djf  2018         2019     12   31
+ 208    208            8    djf  2019         2019      1    7
+ 209    209           99    djf  2019         2019      1   16
+ 210    210           26    djf  2019         2019      2   17
+ 211    211           56    djf  2019         2019      2   24,
+ (2019,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 221    221          100    jja  2019         2019      6    9
+ 222    222           36    jja  2019         2019      6   16
+ 223    223           37    jja  2019         2019      6   25
+ 224    224           58    jja  2019         2019      7   18
+ 225    225           66    jja  2019         2019      7   27
+ 226    226            8    jja  2019         2019      8    3
+ 227    227           94    jja  2019         2019      8   12
+ 228    228           63    jja  2019         2019      8   19
+ 229    229           12    jja  2019         2019      8   28,
+ (2019,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 212    212           53    mam  2019         2019      3    5
+ 213    213           39    mam  2019         2019      3   12
+ 214    214            8    mam  2019         2019      3   21
+ 215    215           40    mam  2019         2019      3   28
+ 216    216           79    mam  2019         2019      4    6
+ 217    217           22    mam  2019         2019      4   29
+ 218    218            1    mam  2019         2019      5    8
+ 219    219           16    mam  2019         2019      5   15
+ 220    220            1    mam  2019         2019      5   31,
+ (2019,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 230    230           37    son  2019         2019      9    4
+ 231    231           72    son  2019         2019      9   20
+ 232    232           91    son  2019         2019      9   29
+ 233    233           99    son  2019         2019     10    6
+ 234    234          100    son  2019         2019     10   15
+ 235    235           43    son  2019         2019     10   22
+ 236    236           95    son  2019         2019     10   31
+ 237    237          100    son  2019         2019     11    7,
+ (2020,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 238    238          100    djf  2019         2020     12    2
+ 239    239           74    djf  2019         2020     12    9
+ 240    240           88    djf  2019         2020     12   25
+ 241    241           98    djf  2020         2020      1    3
+ 242    242           83    djf  2020         2020      1   26
+ 243    243           74    djf  2020         2020      2   11
+ 244    244            2    djf  2020         2020      2   20
+ 245    245          100    djf  2020         2020      2   27,
+ (2020,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 257    257           98    jja  2020         2020      6   11
+ 258    258           38    jja  2020         2020      6   18
+ 259    259           95    jja  2020         2020      6   27
+ 260    260           77    jja  2020         2020      7    4
+ 261    261           25    jja  2020         2020      7   13
+ 262    262            0    jja  2020         2020      7   20
+ 263    263            0    jja  2020         2020      7   29
+ 264    264            7    jja  2020         2020      8    5
+ 265    265            0    jja  2020         2020      8   14
+ 266    266          100    jja  2020         2020      8   21
+ 267    267           39    jja  2020         2020      8   30,
+ (2020,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 246    246           93    mam  2020         2020      3    7
+ 247    247           18    mam  2020         2020      3   14
+ 248    248           85    mam  2020         2020      3   23
+ 249    249           98    mam  2020         2020      3   30
+ 250    250           73    mam  2020         2020      4    8
+ 251    251            1    mam  2020         2020      4   15
+ 252    252          100    mam  2020         2020      4   24
+ 253    253           90    mam  2020         2020      5    1
+ 254    254           32    mam  2020         2020      5   10
+ 255    255           92    mam  2020         2020      5   17
+ 256    256           28    mam  2020         2020      5   26,
+ (2020,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 268    268           26    son  2020         2020      9    6
+ 269    269           90    son  2020         2020      9   15
+ 270    270           50    son  2020         2020      9   22
+ 271    271           95    son  2020         2020     10    1
+ 272    272           95    son  2020         2020     10    8
+ 273    273            7    son  2020         2020     10   24
+ 274    274           55    son  2020         2020     11   25,
+ (2021,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 275    275            4    djf  2020         2021     12    4
+ 276    276           90    djf  2020         2021     12   11
+ 277    277           95    djf  2020         2021     12   20
+ 278    278           68    djf  2021         2021      1   21
+ 279    279           97    djf  2021         2021      1   28
+ 280    280           93    djf  2021         2021      2    6
+ 281    281           96    djf  2021         2021      2   22,
+ (2021,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 294    294           84    jja  2021         2021      6    5
+ 295    295           76    jja  2021         2021      6   14
+ 296    296            6    jja  2021         2021      6   21
+ 297    297            4    jja  2021         2021      6   30
+ 298    298           75    jja  2021         2021      7    7
+ 299    299           56    jja  2021         2021      7   23
+ 300    300           60    jja  2021         2021      8    1
+ 301    301           60    jja  2021         2021      8    8
+ 302    302           34    jja  2021         2021      8   17
+ 303    303            8    jja  2021         2021      8   24,
+ (2021,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 282    282           92    mam  2021         2021      3    1
+ 283    283           71    mam  2021         2021      3   10
+ 284    284           98    mam  2021         2021      3   17
+ 285    285           48    mam  2021         2021      3   26
+ 286    286           96    mam  2021         2021      4    2
+ 287    287           42    mam  2021         2021      4   11
+ 288    288            0    mam  2021         2021      4   18
+ 289    289          100    mam  2021         2021      4   27
+ 290    290           43    mam  2021         2021      5    4
+ 291    291           18    mam  2021         2021      5   13
+ 292    292           21    mam  2021         2021      5   20
+ 293    293            3    mam  2021         2021      5   29,
+ (2021,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 304    304            1    son  2021         2021      9    2
+ 305    305           85    son  2021         2021      9    9
+ 306    306           75    son  2021         2021      9   18
+ 307    307           11    son  2021         2021      9   25
+ 308    308           72    son  2021         2021     10    4
+ 309    309           46    son  2021         2021     10   11
+ 310    310           99    son  2021         2021     11    5
+ 311    311          100    son  2021         2021     11   12
+ 312    312           97    son  2021         2021     11   21,
+ (2022,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 313    313           70    djf  2021         2022     12   14
+ 314    314           67    djf  2021         2022     12   23
+ 315    315           51    djf  2021         2022     12   30
+ 316    316           19    djf  2021         2022     12   31
+ 317    317           53    djf  2022         2022      1    7
+ 318    318           76    djf  2022         2022      1   15
+ 319    319          100    djf  2022         2022      1   16
+ 320    320           86    djf  2022         2022      1   23
+ 321    321           82    djf  2022         2022      1   24
+ 322    322           24    djf  2022         2022      1   31
+ 323    323           83    djf  2022         2022      2    1
+ 324    324          100    djf  2022         2022      2    9
+ 325    325           44    djf  2022         2022      2   16
+ 326    326           31    djf  2022         2022      2   25,
+ (2022,
+  &#39;jja&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 343    343           98    jja  2022         2022      6    1
+ 344    344          100    jja  2022         2022      6    8
+ 345    345           38    jja  2022         2022      6   17
+ 346    346            0    jja  2022         2022      6   24
+ 347    347            3    jja  2022         2022      6   25
+ 348    348           45    jja  2022         2022      7    2
+ 349    349           81    jja  2022         2022      7   10
+ 350    350            0    jja  2022         2022      7   11
+ 351    351           88    jja  2022         2022      7   18
+ 352    352           12    jja  2022         2022      7   19
+ 353    353            0    jja  2022         2022      7   26
+ 354    354            0    jja  2022         2022      7   27
+ 355    355           87    jja  2022         2022      8    3
+ 356    356           90    jja  2022         2022      8    4
+ 357    357           12    jja  2022         2022      8   11
+ 358    358           90    jja  2022         2022      8   12
+ 359    359           88    jja  2022         2022      8   19
+ 360    360           26    jja  2022         2022      8   20
+ 361    361           57    jja  2022         2022      8   27
+ 362    362           20    jja  2022         2022      8   28,
+ (2022,
+  &#39;mam&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 327    327           51    mam  2022         2022      3    4
+ 328    328            3    mam  2022         2022      3    5
+ 329    329           93    mam  2022         2022      3   13
+ 330    330           77    mam  2022         2022      3   28
+ 331    331           71    mam  2022         2022      3   29
+ 332    332           68    mam  2022         2022      4    5
+ 333    333           97    mam  2022         2022      4    6
+ 334    334           90    mam  2022         2022      4   13
+ 335    335           59    mam  2022         2022      4   14
+ 336    336           43    mam  2022         2022      4   22
+ 337    337           99    mam  2022         2022      4   29
+ 338    338           82    mam  2022         2022      5    7
+ 339    339           59    mam  2022         2022      5    8
+ 340    340           84    mam  2022         2022      5   16
+ 341    341           88    mam  2022         2022      5   23
+ 342    342           96    mam  2022         2022      5   31,
+ (2022,
+  &#39;son&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 363    363           33    son  2022         2022      9    5
+ 364    364           55    son  2022         2022      9   12
+ 365    365           53    son  2022         2022      9   13
+ 366    366            0    son  2022         2022      9   20
+ 367    367            0    son  2022         2022      9   21
+ 368    368           94    son  2022         2022      9   28
+ 369    369           32    son  2022         2022      9   29
+ 370    370           21    son  2022         2022     10    6
+ 371    371           46    son  2022         2022     10    7
+ 372    372           69    son  2022         2022     10   14
+ 373    373            2    son  2022         2022     10   15
+ 374    374           62    son  2022         2022     10   22
+ 375    375          100    son  2022         2022     10   23
+ 376    376           52    son  2022         2022     10   31
+ 377    377          100    son  2022         2022     11    7
+ 378    378          100    son  2022         2022     11    7
+ 379    379           27    son  2022         2022     11    8
+ 380    380           53    son  2022         2022     11   15
+ 381    381           66    son  2022         2022     11   16
+ 382    382          100    son  2022         2022     11   23
+ 383    383           48    son  2022         2022     11   24,
+ (2023,
+  &#39;djf&#39;):      scene  cloud_cover season  year  season_year  month  day
+ 384    384           49    djf  2022         2023     12    1
+ 385    385          100    djf  2022         2023     12    2
+ 386    386           97    djf  2022         2023     12   10
+ 387    387           77    djf  2022         2023     12   26}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">season_dict</span><span class="p">[(</span><span class="mi">2014</span><span class="p">,</span><span class="s1">&#39;jja&#39;</span><span class="p">)][</span><span class="s1">&#39;cloud_cover&#39;</span><span class="p">]</span>
+<span class="n">season_dict</span><span class="p">[(</span><span class="mi">2014</span><span class="p">,</span><span class="s1">&#39;jja&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>scene            40
+cloud_cover      99
+season          jja
+year           2014
+season_year    2014
+month             6
+day              18
+Name: 40, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week8"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="week8_topics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 8</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="zoom_landsat.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Clipping and saving landsat scenes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-for-all-ubc-scenes-from-2013-to-2022">Ask for all UBC scenes from 2013 to 2022</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start-the-search">Start the search</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-metadata-for-search-items">get the metadata for search items</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#put-the-results-into-a-list-of-scenes">Put the results into a list of scenes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-dataframe">Creating the dataframe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-seasons-and-month-columns-to-the-clear-df">Add seasons and month columns to the clear_df</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-low-cloud-scenes">Find the low-cloud scenes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-the-seasons-with-groupby">Separate the seasons with groupby</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-the-dataframe-as-a-csv-file">Storing the dataframe as a csv file</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

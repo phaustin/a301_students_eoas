@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Assignment 5 Landsat + Marshall Palmer: Solution &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/assignments/assignment5_solution';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/assignments/assignment5_solution.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm" href="assign6_handin.html" />
+    <link rel="prev" title="Assignment 5 Handin" href="assign5_handin.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/assignments/assignment5_solution.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assignment5_solution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assignment5_solution.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 5 Landsat + Marshall Palmer: Solution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">Preliminaries</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#headstart-use-this-function-to-add-masked-ndvi-to-the-dataset">Headstart: use this function to add masked ndvi to the dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-paths-for-input-and-output-directories">Make paths for input and output directories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-ndvi-files-into-a-new-folder">Write out the ndvi files into a new folder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-vancouver">For Vancouver:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-1-calculate-the-average-ndvi">Question 1: Calculate the average ndvi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-1-answer">Question 1 answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-plot-the-ndvi-time-series">Question 2: Plot the ndvi time series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-answer">Question 2 answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-problem-datapoints">The two problem datapoints</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-3">Question 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-3-answer">Question 3 answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-approximation">Numerical approximation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="assignment-5-landsat-marshall-palmer-solution">
+<span id="assign5-solution"></span><h1>Assignment 5 Landsat + Marshall Palmer: Solution<a class="headerlink" href="#assignment-5-landsat-marshall-palmer-solution" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span>  <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">import</span> <span class="nn">rioxarray</span>
+<span class="kn">from</span> <span class="nn">pystac_client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+
+<span class="kn">from</span> <span class="nn">sat_lib.landsat_read</span> <span class="kn">import</span> <span class="n">get_landsat_dataset</span>
+<span class="kn">from</span> <span class="nn">rasterio.windows</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">import</span> <span class="nn">xarray</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+in sat_lib init
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="preliminaries">
+<h1>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h1>
+<p>There are two Landsat questions below with cells to place your code and comments.  Before you do that, you’ll need to run the <a class="reference internal" href="../week10/write_geotiffs.html#week10-write-geotiff"><span class="std std-ref">Landsat: Writing the scenes for each season to netcdf files</span></a> notebook
+to download your windowed landsat scenes into a folder.</p>
+<p>There is a third question that can be uploaded as a handwritten pdf, with a cell to do the numerical integration## Preliminaries</p>
+<p>There are two questions below with cells to place your code and comments.  Before you do that, you’ll need to run the write_geotiffs.md notebook
+to download your windowed landsat scenes into a folder.</p>
+<section id="headstart-use-this-function-to-add-masked-ndvi-to-the-dataset">
+<h2>Headstart: use this function to add masked ndvi to the dataset<a class="headerlink" href="#headstart-use-this-function-to-add-masked-ndvi-to-the-dataset" title="Permalink to this heading">#</a></h2>
+<p>Since I had some issues writing a robust ndvi function,
+I’ve provided a working version in the cell below, with comments explaining the
+trouble points</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_ndvi</span><span class="p">(</span><span class="n">the_ds</span><span class="p">):</span>
+    <span class="c1">#</span>
+    <span class="c1"># xarray was unhappy with the extra third dimension</span>
+    <span class="c1"># for the landsat bands:  [1, nrows, ncols]</span>
+    <span class="c1"># so squeeze it out</span>
+    <span class="c1">#</span>
+    <span class="n">the_ds</span> <span class="o">=</span> <span class="n">the_ds</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">fmask</span> <span class="o">=</span> <span class="n">the_ds</span><span class="p">[</span><span class="s1">&#39;Fmask&#39;</span><span class="p">]</span>
+    <span class="n">band_5</span> <span class="o">=</span> <span class="n">the_ds</span><span class="p">[</span><span class="s1">&#39;B05&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">fmask</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">band_4</span> <span class="o">=</span> <span class="n">the_ds</span><span class="p">[</span><span class="s1">&#39;B04&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">fmask</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">ndvi</span>  <span class="o">=</span> <span class="p">(</span><span class="n">band_5</span> <span class="o">-</span> <span class="n">band_4</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">band_5</span> <span class="o">+</span> <span class="n">band_4</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Fmask doesn&#39;t find every bad pixel, so go ahead</span>
+    <span class="c1"># and set pixels to np.nan for any ndvi not between 0-1</span>
+    <span class="c1">#</span>
+    <span class="n">ndvi</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">ndvi</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">ndvi</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">ndvi</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="c1">#</span>
+    <span class="c1"># Make a new dataArray </span>
+    <span class="c1">#</span>
+    <span class="n">ndvi_array</span> <span class="o">=</span> <span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">ndvi</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;x&quot;</span><span class="p">])</span>
+    <span class="c1">#</span>
+    <span class="c1"># you&#39;ll get nan conversion errors unless you specifiy nan as</span>
+    <span class="c1"># your missing value</span>
+    <span class="c1">#</span>
+    <span class="n">ndvi_array</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_nodata</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># copy the crs and affine transform from band 4</span>
+    <span class="c1">#</span>
+    <span class="n">ndvi_array</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">band_4</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ndvi_array</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_transform</span><span class="p">(</span><span class="n">band_4</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">transform</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># add some attributes</span>
+    <span class="c1">#</span>
+    <span class="n">ndvi_array</span> <span class="o">=</span> <span class="n">ndvi_array</span><span class="o">.</span><span class="n">assign_attrs</span><span class="p">({</span><span class="s1">&#39;day&#39;</span><span class="p">:</span><span class="n">the_ds</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                                          <span class="s1">&#39;band_name&#39;</span><span class="p">:</span><span class="s1">&#39;ndvi&#39;</span><span class="p">,</span>
+                                          <span class="s1">&#39;history&#39;</span><span class="p">:</span><span class="s1">&#39;written by write_ndvi notebook&#39;</span><span class="p">})</span>
+    <span class="c1">#</span>
+    <span class="c1"># add the ndvi_array to the dataset and return</span>
+    <span class="c1">#</span>
+    <span class="n">ndvi_dataset</span> <span class="o">=</span> <span class="n">the_ds</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ndvi&#39;</span> <span class="p">:</span> <span class="n">ndvi_array</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">ndvi_dataset</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="make-paths-for-input-and-output-directories">
+<h2>Make paths for input and output directories<a class="headerlink" href="#make-paths-for-input-and-output-directories" title="Permalink to this heading">#</a></h2>
+<p>It’s a good idea to avoid clobbering your original data.  Since the files aren’t huge,
+it doesn’t hurt to add the ndvi to the dataset and then write the new dataset into
+an output folder, called <code class="docutils literal notranslate"><span class="pre">out_dir</span></code> in the sell below.  You’ve now got duplicate data for bands 4,5,6, and Fmask,
+but if you avoid the risk of stepping on your original files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">in_dir</span></code> is the directory holding your 39 downloaded
+ncfiles  written by <code class="docutils literal notranslate"><span class="pre">get_landsat_dataset</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">out_dir</span></code> is the directory that holds the new nc files
+that contain the original bands + Fmask and the ndvi dataArray
+added by calc_ndvi</p>
+<p>Note that sometimes you’ll get permission and dimension errors when you try to overwrite
+files in <code class="docutils literal notranslate"><span class="pre">output_dir</span></code> – just delete the folder and rerun</p>
+</section>
+<section id="write-out-the-ndvi-files-into-a-new-folder">
+<h2>Write out the ndvi files into a new folder<a class="headerlink" href="#write-out-the-ndvi-files-into-a-new-folder" title="Permalink to this heading">#</a></h2>
+<section id="for-vancouver">
+<h3>For Vancouver:<a class="headerlink" href="#for-vancouver" title="Permalink to this heading">#</a></h3>
+<p>Adding some print stastements to the <code class="docutils literal notranslate"><span class="pre">calc_ndvi</span></code> loop shows that there are some problems for the Vancouver scene – scenes
+23, 31, 34 and 36 are all uncalibrated, with reflectivities that haven’t been scaled to 0-&gt; 1.
+This shouldn’t matter for the ndvi since the constant calibration constant is the same
+for both Band 4 and Band 5 it will divide out.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># my 39 geotiffs are in the folder &quot;ndvi_geotiffs&quot;</span>
+<span class="c1">#</span>
+<span class="n">in_dir</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/landsat/ndvi_geotiffs&quot;</span>
+<span class="c1">#</span>
+<span class="c1">#  I&#39;ll write my new datasets to ndvi_geotiffs_output</span>
+<span class="c1">#</span>
+<span class="n">out_dir</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/landsat/ndvi_geotiffs_outdir&quot;</span>
+<span class="n">in_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">out_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">write_it</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">if</span> <span class="n">write_it</span><span class="p">:</span>
+    <span class="n">in_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*nc&quot;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">count</span><span class="p">,</span><span class="n">the_file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">in_files</span><span class="p">):</span>
+        <span class="n">the_ds</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">the_file</span><span class="p">,</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">mask_and_scale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scene </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">, Date: </span><span class="si">{</span><span class="n">the_ds</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2">, maximum B05 </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">the_ds</span><span class="p">[</span><span class="s1">&#39;B05&#39;</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, cloud cover: </span><span class="si">{</span><span class="n">the_ds</span><span class="o">.</span><span class="n">cloud_cover</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Give the file the same name, but put it in the new folder</span>
+        <span class="c1">#</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="n">the_file</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">new_ds</span> <span class="o">=</span> <span class="n">calc_ndvi</span><span class="p">(</span><span class="n">the_ds</span><span class="p">)</span>
+        <span class="n">new_ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="question-1-calculate-the-average-ndvi">
+<h2>Question 1: Calculate the average ndvi<a class="headerlink" href="#question-1-calculate-the-average-ndvi" title="Permalink to this heading">#</a></h2>
+<p>In the cell below write a function takes a dataset with an ndvi array and returns
+the area average ndvi (consult the docs for <code class="docutils literal notranslate"><span class="pre">xarray.DataArray.mean</span></code>)</p>
+<p>Use it to loop through all of the datasets and create two dictionaries,
+one holding the datasets (with the datetime date as the key) and one holding the
+ndvi average for that dataset (also with the datetime date as the key).</p>
+<p>Recall from the write_geotiffs notebook that you can convert the <code class="docutils literal notranslate"><span class="pre">dataset.day</span></code> attribute
+to a datetime object using <code class="docutils literal notranslate"><span class="pre">strptime</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">the_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Don’t forget to open your files with <code class="docutils literal notranslate"><span class="pre">mask_and_scale</span> <span class="pre">=</span> <span class="pre">True</span></code> so you get floating point
+values with np.nan for missing pixels</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">the_ds</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">a_file</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">mask_and_scale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="question-1-answer">
+<h3>Question 1 answer<a class="headerlink" href="#question-1-answer" title="Permalink to this heading">#</a></h3>
+<p>My approach:  create two empty dictionaries keyed by dates.  The <code class="docutils literal notranslate"><span class="pre">scene_dict</span></code>dictionary holds each scene (so I can check the details, plot the image etc.) and the <code class="docutils literal notranslate"><span class="pre">ndvi_avg_dict</span></code> holds the average ndvi for the scene.  The dates are entered in the order
+the files are listed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_avg</span><span class="p">(</span><span class="n">the_ds</span><span class="p">):</span>
+    <span class="c1">#print(the_ds[&#39;ndvi&#39;])</span>
+    <span class="n">ndvi</span> <span class="o">=</span> <span class="n">the_ds</span><span class="p">[</span><span class="s1">&#39;ndvi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="n">ndvi_avg</span> <span class="o">=</span> <span class="n">ndvi</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ndvi_avg</span>
+
+<span class="n">ndvi_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">out_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.nc&quot;</span><span class="p">))</span>
+<span class="n">scene_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">ndvi_avg_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">a_file</span> <span class="ow">in</span> <span class="n">ndvi_files</span><span class="p">:</span>
+    <span class="n">the_ds</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">a_file</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">mask_and_scale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">the_avg</span> <span class="o">=</span> <span class="n">calc_avg</span><span class="p">(</span><span class="n">the_ds</span><span class="p">)</span>
+    <span class="n">the_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">the_ds</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">scene_dict</span><span class="p">[</span><span class="n">the_date</span><span class="p">]</span><span class="o">=</span><span class="n">the_ds</span>
+    <span class="n">ndvi_avg_dict</span><span class="p">[</span><span class="n">the_date</span><span class="p">]</span> <span class="o">=</span> <span class="n">the_avg</span>
+    
+                
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">ndvi_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="question-2-plot-the-ndvi-time-series">
+<h2>Question 2: Plot the ndvi time series<a class="headerlink" href="#question-2-plot-the-ndvi-time-series" title="Permalink to this heading">#</a></h2>
+<p>In the cell below, extract your dates from your ndvi dictionary into a list and sort them.  Then use those dates as
+keys to loop over your <code class="docutils literal notranslate"><span class="pre">ndvi_avg_dict</span></code> and construct a corresponding list of ndvi values.</p>
+<p>Plot the ndvi values as a function of date, and comment on what you see:  is there any trend?  Do the peaks
+and troughs occur when you would expect them to?  Is the seasonal variablity smaller or larger than the
+annual variablity?</p>
+<section id="question-2-answer">
+<h3>Question 2 answer<a class="headerlink" href="#question-2-answer" title="Permalink to this heading">#</a></h3>
+<p>No evidents of a longterm trend. The seasonal variablily is evident, but there are some larger fluctuations in 2014, 2022.
+In most years the ndvi increases in the spring, summer and even the fall, with winter minimum values as expected, with
+the exception of 2019. There are two outliers in the summer of 2015 and the winter of 2023 that look like data problems</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># sort the datetimes so the plot values are time-ordered</span>
+<span class="c1">#</span>
+
+<span class="n">sorted_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">scene_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">sorted_dates</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># get the average ndvis in ordered by time</span>
+<span class="c1">#</span>
+<span class="n">the_ndvi</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sorted_dates</span><span class="p">:</span>
+    <span class="n">the_ndvi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ndvi_avg_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sorted_dates</span><span class="p">,</span><span class="n">the_ndvi</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sorted_dates</span><span class="p">,</span><span class="n">the_ndvi</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0a9b56c4516d771e55bbc141602f4c42a4b436d8a0000781c5fd1246870ee8b5.png" src="../../_images/0a9b56c4516d771e55bbc141602f4c42a4b436d8a0000781c5fd1246870ee8b5.png" />
+</div>
+</div>
+</section>
+<section id="the-two-problem-datapoints">
+<h3>The two problem datapoints<a class="headerlink" href="#the-two-problem-datapoints" title="Permalink to this heading">#</a></h3>
+<p>Look at the ndvi images for winter 2023 and summer 2015 a</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sorted_dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.datetime(2022, 12, 1, 0, 0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">last_scene</span> <span class="o">=</span> <span class="n">sorted_dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">dec_2022</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">last_ds</span> <span class="o">=</span> <span class="n">scene_dict</span><span class="p">[</span><span class="n">dec_2022</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">last_ds</span><span class="o">.</span><span class="n">cloud_cover</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">last_ds</span><span class="p">[</span><span class="s1">&#39;ndvi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;december 2022&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>last_ds.cloud_cover=49
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;december 2022&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/a84736cd3db854e06724e1e98edc035daa9382726868a48c04fa3bc7a18eeb57.png" src="../../_images/a84736cd3db854e06724e1e98edc035daa9382726868a48c04fa3bc7a18eeb57.png" />
+</div>
+</div>
+<p>What’s the problem with 2015-07-07?  Compare July 2015 with May 2015 – it looks like either a cirrus cloud or a cloud shadow went undetected by the
+cloud cover algorithm and shaded the scene</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">july_2015_ds</span> <span class="o">=</span> <span class="n">scene_dict</span><span class="p">[</span><span class="n">date</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">july_2015_ds</span><span class="p">[</span><span class="s1">&#39;ndvi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;july 2015&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2dfa5efe0968a366ac4ed6ae3174dc0eda6445c38c67825e462b9522dab78d42.png" src="../../_images/2dfa5efe0968a366ac4ed6ae3174dc0eda6445c38c67825e462b9522dab78d42.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">may_2015_ds</span> <span class="o">=</span> <span class="n">scene_dict</span><span class="p">[</span><span class="n">date</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">may_2015_ds</span><span class="p">[</span><span class="s1">&#39;ndvi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;may 2015&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/15018624f07e506f83cde2de2c1e53d7336a25d29a911eedb6e5a7c544e7f9d9.png" src="../../_images/15018624f07e506f83cde2de2c1e53d7336a25d29a911eedb6e5a7c544e7f9d9.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="question-3">
+<h2>Question 3<a class="headerlink" href="#question-3" title="Permalink to this heading">#</a></h2>
+<p>Integrate <span class="math notranslate nohighlight">\(Z=\int D^6 n(D) dD\)</span> on paper, assuming a Marshall Palmer size distribution and show that it integrates to:</p>
+<div class="math notranslate nohighlight">
+\[
+Z \approx 300 RR^{1.5}
+\]</div>
+<p>with Z in <span class="math notranslate nohighlight">\(mm^6\,m^{-3}\)</span> and RR in mm/hr.  It’s helpful to know that:</p>
+<div class="math notranslate nohighlight">
+\[
+\int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+\]</div>
+<section id="question-3-answer">
+<h3>Question 3 answer<a class="headerlink" href="#question-3-answer" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+n(D) = n_0 \exp(-4.1 RR^{-0.21} D )
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(n_0=8000\)</span> in units of <span class="math notranslate nohighlight">\(m^{-3}\,mm^{-1}\)</span>, D in mm,
+so that <span class="math notranslate nohighlight">\(\Lambda=4.1 RR^{-0.21}\)</span> has to have units
+of <span class="math notranslate nohighlight">\(mm^{-1}\)</span>.</p>
+<p>If we use this to integrate:</p>
+<div class="math notranslate nohighlight">
+\[
+Z=\int D^6 n(D) dD
+\]</div>
+<p>and use the hint that</p>
+<div class="math notranslate nohighlight">
+\[
+\int^\infty_0 x^n \exp( -a x) dx = n! / a^{n+1}
+\]</div>
+<p>with n=6 we get:</p>
+<div class="math notranslate nohighlight">
+\[
+Z=\frac{n_0\, 6!}{\Lambda^7}
+\]</div>
+<p>with units of  <span class="math notranslate nohighlight">\(m^{-3}\,mm^{-1}/(mm^{-1})^7=mm^6\,m^{-3}\)</span> as required.  Since
+<span class="math notranslate nohighlight">\(n_0=8000m^{-3}\,mm^{-1}\)</span> and 6!=720, the
+numerical coeficient is <code class="docutils literal notranslate"><span class="pre">8000x720/(4.1**7)=295.75</span></code> and  the final form is:</p>
+<div class="math notranslate nohighlight">
+\[
+Z=296 RR^{1.47}
+\]</div>
+</section>
+<section id="numerical-approximation">
+<h3>Numerical approximation<a class="headerlink" href="#numerical-approximation" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Marshall Palmer distribution</span>
+<span class="c1">#</span>
+<span class="k">def</span> <span class="nf">calc_num_dist</span><span class="p">(</span><span class="n">Dvals</span><span class="p">,</span><span class="n">RR</span><span class="p">,</span><span class="n">n0</span><span class="o">=</span><span class="mi">8000</span><span class="p">):</span>
+    <span class="n">the_dist</span> <span class="o">=</span> <span class="n">n0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">4.1</span><span class="o">*</span><span class="n">RR</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.21</span><span class="p">)</span><span class="o">*</span><span class="n">Dvals</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">the_dist</span>
+
+<span class="n">Dvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">dD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">Dvals</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># need the midpoint diameters for the rectangular integration</span>
+<span class="c1">#</span>
+<span class="n">Dmid</span> <span class="o">=</span> <span class="p">(</span><span class="n">Dvals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">Dvals</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+
+<span class="c1">#</span>
+<span class="c1"># loop over 100 rain rates</span>
+<span class="c1">#</span>
+<span class="n">RRvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># Brute force integration</span>
+<span class="c1">#</span>
+<span class="n">Zvals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">the_RR</span> <span class="ow">in</span> <span class="n">RRvals</span><span class="p">:</span>
+    <span class="n">num_dist</span> <span class="o">=</span> <span class="n">calc_num_dist</span><span class="p">(</span><span class="n">Dvals</span><span class="p">,</span><span class="n">the_RR</span><span class="p">)</span>
+    <span class="n">bin_heights</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_dist</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">num_dist</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+    <span class="n">theZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Dmid</span><span class="o">**</span><span class="mf">6.</span><span class="o">*</span><span class="n">bin_heights</span><span class="o">*</span><span class="n">dD</span><span class="p">)</span>
+    <span class="n">Zvals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theZ</span><span class="p">)</span>
+    
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">RRvals</span><span class="p">,</span><span class="n">Zvals</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">)</span>
+<span class="n">Z_math</span> <span class="o">=</span> <span class="mi">296</span><span class="o">*</span><span class="n">RRvals</span><span class="o">**</span><span class="mf">1.47</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">RRvals</span><span class="p">,</span><span class="n">Z_math</span><span class="p">,</span><span class="s1">&#39;bx&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;math&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;RR (mm/hour)&quot;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Z mm^6/m^3&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3178f4209d884e64b92dd4dfa51244d0ce97b58f1c3ce2dd2cde0070b7e61ba8.png" src="../../_images/3178f4209d884e64b92dd4dfa51244d0ce97b58f1c3ce2dd2cde0070b7e61ba8.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="assign5_handin.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Assignment 5 Handin</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="assign6_handin.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">Preliminaries</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#headstart-use-this-function-to-add-masked-ndvi-to-the-dataset">Headstart: use this function to add masked ndvi to the dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-paths-for-input-and-output-directories">Make paths for input and output directories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-ndvi-files-into-a-new-folder">Write out the ndvi files into a new folder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-vancouver">For Vancouver:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-1-calculate-the-average-ndvi">Question 1: Calculate the average ndvi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-1-answer">Question 1 answer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-plot-the-ndvi-time-series">Question 2: Plot the ndvi time series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-answer">Question 2 answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-problem-datapoints">The two problem datapoints</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-3">Question 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#question-3-answer">Question 3 answer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-approximation">Numerical approximation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

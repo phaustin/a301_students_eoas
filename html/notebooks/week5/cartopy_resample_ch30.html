@@ -1,0 +1,3450 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Use pyresample and cartopy to plot channel 30 radiances &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/week5/cartopy_resample_ch30';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/week5/cartopy_resample_ch30.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Resampling the water vapor" href="wv_resample.html" />
+    <link rel="prev" title="Week 5" href="week5_topics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="week5_topics.html">Week 5</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment4_solution.html">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/week5/cartopy_resample_ch30.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week5/cartopy_resample_ch30.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/week5/cartopy_resample_ch30.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Use pyresample and cartopy to plot channel 30 radiances</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-data">Read in the data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-files-in-the-sat-data-pha-folder">Find the files in the sat_data/pha folder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-1-km-latitudes-and-longitudes">Read the 1 km latitudes and longitudes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-channel-30-radiances">Read the channel 30 radiances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-metadata">Read the metadata</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-swathdefinition-and-areadefinition-using-a-map-projection-and-the-lats-and-lons">Create the SwathDefinition and AreaDefinition using a map projection and the lats and lons</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-lambert-azimuthal-projection-with-the-wgs84-datum">Make a Lambert Azimuthal projection with the WGS84 datum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-projection">What is the <code class="docutils literal notranslate"><span class="pre">projection</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-globe">What is the <code class="docutils literal notranslate"><span class="pre">globe</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-swathdefinition-and-make-the-area-def">Create the SwathDefinition and make the <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-swathdefinition">What is a <code class="docutils literal notranslate"><span class="pre">SwathDefinition</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-areadefiniton">What is an <code class="docutils literal notranslate"><span class="pre">AreaDefiniton</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-number-of-rows-and-columns-in-the-regridded-image">Get the number of rows and columns in the regridded image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-ch30-on-the-area-def-grid">resample ch30 on the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-image-30">What is <code class="docutils literal notranslate"><span class="pre">image_30</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-missing-values-9999-with-floating-point-nan-for-mapping">replace missing values = -9999. with floating point nan for mapping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-using-cartopy">Plot the image using cartopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-palette">Create a palette</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-palette-on-the-image-30-array">use the palette on the image_30 array</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-all-the-projection-information-as-a-json-file">write out all the projection information as a json file</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="use-pyresample-and-cartopy-to-plot-channel-30-radiances">
+<span id="week5-resample"></span><h1>Use pyresample and cartopy to plot channel 30 radiances<a class="headerlink" href="#use-pyresample-and-cartopy-to-plot-channel-30-radiances" title="Permalink to this heading">#</a></h1>
+<p>This notebook uses two hdf files: the MYD03 geom file containing pixel lats and lons at 1 km resolution
+and the Level 1B Modis MYD02 readiance file with the 36 channel radiances.</p>
+<p>The work is split into 5 sections:</p>
+<ul class="simple">
+<li><p><strong>Section 1.1</strong>:  Read the lats, lons, metadata and radiances into variables</p></li>
+<li><p><strong>Section 1.2</strong>: Set up the parameters for Lambert Azimuthal map projection centered on the scene center.  Using this projection
+create a an instance of a <a class="reference external" href="https://pyresample.readthedocs.io/en/latest/api/pyresample.html#pyresample.geometry.SwathDefinition">pyresample SwathDefinition</a>
+which contains the pixel lats and lons.  With that information, create an <a class="reference external" href="https://pyresample.readthedocs.io/en/latest/geometry_utils.html#areadefinition-creation">Area Definition</a> that
+specifies the resampled grid for the new resampled image.</p></li>
+<li><p><strong>Section 1.3</strong>: Resample the Channel 30 radiances into the pyresample <code class="docutils literal notranslate"><span class="pre">area_def</span></code></p></li>
+<li><p><strong>Section 1.4</strong>: Plot the image using cartopy</p></li>
+<li><p><strong>Section 1.5</strong>: Write the image and the metadata out to disk</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">cartopy</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+<span class="kn">from</span> <span class="nn">pyresample</span> <span class="kn">import</span> <span class="n">kd_tree</span><span class="p">,</span> <span class="n">SwathDefinition</span>
+
+<span class="kn">from</span> <span class="nn">sat_lib.modismeta_read</span> <span class="kn">import</span> <span class="n">parseMeta</span>
+<span class="kn">from</span> <span class="nn">sat_lib.modischan_read</span> <span class="kn">import</span> <span class="n">readband_lw</span><span class="p">,</span> <span class="n">read_plainvar</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in a301_lib init
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in sat_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<section id="read-in-the-data">
+<h2>Read in the data<a class="headerlink" href="#read-in-the-data" title="Permalink to this heading">#</a></h2>
+<section id="find-the-files-in-the-sat-data-pha-folder">
+<h3>Find the files in the sat_data/pha folder<a class="headerlink" href="#find-the-files-in-the-sat-data-pha-folder" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom_filelist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a301_lib</span><span class="o">.</span><span class="n">sat_data</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;pha/MYD03*2105*hdf&quot;</span><span class="p">))</span>
+<span class="n">ch30_filelist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a301_lib</span><span class="o">.</span><span class="n">sat_data</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;pha/MYD02*2105*hdf&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom_file_name</span> <span class="o">=</span> <span class="n">geom_filelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">geom_file_name</span><span class="p">)</span>
+<span class="n">ch30_file_name</span> <span class="o">=</span> <span class="n">ch30_filelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ch30_file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phil/sat_data/pha/MYD03.A2013222.2105.006.2013223155808.hdf
+/home/phil/sat_data/pha/MYD021KM.A2013222.2105.061.2018047235850.hdf
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-the-1-km-latitudes-and-longitudes">
+<h3>Read the 1 km latitudes and longitudes<a class="headerlink" href="#read-the-1-km-latitudes-and-longitudes" title="Permalink to this heading">#</a></h3>
+<p>Use the new <code class="docutils literal notranslate"><span class="pre">sat_lib</span></code> functions to get the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lat_1km</span> <span class="o">=</span> <span class="n">read_plainvar</span><span class="p">(</span><span class="n">geom_file_name</span><span class="p">,</span><span class="s1">&#39;Latitude&#39;</span><span class="p">)</span>
+<span class="n">lon_1km</span> <span class="o">=</span> <span class="n">read_plainvar</span><span class="p">(</span><span class="n">geom_file_name</span><span class="p">,</span><span class="s1">&#39;Longitude&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lat_1km</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">,</span><span class="si">{</span><span class="n">lon_1km</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lat_1km.shape=(2040, 1354),lon_1km.shape=(2040, 1354)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-the-channel-30-radiances">
+<h3>Read the channel 30 radiances<a class="headerlink" href="#read-the-channel-30-radiances" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ch30</span><span class="o">=</span> <span class="n">readband_lw</span><span class="p">(</span><span class="n">ch30_file_name</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">ch30</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>channel index for band 30 is 9
+fthechan_offset=1560.333251953125, thechan_scale=0.0004063234373461455
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2040, 1354)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="read-the-metadata">
+<h3>Read the metadata<a class="headerlink" href="#read-the-metadata" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="n">parseMeta</span><span class="p">(</span><span class="n">ch30_file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="create-the-swathdefinition-and-areadefinition-using-a-map-projection-and-the-lats-and-lons">
+<h2>Create the SwathDefinition and AreaDefinition using a map projection and the lats and lons<a class="headerlink" href="#create-the-swathdefinition-and-areadefinition-using-a-map-projection-and-the-lats-and-lons" title="Permalink to this heading">#</a></h2>
+<section id="make-a-lambert-azimuthal-projection-with-the-wgs84-datum">
+<h3>Make a Lambert Azimuthal projection with the WGS84 datum<a class="headerlink" href="#make-a-lambert-azimuthal-projection-with-the-wgs84-datum" title="Permalink to this heading">#</a></h3>
+<p>pyresample needs proj4 map parameters to put together its grid.  These are
+returned by the get_proj_params file below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_proj_params</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    given a metadata dictionary from parseMeta, return proj4 parameters</span>
+<span class="sd">    for use by cartopy or pyresample, assuming a laea projection</span>
+<span class="sd">    and WGS84 datum</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    metadata:  dictionary</span>
+<span class="sd">       returned by parseMeta</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (proj_params, globe): dict, cartopy.crs.Globe</span>
+<span class="sd">        projection params plus datum created by cartopy crs</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+
+    <span class="n">globe</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Globe</span><span class="p">(</span><span class="n">datum</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">,</span> <span class="n">ellipse</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">)</span>
+    <span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertAzimuthalEqualArea</span><span class="p">(</span>
+        <span class="n">central_latitude</span><span class="o">=</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lat_0&quot;</span><span class="p">],</span>
+        <span class="n">central_longitude</span><span class="o">=</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;lon_0&quot;</span><span class="p">],</span>
+        <span class="n">globe</span><span class="o">=</span><span class="n">globe</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">projection</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-the-projection">
+<h3>What is the <code class="docutils literal notranslate"><span class="pre">projection</span></code>?<a class="headerlink" href="#what-is-the-projection" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projection</span> <span class="o">=</span> <span class="n">get_proj_params</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">projection</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;cartopy.crs.LambertAzimuthalEqualArea&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Source code for the <a class="reference external" href="https://scitools.org.uk/cartopy/docs/v0.15/_modules/cartopy/crs.html#LambertAzimuthalEqualArea">Lambert projection</a></p>
+<p>Use python’s <code class="docutils literal notranslate"><span class="pre">dir</span></code> function to print the methods and attributes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">projection</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;__abstractmethods__&#39;, &#39;__class__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;, &#39;__getattribute__&#39;, &#39;__getstate__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;, &#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__setattr__&#39;, &#39;__setstate__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;__weakref__&#39;, &#39;_abc_impl&#39;, &#39;_as_mpl_axes&#39;, &#39;_as_mpl_transform&#39;, &#39;_attach_lines_to_boundary&#39;, &#39;_boundary&#39;, &#39;_check_type&#39;, &#39;_crs&#39;, &#39;_determine_longitude_bounds&#39;, &#39;_expected_types&#39;, &#39;_handles_ellipses&#39;, &#39;_local&#39;, &#39;_method_map&#39;, &#39;_proj4_params&#39;, &#39;_project_line_string&#39;, &#39;_project_linear_ring&#39;, &#39;_project_multiline&#39;, &#39;_project_multipoint&#39;, &#39;_project_multipolygon&#39;, &#39;_project_point&#39;, &#39;_project_polygon&#39;, &#39;_repr_html_&#39;, &#39;_rings_to_multi_polygon&#39;, &#39;_threshold&#39;, &#39;_wrappable&#39;, &#39;_x_limits&#39;, &#39;_y_limits&#39;, &#39;area_of_use&#39;, &#39;as_geocentric&#39;, &#39;as_geodetic&#39;, &#39;axis_info&#39;, &#39;boundary&#39;, &#39;bounds&#39;, &#39;ccw_boundary&#39;, &#39;coordinate_operation&#39;, &#39;coordinate_system&#39;, &#39;cs_to_cf&#39;, &#39;cw_boundary&#39;, &#39;datum&#39;, &#39;domain&#39;, &#39;ellipsoid&#39;, &#39;equals&#39;, &#39;from_authority&#39;, &#39;from_cf&#39;, &#39;from_dict&#39;, &#39;from_epsg&#39;, &#39;from_json&#39;, &#39;from_json_dict&#39;, &#39;from_proj4&#39;, &#39;from_string&#39;, &#39;from_user_input&#39;, &#39;from_wkt&#39;, &#39;geodetic_crs&#39;, &#39;get_geod&#39;, &#39;globe&#39;, &#39;is_bound&#39;, &#39;is_compound&#39;, &#39;is_derived&#39;, &#39;is_engineering&#39;, &#39;is_exact_same&#39;, &#39;is_geocentric&#39;, &#39;is_geodetic&#39;, &#39;is_geographic&#39;, &#39;is_projected&#39;, &#39;is_vertical&#39;, &#39;list_authority&#39;, &#39;name&#39;, &#39;prime_meridian&#39;, &#39;proj4_init&#39;, &#39;proj4_params&#39;, &#39;project_geometry&#39;, &#39;quick_vertices_transform&#39;, &#39;remarks&#39;, &#39;scope&#39;, &#39;source_crs&#39;, &#39;srs&#39;, &#39;sub_crs_list&#39;, &#39;target_crs&#39;, &#39;threshold&#39;, &#39;to_3d&#39;, &#39;to_authority&#39;, &#39;to_cf&#39;, &#39;to_dict&#39;, &#39;to_epsg&#39;, &#39;to_json&#39;, &#39;to_json_dict&#39;, &#39;to_proj4&#39;, &#39;to_string&#39;, &#39;to_wkt&#39;, &#39;transform_point&#39;, &#39;transform_points&#39;, &#39;transform_vectors&#39;, &#39;type_name&#39;, &#39;utm_zone&#39;, &#39;x_limits&#39;, &#39;y_limits&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;proj&#39;: &#39;laea&#39;, &#39;lat_0&#39;: 39.5991010636787, &#39;lon_0&#39;: -121.404871349766, &#39;x_0&#39;: 0, &#39;y_0&#39;: 0, &#39;datum&#39;: &#39;WGS84&#39;, &#39;units&#39;: &#39;m&#39;, &#39;no_defs&#39;: None, &#39;type&#39;: &#39;crs&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-the-globe">
+<h3>What is the <code class="docutils literal notranslate"><span class="pre">globe</span></code><a class="headerlink" href="#what-is-the-globe" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">globe</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;cartopy.crs.Globe&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Man page for <a class="reference external" href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.crs.Globe.html">cartopy.crs.Globe</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">projection</span><span class="o">.</span><span class="n">globe</span><span class="o">.</span><span class="n">to_proj4_params</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OrderedDict([(&#39;datum&#39;, &#39;WGS84&#39;), (&#39;ellps&#39;, &#39;WGS84&#39;)])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Wikipedia on <a class="reference external" href="https://en.wikipedia.org/wiki/World_Geodetic_System">WGS84</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proj_params</span> <span class="o">=</span>  <span class="n">projection</span><span class="o">.</span><span class="n">proj4_params</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">proj_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;datum&#39;: &#39;WGS84&#39;, &#39;ellps&#39;: &#39;WGS84&#39;, &#39;proj&#39;: &#39;laea&#39;, &#39;lon_0&#39;: -121.4048713497655, &#39;lat_0&#39;: 39.59910106367865, &#39;x_0&#39;: 0.0, &#39;y_0&#39;: 0.0}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-the-swathdefinition-and-make-the-area-def">
+<h3>Create the SwathDefinition and make the <code class="docutils literal notranslate"><span class="pre">area_def</span></code><a class="headerlink" href="#create-the-swathdefinition-and-make-the-area-def" title="Permalink to this heading">#</a></h3>
+<p>The SwathDefinition holds the original lat/lons, while the
+<code class="docutils literal notranslate"><span class="pre">area_def</span></code> holds the resampled grid, with its bounding box
+and the specification for the number of rows and columns,
+and the size of the resampled pixels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">swath_def</span> <span class="o">=</span> <span class="n">SwathDefinition</span><span class="p">(</span><span class="n">lon_1km</span><span class="p">,</span> <span class="n">lat_1km</span><span class="p">)</span>
+<span class="n">area_def</span> <span class="o">=</span> <span class="n">swath_def</span><span class="o">.</span><span class="n">compute_optimal_bb_area</span><span class="p">(</span><span class="n">proj_dict</span><span class="o">=</span><span class="n">proj_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> we will be resampling into:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">area_def</span><span class="o">.</span><span class="n">to_cartopy_crs</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">out</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="205.03955pt" height="180.72pt" viewBox="0 0 205.03955 180.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2023-04-08T09:52:20.099506</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.7.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180.72 
+L 205.03955 180.72 
+L 205.03955 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 197.83955 7.2 
+L 197.83955 173.52 
+L 7.2 173.52 
+" style="fill: #ffffff"/>
+   </g>
+   <g id="PathCollection_1">
+    <path d="M 60.841899 7.2 
+L 60.681336 7.238991 
+L 60.373787 7.471658 
+L 60.12257 7.828864 
+L 60.071423 8.185393 
+L 60.409165 8.873667 
+L 60.985622 9.591259 
+L 61.344458 9.786535 
+L 62.280452 9.85578 
+L 62.948801 9.627169 
+L 62.895407 9.081377 
+L 64.258267 9.364384 
+L 63.925876 9.690961 
+L 63.92527 10.001088 
+L 64.052171 10.699223 
+L 63.645016 10.213844 
+L 63.347569 10.085045 
+L 62.213197 10.114796 
+L 62.047271 10.244 
+L 61.707303 10.968646 
+L 61.773432 11.123379 
+L 62.230344 11.252835 
+L 62.274022 11.411306 
+L 62.275888 12.030273 
+L 62.01919 12.474898 
+L 62.049265 12.646407 
+L 62.500229 12.730236 
+L 62.991741 12.447512 
+L 64.002794 12.519962 
+L 64.511113 13.398871 
+L 64.811699 13.276821 
+L 65.046321 12.785265 
+L 65.304747 13.090887 
+L 65.34127 13.46848 
+L 65.169795 13.894371 
+L 65.328896 14.525104 
+L 65.56249 14.77305 
+L 65.879143 14.856139 
+L 66.236171 14.794316 
+L 66.630427 14.356239 
+L 66.883064 14.533741 
+L 67.386429 14.700629 
+L 67.673062 14.933621 
+L 68.21308 16.047917 
+L 68.368416 16.161693 
+L 68.675746 16.175197 
+L 68.948207 16.512261 
+L 69.213759 16.655372 
+L 70.26998 16.62841 
+L 70.14293 16.788854 
+L 68.724742 16.940855 
+L 68.139409 17.213398 
+L 68.090897 17.477688 
+L 68.103805 18.418187 
+L 68.335169 18.575606 
+L 68.633848 18.206494 
+L 68.760975 18.229831 
+L 69.293228 18.766977 
+L 69.421043 18.697516 
+L 69.488805 18.401362 
+L 69.623048 18.327422 
+L 69.979975 18.55518 
+L 70.441862 18.628961 
+L 70.693765 18.950685 
+L 71.128972 18.721213 
+L 71.108096 18.883903 
+L 70.838899 19.563906 
+L 70.980995 19.872529 
+L 71.14695 19.870234 
+L 71.570183 19.687202 
+L 71.757026 19.821137 
+L 72.237812 20.37298 
+L 72.481813 20.419787 
+L 72.173859 20.756365 
+L 71.525623 21.081253 
+L 72.336657 21.595963 
+L 73.152125 22.356003 
+L 73.300615 22.308081 
+L 73.809817 21.899935 
+L 74.778116 21.998058 
+L 76.108491 21.752338 
+L 76.472194 20.951152 
+L 76.626237 20.401747 
+L 76.664585 20.940006 
+L 76.38092 21.784002 
+L 75.931819 22.308856 
+L 74.849838 23.423952 
+L 74.933003 23.743618 
+L 76.163332 24.604446 
+L 77.044514 25.064161 
+L 80.881352 26.784437 
+L 82.605766 27.312631 
+L 82.795853 27.150042 
+L 83.270099 26.54052 
+L 83.950319 26.678445 
+L 84.093944 26.348465 
+L 83.475937 24.500531 
+L 83.257788 24.674831 
+L 83.042891 25.366488 
+L 82.442132 23.525533 
+L 81.840642 22.549662 
+L 81.369335 21.268976 
+L 80.691369 20.457988 
+L 79.766672 19.851276 
+L 77.538083 18.806441 
+L 76.642203 18.006101 
+L 76.187279 16.927997 
+L 76.329241 16.821415 
+L 76.197217 16.466604 
+L 74.832913 14.29016 
+L 73.493208 11.73471 
+L 73.106687 11.59454 
+L 72.028743 11.371782 
+L 70.293029 10.72614 
+L 67.917016 10.119428 
+L 65.587581 9.024058 
+L 63.213362 7.491248 
+L 62.464849 7.2 
+L 62.464849 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 100.195959 135.135141 
+L 100.104357 135.040418 
+L 99.821308 135.171666 
+L 99.643054 135.349941 
+L 100.158789 135.424652 
+L 100.492856 135.401284 
+L 100.195959 135.135141 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 105.515352 140.922705 
+L 105.198182 140.956988 
+L 105.405935 141.357861 
+L 105.795573 141.419918 
+L 106.077863 141.400049 
+L 106.050179 141.285762 
+L 105.810551 140.97265 
+L 105.515352 140.922705 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 86.09681 35.826228 
+L 86.044908 35.973935 
+L 85.971853 35.96459 
+L 85.816211 35.659975 
+L 85.799781 35.446597 
+L 85.941023 35.295295 
+L 86.118569 35.739216 
+L 86.09681 35.826228 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 70.222096 18.947511 
+L 69.767119 18.810803 
+L 69.634726 19.11111 
+L 69.623413 19.43853 
+L 69.827642 19.582458 
+L 70.430285 19.725251 
+L 70.331949 19.036925 
+L 70.222096 18.947511 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 87.908707 34.215016 
+L 87.886238 34.695402 
+L 88.102619 34.454823 
+L 88.15553 34.486433 
+L 88.15916 34.688845 
+L 88.261139 34.724353 
+L 88.460612 34.592878 
+L 88.486383 34.421402 
+L 88.244403 34.034489 
+L 88.112378 33.701888 
+L 88.020371 33.709964 
+L 87.908707 34.215016 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 87.883432 32.184886 
+L 87.718305 32.081745 
+L 87.664615 32.127839 
+L 87.591423 32.360161 
+L 87.574916 32.717458 
+L 87.66552 32.878639 
+L 87.946261 33.054785 
+L 87.975809 32.910675 
+L 87.930628 32.245198 
+L 87.883432 32.184886 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 85.977181 24.485415 
+L 85.678306 24.690059 
+L 85.542593 24.890933 
+L 85.625185 25.084781 
+L 86.089208 25.336215 
+L 86.119525 25.202261 
+L 86.046428 24.805676 
+L 86.146042 24.837977 
+L 86.370242 25.098924 
+L 86.514689 25.076619 
+L 86.719446 24.920387 
+L 86.655505 24.755428 
+L 86.079735 24.461786 
+L 85.977181 24.485415 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 86.201787 25.684106 
+L 86.118534 25.660208 
+L 85.981956 25.760635 
+L 85.873005 26.160329 
+L 85.922681 26.371229 
+L 86.079024 26.541972 
+L 86.347296 26.645627 
+L 86.427816 26.572897 
+L 86.462466 26.415029 
+L 86.230454 26.037561 
+L 86.201787 25.684106 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 84.976228 25.173705 
+L 84.733463 25.220771 
+L 84.692771 25.368429 
+L 84.764049 25.825681 
+L 84.828948 25.96554 
+L 85.055423 26.112642 
+L 85.595489 26.281705 
+L 85.467451 26.031358 
+L 85.417612 25.746709 
+L 84.976228 25.173705 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 87.997811 29.246583 
+L 87.88522 29.65749 
+L 87.650745 28.664235 
+L 87.529516 28.332047 
+L 87.395053 28.229572 
+L 87.028585 28.111852 
+L 87.054869 28.01865 
+L 87.819624 27.629977 
+L 87.857432 27.425244 
+L 87.674838 27.133208 
+L 87.520152 26.972284 
+L 87.393665 26.943242 
+L 87.185478 27.190787 
+L 86.895759 27.715567 
+L 86.767694 28.029747 
+L 86.802584 28.133834 
+L 87.055546 28.525699 
+L 87.221525 28.659323 
+L 87.396732 28.700153 
+L 87.477189 28.873735 
+L 87.484678 29.428802 
+L 87.541931 29.621217 
+L 87.710098 29.903932 
+L 88.04123 29.992615 
+L 88.195723 30.124985 
+L 88.314954 30.372963 
+L 88.447119 30.477339 
+L 88.591839 30.437727 
+L 88.677693 30.320767 
+L 88.681209 29.968882 
+L 87.997811 29.246583 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 78.347143 17.033963 
+L 78.518259 17.291024 
+L 78.973213 17.654446 
+L 80.051125 18.277553 
+L 79.9881 18.118587 
+L 79.258054 17.067325 
+L 78.721991 16.5923 
+L 78.114615 16.290055 
+L 77.743342 16.199613 
+L 77.607419 16.320864 
+L 77.693267 16.495085 
+L 78.235163 16.887679 
+L 78.347143 17.033963 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 83.663701 23.169232 
+L 83.728128 23.088182 
+L 83.704456 22.92074 
+L 83.191269 22.558271 
+L 82.187519 21.473173 
+L 82.392974 21.904869 
+L 82.896004 22.616984 
+L 83.663701 23.169232 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 83.246203 23.218368 
+L 82.822689 22.795327 
+L 82.685195 22.763864 
+L 82.973677 24.096437 
+L 83.060018 24.234149 
+L 83.171638 24.262645 
+L 83.386796 24.073958 
+L 83.530733 24.065172 
+L 83.45782 23.781964 
+L 83.143301 23.379481 
+L 83.246203 23.218368 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 76.089067 14.213387 
+L 76.442306 13.913338 
+L 76.451426 13.817911 
+L 76.42409 13.457909 
+L 76.331319 13.19469 
+L 76.09083 12.798154 
+L 76.101925 12.959267 
+L 76.052526 13.11305 
+L 75.890055 13.416441 
+L 75.969394 14.275063 
+L 76.089067 14.213387 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 67.386376 15.163822 
+L 66.970407 14.920593 
+L 66.463041 15.149796 
+L 66.575669 15.571624 
+L 66.525598 15.720498 
+L 66.34636 15.801951 
+L 66.283224 15.909719 
+L 66.33631 16.043486 
+L 66.907325 16.657438 
+L 67.240985 16.894736 
+L 67.545021 17.005153 
+L 67.740456 16.983579 
+L 67.827118 16.830167 
+L 67.839873 16.465551 
+L 67.769016 15.927154 
+L 67.564321 15.440633 
+L 67.386376 15.163822 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 75.467384 11.993269 
+L 75.411101 11.844161 
+L 75.155097 11.455188 
+L 74.850374 11.229649 
+L 74.653679 11.249077 
+L 74.416211 11.691786 
+L 74.335936 12.008315 
+L 74.748293 13.397033 
+L 75.03116 14.056493 
+L 75.104379 13.661348 
+L 75.47597 13.176833 
+L 75.686601 12.754441 
+L 75.618911 12.395949 
+L 75.467384 11.993269 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 112.043881 143.184762 
+L 111.712381 142.64627 
+L 111.506235 142.814542 
+L 111.91259 143.372197 
+L 112.288731 144.089595 
+L 112.705317 144.23031 
+L 113.074543 144.149878 
+L 112.860305 143.991869 
+L 112.043881 143.184762 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 114.495371 173.52 
+L 114.645569 173.358921 
+L 114.592805 172.598172 
+L 114.462606 172.278649 
+L 114.143769 171.957519 
+L 114.130885 171.564343 
+L 113.761159 171.540598 
+L 113.543569 171.734363 
+L 113.562544 172.113019 
+L 114.298539 173.519999 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 100.837926 135.479968 
+L 101.380394 136.195531 
+L 101.717001 136.290386 
+L 102.158904 136.178764 
+L 102.528595 135.762241 
+L 102.461564 135.675978 
+L 101.969845 135.369452 
+L 100.837926 135.479968 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 104.441947 135.314051 
+L 103.155632 134.950161 
+L 102.932559 135.043272 
+L 103.097879 135.309468 
+L 103.14582 135.589699 
+L 103.627004 135.786414 
+L 105.178864 135.464919 
+L 105.257228 135.300557 
+L 105.128732 135.115993 
+L 104.441947 135.314051 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 112.199121 140.183889 
+L 112.354152 140.481026 
+L 112.835667 140.43425 
+L 113.299174 140.487873 
+L 112.961992 139.943526 
+L 112.678084 139.731379 
+L 111.6313 139.296482 
+L 111.541652 139.396828 
+L 111.586115 139.599905 
+L 111.611947 139.637425 
+L 111.943021 139.664799 
+L 112.042951 139.768875 
+L 112.199121 140.183889 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 147.939791 168.663568 
+L 146.785025 168.482352 
+L 146.727715 167.893878 
+L 146.424931 167.402412 
+L 145.777085 166.897961 
+L 145.247696 166.842609 
+L 145.260816 167.674803 
+L 145.378728 168.038567 
+L 145.993273 168.785114 
+L 147.642636 170.238234 
+L 148.35293 170.644958 
+L 148.390455 170.509701 
+L 148.197137 169.924662 
+L 147.939791 168.663568 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 136.291592 151.103178 
+L 136.713203 151.421229 
+L 136.924456 151.374066 
+L 136.955273 151.231288 
+L 136.803053 150.99533 
+L 136.385599 150.743835 
+L 136.300923 150.782282 
+L 136.291592 151.103178 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 154.723853 170.28297 
+L 154.345034 169.407318 
+L 154.196487 168.810593 
+L 154.032275 168.571998 
+L 153.141123 168.934957 
+L 152.857743 169.233363 
+L 152.622061 171.324253 
+L 152.76288 171.661621 
+L 153.862149 172.120698 
+L 154.374382 172.100564 
+L 154.723853 170.28297 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 66.02262 7.2 
+L 66.388158 7.361271 
+L 66.596624 7.380628 
+L 66.862062 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 69.068804 7.2 
+L 68.960422 7.535405 
+L 69.109644 7.727268 
+L 69.450085 7.684438 
+L 69.653337 7.793351 
+L 69.530213 8.014746 
+L 68.910346 8.60186 
+L 69.00149 9.002681 
+L 69.590464 9.078056 
+L 71.490376 8.847631 
+L 71.856903 8.915838 
+L 71.87912 9.072191 
+L 71.051607 9.179175 
+L 70.203939 9.437514 
+L 69.340037 9.514754 
+L 69.179093 9.650552 
+L 69.148185 9.936024 
+L 69.358247 10.098158 
+L 70.16747 10.194674 
+L 71.465411 10.537626 
+L 72.407424 10.429594 
+L 72.545879 10.660409 
+L 72.75148 10.776609 
+L 73.024811 10.77776 
+L 73.183995 10.636009 
+L 73.509256 9.528682 
+L 73.593331 9.425908 
+L 73.691517 10.500442 
+L 73.836937 10.583702 
+L 75.120107 10.800355 
+L 75.865964 10.549683 
+L 76.482038 9.430444 
+L 76.555782 9.035714 
+L 76.484089 8.683576 
+L 76.575618 8.341178 
+L 76.951765 7.89038 
+L 76.860819 8.239478 
+L 76.858204 9.659892 
+L 76.465038 10.397386 
+L 75.841973 11.267055 
+L 75.885887 11.683043 
+L 76.164895 11.756381 
+L 76.39885 12.201603 
+L 76.381029 12.5015 
+L 77.049799 13.926395 
+L 77.04172 14.323625 
+L 78.442005 15.975519 
+L 78.78048 16.21451 
+L 79.424828 16.281981 
+L 80.117297 16.149607 
+L 80.540314 15.702868 
+L 80.975641 15.426655 
+L 81.072871 14.669771 
+L 81.541139 14.085441 
+L 81.561609 13.855878 
+L 81.176811 13.231132 
+L 81.237933 13.200173 
+L 81.755251 13.547305 
+L 81.94129 13.97673 
+L 81.739341 14.305053 
+L 81.433709 14.497361 
+L 81.330513 14.765034 
+L 81.287417 16.164412 
+L 81.417878 16.610556 
+L 81.949999 17.216354 
+L 82.217903 17.235432 
+L 82.843641 17.068389 
+L 82.689318 17.243061 
+L 82.051816 17.709024 
+L 81.664412 17.750964 
+L 81.528485 17.369187 
+L 80.998686 16.603041 
+L 80.835691 16.598145 
+L 80.674778 16.780742 
+L 80.515283 17.150097 
+L 80.624509 17.597358 
+L 81.273553 18.432689 
+L 81.433542 18.526818 
+L 83.152842 19.179208 
+L 83.515607 18.819256 
+L 83.701918 18.894716 
+L 84.018851 18.771588 
+L 84.093642 17.879422 
+L 84.790728 17.120409 
+L 84.828559 17.17238 
+L 84.224045 19.528252 
+L 84.289549 19.646814 
+L 84.798948 19.625582 
+L 85.582706 19.837327 
+L 85.837404 19.787893 
+L 86.27111 19.270767 
+L 85.915413 20.061472 
+L 84.738837 20.155822 
+L 84.509642 20.281031 
+L 84.693358 20.59393 
+L 84.723573 21.273792 
+L 84.880332 21.340732 
+L 85.233837 21.275574 
+L 85.243053 21.368209 
+L 85.031745 21.831857 
+L 85.290425 22.430007 
+L 85.807786 21.708865 
+L 86.000019 21.711939 
+L 86.664735 22.339035 
+L 87.154163 23.845837 
+L 87.315623 24.077708 
+L 87.857156 24.097011 
+L 88.009796 24.799657 
+L 88.072948 26.036814 
+L 87.839485 26.166424 
+L 87.261409 26.143301 
+L 87.229798 26.471854 
+L 87.353034 26.572376 
+L 87.836281 26.747763 
+L 88.101468 27.027507 
+L 88.521623 27.825844 
+L 88.197883 27.902669 
+L 87.924752 28.121038 
+L 87.87674 28.345183 
+L 88.047732 28.866933 
+L 88.589722 29.179276 
+L 88.450307 28.468347 
+L 88.586455 28.60257 
+L 88.940429 29.256819 
+L 89.318805 29.784639 
+L 88.85915 30.626034 
+L 88.483564 31.484951 
+L 88.581981 31.727101 
+L 88.447892 32.296085 
+L 88.426582 32.477907 
+L 88.638148 32.848142 
+L 88.595897 33.417856 
+L 88.691992 34.602475 
+L 88.112302 35.167849 
+L 87.873636 35.170766 
+L 87.711069 35.315378 
+L 87.257952 36.300878 
+L 86.721891 36.537805 
+L 86.301508 36.273113 
+L 85.770752 36.373692 
+L 85.184948 36.307077 
+L 85.3966 36.056956 
+L 85.765486 35.179452 
+L 86.322706 34.892075 
+L 86.53939 35.730542 
+L 86.861717 34.995244 
+L 87.16234 35.263607 
+L 87.392398 35.318457 
+L 87.528778 35.180241 
+L 87.652815 33.89837 
+L 87.513911 33.404048 
+L 87.063413 32.764057 
+L 87.121353 32.728044 
+L 87.381134 32.743912 
+L 87.367748 32.010256 
+L 87.857514 31.590067 
+L 87.929561 31.240875 
+L 87.828152 30.454586 
+L 87.522438 30.47555 
+L 87.540059 30.93204 
+L 87.434244 31.085 
+L 86.864621 31.630654 
+L 86.655916 32.092213 
+L 86.358751 32.404458 
+L 85.480873 33.137962 
+L 85.065501 33.928318 
+L 85.022876 34.33524 
+L 85.797373 34.211181 
+L 85.768753 34.288465 
+L 85.201626 34.636513 
+L 84.657696 34.659157 
+L 84.698206 34.041333 
+L 85.129754 33.187458 
+L 86.339275 31.387953 
+L 86.419888 31.461138 
+L 86.431971 31.825856 
+L 86.551821 31.804555 
+L 87.191973 30.73697 
+L 87.081463 30.353179 
+L 86.643271 29.258226 
+L 86.602909 28.792522 
+L 85.932488 29.239419 
+L 85.346729 29.193445 
+L 84.848635 28.660481 
+L 84.659069 28.629391 
+L 83.979673 28.879295 
+L 80.530491 28.420808 
+L 79.914458 28.163847 
+L 79.536672 27.831492 
+L 78.268808 27.34828 
+L 77.261593 26.750888 
+L 76.872468 26.69594 
+L 76.994387 27.414182 
+L 76.842468 28.422222 
+L 76.983162 29.768614 
+L 77.175574 30.304372 
+L 77.961788 31.238758 
+L 78.355846 32.201115 
+L 78.628029 34.129444 
+L 79.14484 35.627417 
+L 79.387353 37.552949 
+L 79.55068 36.949779 
+L 79.909328 37.002505 
+L 80.189619 37.352499 
+L 80.927275 37.534643 
+L 79.502615 38.251563 
+L 79.685626 39.148132 
+L 80.270629 39.438318 
+L 80.616665 39.81613 
+L 80.265547 41.524376 
+L 79.919105 40.843033 
+L 79.793633 40.206903 
+L 79.564423 42.660438 
+L 80.162887 42.517512 
+L 80.491611 42.776072 
+L 81.587614 42.563721 
+L 81.780647 42.811478 
+L 82.755924 42.81012 
+L 83.062437 43.195727 
+L 83.611361 43.586818 
+L 84.01943 43.725709 
+L 83.486053 43.78696 
+L 83.063052 43.694467 
+L 82.736177 43.275551 
+L 82.448054 43.168676 
+L 81.640369 43.450859 
+L 80.38783 43.419867 
+L 80.128351 43.085429 
+L 79.988284 43.127047 
+L 80.191523 43.728538 
+L 80.046897 45.973293 
+L 80.153817 47.986818 
+L 79.95072 48.743351 
+L 80.010407 49.313798 
+L 79.269664 54.001822 
+L 79.317592 54.982212 
+L 79.173815 55.946883 
+L 79.248478 56.664188 
+L 78.945813 57.348298 
+L 78.706517 59.443811 
+L 78.518446 62.189703 
+L 78.312867 62.487146 
+L 77.681754 64.295798 
+L 77.99073 64.104166 
+L 78.187118 64.208998 
+L 77.73984 64.617839 
+L 77.491192 64.603425 
+L 77.340959 64.799334 
+L 76.128802 68.75695 
+L 76.81105 70.514146 
+L 76.715838 72.623787 
+L 76.976067 74.004874 
+L 77.750075 75.075752 
+L 77.743141 75.801919 
+L 77.515656 76.555822 
+L 77.959444 77.091183 
+L 78.194467 77.833983 
+L 78.418515 79.637202 
+L 77.957654 81.3496 
+L 77.953615 82.757122 
+L 77.394707 84.212472 
+L 77.579253 84.24335 
+L 77.468517 84.433766 
+L 77.390101 84.806489 
+L 77.216179 84.744869 
+L 77.20595 84.469431 
+L 77.027513 84.688625 
+L 76.466291 86.329187 
+L 76.681727 88.145743 
+L 77.892903 89.374083 
+L 79.14347 91.177479 
+L 79.426161 91.83013 
+L 79.682798 93.022353 
+L 79.69551 93.807135 
+L 79.417069 94.907559 
+L 79.95816 96.867764 
+L 80.027577 98.409433 
+L 81.619453 100.1982 
+L 82.397361 101.271464 
+L 83.385397 101.945299 
+L 83.811139 103.04275 
+L 84.162652 103.260398 
+L 84.619363 103.876544 
+L 84.797391 104.432859 
+L 84.209431 103.637172 
+L 84.248874 104.622561 
+L 84.051983 105.438174 
+L 84.459656 104.940103 
+L 84.808715 105.167941 
+L 85.944489 106.119867 
+L 86.519581 106.341205 
+L 86.891539 106.705916 
+L 87.218783 106.620931 
+L 87.06114 105.747413 
+L 87.140859 104.575291 
+L 87.68413 104.309588 
+L 88.01904 104.380633 
+L 88.78346 104.86637 
+L 89.108757 104.922263 
+L 89.842005 104.489582 
+L 90.07089 104.516932 
+L 90.421198 104.770655 
+L 90.739705 104.86168 
+L 92.262955 104.800011 
+L 92.862164 105.01286 
+L 91.717599 105.17502 
+L 88.729139 105.107133 
+L 88.145818 105.35319 
+L 87.716533 105.701748 
+L 88.239185 106.993354 
+L 88.677623 107.43787 
+L 89.574152 109.361949 
+L 89.000577 109.180805 
+L 88.627689 108.70732 
+L 88.215106 108.492467 
+L 87.7866 108.004556 
+L 87.710957 107.00158 
+L 87.342917 106.925941 
+L 86.929332 107.117666 
+L 86.998807 108.851006 
+L 87.531023 110.137319 
+L 87.599312 111.389046 
+L 88.980128 113.03776 
+L 90.696437 113.442422 
+L 91.137768 114.106778 
+L 91.239931 115.005406 
+L 90.962704 115.569024 
+L 90.450978 116.209021 
+L 90.49713 117.262222 
+L 90.693315 118.032291 
+L 91.991956 119.373771 
+L 93.212403 121.086943 
+L 93.40429 121.566558 
+L 93.957477 122.107151 
+L 94.327982 122.981731 
+L 95.228866 123.502055 
+L 95.942767 124.453285 
+L 96.706614 124.869716 
+L 96.952243 125.318632 
+L 96.803914 126.002302 
+L 96.977035 126.493957 
+L 97.912157 126.880077 
+L 98.211737 127.143771 
+L 98.372723 127.489172 
+L 98.197171 128.450409 
+L 98.442724 129.48439 
+L 98.367325 129.957313 
+L 98.440073 130.563444 
+L 98.333114 131.235507 
+L 98.865849 131.503115 
+L 99.362526 132.043546 
+L 99.893626 132.128998 
+L 101.312482 131.984384 
+L 102.042538 132.028354 
+L 103.298775 132.441174 
+L 104.177886 132.518644 
+L 104.846248 132.367551 
+L 106.062888 132.942111 
+L 106.991104 133.533776 
+L 107.206307 134.232815 
+L 107.793618 134.611896 
+L 109.769429 135.221074 
+L 111.233836 135.099113 
+L 111.820173 135.214136 
+L 112.568823 136.390816 
+L 112.484721 137.256439 
+L 113.225743 137.470887 
+L 113.402697 137.115648 
+L 114.051156 137.153099 
+L 114.571831 137.349924 
+L 115.409027 138.093283 
+L 116.464622 138.665669 
+L 118.56704 140.4142 
+L 119.569152 141.846282 
+L 120.040487 143.536037 
+L 119.966032 144.045969 
+L 120.183902 145.10956 
+L 120.557787 144.912648 
+L 120.865948 145.190843 
+L 120.961111 146.060414 
+L 121.633135 147.752029 
+L 122.444974 148.517106 
+L 122.934139 150.011181 
+L 124.447314 151.039523 
+L 124.460098 151.740952 
+L 124.284183 151.883209 
+L 123.834667 151.949228 
+L 124.193088 152.202349 
+L 124.280081 153.206718 
+L 124.64308 153.684755 
+L 125.670146 154.673096 
+L 126.538528 155.820118 
+L 126.720681 156.379249 
+L 126.865453 157.554154 
+L 128.452704 158.720806 
+L 128.665466 159.452895 
+L 128.764408 160.517195 
+L 129.036129 161.626001 
+L 129.958252 161.984583 
+L 130.259426 162.390604 
+L 130.517787 164.029606 
+L 130.443769 164.968467 
+L 130.845605 165.129026 
+L 131.410454 166.446898 
+L 132.157088 166.976995 
+L 133.895942 167.98407 
+L 134.897953 168.708205 
+L 136.059586 168.953773 
+L 136.445995 169.174987 
+L 136.883691 169.670762 
+L 138.37394 170.979009 
+L 140.880543 173.519999 
+L 140.880543 173.519999 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+    <path d="M 148.672589 173.519998 
+L 148.20363 172.439628 
+L 147.838302 172.319475 
+L 147.431106 172.397289 
+L 147.321654 172.210858 
+L 147.343186 171.952501 
+L 146.951063 171.429819 
+L 146.180376 171.645027 
+L 145.870485 170.940985 
+L 145.78214 170.353056 
+L 144.249083 168.475978 
+L 143.725605 167.974643 
+L 142.100369 166.818643 
+L 141.264049 165.940866 
+L 139.94344 165.316373 
+L 139.708076 164.833743 
+L 138.680513 163.959622 
+L 138.094653 162.990261 
+L 137.92543 162.384732 
+L 137.903465 160.357712 
+L 137.507963 159.523011 
+L 137.321861 158.449094 
+L 136.853775 157.020733 
+L 136.252554 156.143659 
+L 135.975244 155.589562 
+L 136.012302 152.705299 
+L 136.33571 151.857822 
+L 135.943047 150.741388 
+L 135.560439 150.374407 
+L 135.288753 150.014695 
+L 136.571291 150.636961 
+L 136.866853 150.835437 
+L 137.446246 150.908502 
+L 137.847679 151.096278 
+L 139.774002 152.306335 
+L 140.539179 152.603494 
+L 140.979111 152.546828 
+L 141.475936 152.396015 
+L 141.601883 151.875101 
+L 141.77365 151.584563 
+L 143.02708 152.025041 
+L 143.429881 152.252459 
+L 143.893192 152.635655 
+L 144.023533 153.545542 
+L 144.975555 153.861505 
+L 146.609768 154.006304 
+L 146.914293 154.130473 
+L 147.594751 154.288939 
+L 147.850416 154.477601 
+L 147.93086 155.168411 
+L 147.753054 155.38186 
+L 147.515452 155.278735 
+L 147.463983 155.504195 
+L 147.564784 155.653422 
+L 147.734715 156.312602 
+L 147.669098 157.413603 
+L 148.097329 158.452041 
+L 148.87185 159.449663 
+L 149.827602 160.950777 
+L 150.363058 162.221499 
+L 150.585577 163.261692 
+L 150.897845 163.751818 
+L 151.215542 164.076252 
+L 151.8355 165.157079 
+L 152.991381 166.433046 
+L 153.209912 166.989434 
+L 153.20547 167.295217 
+L 153.349693 167.826103 
+L 153.871923 167.963766 
+L 154.420094 168.314903 
+L 154.724787 169.431139 
+L 154.98846 170.154652 
+L 155.841475 171.001197 
+L 156.578129 171.478051 
+L 156.741932 171.652996 
+L 156.848419 171.98576 
+L 157.412019 172.718325 
+L 158.033505 173.29211 
+L 158.210362 173.52 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #000000"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 7.2 138.299667 
+L 7.379815 136.974076 
+L 7.618729 135.2193 
+L 7.858665 133.464386 
+L 8.099622 131.709342 
+L 8.3416 129.954174 
+L 8.584597 128.198891 
+L 8.828611 126.443499 
+L 9.073642 124.688005 
+L 9.319689 122.932417 
+L 9.566751 121.176742 
+L 9.814825 119.420987 
+L 10.063912 117.66516 
+L 10.31401 115.909268 
+L 10.565118 114.153318 
+L 10.817235 112.397317 
+L 11.07036 110.641273 
+L 11.324492 108.885193 
+L 11.57963 107.129084 
+L 11.835772 105.372954 
+L 12.092917 103.61681 
+L 12.351065 101.86066 
+L 12.610214 100.10451 
+L 12.870364 98.348368 
+L 13.131513 96.592242 
+L 13.39366 94.836138 
+L 13.656804 93.080065 
+L 13.920944 91.324029 
+L 14.186079 89.568038 
+L 14.452208 87.812099 
+L 14.71933 86.05622 
+L 14.987443 84.300408 
+L 15.256548 82.544671 
+L 15.526642 80.789016 
+L 15.797725 79.03345 
+L 16.069796 77.277981 
+L 16.342853 75.522616 
+L 16.616896 73.767363 
+L 16.891924 72.012229 
+L 17.167935 70.257221 
+L 17.444928 68.502348 
+L 17.722904 66.747616 
+L 18.00186 64.993033 
+L 18.281795 63.238607 
+L 18.562709 61.484344 
+L 18.8446 59.730253 
+L 19.127468 57.976341 
+L 19.411312 56.222616 
+L 19.69613 54.469084 
+L 19.981922 52.715755 
+L 20.268686 50.962634 
+L 20.556422 49.209729 
+L 20.845129 47.457049 
+L 21.134805 45.7046 
+L 21.42545 43.952391 
+L 21.717062 42.200428 
+L 22.009642 40.44872 
+L 22.303187 38.697274 
+L 22.597697 36.946097 
+L 22.893171 35.195197 
+L 23.189608 33.444582 
+L 23.487007 31.694259 
+L 23.785367 29.944235 
+L 24.084687 28.19452 
+L 24.384966 26.445119 
+L 24.686203 24.696041 
+L 24.988398 22.947293 
+L 25.291549 21.198883 
+L 25.595655 19.450819 
+L 25.900716 17.703108 
+L 26.20673 15.955757 
+L 26.513697 14.208776 
+L 26.821616 12.46217 
+L 27.130486 10.715948 
+L 27.440306 8.970118 
+L 27.751075 7.224686 
+L 27.755477 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 36.228899 173.52 
+L 36.317769 172.395386 
+L 36.457005 170.639993 
+L 36.596904 168.884262 
+L 36.737465 167.128199 
+L 36.878688 165.371813 
+L 37.02057 163.615109 
+L 37.163112 161.858094 
+L 37.306314 160.100777 
+L 37.450173 158.343164 
+L 37.59469 156.585261 
+L 37.739863 154.827077 
+L 37.885693 153.068618 
+L 38.032178 151.309891 
+L 38.179318 149.550904 
+L 38.327111 147.791663 
+L 38.475557 146.032175 
+L 38.624656 144.272449 
+L 38.774407 142.51249 
+L 38.924809 140.752306 
+L 39.075861 138.991905 
+L 39.227563 137.231293 
+L 39.379913 135.470477 
+L 39.532912 133.709464 
+L 39.686558 131.948263 
+L 39.840851 130.186879 
+L 39.99579 128.425321 
+L 40.151375 126.663595 
+L 40.307604 124.901708 
+L 40.464478 123.139668 
+L 40.621995 121.377482 
+L 40.780154 119.615157 
+L 40.938956 117.852701 
+L 41.098399 116.09012 
+L 41.258483 114.327421 
+L 41.419206 112.564613 
+L 41.580569 110.801702 
+L 41.742571 109.038696 
+L 41.905211 107.275601 
+L 42.068488 105.512425 
+L 42.232402 103.749176 
+L 42.396951 101.98586 
+L 42.562137 100.222485 
+L 42.727956 98.459058 
+L 42.89441 96.695586 
+L 43.061498 94.932077 
+L 43.229218 93.168538 
+L 43.397571 91.404977 
+L 43.566554 89.6414 
+L 43.736169 87.877815 
+L 43.906414 86.114229 
+L 44.077289 84.35065 
+L 44.248792 82.587085 
+L 44.420924 80.823541 
+L 44.593684 79.060026 
+L 44.76707 77.296547 
+L 44.941083 75.533112 
+L 45.115722 73.769727 
+L 45.290986 72.0064 
+L 45.466875 70.243139 
+L 45.643388 68.47995 
+L 45.820524 66.716842 
+L 45.998282 64.953822 
+L 46.176663 63.190897 
+L 46.355666 61.428074 
+L 46.535289 59.665361 
+L 46.715533 57.902765 
+L 46.896396 56.140295 
+L 47.077878 54.377956 
+L 47.259979 52.615758 
+L 47.442698 50.853706 
+L 47.626035 49.091809 
+L 47.809988 47.330073 
+L 47.994557 45.568508 
+L 48.179742 43.807119 
+L 48.365541 42.045915 
+L 48.551955 40.284902 
+L 48.738983 38.524089 
+L 48.926624 36.763483 
+L 49.114878 35.003091 
+L 49.303744 33.242922 
+L 49.493222 31.482981 
+L 49.68331 29.723277 
+L 49.874009 27.963818 
+L 50.065317 26.204611 
+L 50.257235 24.445663 
+L 50.449762 22.686982 
+L 50.642896 20.928576 
+L 50.836639 19.170451 
+L 51.030988 17.412617 
+L 51.225944 15.655079 
+L 51.421505 13.897846 
+L 51.617672 12.140926 
+L 51.814444 10.384325 
+L 52.01182 8.628052 
+L 52.172782 7.200002 
+L 52.172782 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 69.626566 173.519999 
+L 69.651705 172.762092 
+L 69.710211 171.003963 
+L 69.768994 169.245464 
+L 69.828054 167.486602 
+L 69.887391 165.727382 
+L 69.947005 163.967813 
+L 70.006895 162.207901 
+L 70.067061 160.447654 
+L 70.127503 158.687078 
+L 70.18822 156.92618 
+L 70.249212 155.164968 
+L 70.310479 153.403449 
+L 70.372021 151.641629 
+L 70.433837 149.879516 
+L 70.495927 148.117117 
+L 70.55829 146.354438 
+L 70.620926 144.591488 
+L 70.683836 142.828272 
+L 70.747019 141.064799 
+L 70.810473 139.301074 
+L 70.8742 137.537107 
+L 70.938199 135.772902 
+L 71.00247 134.008469 
+L 71.067012 132.243813 
+L 71.131825 130.478941 
+L 71.196908 128.713862 
+L 71.262262 126.948582 
+L 71.327886 125.183108 
+L 71.39378 123.417448 
+L 71.459944 121.651609 
+L 71.526377 119.885597 
+L 71.593079 118.11942 
+L 71.66005 116.353085 
+L 71.72729 114.5866 
+L 71.794797 112.819971 
+L 71.862573 111.053206 
+L 71.930616 109.286312 
+L 71.998927 107.519296 
+L 72.067505 105.752166 
+L 72.136349 103.984928 
+L 72.205461 102.21759 
+L 72.274838 100.450159 
+L 72.344482 98.682643 
+L 72.414392 96.915048 
+L 72.484567 95.147382 
+L 72.555007 93.379652 
+L 72.625712 91.611865 
+L 72.696682 89.844029 
+L 72.767917 88.076152 
+L 72.839416 86.308239 
+L 72.911178 84.540299 
+L 72.983205 82.772338 
+L 73.055495 81.004365 
+L 73.128048 79.236387 
+L 73.200864 77.46841 
+L 73.273943 75.700442 
+L 73.347284 73.93249 
+L 73.420887 72.164562 
+L 73.494752 70.396666 
+L 73.568879 68.628807 
+L 73.643267 66.860995 
+L 73.717917 65.093235 
+L 73.792827 63.325536 
+L 73.867998 61.557905 
+L 73.94343 59.790349 
+L 74.019121 58.022876 
+L 74.095073 56.255493 
+L 74.171284 54.488207 
+L 74.247755 52.721026 
+L 74.324484 50.953957 
+L 74.401473 49.187007 
+L 74.478721 47.420184 
+L 74.556227 45.653496 
+L 74.633991 43.88695 
+L 74.712013 42.120553 
+L 74.790293 40.354312 
+L 74.868831 38.588236 
+L 74.947626 36.822331 
+L 75.026678 35.056605 
+L 75.105986 33.291066 
+L 75.185552 31.52572 
+L 75.265373 29.760576 
+L 75.345451 27.99564 
+L 75.425785 26.230921 
+L 75.506374 24.466426 
+L 75.587219 22.702162 
+L 75.668319 20.938136 
+L 75.749674 19.174357 
+L 75.831283 17.410831 
+L 75.913148 15.647567 
+L 75.995266 13.884571 
+L 76.077639 12.121851 
+L 76.160265 10.359416 
+L 76.243145 8.597271 
+L 76.309054 7.200001 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 102.940456 173.519999 
+L 102.935573 173.143381 
+L 102.912712 171.384823 
+L 102.889742 169.625887 
+L 102.866663 167.866581 
+L 102.843477 166.106911 
+L 102.820182 164.346884 
+L 102.796779 162.586508 
+L 102.773268 160.825788 
+L 102.74965 159.064733 
+L 102.725924 157.30335 
+L 102.70209 155.541645 
+L 102.678149 153.779625 
+L 102.654101 152.017297 
+L 102.629945 150.25467 
+L 102.605682 148.491748 
+L 102.581313 146.728541 
+L 102.556836 144.965054 
+L 102.532253 143.201295 
+L 102.507563 141.437271 
+L 102.482766 139.672989 
+L 102.457864 137.908457 
+L 102.432855 136.14368 
+L 102.407739 134.378667 
+L 102.382518 132.613425 
+L 102.35719 130.84796 
+L 102.331757 129.082279 
+L 102.306218 127.316391 
+L 102.280574 125.550302 
+L 102.254824 123.784019 
+L 102.228968 122.017549 
+L 102.203007 120.2509 
+L 102.176941 118.484078 
+L 102.15077 116.717092 
+L 102.124494 114.949947 
+L 102.098113 113.182652 
+L 102.071627 111.415213 
+L 102.045037 109.647638 
+L 102.018342 107.879933 
+L 101.991543 106.112107 
+L 101.964639 104.344166 
+L 101.937631 102.576118 
+L 101.910519 100.807969 
+L 101.883303 99.039727 
+L 101.855983 97.271399 
+L 101.828559 95.502993 
+L 101.801031 93.734516 
+L 101.7734 91.965974 
+L 101.745665 90.197376 
+L 101.717827 88.428729 
+L 101.689886 86.660039 
+L 101.661841 84.891314 
+L 101.633693 83.122562 
+L 101.605442 81.353789 
+L 101.577089 79.585003 
+L 101.548632 77.816212 
+L 101.520073 76.047422 
+L 101.491411 74.278641 
+L 101.462647 72.509876 
+L 101.43378 70.741134 
+L 101.404811 68.972424 
+L 101.37574 67.203752 
+L 101.346566 65.435125 
+L 101.317291 63.666552 
+L 101.287913 61.898038 
+L 101.258434 60.129593 
+L 101.228853 58.361222 
+L 101.199171 56.592934 
+L 101.169386 54.824735 
+L 101.139501 53.056634 
+L 101.109514 51.288637 
+L 101.079426 49.520752 
+L 101.049236 47.752986 
+L 101.018946 45.985347 
+L 100.988555 44.217842 
+L 100.958062 42.450479 
+L 100.927469 40.683265 
+L 100.896775 38.916207 
+L 100.865981 37.149313 
+L 100.835086 35.38259 
+L 100.804091 33.616046 
+L 100.772995 31.849688 
+L 100.741799 30.083524 
+L 100.710503 28.31756 
+L 100.679107 26.551806 
+L 100.64761 24.786267 
+L 100.616014 23.020951 
+L 100.584319 21.255867 
+L 100.552523 19.491021 
+L 100.520628 17.726421 
+L 100.488633 15.962074 
+L 100.456539 14.197988 
+L 100.424345 12.43417 
+L 100.392052 10.670628 
+L 100.35966 8.90737 
+L 100.328195 7.200001 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 136.287143 173.52 
+L 136.184607 171.783836 
+L 136.080368 170.026811 
+L 135.975635 168.269434 
+L 135.870409 166.511711 
+L 135.76469 164.75365 
+L 135.658479 162.995257 
+L 135.551776 161.236539 
+L 135.444582 159.477505 
+L 135.336898 157.71816 
+L 135.228723 155.958511 
+L 135.120059 154.198567 
+L 135.010906 152.438333 
+L 134.901264 150.677817 
+L 134.791135 148.917026 
+L 134.680518 147.155968 
+L 134.569414 145.394649 
+L 134.457824 143.633076 
+L 134.345748 141.871256 
+L 134.233187 140.109197 
+L 134.120141 138.346906 
+L 134.006611 136.584389 
+L 133.892597 134.821655 
+L 133.778099 133.058709 
+L 133.66312 131.29556 
+L 133.547657 129.532215 
+L 133.431713 127.76868 
+L 133.315288 126.004962 
+L 133.198383 124.24107 
+L 133.080997 122.477009 
+L 132.963131 120.712788 
+L 132.844786 118.948414 
+L 132.725963 117.183893 
+L 132.606661 115.419233 
+L 132.486881 113.654441 
+L 132.366625 111.889524 
+L 132.245892 110.12449 
+L 132.124682 108.359346 
+L 132.002997 106.594098 
+L 131.880836 104.828755 
+L 131.758201 103.063324 
+L 131.635091 101.297811 
+L 131.511508 99.532224 
+L 131.387451 97.76657 
+L 131.262922 96.000857 
+L 131.13792 94.235092 
+L 131.012446 92.469282 
+L 130.886501 90.703435 
+L 130.760085 88.937557 
+L 130.633198 87.171656 
+L 130.505842 85.405739 
+L 130.378016 83.639814 
+L 130.24972 81.873888 
+L 130.120957 80.107968 
+L 129.991725 78.342062 
+L 129.862025 76.576177 
+L 129.731858 74.81032 
+L 129.601225 73.044499 
+L 129.470125 71.27872 
+L 129.338559 69.512992 
+L 129.206528 67.747322 
+L 129.074032 65.981717 
+L 128.941071 64.216184 
+L 128.807646 62.450732 
+L 128.673758 60.685366 
+L 128.539407 58.920095 
+L 128.404592 57.154926 
+L 128.269316 55.389867 
+L 128.133578 53.624924 
+L 127.997378 51.860106 
+L 127.860717 50.09542 
+L 127.723596 48.330872 
+L 127.586015 46.566471 
+L 127.447974 44.802224 
+L 127.309474 43.038139 
+L 127.170515 41.274223 
+L 127.031097 39.510482 
+L 126.891222 37.746926 
+L 126.750889 35.983561 
+L 126.610099 34.220395 
+L 126.468853 32.457435 
+L 126.32715 30.694688 
+L 126.184991 28.932163 
+L 126.042377 27.169867 
+L 125.899308 25.407807 
+L 125.755784 23.64599 
+L 125.611806 21.884425 
+L 125.467374 20.123118 
+L 125.322489 18.362077 
+L 125.177151 16.601311 
+L 125.03136 14.840825 
+L 124.885117 13.080628 
+L 124.738423 11.320728 
+L 124.591277 9.561132 
+L 124.44368 7.801846 
+L 124.393078 7.200001 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 169.782373 173.52 
+L 169.643362 172.189652 
+L 169.459454 170.436753 
+L 169.274668 168.683545 
+L 169.089005 166.930035 
+L 168.902465 165.17623 
+L 168.71505 163.422137 
+L 168.52676 161.667764 
+L 168.337598 159.913116 
+L 168.147563 158.158202 
+L 167.956656 156.403028 
+L 167.764879 154.647602 
+L 167.572233 152.891931 
+L 167.378718 151.136021 
+L 167.184336 149.37988 
+L 166.989088 147.623516 
+L 166.792974 145.866935 
+L 166.595995 144.110144 
+L 166.398153 142.35315 
+L 166.199448 140.595962 
+L 165.999882 138.838585 
+L 165.799454 137.081027 
+L 165.598167 135.323295 
+L 165.396021 133.565397 
+L 165.193018 131.80734 
+L 164.989157 130.04913 
+L 164.78444 128.290776 
+L 164.578868 126.532283 
+L 164.372442 124.773661 
+L 164.165163 123.014914 
+L 163.957031 121.256052 
+L 163.748048 119.497081 
+L 163.538214 117.738009 
+L 163.327531 115.978842 
+L 163.115999 114.219588 
+L 162.903619 112.460254 
+L 162.690393 110.700848 
+L 162.47632 108.941377 
+L 162.261402 107.181847 
+L 162.045641 105.422267 
+L 161.829035 103.662644 
+L 161.611588 101.902985 
+L 161.393299 100.143297 
+L 161.174169 98.383587 
+L 160.9542 96.623864 
+L 160.733391 94.864134 
+L 160.511745 93.104404 
+L 160.289262 91.344682 
+L 160.065942 89.584976 
+L 159.841787 87.825292 
+L 159.616797 86.065639 
+L 159.390974 84.306023 
+L 159.164318 82.546451 
+L 158.936829 80.786932 
+L 158.70851 79.027472 
+L 158.479361 77.268079 
+L 158.249382 75.508761 
+L 158.018574 73.749524 
+L 157.786939 71.990376 
+L 157.554477 70.231326 
+L 157.321189 68.472379 
+L 157.087075 66.713543 
+L 156.852137 64.954827 
+L 156.616376 63.196236 
+L 156.379792 61.43778 
+L 156.142386 59.679465 
+L 155.904158 57.921298 
+L 155.665111 56.163288 
+L 155.425244 54.405441 
+L 155.184558 52.647766 
+L 154.943055 50.890269 
+L 154.700734 49.132958 
+L 154.457597 47.375841 
+L 154.213645 45.618925 
+L 153.968878 43.862218 
+L 153.723297 42.105727 
+L 153.476903 40.349459 
+L 153.229697 38.593423 
+L 152.981679 36.837625 
+L 152.732851 35.082074 
+L 152.483212 33.326776 
+L 152.232765 31.57174 
+L 151.981509 29.816973 
+L 151.729446 28.062482 
+L 151.476575 26.308276 
+L 151.222899 24.554361 
+L 150.968417 22.800745 
+L 150.713131 21.047436 
+L 150.457041 19.294441 
+L 150.200148 17.541769 
+L 149.942452 15.789426 
+L 149.683955 14.03742 
+L 149.424658 12.285759 
+L 149.16456 10.53445 
+L 148.903663 8.783502 
+L 148.666981 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 197.83955 136.973729 
+L 197.656669 135.854669 
+L 197.369617 134.104286 
+L 197.081336 132.353814 
+L 196.791825 130.603259 
+L 196.501087 128.85263 
+L 196.209123 127.101932 
+L 195.915934 125.351175 
+L 195.621521 123.600364 
+L 195.325887 121.849508 
+L 195.029032 120.098613 
+L 194.730957 118.347687 
+L 194.431665 116.596737 
+L 194.131157 114.845771 
+L 193.829433 113.094796 
+L 193.526495 111.343819 
+L 193.222345 109.592847 
+L 192.916984 107.841889 
+L 192.610414 106.090951 
+L 192.302635 104.34004 
+L 191.993649 102.589165 
+L 191.683457 100.838332 
+L 191.372061 99.087549 
+L 191.059462 97.336823 
+L 190.745661 95.586162 
+L 190.430659 93.835573 
+L 190.114459 92.085064 
+L 189.797061 90.334641 
+L 189.478466 88.584313 
+L 189.158676 86.834087 
+L 188.837693 85.08397 
+L 188.515517 83.33397 
+L 188.192149 81.584094 
+L 187.867592 79.83435 
+L 187.541846 78.084745 
+L 187.214912 76.335286 
+L 186.886792 74.585982 
+L 186.557488 72.836839 
+L 186.226999 71.087866 
+L 185.895329 69.339069 
+L 185.562477 67.590456 
+L 185.228446 65.842036 
+L 184.893236 64.093814 
+L 184.556848 62.345799 
+L 184.219285 60.597998 
+L 183.880547 58.85042 
+L 183.540635 57.10307 
+L 183.19955 55.355958 
+L 182.857295 53.60909 
+L 182.51387 51.862475 
+L 182.169276 50.116119 
+L 181.823515 48.37003 
+L 181.476587 46.624217 
+L 181.128494 44.878686 
+L 180.779238 43.133445 
+L 180.428819 41.388502 
+L 180.077238 39.643864 
+L 179.724498 37.89954 
+L 179.370598 36.155536 
+L 179.01554 34.41186 
+L 178.659326 32.66852 
+L 178.301956 30.925524 
+L 177.943432 29.182879 
+L 177.583755 27.440593 
+L 177.222926 25.698674 
+L 176.860947 23.957129 
+L 176.497817 22.215966 
+L 176.13354 20.475193 
+L 175.768114 18.734817 
+L 175.401543 16.994846 
+L 175.033827 15.255288 
+L 174.664967 13.51615 
+L 174.294964 11.777441 
+L 173.92382 10.039167 
+L 173.551536 8.301338 
+L 173.314963 7.200001 
+L 173.314963 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="LineCollection_2">
+    <path d="M 7.200002 159.747839 
+L 8.23889 159.892683 
+L 10.803076 160.242432 
+L 13.369213 160.581427 
+L 15.937241 160.909666 
+L 18.507098 161.227149 
+L 21.078723 161.533877 
+L 23.652055 161.829849 
+L 26.227032 162.115064 
+L 28.803592 162.389523 
+L 31.381676 162.653225 
+L 33.961221 162.90617 
+L 36.542166 163.148357 
+L 39.124451 163.379788 
+L 41.708014 163.60046 
+L 44.292795 163.810375 
+L 46.878731 164.009532 
+L 49.465763 164.197931 
+L 52.053829 164.375572 
+L 54.642869 164.542454 
+L 57.232821 164.698578 
+L 59.823624 164.843943 
+L 62.415218 164.978549 
+L 65.007542 165.102397 
+L 67.600535 165.215485 
+L 70.194137 165.317815 
+L 72.788285 165.409385 
+L 75.382921 165.490196 
+L 77.977982 165.560248 
+L 80.573408 165.619541 
+L 83.169139 165.668074 
+L 85.765113 165.705848 
+L 88.36127 165.732862 
+L 90.95755 165.749117 
+L 93.55389 165.754613 
+L 96.150231 165.749349 
+L 98.746513 165.733325 
+L 101.342673 165.706543 
+L 103.938652 165.669 
+L 106.534388 165.620699 
+L 109.129822 165.561638 
+L 111.724892 165.491817 
+L 114.319537 165.411238 
+L 116.913697 165.319899 
+L 119.50731 165.217801 
+L 122.100317 165.104944 
+L 124.692656 164.981328 
+L 127.284267 164.846954 
+L 129.875088 164.70182 
+L 132.465059 164.545928 
+L 135.054118 164.379277 
+L 137.642206 164.201868 
+L 140.229261 164.013701 
+L 142.815222 163.814776 
+L 145.400028 163.605092 
+L 147.983618 163.384651 
+L 150.565931 163.153452 
+L 153.146905 162.911496 
+L 155.726481 162.658783 
+L 158.304597 162.395312 
+L 160.881191 162.121085 
+L 163.456202 161.836102 
+L 166.02957 161.540361 
+L 168.601233 161.233865 
+L 171.171128 160.916613 
+L 173.739196 160.588606 
+L 176.305375 160.249843 
+L 178.869603 159.900325 
+L 181.431819 159.540052 
+L 183.991961 159.169025 
+L 186.549968 158.787244 
+L 189.105777 158.394709 
+L 191.659328 157.991421 
+L 194.210558 157.57738 
+L 196.759406 157.152586 
+L 197.83955 156.969199 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 136.846173 
+L 8.60648 137.052282 
+L 11.082481 137.406601 
+L 13.560498 137.750353 
+L 16.04047 138.08354 
+L 18.522334 138.406159 
+L 21.00603 138.718211 
+L 23.491496 139.019695 
+L 25.97867 139.31061 
+L 28.467492 139.590955 
+L 30.9579 139.860731 
+L 33.449833 140.119936 
+L 35.943228 140.36857 
+L 38.438027 140.606632 
+L 40.934166 140.834122 
+L 43.431585 141.05104 
+L 45.930223 141.257384 
+L 48.430019 141.453155 
+L 50.930912 141.638353 
+L 53.43284 141.812976 
+L 55.935743 141.977024 
+L 58.439559 142.130498 
+L 60.944229 142.273396 
+L 63.44969 142.405719 
+L 65.955882 142.527466 
+L 68.462743 142.638637 
+L 70.970214 142.739232 
+L 73.478233 142.829251 
+L 75.986739 142.908693 
+L 78.495672 142.977558 
+L 81.004971 143.035846 
+L 83.514574 143.083558 
+L 86.024421 143.120692 
+L 88.534451 143.147249 
+L 91.044603 143.163229 
+L 93.554817 143.168631 
+L 96.065032 143.163456 
+L 98.575186 143.147704 
+L 101.085219 143.121375 
+L 103.595071 143.084468 
+L 106.10468 143.036985 
+L 108.613986 142.978924 
+L 111.122927 142.910287 
+L 113.631443 142.831072 
+L 116.139473 142.741282 
+L 118.646956 142.640914 
+L 121.153832 142.529971 
+L 123.660039 142.408451 
+L 126.165516 142.276356 
+L 128.670203 142.133685 
+L 131.174039 141.980439 
+L 133.676962 141.816618 
+L 136.178912 141.642223 
+L 138.679827 141.457253 
+L 141.179647 141.26171 
+L 143.678311 141.055593 
+L 146.175757 140.838903 
+L 148.671925 140.61164 
+L 151.166752 140.373806 
+L 153.660179 140.125399 
+L 156.152144 139.866422 
+L 158.642585 139.596874 
+L 161.131442 139.316756 
+L 163.618652 139.026068 
+L 166.104156 138.724812 
+L 168.58789 138.412988 
+L 171.069795 138.090595 
+L 173.549808 137.757637 
+L 176.027868 137.414111 
+L 178.503913 137.060021 
+L 180.977881 136.695365 
+L 183.449712 136.320146 
+L 185.919344 135.934364 
+L 188.386713 135.538019 
+L 190.85176 135.131113 
+L 193.314421 134.713646 
+L 195.774636 134.28562 
+L 197.839549 133.917869 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 113.863998 
+L 9.319085 114.190742 
+L 11.702043 114.548091 
+L 14.087074 114.895099 
+L 16.474116 115.231764 
+L 18.863109 115.558085 
+L 21.25399 115.874062 
+L 23.646699 116.179693 
+L 26.041175 116.474977 
+L 28.437355 116.759913 
+L 30.835179 117.0345 
+L 33.234586 117.298737 
+L 35.635515 117.552623 
+L 38.037903 117.796158 
+L 40.441692 118.029341 
+L 42.846818 118.25217 
+L 45.253222 118.464645 
+L 47.660842 118.666765 
+L 50.069618 118.858531 
+L 52.479488 119.03994 
+L 54.890392 119.210992 
+L 57.302268 119.371687 
+L 59.715057 119.522025 
+L 62.128696 119.662004 
+L 64.543126 119.791625 
+L 66.958285 119.910886 
+L 69.374112 120.019788 
+L 71.790547 120.11833 
+L 74.20753 120.206512 
+L 76.624999 120.284333 
+L 79.042893 120.351794 
+L 81.461152 120.408893 
+L 83.879716 120.455632 
+L 86.298523 120.492009 
+L 88.717512 120.518024 
+L 91.136624 120.533678 
+L 93.555797 120.53897 
+L 95.974971 120.533901 
+L 98.394084 120.51847 
+L 100.813077 120.492678 
+L 103.231889 120.456524 
+L 105.650458 120.410009 
+L 108.068724 120.353132 
+L 110.486627 120.285895 
+L 112.904106 120.208296 
+L 115.321099 120.120338 
+L 117.737547 120.022019 
+L 120.153389 119.91334 
+L 122.568562 119.794301 
+L 124.983008 119.664904 
+L 127.396665 119.525147 
+L 129.809473 119.375033 
+L 132.221369 119.21456 
+L 134.632295 119.043731 
+L 137.042188 118.862545 
+L 139.450988 118.671002 
+L 141.858633 118.469105 
+L 144.265064 118.256852 
+L 146.670219 118.034246 
+L 149.074036 117.801287 
+L 151.476456 117.557975 
+L 153.877417 117.304311 
+L 156.276857 117.040297 
+L 158.674716 116.765932 
+L 161.070932 116.481219 
+L 163.465445 116.186158 
+L 165.858193 115.88075 
+L 168.249114 115.564996 
+L 170.638148 115.238897 
+L 173.025233 114.902455 
+L 175.410308 114.55567 
+L 177.793311 114.198544 
+L 180.17418 113.831077 
+L 182.552855 113.453272 
+L 184.929274 113.06513 
+L 187.303374 112.666651 
+L 189.675095 112.257838 
+L 192.044374 111.838691 
+L 194.41115 111.409213 
+L 196.775361 110.969405 
+L 197.839548 110.767903 
+L 197.839549 110.767903 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200002 90.809509 
+L 8.10569 90.958714 
+L 10.388659 91.327519 
+L 12.673811 91.686243 
+L 14.961085 92.034885 
+L 17.250419 92.373443 
+L 19.541754 92.701916 
+L 21.835028 93.020302 
+L 24.13018 93.328599 
+L 26.427149 93.626806 
+L 28.725874 93.914921 
+L 31.026294 94.192943 
+L 33.328349 94.460871 
+L 35.631977 94.718704 
+L 37.937118 94.966439 
+L 40.243712 95.204077 
+L 42.551697 95.431615 
+L 44.861012 95.649052 
+L 47.171598 95.856389 
+L 49.483393 96.053623 
+L 51.796337 96.240753 
+L 54.110369 96.41778 
+L 56.42543 96.584701 
+L 58.741457 96.741517 
+L 61.058391 96.888226 
+L 63.376172 97.024827 
+L 65.694738 97.151321 
+L 68.014029 97.267706 
+L 70.333986 97.373982 
+L 72.654547 97.470148 
+L 74.975651 97.556204 
+L 77.29724 97.63215 
+L 79.619252 97.697985 
+L 81.941626 97.753708 
+L 84.264303 97.79932 
+L 86.587223 97.834821 
+L 88.910323 97.86021 
+L 91.233546 97.875487 
+L 93.556829 97.880652 
+L 95.880113 97.875704 
+L 98.203337 97.860645 
+L 100.526441 97.835474 
+L 102.849365 97.800191 
+L 105.172048 97.754797 
+L 107.49443 97.699291 
+L 109.81645 97.633673 
+L 112.138048 97.557945 
+L 114.459164 97.472107 
+L 116.779737 97.376158 
+L 119.099707 97.2701 
+L 121.419014 97.153932 
+L 123.737596 97.027656 
+L 126.055394 96.891272 
+L 128.372347 96.744781 
+L 130.688395 96.588183 
+L 133.003476 96.421479 
+L 135.317532 96.24467 
+L 137.6305 96.057757 
+L 139.94232 95.860741 
+L 142.252933 95.653622 
+L 144.562276 95.436402 
+L 146.87029 95.209081 
+L 149.176914 94.971661 
+L 151.482087 94.724143 
+L 153.785749 94.466528 
+L 156.087838 94.198817 
+L 158.388294 93.921012 
+L 160.687056 93.633114 
+L 162.984064 93.335124 
+L 165.279255 93.027044 
+L 167.57257 92.708876 
+L 169.863947 92.38062 
+L 172.153326 92.042279 
+L 174.440645 91.693854 
+L 176.725843 91.335347 
+L 179.008859 90.966759 
+L 181.289632 90.588093 
+L 183.568101 90.199351 
+L 185.844204 89.800534 
+L 188.11788 89.391644 
+L 190.389068 88.972683 
+L 192.657705 88.543654 
+L 194.923732 88.104559 
+L 197.187086 87.6554 
+L 197.839549 87.523949 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 67.689268 
+L 7.468269 67.736515 
+L 9.646445 68.114406 
+L 11.826904 68.482515 
+L 14.009586 68.840839 
+L 16.194429 69.189375 
+L 18.381374 69.528122 
+L 20.570359 69.857076 
+L 22.761325 70.176237 
+L 24.954211 70.485602 
+L 27.148957 70.785169 
+L 29.345502 71.074935 
+L 31.543786 71.3549 
+L 33.743749 71.625062 
+L 35.94533 71.885418 
+L 38.14847 72.135966 
+L 40.353108 72.376707 
+L 42.559185 72.607637 
+L 44.766639 72.828756 
+L 46.975412 73.040061 
+L 49.185442 73.241552 
+L 51.39667 73.433228 
+L 53.609037 73.615086 
+L 55.822481 73.787127 
+L 58.036943 73.949349 
+L 60.252363 74.10175 
+L 62.468681 74.244331 
+L 64.685837 74.377089 
+L 66.903772 74.500025 
+L 69.122425 74.613137 
+L 71.341737 74.716425 
+L 73.561647 74.809888 
+L 75.782097 74.893526 
+L 78.003025 74.967337 
+L 80.224373 75.031322 
+L 82.44608 75.08548 
+L 84.668086 75.129811 
+L 86.890333 75.164314 
+L 89.112759 75.18899 
+L 91.335306 75.203838 
+L 93.557913 75.208857 
+L 95.78052 75.204049 
+L 98.003069 75.189413 
+L 100.225498 75.164949 
+L 102.447749 75.130657 
+L 104.669762 75.086538 
+L 106.891476 75.032591 
+L 109.112832 74.968818 
+L 111.33377 74.895218 
+L 113.55423 74.811792 
+L 115.774153 74.71854 
+L 117.993478 74.615464 
+L 120.212146 74.502563 
+L 122.430097 74.379839 
+L 124.64727 74.247292 
+L 126.863607 74.104923 
+L 129.079047 73.952733 
+L 131.293531 73.790723 
+L 133.506997 73.618893 
+L 135.719387 73.437246 
+L 137.930641 73.245782 
+L 140.140698 73.044502 
+L 142.349498 72.833407 
+L 144.556981 72.6125 
+L 146.763088 72.381781 
+L 148.967758 72.141252 
+L 151.170931 71.890914 
+L 153.372546 71.630769 
+L 155.572545 71.360819 
+L 157.770865 71.081065 
+L 159.967449 70.791509 
+L 162.162233 70.492154 
+L 164.35516 70.183 
+L 166.546168 69.86405 
+L 168.735197 69.535306 
+L 170.922186 69.19677 
+L 173.107075 68.848444 
+L 175.289804 68.490331 
+L 177.470311 68.122433 
+L 179.648537 67.744752 
+L 181.824421 67.357291 
+L 183.997902 66.960052 
+L 186.168919 66.553039 
+L 188.337412 66.136252 
+L 190.503319 65.709697 
+L 192.66658 65.273374 
+L 194.827135 64.827288 
+L 196.984921 64.37144 
+L 197.839549 64.188029 
+L 197.83955 64.188028 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.2 44.507563 
+L 7.432081 44.551302 
+L 9.500797 44.93568 
+L 11.571883 45.31061 
+L 13.645278 45.676088 
+L 15.720925 46.032113 
+L 17.798762 46.378681 
+L 19.87873 46.71579 
+L 21.960769 47.043436 
+L 24.044821 47.361616 
+L 26.130825 47.67033 
+L 28.218722 47.969573 
+L 30.308452 48.259343 
+L 32.399957 48.539639 
+L 34.493176 48.810457 
+L 36.58805 49.071796 
+L 38.684521 49.323654 
+L 40.782528 49.566028 
+L 42.882012 49.798916 
+L 44.982915 50.022318 
+L 47.085176 50.23623 
+L 49.188737 50.440651 
+L 51.293538 50.63558 
+L 53.399521 50.821016 
+L 55.506626 50.996955 
+L 57.614793 51.163398 
+L 59.723965 51.320343 
+L 61.834081 51.467788 
+L 63.945083 51.605733 
+L 66.056912 51.734176 
+L 68.169508 51.853117 
+L 70.282812 51.962554 
+L 72.396766 52.062486 
+L 74.511311 52.152913 
+L 76.626387 52.233834 
+L 78.741935 52.305249 
+L 80.857897 52.367156 
+L 82.974213 52.419556 
+L 85.090825 52.462448 
+L 87.207673 52.495831 
+L 89.324699 52.519706 
+L 91.441843 52.534072 
+L 93.559047 52.538928 
+L 95.676252 52.534276 
+L 97.793398 52.520115 
+L 99.910427 52.496445 
+L 102.027279 52.463267 
+L 104.143897 52.42058 
+L 106.26022 52.368384 
+L 108.37619 52.306682 
+L 110.491748 52.235472 
+L 112.606835 52.154755 
+L 114.721391 52.064533 
+L 116.835359 51.964805 
+L 118.948678 51.855572 
+L 121.06129 51.736837 
+L 123.173135 51.608598 
+L 125.284156 51.470858 
+L 127.394292 51.323617 
+L 129.503484 51.166877 
+L 131.611674 51.000638 
+L 133.718802 50.824903 
+L 135.82481 50.639672 
+L 137.929637 50.444947 
+L 140.033225 50.24073 
+L 142.135515 50.027022 
+L 144.236448 49.803825 
+L 146.335963 49.571141 
+L 148.434003 49.328971 
+L 150.530507 49.077317 
+L 152.625416 48.816182 
+L 154.718672 48.545568 
+L 156.810214 48.265477 
+L 158.899983 47.97591 
+L 160.98792 47.676871 
+L 163.073966 47.368361 
+L 165.15806 47.050384 
+L 167.240143 46.722942 
+L 169.320157 46.386037 
+L 171.39804 46.039673 
+L 173.473734 45.683852 
+L 175.547179 45.318576 
+L 177.618315 44.94385 
+L 179.687082 44.559676 
+L 181.753421 44.166057 
+L 183.817272 43.762997 
+L 185.878574 43.350498 
+L 187.937269 42.928565 
+L 189.993296 42.4972 
+L 192.046595 42.056408 
+L 194.097106 41.606192 
+L 196.144768 41.146556 
+L 197.839549 40.758501 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 7.200001 21.265458 
+L 8.021643 21.431418 
+L 9.976375 21.819444 
+L 11.933549 22.198395 
+L 13.893106 22.568267 
+L 15.854987 22.929055 
+L 17.819134 23.280757 
+L 19.785489 23.623369 
+L 21.753993 23.956888 
+L 23.724588 24.28131 
+L 25.697214 24.596632 
+L 27.671815 24.902851 
+L 29.648331 25.199964 
+L 31.626704 25.487968 
+L 33.606876 25.76686 
+L 35.588788 26.036638 
+L 37.572383 26.297298 
+L 39.557602 26.548839 
+L 41.544387 26.791258 
+L 43.532679 27.024552 
+L 45.522421 27.248719 
+L 47.513555 27.463757 
+L 49.506022 27.669664 
+L 51.499764 27.866438 
+L 53.494723 28.054076 
+L 55.490842 28.232578 
+L 57.488062 28.401942 
+L 59.486324 28.562165 
+L 61.485572 28.713247 
+L 63.485747 28.855185 
+L 65.486791 28.987979 
+L 67.488647 29.111626 
+L 69.491256 29.226127 
+L 71.494559 29.33148 
+L 73.498501 29.427683 
+L 75.503022 29.514737 
+L 77.508064 29.59264 
+L 79.51357 29.66139 
+L 81.519482 29.720989 
+L 83.525741 29.771435 
+L 85.532291 29.812727 
+L 87.539073 29.844866 
+L 89.546029 29.86785 
+L 91.553101 29.88168 
+L 93.560232 29.886356 
+L 95.567363 29.881877 
+L 97.574437 29.868244 
+L 99.581396 29.845457 
+L 101.588183 29.813515 
+L 103.594738 29.77242 
+L 105.601004 29.722171 
+L 107.606924 29.66277 
+L 109.612439 29.594216 
+L 111.617492 29.51651 
+L 113.622025 29.429654 
+L 115.625979 29.333647 
+L 117.629298 29.228491 
+L 119.631922 29.114187 
+L 121.633794 28.990736 
+L 123.634856 28.85814 
+L 125.635051 28.716398 
+L 127.634319 28.565513 
+L 129.632604 28.405487 
+L 131.629847 28.23632 
+L 133.62599 28.058015 
+L 135.620975 27.870573 
+L 137.614744 27.673996 
+L 139.607239 27.468285 
+L 141.598401 27.253444 
+L 143.588174 27.029473 
+L 145.576498 26.796376 
+L 147.563316 26.554154 
+L 149.548569 26.302809 
+L 151.5322 26.042345 
+L 153.514149 25.772764 
+L 155.494359 25.494068 
+L 157.472771 25.20626 
+L 159.449328 24.909343 
+L 161.42397 24.60332 
+L 163.39664 24.288194 
+L 165.367279 23.963967 
+L 167.335828 23.630644 
+L 169.30223 23.288228 
+L 171.266426 22.936722 
+L 173.228356 22.576129 
+L 175.187964 22.206453 
+L 177.14519 21.827697 
+L 179.099975 21.439866 
+L 181.052261 21.042964 
+L 183.00199 20.636994 
+L 184.949102 20.221961 
+L 186.893539 19.797868 
+L 188.835241 19.36472 
+L 190.774151 18.922522 
+L 192.71021 18.471277 
+L 194.643357 18.010991 
+L 196.573535 17.541669 
+L 197.83955 17.228523 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+    <path d="M 86.19494 7.2 
+L 87.884368 7.227052 
+L 89.776639 7.249056 
+L 91.669024 7.262296 
+L 93.561466 7.266772 
+L 95.453909 7.262484 
+L 97.346295 7.249433 
+L 99.23857 7.227618 
+L 100.96873 7.2 
+" clip-path="url(#pe1799410a9)" style="fill: none; stroke: #b0b0b0; stroke-width: 0.8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 197.83955 7.2 
+L 197.83955 173.52 
+L 7.2 173.52 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pe1799410a9">
+   <path d="M 7.2 173.52 
+L 7.2 7.2 
+L 197.83955 7.2 
+L 197.83955 173.52 
+L 7.2 173.52 
+"/>
+  </clipPath>
+ </defs>
+</svg>
+<pre>&lt;pyresample.utils.cartopy.Projection object at 0x7f4cd71b4b50&gt;</pre></div></div>
+</div>
+</section>
+<section id="what-is-a-swathdefinition">
+<h3>What is a <code class="docutils literal notranslate"><span class="pre">SwathDefinition</span></code>?<a class="headerlink" href="#what-is-a-swathdefinition" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">swath_def</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pyresample.geometry.SwathDefinition&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Man page for <a class="reference external" href="https://pyresample.readthedocs.io/en/latest/geo_def.html#swathdefinition">SwathDefinition</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">swath_def</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;__class__&#39;, &#39;__contains__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;, &#39;__getattribute__&#39;, &#39;__getitem__&#39;, &#39;__getstate__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;, &#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;__weakref__&#39;, &#39;_compute_generic_parameters&#39;, &#39;_compute_omerc_parameters&#39;, &#39;_compute_uniform_shape&#39;, &#39;_corner_is_clockwise&#39;, &#39;_do_transform&#39;, &#39;_filter_bbox_nans&#39;, &#39;_get_bbox_elements&#39;, &#39;_get_bbox_slices&#39;, &#39;_reverse_boundaries&#39;, &#39;aggregate&#39;, &#39;append&#39;, &#39;boundary&#39;, &#39;cartesian_coords&#39;, &#39;compute_bb_proj_params&#39;, &#39;compute_optimal_bb_area&#39;, &#39;concatenate&#39;, &#39;copy&#39;, &#39;corners&#39;, &#39;crs&#39;, &#39;dtype&#39;, &#39;geocentric_resolution&#39;, &#39;get_area&#39;, &#39;get_area_extent_for_subset&#39;, &#39;get_area_slices&#39;, &#39;get_bbox_lonlats&#39;, &#39;get_boundary_lonlats&#39;, &#39;get_cartesian_coords&#39;, &#39;get_edge_bbox_in_projection_coordinates&#39;, &#39;get_edge_lonlats&#39;, &#39;get_lonlat&#39;, &#39;get_lonlats&#39;, &#39;get_lonlats_dask&#39;, &#39;hash&#39;, &#39;intersection&#39;, &#39;lats&#39;, &#39;lons&#39;, &#39;ndim&#39;, &#39;nprocs&#39;, &#39;overlap_rate&#39;, &#39;overlaps&#39;, &#39;shape&#39;, &#39;size&#39;, &#39;update_hash&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">help</span><span class="p">(</span><span class="n">swath_def</span><span class="o">.</span><span class="n">compute_optimal_bb_area</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on method compute_optimal_bb_area in module pyresample.geometry:
+
+compute_optimal_bb_area(proj_dict=None, resolution=None) method of pyresample.geometry.SwathDefinition instance
+    Compute the &quot;best&quot; bounding box area for this swath with `proj_dict`.
+    
+    By default, the projection is Oblique Mercator (`omerc` in proj.4), in
+    which case the right projection angle `alpha` is computed from the
+    swath centerline. For other projections, only the appropriate center of
+    projection and area extents are computed.
+    
+    The height and width are computed so that the resolution is
+    approximately the same across dimensions.
+
+None
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-an-areadefiniton">
+<h3>What is an <code class="docutils literal notranslate"><span class="pre">AreaDefiniton</span></code>?<a class="headerlink" href="#what-is-an-areadefiniton" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">area_def</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pyresample.geometry.AreaDefinition&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Man page for <a class="reference external" href="https://pyresample.readthedocs.io/en/latest/geo_def.html#areadefinition">AreaDefinition</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">area_def</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;__class__&#39;, &#39;__contains__&#39;, &#39;__delattr__&#39;, &#39;__dict__&#39;, &#39;__dir__&#39;, &#39;__doc__&#39;, &#39;__eq__&#39;, &#39;__format__&#39;, &#39;__ge__&#39;, &#39;__getattribute__&#39;, &#39;__getitem__&#39;, &#39;__getstate__&#39;, &#39;__gt__&#39;, &#39;__hash__&#39;, &#39;__init__&#39;, &#39;__init_subclass__&#39;, &#39;__le__&#39;, &#39;__lt__&#39;, &#39;__module__&#39;, &#39;__ne__&#39;, &#39;__new__&#39;, &#39;__reduce__&#39;, &#39;__reduce_ex__&#39;, &#39;__repr__&#39;, &#39;__setattr__&#39;, &#39;__sizeof__&#39;, &#39;__str__&#39;, &#39;__subclasshook__&#39;, &#39;__weakref__&#39;, &#39;_area_extent&#39;, &#39;_cartopy_proj_params&#39;, &#39;_corner_is_clockwise&#39;, &#39;_do_rotation&#39;, &#39;_filter_bbox_nans&#39;, &#39;_get_bbox_elements&#39;, &#39;_get_bbox_slices&#39;, &#39;_get_corner_and_scale&#39;, &#39;_get_geo_boundary_sides&#39;, &#39;_get_proj_vectors&#39;, &#39;_get_slice_starts_stops&#39;, &#39;_get_yx_data_slice&#39;, &#39;_proj_coords_dask&#39;, &#39;_projection_x_coords&#39;, &#39;_projection_y_coords&#39;, &#39;_reverse_boundaries&#39;, &#39;aggregate&#39;, &#39;area_extent&#39;, &#39;area_extent_ll&#39;, &#39;area_id&#39;, &#39;boundary&#39;, &#39;cartesian_coords&#39;, &#39;colrow2lonlat&#39;, &#39;copy&#39;, &#39;corners&#39;, &#39;create_areas_def&#39;, &#39;create_areas_def_legacy&#39;, &#39;crop_around&#39;, &#39;crop_offset&#39;, &#39;crs&#39;, &#39;crs_wkt&#39;, &#39;description&#39;, &#39;dtype&#39;, &#39;dump&#39;, &#39;from_area_of_interest&#39;, &#39;from_cf&#39;, &#39;from_circle&#39;, &#39;from_epsg&#39;, &#39;from_extent&#39;, &#39;from_ul_corner&#39;, &#39;geocentric_resolution&#39;, &#39;get_area&#39;, &#39;get_area_extent_for_subset&#39;, &#39;get_area_slices&#39;, &#39;get_array_coordinates_from_lonlat&#39;, &#39;get_array_coordinates_from_projection_coordinates&#39;, &#39;get_array_indices_from_lonlat&#39;, &#39;get_array_indices_from_projection_coordinates&#39;, &#39;get_bbox_lonlats&#39;, &#39;get_boundary_lonlats&#39;, &#39;get_cartesian_coords&#39;, &#39;get_edge_bbox_in_projection_coordinates&#39;, &#39;get_edge_lonlats&#39;, &#39;get_lonlat&#39;, &#39;get_lonlat_from_array_coordinates&#39;, &#39;get_lonlat_from_projection_coordinates&#39;, &#39;get_lonlats&#39;, &#39;get_lonlats_dask&#39;, &#39;get_proj_coords&#39;, &#39;get_proj_coords_dask&#39;, &#39;get_proj_vectors&#39;, &#39;get_proj_vectors_dask&#39;, &#39;get_projection_coordinates_from_array_coordinates&#39;, &#39;get_projection_coordinates_from_lonlat&#39;, &#39;get_xy_from_lonlat&#39;, &#39;get_xy_from_proj_coords&#39;, &#39;hash&#39;, &#39;height&#39;, &#39;intersection&#39;, &#39;is_geostationary&#39;, &#39;lats&#39;, &#39;lonlat2colrow&#39;, &#39;lons&#39;, &#39;name&#39;, &#39;ndim&#39;, &#39;nprocs&#39;, &#39;outer_boundary_corners&#39;, &#39;overlap_rate&#39;, &#39;overlaps&#39;, &#39;pixel_offset_x&#39;, &#39;pixel_offset_y&#39;, &#39;pixel_size_x&#39;, &#39;pixel_size_y&#39;, &#39;pixel_upper_left&#39;, &#39;proj4_string&#39;, &#39;proj_dict&#39;, &#39;proj_id&#39;, &#39;proj_str&#39;, &#39;projection_x_coords&#39;, &#39;projection_y_coords&#39;, &#39;resolution&#39;, &#39;rotation&#39;, &#39;shape&#39;, &#39;size&#39;, &#39;to_cartopy_crs&#39;, &#39;update_hash&#39;, &#39;upper_left_extent&#39;, &#39;width&#39;, &#39;x_size&#39;, &#39;y_size&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="get-the-number-of-rows-and-columns-in-the-regridded-image">
+<h3>Get the number of rows and columns in the regridded image<a class="headerlink" href="#get-the-number-of-rows-and-columns-in-the-regridded-image" title="Permalink to this heading">#</a></h3>
+<p>Below we dump imformation about the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> – in particular <code class="docutils literal notranslate"><span class="pre">area_def.width,</span> <span class="pre">area_def.height,</span> <span class="pre">area_def.pixel_size_x,</span> <span class="pre">area_def.pixel_size_y</span></code>  Note that pyresample has increase the image size from the original 2040 x 1354 to the new 2244 x 2534.  This produces resampled pixels that are “downscaled” to higher resolution in the row direction, so that the new pixels are approximately square (1105 meters wide by 1088 meters high(</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">dump area definition:</span><span class="se">\n</span><span class="si">{</span><span class="n">area_def</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">x and y pixel dimensions in meters:&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">area_def</span><span class="o">.</span><span class="n">pixel_size_x</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">area_def</span><span class="o">.</span><span class="n">pixel_size_y</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dump area definition:
+Area ID: laea_otf
+Description: On-the-fly laea area
+Projection: {&#39;datum&#39;: &#39;WGS84&#39;, &#39;lat_0&#39;: &#39;39.5991010636787&#39;, &#39;lon_0&#39;: &#39;-121.404871349766&#39;, &#39;no_defs&#39;: &#39;None&#39;, &#39;proj&#39;: &#39;laea&#39;, &#39;type&#39;: &#39;crs&#39;, &#39;units&#39;: &#39;m&#39;, &#39;x_0&#39;: &#39;0&#39;, &#39;y_0&#39;: &#39;0&#39;}
+Number of columns: 2534
+Number of rows: 2244
+Area extent: (-1269172.7064, -1177850.778, 1531815.6628, 1265820.4616)
+
+
+x and y pixel dimensions in meters:
+1105.3624187539494
+1088.9800533123125
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="resample-ch30-on-the-area-def-grid">
+<h2>resample ch30 on the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> grid<a class="headerlink" href="#resample-ch30-on-the-area-def-grid" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyresample.kd_tree</span></code> samples data that is defined on the <code class="docutils literal notranslate"><span class="pre">swath_def</span></code> grid onto the new grid defined by the <code class="docutils literal notranslate"><span class="pre">area_def</span></code>.  It uses a <a class="reference external" href="https://en.wikipedia.org/wiki/K-d_tree">k-dimensional tree</a> to organize the pixels so
+that a pixel’s nearest neighbors can be rapidily found, and data from neighbors can be used to fill in any
+holes that appear when mapping to the new grid.  It uses a 5 km “radius of influence” to determine which pixels
+to use for hole filling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fill_value</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9999.0</span>
+<span class="n">area_name</span> <span class="o">=</span> <span class="s2">&quot;modis swath 5min granule&quot;</span>
+<span class="n">image_30</span> <span class="o">=</span> <span class="n">kd_tree</span><span class="o">.</span><span class="n">resample_nearest</span><span class="p">(</span>
+    <span class="n">swath_def</span><span class="p">,</span>
+    <span class="n">ch30</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">area_def</span><span class="p">,</span>
+    <span class="n">radius_of_influence</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">nprocs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="what-is-image-30">
+<h3>What is <code class="docutils literal notranslate"><span class="pre">image_30</span></code><a class="headerlink" href="#what-is-image-30" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">image_30</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">image_30</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">image_30</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;numpy.ndarray&#39;&gt;
+(2244, 2534)
+float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="replace-missing-values-9999-with-floating-point-nan-for-mapping">
+<h3>replace missing values = -9999. with floating point nan for mapping<a class="headerlink" href="#replace-missing-values-9999-with-floating-point-nan-for-mapping" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_30</span><span class="p">[</span><span class="n">image_30</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">9000</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plot-the-image-using-cartopy">
+<h2>Plot the image using cartopy<a class="headerlink" href="#plot-the-image-using-cartopy" title="Permalink to this heading">#</a></h2>
+<section id="create-a-palette">
+<h3>Create a palette<a class="headerlink" href="#create-a-palette" title="Permalink to this heading">#</a></h3>
+<p>We want to spread the colors over a limited range of values between 0.1 and 7 <span class="math notranslate nohighlight">\(W/m^2\, \mu m^{-1}\,sr^{-1}\)</span> so we
+will set over and under colors and normalize the data to this range</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pal</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;plasma&quot;</span><span class="p">)</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;0.75&quot;</span><span class="p">)</span>  <span class="c1"># 75% grey for out-of-map cells</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># color cells &gt; vmax red</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># color cells &lt; vmin black</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1">#anything under this is colored black</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mf">7.0</span>  <span class="c1">#anything over this is colored red</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">Normalize</span>
+
+<span class="n">the_norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-the-palette-on-the-image-30-array">
+<h3>use the palette on the image_30 array<a class="headerlink" href="#use-the-palette-on-the-image-30-array" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crs</span> <span class="o">=</span> <span class="n">area_def</span><span class="o">.</span><span class="n">to_cartopy_crs</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">crs</span><span class="p">})</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">GSHHSFeature</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">crs</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">image_30</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+    <span class="n">extent</span><span class="o">=</span><span class="n">crs</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">,</span>
+    <span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #95 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Possible issue encountered when converting Shape #471 to GeoJSON: Shapefile format requires that polygons contain at least one exterior ring, but the Shape was entirely made up of interior holes (defined by counter-clockwise orientation in the shapefile format). The rings were still included but were encoded as GeoJSON exterior rings instead of holes.
+</pre></div>
+</div>
+<img alt="../../_images/aa21120b64c540f4595d9f8a8ebbb915bcdcd9f043469deb078ae958af0cdc74.png" src="../../_images/aa21120b64c540f4595d9f8a8ebbb915bcdcd9f043469deb078ae958af0cdc74.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="write-out-all-the-projection-information-as-a-json-file">
+<h2>write out all the projection information as a json file<a class="headerlink" href="#write-out-all-the-projection-information-as-a-json-file" title="Permalink to this heading">#</a></h2>
+<p>Make a new folder to hold the metadata and the npz file with the the resampled image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">do_write</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">if</span> <span class="n">do_write</span><span class="p">:</span>
+    <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">hdf_file</span> <span class="o">=</span> <span class="n">ch30_file_name</span>
+    <span class="n">geom_file</span> <span class="o">=</span> <span class="n">geom_file_name</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;extent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">bounds</span>
+    <span class="n">globe</span> <span class="o">=</span> <span class="n">projection</span><span class="o">.</span><span class="n">globe</span><span class="o">.</span><span class="n">to_proj4_params</span><span class="p">()</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;globe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">globe</span><span class="p">)</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;area_def&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj_params</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;field_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ch30&quot;</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;W/m^2/sr/micron&quot;</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;variable_description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;channel 30 radiance&quot;</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_def</span><span class="o">.</span><span class="n">x_size</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;y_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_def</span><span class="o">.</span><span class="n">y_size</span>
+    <span class="n">out_dir_name</span> <span class="o">=</span> <span class="s2">&quot;ch30_resample&quot;</span>
+    <span class="n">out_dict</span><span class="p">[</span><span class="s2">&quot;out_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_dir_name</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/ch30_resample&quot;</span>
+    <span class="n">out_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">image_name</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">out_dir_name</span><span class="si">}</span><span class="s2">.npz&quot;</span><span class="p">)</span>
+    <span class="n">json_name</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">out_dir_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span><span class="n">image_name</span><span class="p">,</span> <span class="n">ch30_resample</span><span class="o">=</span><span class="n">image_30</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">out_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/week5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="week5_topics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Week 5</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="wv_resample.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Resampling the water vapor</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-data">Read in the data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-files-in-the-sat-data-pha-folder">Find the files in the sat_data/pha folder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-1-km-latitudes-and-longitudes">Read the 1 km latitudes and longitudes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-channel-30-radiances">Read the channel 30 radiances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-metadata">Read the metadata</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-swathdefinition-and-areadefinition-using-a-map-projection-and-the-lats-and-lons">Create the SwathDefinition and AreaDefinition using a map projection and the lats and lons</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-lambert-azimuthal-projection-with-the-wgs84-datum">Make a Lambert Azimuthal projection with the WGS84 datum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-projection">What is the <code class="docutils literal notranslate"><span class="pre">projection</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-globe">What is the <code class="docutils literal notranslate"><span class="pre">globe</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-swathdefinition-and-make-the-area-def">Create the SwathDefinition and make the <code class="docutils literal notranslate"><span class="pre">area_def</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-swathdefinition">What is a <code class="docutils literal notranslate"><span class="pre">SwathDefinition</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-areadefiniton">What is an <code class="docutils literal notranslate"><span class="pre">AreaDefiniton</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-number-of-rows-and-columns-in-the-regridded-image">Get the number of rows and columns in the regridded image</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-ch30-on-the-area-def-grid">resample ch30 on the <code class="docutils literal notranslate"><span class="pre">area_def</span></code> grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-image-30">What is <code class="docutils literal notranslate"><span class="pre">image_30</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-missing-values-9999-with-floating-point-nan-for-mapping">replace missing values = -9999. with floating point nan for mapping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-image-using-cartopy">Plot the image using cartopy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-palette">Create a palette</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-the-palette-on-the-image-30-array">use the palette on the image_30 array</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-all-the-projection-information-as-a-json-file">write out all the projection information as a json file</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

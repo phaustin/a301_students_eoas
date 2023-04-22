@@ -1,0 +1,1120 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Assignment 4 – solutions &#8212; ATSC 301</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/assignments/assignment4_solution';</script>
+    <link rel="canonical" href="https://hub.eoastest.xyz/a301/notebooks/assignments/assignment4_solution.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Assignment 5 Handin" href="assign5_handin.html" />
+    <link rel="prev" title="Assignment 3b – Solution" href="assignment3b_solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">ATSC 301</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    ATSC 301: Term 2 2022
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 1</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week1/week1_topics.html">Week 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/a301_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/e582_syllabus.html">ATSC 301: syllabus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/integrity.html">UBC academic integrity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/texts.html">Texts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/satellite.html">Acquiring satellite data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week1/modis_level1b_read.html">Reading modis level1b data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 2</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week2/week2_topics.html">Week 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/beers_law.html">Beers and inverse squared laws</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/sensors.html">Solid angle and radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/flux_from_radiance.html">Finding the flux given the radiance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/planck_function.html">Integrating the Planck function with python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/debugging_intro.html">how to debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week2/derivs_and_ints.html">working with numpy arrays</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 3</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week3/week3_topics.html">Week 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/files_and_paths.html">Course folders on a301hub and your laptop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/modis_geom_read.html">Reading modis level1b data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/radiance_values.html">Sanity checking radiance vaules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/mapping.html">Geographic coordinate systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_maps.html">Introduction to Cartopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week3/cartopy_mapping_vancouver.html">Mapping Vancouver with cartopy</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 4</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week4/week4_topics.html">Week 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/using_libraries.html">Working with libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week4/schwartz.html">The Schwartzchild Equation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 5</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week5/week5_topics.html">Week 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/cartopy_resample_ch30.html">Use pyresample and cartopy to plot channel 30 radiances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/wv_resample.html">Resampling the water vapor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/longwave_resample.html">Resampling channel 31</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week5/hydrostat.html">Hydrostatic balance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 6</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week6/week6_topics.html">Week 6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas_intro.html">Introduction to Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/pandas-cheatsheet.html">Pandas Cheatsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/hydrostatic_balance.html">Scale heights for typical atmospheric soundings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/weighting_functions.html">Weighting functions for temperature retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week6/writing_geotiffs.html">Writing the 5km water vapor image to a geotiff file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 7</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week7/week7_topics.html">Week 7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/writing_geotiffs_with_rioxarray.html">Using xarray to work with geotiffs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week7/get_landsat_bands.html">Dowloading Landsat and Sentinel data from NASA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 8</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week8/week8_topics.html">Week 8</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/fetch_stac_metadata.html">Getting multiple scenes using stac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/zoom_landsat.html">Clipping and saving landsat scenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/windowed_read.html">Reading landsat data with a rasterio window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/test_landsat_read.html">simple test of <code class="docutils literal notranslate"><span class="pre">get_landsat_scene</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week8/pandas_week8_worksheet.html">Week8 worksheet – using pandas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 9</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week9/week9_topics.html">Week 9</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/xarray_datasets.html">xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/radar.html">Notes on the radar equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/marshall_palmer.html">Notes on the Marshall-Palmer distribution and the Z-RR relation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/readcloudsat.html">Reading cloudsat data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/test_landsat_dataset.html">Adding data to an image with xarray datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week9/cloudsat_ecmwf.html">Working with cloudsat data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 10</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week10/week10_topics.html">Week 10</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/temperature_perturb.html">Cloudsat: Plotting ECMWF temperature and wind speed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/write_geotiffs.html">Landsat: Writing the scenes for each season to netcdf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/rainrate.html">Cloudsat: liquid and ice precipitation and rain rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week10/false_color.html">Making color composite (“false color”) images</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 11</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week11/week11_topics.html">Week 11</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/cloudsat_flxhr.html">Cloudsat heating rate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_from_radiance_rev.html">Flux and radiance review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/flux_schwartzchild.html">The Schwartzchild equation for flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/diffuse_flux.html">Calculating the diffuse flux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/heating_rate.html">Finding the heating rate of the atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/false_examples.html">Landsat 8 false color examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week11/goes_true_color.html">GOES-16: True Color Images from GOES ABI</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Week 12</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../week12/week12_topics.html">Week 12</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/goes_michael.html">GIS image processing review</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../week12/final_guide.html">Study guide for final exam –</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Assignments</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="assign1_handin_solution.html">Assignment 1 solution– brightness temperatures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign2a_solution.html">Assignment 2a - solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign2b_solution.html">Assignment 2b solutions: Drawing your satellite swath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3a_solution.html">Assignment 3a – Solution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment3b_solution.html">Assignment 3b – Solution</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assignment 4 – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assign5_handin.html">Assignment 5 Handin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assignment5_solution.html">Assignment 5 Landsat + Marshall Palmer: Solution</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="assign6_handin.html">Assignment 6: Hurricane case study, Due Thursday, April 13 11:59pm</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Midterm</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../midterm/a301_mid_2022t2_solutions.html">A301 midterm – solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI.html">Sample mid-term questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII.html">Midterm review questions II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewI_solutions.html">Solutions: sample questions I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midterm/mid_term_reviewII_solutions.html">Solutions: sample questions II</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments.html">Assignments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">List of notebooks</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://jupyter.eoastest.xyz/hub/user-redirect/git-pull?repo=https%3A//github.com/phaustin/a301_2020&urlpath=tree/a301_2020/./notebooks/assignments/assignment4_solution.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assignment4_solution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../../_sources/notebooks/assignments/assignment4_solution.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Assignment 4 – solutions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-midterm-question-2-revisit">Q1) midterm question 2 revisit</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-solution">Q1a solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-blackbody-profiles">step 1: Blackbody profiles</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#good-idea-to-plot-vs-height-to-check">Good idea to plot vs. height to check</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-from-the-solution-get-the-functions-for-optical-depth-and-transmissivity-and-calculate-the-transmissivity-profile">step 2:  From the solution, get the functions for optical depth and transmissivity and calculate the transmissivity profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-answer-plot-plot-the-blackbody-radiance-vs-transmissivity-for-the-three-slopes">Q1a answer plot: plot the blackbody radiance vs transmissivity for the three slopes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-answer-for-slope-slope-65-13-slope-10-20-units-w-m-2-sr-1-mu-m-1">Q1a answer for slope: slope_65=-13, slope_10=-20: units: <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-numerical-solution">Q1b numerical solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-analytic-solution">Q1b – analytic solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-solution-equations">Q1b solution – equations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-calculate-t-3-5km-and-b-270-k">Q1b calculate <span class="math notranslate nohighlight">\(t_{3.5km}\)</span> and <span class="math notranslate nohighlight">\(B(270 K)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-answer-l6km-for-3-slopes">Q1b: answer: L6km for 3 slopes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-radiance-change">Fractional radiance change</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-ndvi">Question 2 ndvi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-function">the function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-plot">the plot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-geotiff">write out the geotiff</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="assignment-4-solutions">
+<span id="assign4-solution"></span><h1>Assignment 4 – solutions<a class="headerlink" href="#assignment-4-solutions" title="Permalink to this heading">#</a></h1>
+<section id="q1-midterm-question-2-revisit">
+<h2>Q1) midterm question 2 revisit<a class="headerlink" href="#q1-midterm-question-2-revisit" title="Permalink to this heading">#</a></h2>
+<p>(6 points, for undergrads this will replace your midterm Q2 mark)</p>
+<p>Upload a notebook and a pdf scan of an analytic solution that solves Q2 in the <span class="xref std std-ref">mid_2022t2_solutions</span> with this
+change:</p>
+<p>a) Instead of a constant temperature layer between 1 km and 6 km, use a temperature that
+varies  linearly with height:</p>
+<div class="math notranslate nohighlight">
+\[
+T(z) = 270 + (z -  3.5) \Gamma_z
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(z\)</span> is the height in km and <span class="math notranslate nohighlight">\(\Gamma\)</span> is a (negative) constant (K/km).</p>
+<p>In a python notebook, make a plot of the blackbody monchromatic radiance <span class="math notranslate nohighlight">\(B_\lambda\)</span> at <span class="math notranslate nohighlight">\(\lambda = 15\ \mu m\)</span> versus transmittance <span class="math notranslate nohighlight">\(t\)</span>
+between z=1 and 6 km for three values of <span class="math notranslate nohighlight">\(\Gamma_z\)</span>: <span class="math notranslate nohighlight">\(\Gamma_z = 0\)</span> (midterm case),  <span class="math notranslate nohighlight">\(\Gamma_z = -10\ K/km\)</span>
+(dry atmosphere),<span class="math notranslate nohighlight">\(\Gamma_z = -6.5\ K/km\)</span> (cloudy tropical atmosphere).</p>
+<section id="q1a-solution">
+<h3>Q1a solution<a class="headerlink" href="#q1a-solution" title="Permalink to this heading">#</a></h3>
+<p>Approach – use the <a class="reference external" href="https://phaustin.github.io/a301_web/full_listing.html#rad_lib.radiation.calc_radiance">calc_radiance</a> to
+get the brightness temperature at 15 <span class="math notranslate nohighlight">\(\mu m\)</span> for a vector of temperatures.</p>
+<section id="step-1-blackbody-profiles">
+<h4>step 1: Blackbody profiles<a class="headerlink" href="#step-1-blackbody-profiles" title="Permalink to this heading">#</a></h4>
+<p>from the assignment I get the temperature profile and calculate the blackbody radiance for <span class="math notranslate nohighlight">\(\Gamma_z\)</span> = -6.5 K/km, -10 K/km and 0 K/km</p>
+<p>I’ll call my 3 blackbody profiles for dT/dz = 0, -6.5 and =10 K/km: B_0, B_65, and B_10</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">rad_lib.radiation</span> <span class="kn">import</span> <span class="n">calc_radiance</span>
+
+<span class="c1">#</span>
+<span class="c1"># simple function for the temperature profile</span>
+<span class="c1">#</span>
+<span class="k">def</span> <span class="nf">temperature_profile</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">gamma_z</span><span class="p">):</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="mi">270</span> <span class="o">+</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="mi">3500</span><span class="p">)</span><span class="o">*</span><span class="n">gamma_z</span>
+    <span class="k">return</span> <span class="n">temp</span>
+
+<span class="c1">#</span>
+<span class="c1"># I&#39;ll make two different z ranges from 1 to 6 km, one in meters</span>
+<span class="c1"># and one in km</span>
+<span class="c1">#</span>
+<span class="n">z_layer_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mf">0.0001</span><span class="p">)</span><span class="o">*</span><span class="mf">1.e3</span>
+<span class="c1">#</span>
+<span class="c1"># calculate 3 different temperature profiles for the 3 slopes</span>
+<span class="c1">#</span>
+<span class="n">gamma_z</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.5e-3</span>
+<span class="n">temp_z_layer_65</span> <span class="o">=</span> <span class="n">temperature_profile</span><span class="p">(</span><span class="n">z_layer_m</span><span class="p">,</span><span class="n">gamma_z</span><span class="p">)</span>
+<span class="n">gamma_z</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10e-3</span>
+<span class="n">temp_z_layer_10</span> <span class="o">=</span> <span class="n">temperature_profile</span><span class="p">(</span><span class="n">z_layer_m</span><span class="p">,</span><span class="n">gamma_z</span><span class="p">)</span>
+<span class="n">gamma_z</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">temp_z_layer_0</span> <span class="o">=</span> <span class="n">temperature_profile</span><span class="p">(</span><span class="n">z_layer_m</span><span class="p">,</span><span class="n">gamma_z</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># calculate 3 different blackbody radiance profiles</span>
+<span class="c1">#</span>
+<span class="n">wavel</span><span class="o">=</span><span class="mf">15.e-6</span>
+<span class="n">B_65</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">wavel</span><span class="p">,</span><span class="n">temp_z_layer_65</span><span class="p">)</span>
+<span class="n">B_10</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">wavel</span><span class="p">,</span><span class="n">temp_z_layer_10</span><span class="p">)</span>
+<span class="n">B_0</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">wavel</span><span class="p">,</span><span class="n">temp_z_layer_0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in rad_lib init
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="good-idea-to-plot-vs-height-to-check">
+<h4>Good idea to plot vs. height to check<a class="headerlink" href="#good-idea-to-plot-vs-height-to-check" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m2km</span> <span class="o">=</span> <span class="mf">1.e-3</span>  <span class="c1">#meters to km</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp_z_layer_65</span><span class="p">,</span><span class="n">z_layer_m</span><span class="o">*</span><span class="n">m2km</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;-6.5 K/km&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp_z_layer_10</span><span class="p">,</span><span class="n">z_layer_m</span><span class="o">*</span><span class="n">m2km</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;-10 K/km&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp_z_layer_0</span><span class="p">,</span><span class="n">z_layer_m</span><span class="o">*</span><span class="n">m2km</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Q1a solution:  Temp (K) vs. z (km))&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ac19c0386c3749324f17f053a1cdc2ddc53fdbf6970ab84675184323c378bfd2.png" src="../../_images/ac19c0386c3749324f17f053a1cdc2ddc53fdbf6970ab84675184323c378bfd2.png" />
+</div>
+</div>
+</section>
+<section id="step-2-from-the-solution-get-the-functions-for-optical-depth-and-transmissivity-and-calculate-the-transmissivity-profile">
+<h4>step 2:  From the solution, get the functions for optical depth and transmissivity and calculate the transmissivity profile<a class="headerlink" href="#step-2-from-the-solution-get-the-functions-for-optical-depth-and-transmissivity-and-calculate-the-transmissivity-profile" title="Permalink to this heading">#</a></h4>
+<p>The next cell borrows the equations from the midterm solution to calculate
+<span class="math notranslate nohighlight">\(\tau_T\)</span>, <span class="math notranslate nohighlight">\(\tau\)</span> and the transmisivity <span class="math notranslate nohighlight">\(t\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Hrho</span><span class="o">=</span><span class="mf">9000.</span>  <span class="c1"># m</span>
+<span class="n">ztop</span> <span class="o">=</span> <span class="mf">20.e3</span> <span class="c1"># m</span>
+<span class="n">k</span><span class="o">=</span><span class="mf">0.15</span> <span class="c1"># m^2/kg</span>
+<span class="n">rho_air</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="c1"># kg/m^3</span>
+<span class="n">rmix</span><span class="o">=</span><span class="mf">4.e-4</span>  <span class="c1">#unitless</span>
+
+<span class="k">def</span> <span class="nf">calc_tau</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    all units mks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tau_z</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="n">rmix</span><span class="o">*</span><span class="n">rho_air</span><span class="o">*</span><span class="n">Hrho</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">Hrho</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">tau_z</span>
+
+<span class="k">def</span> <span class="nf">calc_trans</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">ztop</span><span class="p">):</span>
+    <span class="n">tau_tot</span> <span class="o">=</span> <span class="n">calc_tau</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="n">ztop</span><span class="p">)</span>
+    <span class="n">tau_z</span> <span class="o">=</span> <span class="n">calc_tau</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">trans_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">tau_tot</span> <span class="o">-</span> <span class="n">tau_z</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">trans_z</span>
+
+<span class="c1">#</span>
+<span class="c1"># transmissivity from 1 - 6 km</span>
+<span class="c1">#</span>
+<span class="n">trans_z_layer</span> <span class="o">=</span> <span class="n">calc_trans</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="n">z_layer_m</span><span class="p">,</span><span class="n">ztop</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the midterm solution I know that the transmissivity should increase from 0-.63 to 0.79,
+which it does</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">z_layer_m</span><span class="o">*</span><span class="n">m2km</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;transmissivity vs height (km)&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/e582bedc82e4549cc0e398a19d5c09e05b3e8891de7502801b8843be7c885ada.png" src="../../_images/e582bedc82e4549cc0e398a19d5c09e05b3e8891de7502801b8843be7c885ada.png" />
+</div>
+</div>
+</section>
+<section id="q1a-answer-plot-plot-the-blackbody-radiance-vs-transmissivity-for-the-three-slopes">
+<h4>Q1a answer plot: plot the blackbody radiance vs transmissivity for the three slopes<a class="headerlink" href="#q1a-answer-plot-plot-the-blackbody-radiance-vs-transmissivity-for-the-three-slopes" title="Permalink to this heading">#</a></h4>
+<p>So puth this together to get the profile plot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B_65</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;-6.5 K/km&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B_10</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;-10 K/km&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B_0</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Q1a solution:  B(t) ($W\,m^{-2}\,m^{-1}\,sr^{-1}$) vs. t)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;blackbody radiance B ($W\,m^{-2}\,m^{-1}\,sr^{-1}$)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;15 $\mu m$ transmittance to top of atmosphere&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/65ee9ab525ef63c998ecbc1887579499fa6e98a4bb4b7fe925d0c3420a3c65b6.png" src="../../_images/65ee9ab525ef63c998ecbc1887579499fa6e98a4bb4b7fe925d0c3420a3c65b6.png" />
+</div>
+</div>
+<p>Use your plots to find values of <span class="math notranslate nohighlight">\(\Gamma_t = \frac{dB}{dt}\)</span> that correspond to the three values of <span class="math notranslate nohighlight">\(\Gamma_z\)</span>
+so that you can write an approximate linear function <span class="math notranslate nohighlight">\(B(t)\)</span> that looks like:</p>
+<div class="math notranslate nohighlight" id="equation-eq-planck">
+<span class="eqno">(55)<a class="headerlink" href="#equation-eq-planck" title="Permalink to this equation">#</a></span>\[
+B(t) = B(t(3.5km)) + (t - t(3.5km))\Gamma_t
+\]</div>
+</section>
+<section id="q1a-answer-for-slope-slope-65-13-slope-10-20-units-w-m-2-sr-1-mu-m-1">
+<h4>Q1a answer for slope: slope_65=-13, slope_10=-20: units: <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span><a class="headerlink" href="#q1a-answer-for-slope-slope-65-13-slope-10-20-units-w-m-2-sr-1-mu-m-1" title="Permalink to this heading">#</a></h4>
+<p>To find the slopes I need to calculate “rise over run”  for <span class="math notranslate nohighlight">\(\Delta B\)</span> and <span class="math notranslate nohighlight">\(\Delta t\)</span>  between 1 km and 6 km</p>
+<p>Change the radiance units to <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span> to make it easier to write</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_slope</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
+    <span class="c1">#</span>
+    <span class="c1"># find the delta values last - first</span>
+    <span class="c1">#</span>
+    <span class="n">delta_t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">delta_B</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="n">delta_B</span><span class="o">/</span><span class="n">delta_t</span>
+    <span class="k">return</span> <span class="n">slope</span>
+
+<span class="n">meter2micron</span> <span class="o">=</span> <span class="mf">1.e-6</span>
+<span class="n">slope_65</span> <span class="o">=</span> <span class="n">find_slope</span><span class="p">(</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">B_65</span><span class="o">*</span><span class="n">meter2micron</span><span class="p">)</span>
+<span class="n">slope_10</span> <span class="o">=</span> <span class="n">find_slope</span><span class="p">(</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">B_10</span><span class="o">*</span><span class="n">meter2micron</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slope Answer: </span><span class="si">{</span><span class="n">slope_65</span><span class="si">=:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> W/m2/sr/mum, </span><span class="si">{</span><span class="n">slope_10</span><span class="si">=:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> W/m^2/sr/micron&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slope Answer: slope_65=-13 W/m2/sr/mum, slope_10=-20 W/m^2/sr/micron
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="q1b-numerical-solution">
+<h2>Q1b numerical solution<a class="headerlink" href="#q1b-numerical-solution" title="Permalink to this heading">#</a></h2>
+<p>Since we have profiles for <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, we can use the approach of <a class="reference internal" href="../week2/derivs_and_ints.html#week2-numint"><span class="std std-ref">2) Find the definite integral of this function with python</span></a> to get the numerical integral as a check
+on our analytic answer</p>
+<p>The answer below for the three slopes:  B10integ=0.757, B65integ=0.748, B0integ=0.736 <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B10centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">B_10</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">B_10</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.</span>
+<span class="n">B65centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">B_65</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">B_65</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">B0centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">B_0</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">B_0</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">trans_z_layer</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># integrage and convert to W/m^2/sr/micron</span>
+<span class="c1">#</span>
+<span class="n">B0integ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B0centers</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">*</span><span class="mf">1.e-6</span>
+<span class="n">B10integ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B10centers</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">*</span><span class="mf">1.e-6</span>
+<span class="n">B65integ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B65centers</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">*</span><span class="mf">1.e-6</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">B10integ</span><span class="si">=:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">B65integ</span><span class="si">=:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">B0integ</span><span class="si">=:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> W/m^2/micron/sr&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B10integ=0.758, B65integ=0.749, B0integ=0.737 W/m^2/micron/sr
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="q1b-analytic-solution">
+<h2>Q1b – analytic solution<a class="headerlink" href="#q1b-analytic-solution" title="Permalink to this heading">#</a></h2>
+<p>b) Given <a class="reference internal" href="#equation-eq-planck">(55)</a> derive an analytic solution for the radiance <span class="math notranslate nohighlight">\(L\)</span> at 6 km coming from the air
+between 1 km and 6 km.  That is, solve the Schwartzchild integral:</p>
+<div class="math notranslate nohighlight" id="equation-eq-schwartz">
+<span class="eqno">(56)<a class="headerlink" href="#equation-eq-schwartz" title="Permalink to this equation">#</a></span>\[
+L(6km) = \int_{1km}^{6km} B(t^\prime) dt^\prime
+\]</div>
+<p>as an equation.</p>
+<section id="q1b-solution-equations">
+<h3>Q1b solution – equations<a class="headerlink" href="#q1b-solution-equations" title="Permalink to this heading">#</a></h3>
+<p>Integrate <a class="reference internal" href="#equation-eq-schwartz">(56)</a> and get:</p>
+<div class="math notranslate nohighlight" id="equation-eq-solution">
+<span class="eqno">(57)<a class="headerlink" href="#equation-eq-solution" title="Permalink to this equation">#</a></span>\[\begin{split}
+\begin{align}
+&amp;\int_{1km}^{6km} \left ( B_0+\Gamma_t t^\prime \right )dt^\prime = \\
+&amp;B_0(t_{6km} - t_{1km}) + \left ( \frac{t_{6km}^2}{2} - \frac{t_{1km}^2}{2} \right ) \Gamma_t
+\end{align}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_0\)</span> is given by:</p>
+<div class="math notranslate nohighlight" id="equation-eq-deriv2">
+<span class="eqno">(58)<a class="headerlink" href="#equation-eq-deriv2" title="Permalink to this equation">#</a></span>\[\begin{split}
+\begin{aligned}
+&amp; B=B_{3.5 \mathrm{~km}}+\left(t-t_{3.5}\right) \Gamma_t \\
+&amp; B=\left(B_{3.5 \mathrm{~km}}+\Gamma_t\left(-t_{3.5}\right)\right)+\Gamma_t t \\
+&amp; \text{therefore} \\
+&amp; B_0=B_{3.5 \mathrm{~km}}-t_{3.5} \Gamma_t
+\end{aligned}
+\end{split}\]</div>
+<p>In another cell in your notebook, calculate L(6km) for the three values of <span class="math notranslate nohighlight">\(\Gamma_z\)</span> using your solution to <a class="reference internal" href="#equation-eq-schwartz">(56)</a>.
+How much do they vary, in percent, from each other?</p>
+</section>
+<section id="q1b-calculate-t-3-5km-and-b-270-k">
+<h3>Q1b calculate <span class="math notranslate nohighlight">\(t_{3.5km}\)</span> and <span class="math notranslate nohighlight">\(B(270 K)\)</span><a class="headerlink" href="#q1b-calculate-t-3-5km-and-b-270-k" title="Permalink to this heading">#</a></h3>
+<p>To get numbers for <a class="reference internal" href="#equation-eq-solution">(57)</a>, I need to find <span class="math notranslate nohighlight">\(B_{3.5km}\)</span> and <span class="math notranslate nohighlight">\(t_{3.5km}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trans35</span> <span class="o">=</span> <span class="n">calc_trans</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">rmix</span><span class="p">,</span><span class="n">rho_air</span><span class="p">,</span><span class="n">Hrho</span><span class="p">,</span><span class="mf">3.5e3</span><span class="p">,</span><span class="n">ztop</span><span class="p">)</span>
+<span class="n">B35</span> <span class="o">=</span> <span class="n">calc_radiance</span><span class="p">(</span><span class="n">wavel</span><span class="p">,</span><span class="mi">270</span><span class="p">)</span>
+<span class="n">B35</span><span class="p">,</span> <span class="n">trans35</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4626469.21317863, 0.7130182352270124)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_B0</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span><span class="n">gamma_t</span><span class="p">):</span>
+    <span class="n">B0</span> <span class="o">=</span> <span class="n">B35</span> <span class="o">-</span> <span class="n">trans35</span><span class="o">*</span><span class="n">gamma_t</span>
+    <span class="k">return</span> <span class="n">B0</span>
+    
+<span class="k">def</span> <span class="nf">calc_L6km</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span> <span class="n">trans_z_layer</span> <span class="p">,</span><span class="n">gamma_t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    all units are mks</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trans6km</span> <span class="o">=</span> <span class="n">trans_z_layer</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">trans1km</span> <span class="o">=</span> <span class="n">trans_z_layer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">delta_trans</span> <span class="o">=</span> <span class="n">trans6km</span> <span class="o">-</span> <span class="n">trans1km</span>
+    <span class="n">B0</span> <span class="o">=</span> <span class="n">calc_B0</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span><span class="n">gamma_t</span><span class="p">)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">B0</span><span class="o">*</span><span class="n">delta_trans</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="p">(</span><span class="n">trans6km</span><span class="o">**</span><span class="mf">2.</span><span class="o">-</span> <span class="n">trans1km</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="o">*</span><span class="n">gamma_t</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span>
+    <span class="k">return</span> <span class="n">answer</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="q1b-answer-l6km-for-3-slopes">
+<h2>Q1b: answer: L6km for 3 slopes<a class="headerlink" href="#q1b-answer-l6km-for-3-slopes" title="Permalink to this heading">#</a></h2>
+<p>Looks like the numerical solution is slightly off, but  within a couple tenths of a percent</p>
+<p>L6km_10=0.758, L6km_65=0.751, L6km_0=0.737 <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L6km_65</span> <span class="o">=</span> <span class="n">calc_L6km</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">slope_65</span><span class="o">*</span><span class="mf">1.e6</span><span class="p">)</span><span class="o">*</span><span class="n">meter2micron</span>
+<span class="n">L6km_10</span> <span class="o">=</span> <span class="n">calc_L6km</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="n">slope_10</span><span class="o">*</span><span class="mf">1.e6</span><span class="p">)</span><span class="o">*</span><span class="n">meter2micron</span>
+<span class="n">L6km_0</span> <span class="o">=</span> <span class="n">calc_L6km</span><span class="p">(</span><span class="n">B35</span><span class="p">,</span><span class="n">trans35</span><span class="p">,</span><span class="n">trans_z_layer</span><span class="p">,</span><span class="mf">0.</span><span class="p">)</span><span class="o">*</span><span class="n">meter2micron</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;radiance at 6 km in W/m^2/micron/sr: </span><span class="si">{</span><span class="n">L6km_10</span><span class="si">=:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">L6km_65</span><span class="si">=:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">L6km_0</span><span class="si">=:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>radiance at 6 km in W/m^2/micron/sr: L6km_10=0.758, L6km_65=0.751, L6km_0=0.737
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fractional-radiance-change">
+<h2>Fractional radiance change<a class="headerlink" href="#fractional-radiance-change" title="Permalink to this heading">#</a></h2>
+<p>The radiance change between lapse rates of  -10 K/km to -6.5 K/km (0.758 - 0.737)/0.737 <span class="math notranslate nohighlight">\(\approx\)</span> 3%, so not much of a signal
+to work with for atmospheric sounding</p>
+</section>
+<section id="question-2-ndvi">
+<h2>Question 2 ndvi<a class="headerlink" href="#question-2-ndvi" title="Permalink to this heading">#</a></h2>
+<p>(6 points)</p>
+<p>Use the function <a class="reference external" href="https://phaustin.github.io/a301_web/full_listing.html#sat_lib.landsat_read.get_landsat_scene">get_landsat_scene</a> to read
+in one of your landsat scenes and get back a dictionary containing the band4, band5 and Fmask channels.</p>
+<p>Write a function called <code class="docutils literal notranslate"><span class="pre">calc_ndvi</span></code> that takes this dictionary and returns a new rioxarray DataArray
+that contains the <a class="reference external" href="https://www.usgs.gov/landsat-missions/landsat-normalized-difference-vegetation-index">normalized vegetation difference index</a> for each pixel in your scene.</p>
+<p>Hand in a notebook that:</p>
+<ul class="simple">
+<li><p>calculates the ndvi index
+(Make sure you
+multply your ndvi array by the cloud mask to set all cloudy/water pixels to np.nan)</p></li>
+<li><p>plots it in greyscale with a title that contains the image date.</p></li>
+<li><p>writes the ndvi DataArray out as geotiff</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GDAL_HTTP_COOKIEFILE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./cookies.txt&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;GDAL_HTTP_COOKIEJAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./cookies.txt&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rioxarray</span>
+<span class="kn">from</span> <span class="nn">rasterio.windows</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span> <span class="nn">sat_lib.landsat_read</span> <span class="kn">import</span> <span class="n">get_landsat_scene</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">import</span> <span class="nn">a301_lib</span>
+
+
+<span class="n">the_lon</span><span class="p">,</span> <span class="n">the_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mf">123.2460</span><span class="p">,</span> <span class="mf">49.2606</span>
+<span class="n">location</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">the_lon</span><span class="p">,</span> <span class="n">the_lat</span><span class="p">)</span>
+<span class="n">the_date</span> <span class="o">=</span> <span class="s2">&quot;2015-06-14&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>in sat_lib init
+in a301_lib init
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">the_window</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span><span class="n">col_off</span><span class="o">=</span><span class="mi">2671</span><span class="p">,</span> <span class="n">row_off</span><span class="o">=</span><span class="mi">1352</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">234</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">301</span><span class="p">)</span>
+<span class="n">out_dict</span> <span class="o">=</span> <span class="n">get_landsat_scene</span><span class="p">(</span><span class="n">the_date</span><span class="p">,</span><span class="n">the_lon</span><span class="p">,</span><span class="n">the_lat</span><span class="p">,</span><span class="n">the_window</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>found 1 item
+inside get_landsat_scene: reading B04 into b4_ds
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>inside get_landsat_scene: reading B05 into b5_ds
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>inside get_landsat_scene: reading Fmask into fmask_ds
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;b4_ds&#39;, &#39;b5_ds&#39;, &#39;fmask_ds&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="the-function">
+<h3>the function<a class="headerlink" href="#the-function" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_ndvi</span><span class="p">(</span><span class="n">out_dict</span><span class="p">):</span>
+    <span class="n">band4</span> <span class="o">=</span> <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;b4_ds&#39;</span><span class="p">]</span>
+    <span class="n">band5</span> <span class="o">=</span> <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;b5_ds&#39;</span><span class="p">]</span>
+    <span class="n">fmask</span> <span class="o">=</span> <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;fmask_ds&#39;</span><span class="p">]</span>
+    <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">band5</span> <span class="o">-</span> <span class="n">band4</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">band5</span> <span class="o">+</span> <span class="n">band4</span><span class="p">)</span>
+    <span class="n">ndvi</span> <span class="o">=</span> <span class="n">ndvi</span><span class="o">*</span><span class="n">fmask</span>
+    <span class="k">return</span> <span class="n">ndvi</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-plot">
+<h3>the plot<a class="headerlink" href="#the-plot" title="Permalink to this heading">#</a></h3>
+<p>Use a greyscale palette in the ndvi range 0-0.8</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ndvi</span> <span class="o">=</span> <span class="n">find_ndvi</span><span class="p">(</span><span class="n">out_dict</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># read the day from one of the dataArrays</span>
+<span class="c1">#</span>
+<span class="n">day</span> <span class="o">=</span> <span class="n">out_dict</span><span class="p">[</span><span class="s1">&#39;b5_ds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">day</span>
+<span class="n">pal</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;Greys_r&quot;</span><span class="p">))</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;0.75&quot;</span><span class="p">)</span>  <span class="c1"># 75% grey for out-of-map cells</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>  <span class="c1"># color cells &gt; vmax white</span>
+<span class="n">pal</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>  <span class="c1"># color cells &lt; vmin black</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1">#anything under this is colored black</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mf">0.8</span>  <span class="c1">#anything over this is colored white</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">Normalize</span>
+<span class="n">the_norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="o">*</span><span class="mf">1.3</span><span class="p">))</span>
+<span class="n">ndvi</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="n">the_norm</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">pal</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Landsat ndvi for </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/611661e6fe4ecf89a057111f04bd72793126546c0da8485b8702971fbac4e93a.png" src="../../_images/611661e6fe4ecf89a057111f04bd72793126546c0da8485b8702971fbac4e93a.png" />
+</div>
+</div>
+</section>
+<section id="write-out-the-geotiff">
+<h3>write out the geotiff<a class="headerlink" href="#write-out-the-geotiff" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outfile</span> <span class="o">=</span> <span class="n">a301_lib</span><span class="o">.</span><span class="n">data_share</span> <span class="o">/</span> <span class="s2">&quot;pha/landsat/ndvi.tif&quot;</span>
+<span class="n">ndvi</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">to_raster</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks/assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="assignment3b_solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Assignment 3b – Solution</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="assign5_handin.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Assignment 5 Handin</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-midterm-question-2-revisit">Q1) midterm question 2 revisit</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-solution">Q1a solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-blackbody-profiles">step 1: Blackbody profiles</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#good-idea-to-plot-vs-height-to-check">Good idea to plot vs. height to check</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-from-the-solution-get-the-functions-for-optical-depth-and-transmissivity-and-calculate-the-transmissivity-profile">step 2:  From the solution, get the functions for optical depth and transmissivity and calculate the transmissivity profile</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-answer-plot-plot-the-blackbody-radiance-vs-transmissivity-for-the-three-slopes">Q1a answer plot: plot the blackbody radiance vs transmissivity for the three slopes</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#q1a-answer-for-slope-slope-65-13-slope-10-20-units-w-m-2-sr-1-mu-m-1">Q1a answer for slope: slope_65=-13, slope_10=-20: units: <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\,\mu m^{-1}\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-numerical-solution">Q1b numerical solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-analytic-solution">Q1b – analytic solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-solution-equations">Q1b solution – equations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-calculate-t-3-5km-and-b-270-k">Q1b calculate <span class="math notranslate nohighlight">\(t_{3.5km}\)</span> and <span class="math notranslate nohighlight">\(B(270 K)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q1b-answer-l6km-for-3-slopes">Q1b: answer: L6km for 3 slopes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fractional-radiance-change">Fractional radiance change</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-2-ndvi">Question 2 ndvi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-function">the function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-plot">the plot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-out-the-geotiff">write out the geotiff</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Philip Austin
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
