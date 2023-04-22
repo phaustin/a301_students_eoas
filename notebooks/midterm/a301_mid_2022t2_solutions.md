@@ -7,26 +7,21 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.0
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-(mid_2022t2_solutions)=
+(mid_2022t2_final)=
 # A301 midterm -- solutions
 
-**March 10, 2023**: Note that Q2 had a error for the question 2 python code.  The original (incorrect) function had this typo:  `tr_1km = np.exp(-(tr_tot - tau_1km))` 
-
-Below I've fixed that so that it now is:
-
-
-`tr_1km = np.exp(-(tau_tot - tau_1km))`
-
+## 
 
 ## Q1
 
++++
 
 Q1) (12) A satellite orbiting at an altitude of 36000 km observes the
     surface in the $CO_2$ absorption band with a wavelength
@@ -256,7 +251,7 @@ print(f'omega: {2*np.pi*(1. - cos35):5.2f} sr')
 
 ```{figure} figures/a301_radiance_planck.png
 ---
-width: 60%
+width: 70%
 ---
 Planck function
 ```
