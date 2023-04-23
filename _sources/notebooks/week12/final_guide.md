@@ -184,10 +184,6 @@ Two layer atmosphere at night
 
 +++
 
-
-
-+++
-
 * For the figure above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
 the mass absorption coefficient is $k = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
 and  the telescope's field of view is 0.01 sr find:
@@ -196,29 +192,25 @@ and  the telescope's field of view is 0.01 sr find:
 
 +++
 
-
-
-+++
-
 #### Radiance Answer
 
-First find the transmissivity of each layer. 
-For layer 1 the optical depth is 
+First find the slant transmissivity of each layer. 
+For layer 1 the vertical optical depth is 
 
 $$\tau_1 = \rho k \Delta z = \frac{-\Delta p_1}{g} k$$
 
-with  transmissivity at $\mu = \cos (30)$ of:
+with  slant transmissivity at $\mu = \cos (30)$ of:
 
 
 $$t_1 = \exp(-\tau_1/\mu)$$
 
 and for layer 2
 
-For layer 2 the optical depth is 
+For layer 2 the vertical optical depth is 
 
 $$\tau_2 = \rho k \Delta z = \frac{-\Delta p_2}{g} k$$
 
-with vertical transmissivity:
+with slant transmissivity:
 
 
 $$t_2 = \exp(-\tau_2/\mu)$$
@@ -267,10 +259,6 @@ $$
 
 +++
 
-
-
-+++
-
 ### The flux observed by the telescope
 
 +++
@@ -282,10 +270,6 @@ $$
 Using equation 5 from the equation sheet:
 
 $$ E_{telescope} = L_{telescope} \Delta \omega$$
-
-+++
-
- 
 
 +++
 
@@ -316,8 +300,6 @@ $$
 $$
 
 Looking off to the side at an angle of 60 degrees, the pixel area would be bigger by $area/\cos(60)$.
-
-    
 
 +++
 
