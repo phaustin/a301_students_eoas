@@ -336,7 +336,7 @@ np.exp(-1.66*0.6)
 * The radar equation says that:
 
     $$
-      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{r^2}
+      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{R^2}
     $$
 
   * Define each of the terms in this equation and explain qualitatively why we expect this
