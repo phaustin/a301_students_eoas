@@ -481,6 +481,22 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#midterm-questions">Midterm questions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heating-rate">Heating rate</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-looking-up">Radiance looking up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-radiance-observed-by-the-telescope">The radiance observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-answer">Radiance Answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-flux-observed-by-the-telescope">The flux observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-answer">Flux answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-brightness-temperature-observed-by-the-telescope">The brightness temperature observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#brightness-temperature-answer">Brightness temperature answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-area">Pixel area</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-area-answer">Pixel area answer</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-answer">Short answer</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radar">Radar</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week9-radar">From <span class="xref std std-ref">week9:radar</span></a></li>
@@ -662,27 +678,103 @@ E_{cld} = \sigma 275^4
 </section>
 <section id="radiance-looking-up">
 <h3>Radiance looking up<a class="headerlink" href="#radiance-looking-up" title="Permalink to this heading">#</a></h3>
+<p>(note that this would be a takehome problem, since it’s too long for an exam)</p>
 <figure class="align-default" id="two-layer">
 <a class="reference internal image-reference" href="../../_images/two_layers_2016.png"><img alt="../../_images/two_layers_2016.png" src="../../_images/two_layers_2016.png" style="width: 30%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 13 </span><span class="caption-text">Two layer atmosphere at night</span><a class="headerlink" href="#two-layer" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
+<p>(Hint – remember from the hydrostatic equation that <span class="math notranslate nohighlight">\(\Delta p = -\rho g \Delta z\)</span> if <span class="math notranslate nohighlight">\(\rho\)</span> is approximately constant.)</p>
 <ul class="simple">
-<li><p>For the figure in above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
-the mass absorption coefficient is <span class="math notranslate nohighlight">\(\kappa = 0.001\ m^{2}/kg\)</span> for longwave photons, the telescope measures all wavelengths of interest
-and  the telescope’s field of view is 0.01 sr find:</p>
-<ul>
-<li><p>The radiance observed by the telescope</p></li>
-<li><p>The flux observed by the telescope</p></li>
-<li><p>The brightness temperature observed by the telescope</p></li>
-<li><p>Suppose you put this instrument into orbit 800 km above the ocean.<br />
+<li><p>For the figure above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
+the mass absorption coefficient is <span class="math notranslate nohighlight">\(k = 0.001\ m^{2}/kg\)</span> for longwave photons, the telescope measures all wavelengths of interest
+and  the telescope’s field of view is 0.01 sr find:</p></li>
+</ul>
+</section>
+<section id="the-radiance-observed-by-the-telescope">
+<h3>The radiance observed by the telescope<a class="headerlink" href="#the-radiance-observed-by-the-telescope" title="Permalink to this heading">#</a></h3>
+<section id="radiance-answer">
+<h4>Radiance Answer<a class="headerlink" href="#radiance-answer" title="Permalink to this heading">#</a></h4>
+<p>First find the transmissivity of each layer.
+For layer 1 the optical depth is</p>
+<div class="math notranslate nohighlight">
+\[\tau_1 = \rho k \Delta z = \frac{-\Delta p_1}{g} k\]</div>
+<p>with  transmissivity at <span class="math notranslate nohighlight">\(\mu = \cos (30)\)</span> of:</p>
+<div class="math notranslate nohighlight">
+\[t_1 = \exp(-\tau_1/\mu)\]</div>
+<p>and for layer 2</p>
+<p>For layer 1 the optical depth is</p>
+<div class="math notranslate nohighlight">
+\[\tau_2 = \rho k \Delta z = \frac{-\Delta p_2}{g} k\]</div>
+<p>with vertical transmissivity:</p>
+<div class="math notranslate nohighlight">
+\[t_2 = \exp(-\tau_2/\mu)\]</div>
+<p>The telescope is seeing a radiance of  <span class="math notranslate nohighlight">\(100/\pi\)</span> <span class="math notranslate nohighlight">\(W\,m^{-2}\,sr^{-1}\)</span> transmitted through 2 layers, so that
+the radiance reaching the surface at 100 kPa from above both layers is:</p>
+<div class="math notranslate nohighlight">
+\[L_{top}(100\ kPa) = \frac{100}{\pi} t_1\,t_2\]</div>
+<p>From Layer 2, we need to calculate the amount emitted by layer 2 that reaches the surface after going through layer 1.</p>
+<p>The blackbody radiance from layer 2 is:</p>
+<div class="math notranslate nohighlight">
+\[L_{2BB} = \frac{\sigma 270^4}{\pi}\]</div>
+<p>And from equation 26 on the equation sheet we know that the emissivity of layer 2 is (since absorptivity + transmissivity = 1):</p>
+<div class="math notranslate nohighlight">
+\[\epsilon_2 = (1 - t_2)\]</div>
+<p>and the amount that reaches the surface is reduced by transmission through layer 1:</p>
+<div class="math notranslate nohighlight">
+\[L_2(100\ kPa) = (1 - t_2)L_{2BB}t_1\]</div>
+<p>Finally the third term is the amount emitted from layer 1, with</p>
+<div class="math notranslate nohighlight">
+\[L_{1BB} = \frac{\sigma 290^4}{\pi} \]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\epsilon_1 = (1 - t_1)\]</div>
+<p>So the third term is:</p>
+<div class="math notranslate nohighlight">
+\[
+L_{1}(100\ kPa) = (1 - t_1) L_{1BB}
+\]</div>
+<p>and the answer is:</p>
+<div class="math notranslate nohighlight">
+\[
+L_{telescope} = L_{top}(100\ kPa) + L_2(100\ kPa) + L_1(100\ kPa) 
+\]</div>
+</section>
+</section>
+<section id="the-flux-observed-by-the-telescope">
+<h3>The flux observed by the telescope<a class="headerlink" href="#the-flux-observed-by-the-telescope" title="Permalink to this heading">#</a></h3>
+<section id="flux-answer">
+<h4>Flux answer<a class="headerlink" href="#flux-answer" title="Permalink to this heading">#</a></h4>
+<p>Using equation 5 from the equation sheet:</p>
+<div class="math notranslate nohighlight">
+\[ E_{telescope} = L_{telescope} \Delta \omega\]</div>
+</section>
+</section>
+<section id="the-brightness-temperature-observed-by-the-telescope">
+<h3>The brightness temperature observed by the telescope<a class="headerlink" href="#the-brightness-temperature-observed-by-the-telescope" title="Permalink to this heading">#</a></h3>
+<section id="brightness-temperature-answer">
+<h4>Brightness temperature answer<a class="headerlink" href="#brightness-temperature-answer" title="Permalink to this heading">#</a></h4>
+<p>From the definition of brightness temperature over all wavelengths:</p>
+<div class="math notranslate nohighlight">
+\[
+L_{telescope} = \frac{\sigma T_{bright}^4}{\pi}
+\]</div>
+</section>
+</section>
+<section id="pixel-area">
+<h3>Pixel area<a class="headerlink" href="#pixel-area" title="Permalink to this heading">#</a></h3>
+<p>Suppose you put this instrument into orbit 800 km above the ocean.<br />
 Approximately what is the area of pixel you see at nadir (i.e. directly below) with this field of view?
-Roughly how big is the pixel looking 60 degrees off nadir?</p></li>
-<li><p>(Hint – remember from the hydrostatic equation that <span class="math notranslate nohighlight">\(\Delta p = -\rho g \Delta z\)</span> if <span class="math notranslate nohighlight">\(\rho\)</span> is approximately constant.)</p></li>
-</ul>
-</li>
-</ul>
+Roughly how big is the pixel looking 60 degrees off nadir?</p>
+<section id="pixel-area-answer">
+<h4>Pixel area answer<a class="headerlink" href="#pixel-area-answer" title="Permalink to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+    \Delta \omega = 0.01\ sr = \frac{area}{800^2\ km^2}
+\]</div>
+<p>Looking off to the side at an angle of 60 degrees, the pixel area would be bigger by <span class="math notranslate nohighlight">\(area/\cos(60)\)</span>.</p>
+</section>
 </section>
 <section id="short-answer">
 <h3>Short answer<a class="headerlink" href="#short-answer" title="Permalink to this heading">#</a></h3>
@@ -847,6 +939,22 @@ box and save it to disk as a netcdf file with the correct affine transform and c
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#midterm-questions">Midterm questions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heating-rate">Heating rate</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-looking-up">Radiance looking up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-radiance-observed-by-the-telescope">The radiance observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#radiance-answer">Radiance Answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-flux-observed-by-the-telescope">The flux observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-answer">Flux answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-brightness-temperature-observed-by-the-telescope">The brightness temperature observed by the telescope</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#brightness-temperature-answer">Brightness temperature answer</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-area">Pixel area</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-area-answer">Pixel area answer</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#short-answer">Short answer</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#radar">Radar</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#from-week9-radar">From <span class="xref std std-ref">week9:radar</span></a></li>
