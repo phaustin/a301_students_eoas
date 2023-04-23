@@ -214,7 +214,7 @@ $$t_1 = \exp(-\tau_1/\mu)$$
 
 and for layer 2
 
-For layer 1 the optical depth is 
+For layer 2 the optical depth is 
 
 $$\tau_2 = \rho k \Delta z = \frac{-\Delta p_2}{g} k$$
 
