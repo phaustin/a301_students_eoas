@@ -1,0 +1,307 @@
+\documentclass[12pt]{article}
+\usepackage{calc,fancyhdr, url,hanging}
+\usepackage{paunits,multicol,shortcuts}
+\usepackage{geometry,graphicx}
+\usepackage{lastpage,multicol}
+\usepackage{amsmath}
+\geometry{letterpaper,top=50pt,hmargin={20mm,20mm},headheight=15pt} 
+\onecolumn
+
+\pagestyle{fancy}
+\lhead{Name:}
+\chead{SN:} 
+\rhead{\rhead{page~\thepage/\pageref{LastPage}}}
+
+\lfoot{}
+\rfoot{}
+\cfoot{}
+
+
+\begin{document}
+
+
+\begin{center}
+  \textbf{Useful Equations:}
+\end{center}
+
+
+
+\begin{multicols}{2}
+
+
+\noindent
+\rule{3cm}{.1mm}
+
+$~$
+
+\noindent
+
+$~$
+
+
+\begin{equation}
+  \label{eq:omega}
+  d \omega = \sin \theta d\theta d\phi = -d\mu d\phi
+\end{equation}
+
+\begin{equation}
+  \label{eq:cos}
+  S = S_0 \cos(\theta)
+\end{equation}
+
+\begin{equation}
+  \label{eq:conservation}
+  a_\lambda + r_\lambda + t_\lambda = 1
+\end{equation}
+
+\begin{equation}
+  \label{eq:intensity}
+  L_\lambda = \frac{\Delta E}{\Delta \omega \Delta \lambda}
+\end{equation}
+
+
+\begin{equation}
+  \label{eq:pi}
+  E_{\lambda\,BB} = \pi B_\lambda
+\end{equation}
+where $B_\lambda$ ($W\,m^{-2}\,sr^{-1}\,\mu m^{-1}$) is the monochromatic blackbody radiance
+from an infinite flat surface.
+
+
+\begin{equation}
+  \label{eq:stefan}
+  E_{BB}=\sigma T^4
+\end{equation}
+
+\begin{equation}
+  \label{eq:fluxdiv}
+  \frac{dT}{dt} = \frac{-1}{\rho c_{pd}} \frac{dE_n}{dz}
+\end{equation}
+
+
+\begin{equation}
+  \label{eq:taylor}
+  E_\lambda(T) \approx E_{\lambda\, 0} + \left .\frac{dE_\lambda}{dT}  \right |_{T_0,\lambda} \!\!\! (T - T_0) + \ldots
+\end{equation}
+
+\begin{equation}
+  \label{eq:exp}
+  \exp(x) = 1 + x +  \frac{x^2}{2} + \frac{3^2}{3!} + \ldots
+\end{equation}
+
+\begin{equation}
+  \sin(\theta) = \theta - \frac{\theta^3}{3!} + \frac{\theta^5}{5!} + \ldots
+\end{equation}
+
+\begin{equation}
+  \cos(\theta) = 1 -  \frac{\theta^2}{2!} + \frac{\theta^4}{4!} + \ldots
+\end{equation}
+
+$~$
+
+\vspace{0.5in}
+
+
+\noindent
+\rule{3cm}{.1mm}
+
+$~$
+
+
+\noindent
+
+$~$
+
+\noindent
+Beer's law for absorption and scattering (no emission) given
+slant path $s= dz/\mu$, volume extinction coefficient $b$,
+gas density $\rho_g$ (Stull chapter 2)
+
+\begin{align}
+  d\tau &= n\,b\,dz \\
+  d\tau &= \rho_g\,k\,dz \\
+  ds &= dz/\mu \\
+  \tau & = \int_{z_1}^{z_2} \rho_g k dz \\
+\frac{dL_\lambda}{L_\lambda}  & =  - \frac{d\tau}{\mu} 
+\end{align}               
+
+
+$~$
+
+\noindent
+Hydrostatic equation:
+
+\begin{equation}
+  \label{eq:hydro}
+  dp = -\rho_d\, g\, dz
+\end{equation}
+
+$~$
+
+\noindent
+Equation of state
+
+\begin{equation}
+  \label{eq:state}
+  p = R_d \rho_d T
+\end{equation}
+
+
+$~$
+\noindent
+Slant Transmission 
+
+\begin{eqnarray}
+\hat{t}  &=& \exp ( - \tau/\mu ) 
+\end{eqnarray}
+$~$
+
+\noindent
+Schwarzchild's equation
+
+\begin{equation}
+  \label{eq:schwarz}
+  dL = -L\, d\tau/\mu  + B_{\lambda}(z) d\tau/\mu
+\end{equation}
+$~$
+
+\noindent
+Vertical radiance $L_\lambda$  with $\mu = 1$
+
+\begin{align}
+  L_\lambda(\tau)&= B_\lambda(T_{skin})( \exp(-\tau)  \nonumber \\
+  &+    \int_0^{\tau} \exp\left(  - (\tau -\tau^\prime) \right )
+     B_\lambda(T)\, d\tau^\prime 
+\end{align}
+
+
+\noindent
+Radiance along a slant path:
+
+\begin{align}
+  L_\lambda(\tau/\mu) &= B_\lambda(T_{skin})( \exp(-\tau/\mu) \nonumber \\
+  &+  \int_0^{\tau} \exp\left(  - (\tau -\tau^\prime)/\mu \right )
+     B_\lambda(T)\, d\tau^\prime/\mu 
+   \end{align}
+\noindent
+Flux from radiance:
+
+   \begin{align}
+     \label{eq:flux}
+     E_\lambda = \int_0^{2\pi} \int_0^1 \mu L_\lambda \, d\mu\, d\phi 
+   \end{align}
+
+   
+
+\noindent
+Vertical radiance with change of variables to transmittance:   
+
+\begin{equation}
+       L_\lambda(\tau/\mu)= B_\lambda(T_{skin}) \hat{t}_{tot} +    \int_0^{\tau} B_\lambda(T) d\hat{t} 
+     \end{equation}
+\noindent
+For constant temperature:
+
+\begin{align}
+  L_\lambda(\tau/\mu)&= B_\lambda(T_{skin}) \hat{t}_{tot} \nonumber\\
+             &+  (1 - \exp(-\tau/\mu) )B_\lambda(T)
+\end{align}
+
+
+\noindent
+Integrating over a hemisphere for flux, using the simple flux diffusivity approximation:
+
+\begin{align}
+  E_\lambda &= \pi B_\lambda(T_{skin}) \exp(-1.66 \tau_{tot}) \nonumber \\
+  & +   \pi B_\lambda(T)(1 - \exp(-1.66 \tau))
+\end{align}
+
+
+\noindent
+Heating rate equation
+\begin{equation}
+  \label{eq:fluxdiv}
+  \frac{dT}{dt} = \frac{-1}{\rho c_{pd}} \frac{dE_n}{dz}
+\end{equation}
+
+\noindent
+and integrated over all wavelengths:
+
+     \begin{align}
+       \label{eq:constantT}
+       E_{\uparrow} &= \sigma T_{skin}^4 \exp( -1.66 \overline{\tau}_{\lambda T}  ) \nonumber \\
+       & + \sigma T_{layer}^4(1- \exp( -1.66 \overline{\tau}_{\lambda T} ))
+     \end{align}
+
+\noindent
+Radar
+
+
+\noindent
+Rayleigh scattering
+\begin{equation}
+  \label{eq:scatter}
+  \frac{L}{L_0} \propto \frac{D^6}{\lambda^4}
+\end{equation}
+
+\begin{equation}
+\label{eq:radar}
+  \mathrm{Returned\ power} \propto |k^2| \frac{Z}{R^2}
+\end{equation}
+where $|k^2| \approx 0.2$ for ice and 0.9 for liquid water.
+
+\begin{equation}
+  \label{eq:Z}
+  Z = \int_0^\infty n(D) D^6 dD
+\end{equation}
+
+\noindent
+Z-R relationship
+
+\begin{equation}
+  \label{eq:zr}
+  Z = 300 RR^{1.4}
+\end{equation}
+(rain, RR in mm/hr, Z in $mm^6/m^3$)
+
+\begin{equation}
+  \label{eq:range}
+  MUR = \frac{c}{2 \cdot \mathrm{PRF}}
+\end{equation}
+
+
+\rule{3cm}{.1mm}
+
+
+
+$~$
+
+\noindent
+Useful constants:
+
+$~$
+
+$c_{pd}=1004$ \un{J\, kg^{-1}\,K^{-1}}, 
+
+$\sigma=5.67 \times  10^{-8}$ \un{W\,m^{-2}\,K^{-4}}
+
+$k_b = 1.381  \times 10^{-23}$ \un{J\,K^{-1}} 
+
+$c=3 \times 10^{8}$ \un{m\,s^{-1}}
+
+$h=6.626 \times 10^{-34}$ \un{J\,s}
+
+$\pi \approx 3.14159$
+
+ $R_d=287 \un{J\,kg^{-1}\,K^{-1}}$
+
+
+\end{multicols}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

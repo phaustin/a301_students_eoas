@@ -88,12 +88,13 @@ kernelspec:
 
 +++
 
-     
 ## Study questions
 
 ### Midterm questions
 
 * the final is comprehensive so be sure you understand the midterm solutions
+
++++
 
 ### Heating rate
 
@@ -166,7 +167,11 @@ $$
 E_{cld} = \sigma 275^4
 $$
 
-### Radiance looking up
++++
+
+### Radiance looking up  
+
+(note that this would be a takehome problem, since it's too long for an exam)
 
 ```{figure} figures/two_layers_2016.png
 :width: 30%
@@ -175,23 +180,128 @@ $$
 Two layer atmosphere at night
 ```
 
-* For the figure in above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
-the mass absorption coefficient is $\kappa = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
+(Hint -- remember from the hydrostatic equation that $\Delta p = -\rho g \Delta z$ if $\rho$ is approximately constant.)
+
++++
+
+* For the figure above, suppose you were looking upward from the surface with an infrared instrument at an angle of 30 degrees off vertical.  Assuming that
+the mass absorption coefficient is $k = 0.001\ m^{2}/kg$ for longwave photons, the telescope measures all wavelengths of interest
 and  the telescope's field of view is 0.01 sr find:
 
-  * The radiance observed by the telescope
+### The radiance observed by the telescope
 
-  * The flux observed by the telescope
++++
 
-  * The brightness temperature observed by the telescope
+#### Radiance Answer
 
-  * Suppose you put this instrument into orbit 800 km above the ocean.  
-    Approximately what is the area of pixel you see at nadir (i.e. directly below) with this field of view? 
-    Roughly how big is the pixel looking 60 degrees off nadir?
-    
-  * (Hint -- remember from the hydrostatic equation that $\Delta p = -\rho g \Delta z$ if $\rho$ is approximately constant.)
+First find the slant transmissivity of each layer. 
+For layer 1 the vertical optical depth is 
+
+$$\tau_1 = \rho k \Delta z = \frac{-\Delta p_1}{g} k$$
+
+with  slant transmissivity at $\mu = \cos (30)$ of:
 
 
+$$t_1 = \exp(-\tau_1/\mu)$$
+
+and for layer 2
+
+For layer 2 the vertical optical depth is 
+
+$$\tau_2 = \rho k \Delta z = \frac{-\Delta p_2}{g} k$$
+
+with slant transmissivity:
+
+
+$$t_2 = \exp(-\tau_2/\mu)$$
+
++++
+
+The telescope is seeing a radiance of  $100/\pi$ $W\,m^{-2}\,sr^{-1}$ transmitted through 2 layers, so that
+the radiance reaching the surface at 100 kPa from above both layers is:
+
+$$L_{top}(100\ kPa) = \frac{100}{\pi} t_1\,t_2$$
+
+From Layer 2, we need to calculate the amount emitted by layer 2 that reaches the surface after going through layer 1.
+
+
+The blackbody radiance from layer 2 is:
+
+$$L_{2BB} = \frac{\sigma 270^4}{\pi}$$
+
+And from equation 26 on the equation sheet we know that the emissivity of layer 2 is (since absorptivity + transmissivity = 1):
+
+$$\epsilon_2 = (1 - t_2)$$
+
+and the amount that reaches the surface is reduced by transmission through layer 1:
+
+$$L_2(100\ kPa) = (1 - t_2)L_{2BB}t_1$$
+
+Finally the third term is the amount emitted from layer 1, with 
+
+$$L_{1BB} = \frac{\sigma 290^4}{\pi} $$
+
+with 
+
+$$\epsilon_1 = (1 - t_1)$$
+
+So the third term is:
+
+$$
+L_{1}(100\ kPa) = (1 - t_1) L_{1BB}
+$$
+
+and the answer is:
+
+$$
+L_{telescope} = L_{top}(100\ kPa) + L_2(100\ kPa) + L_1(100\ kPa) 
+$$
+
++++
+
+### The flux observed by the telescope
+
++++
+
+#### Flux answer
+
++++
+
+Using equation 5 from the equation sheet:
+
+$$ E_{telescope} = L_{telescope} \Delta \omega$$
+
++++
+
+### The brightness temperature observed by the telescope
+
++++
+
+#### Brightness temperature answer
+
+From the definition of brightness temperature over all wavelengths:
+
+$$
+L_{telescope} = \frac{\sigma T_{bright}^4}{\pi}
+$$
+
++++
+
+### Pixel area
+
+Suppose you put this instrument into orbit 800 km above the ocean.  
+Approximately what is the area of pixel you see at nadir (i.e. directly below) with this field of view? 
+Roughly how big is the pixel looking 60 degrees off nadir?
+
+#### Pixel area answer
+
+$$
+    \Delta \omega = 0.01\ sr = \frac{area}{800^2\ km^2}
+$$
+
+Looking off to the side at an angle of 60 degrees, the pixel area would be bigger by $area/\cos(60)$.
+
++++
 
 ### Short answer
 
@@ -226,7 +336,7 @@ np.exp(-1.66*0.6)
 * The radar equation says that:
 
     $$
-      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{r^2}
+      \mathrm{Returned\ power} \propto |k^2| \frac{Z}{R^2}
     $$
 
   * Define each of the terms in this equation and explain qualitatively why we expect this
